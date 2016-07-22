@@ -1,5 +1,5 @@
 namespace SlimeSimulation.Model {
-    internal class Edge {
+    public class Edge {
         private readonly double connectivity;
         private Node a, b;
 

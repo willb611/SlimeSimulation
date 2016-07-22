@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SlimeSimulation.Model {
-    internal class Node {
+    public class Node {
         private readonly int id, x, y;
         
         public Node(int id, double x, double y) {
