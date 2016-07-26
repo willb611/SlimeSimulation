@@ -70,6 +70,7 @@
     <Compile Include="Model\SlimeNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\FlowResultLineWidthController.cs" />
     <Compile Include="View\FlowResultWindow.cs" />
     <Compile Include="View\GraphDrawingArea.cs" />
     <Compile Include="View\LineWidthController.cs" />
