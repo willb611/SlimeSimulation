@@ -30,12 +30,13 @@ namespace SlimeSimulation.View {
             HBox hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
             thisWindow.Add(hbox);
-            DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges);
+            DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges, new LineWidthController(flowResult));
             hbox.Add(flowResultArea);
         }
 
         internal void Display() {
             logger.Debug("[Display] Showing window");
+            flowResult.LogFlowOnEdges();
             thisWindow.ShowAll();
         }
     }

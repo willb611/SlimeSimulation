@@ -6,28 +6,93 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.Model;
+using NLog;
 
 namespace SlimeSimulation.FlowCalculation.Tests {
+
     [TestClass()]
     public class FlowFinderTests {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         [TestMethod()]
         public void GetLoopsWithDirectionForFlow_WhenSimpleLoop_ShouldWork() {
+            Node source = new Node(1, 1, 1);
+            Node a = new Node(2, 1, 2);
+            Node b = new Node(3, 2, 1);
+            Node sink = new Node(4, 2, 2);
+            List<Node> nodes = new List<Node>() { source, a, b, sink };
+
+            Edge srca = new Edge(source, a, 2);
+            Edge srcb = new Edge(source, b, 2);
+            Edge asink = new Edge(a, sink, 2);
+            Edge bsink = new Edge(b, sink, 2);
+            List<Edge> edges = new List<Edge>() { srca, srcb, asink, bsink };
+
+            List<Loop> loops = new List<Loop>() { new Loop(nodes, edges) };
+            List<Edge> asideEdge = new List<Edge>() { srca, asink };
+            List<Edge> bsideEdge = new List<Edge>() { srcb, bsink };
             /*
-            List<Loop> loops = new List<Loop>();
-            List<Edge> asideEdge = new List<Edge>();
-            asideEdge.Add(srca);
-            asideEdge.Add(asink);
-            List<Edge> bsideEdge = new List<Edge>();
-            bsideEdge.Add();
-            LoopWithDirectionOfFlow bSideLoop = new LoopWithDirectionOfFlow(nodes, edges, )
-            
              * b      -  sink
              * |        |
              * source -  a
-             
-
             */
-            Assert.Fail();
+            FlowFinder flowFinder = new FlowFinder();
+            Graph graph = new Graph(edges);
+            List<LoopWithDirectionOfFlow> loopsWithDirection = flowFinder.GetLoopsWithDirectionForFlow(loops, source, sink, graph);
+
+            LoopWithDirectionOfFlow actualLoopWithDirection = loopsWithDirection.First();
+            if (ListEquals(actualLoopWithDirection.Clockwise, asideEdge)) {
+                Assert.IsTrue(ListEquals(bsideEdge, actualLoopWithDirection.AntiClockwise));
+            } else if (ListEquals(actualLoopWithDirection.AntiClockwise, asideEdge)) {
+                Assert.IsTrue(ListEquals(bsideEdge, actualLoopWithDirection.Clockwise));
+            } else {
+                logger.Error("Aside not matched. Aside: ");
+                LogEdges(asideEdge);
+                logger.Error("Clockwise: ");
+                LogEdges(actualLoopWithDirection.Clockwise);
+                logger.Error("Anticlockwise: ");
+                LogEdges(actualLoopWithDirection.AntiClockwise);
+                Assert.Fail("Calculated loop with direction was wrong: " + actualLoopWithDirection);
+            }
+        }
+
+        private bool ListEquals(List<Edge> a, List<Edge> b) {
+            bool ret = true;
+            foreach (Edge edge in a) {
+                if (!b.Contains(edge)) {
+                    ret = false;
+                }
+            }
+            if (b.Count != a.Count) {
+                ret = false;
+            }
+            return ret;
+        }
+
+        private void LogEdges(IEnumerable<Edge> edges) {
+            foreach (Edge edge in edges) {
+                logger.Error(edge);
+            }
+        }
+
+        [TestMethod()]
+        public void SplitFlowIntoNeighbours_ShouldSplitEqually() {
+            Node src = new Node(0, 1, 7);
+            Node a = new Node(1, 1, 1);
+            Node b = new Node(1, 2, 2);
+            Edge srca = new Edge(src, a, 1);
+            Edge srcb = new Edge(src, b, 1);
+            List<Edge> edges = new List<Edge>() { srca, srcb };
+
+            double flowAmount = 8;
+            Dictionary<Node, double> mapping = new Dictionary<Node, double>();
+            FlowOnEdges flowOnEdges = new FlowOnEdges(edges);
+            mapping[src] = flowAmount;
+
+            var flowFinder = new FlowFinder();
+            flowFinder.SplitFlowIntoNeighbours(src, edges, ref mapping, ref flowOnEdges);
+            Assert.AreEqual(flowAmount / 2, mapping[a]);
+            Assert.AreEqual(flowAmount / 2, mapping[b]);
         }
 
         [TestMethod()]
@@ -59,15 +124,17 @@ namespace SlimeSimulation.FlowCalculation.Tests {
              * source -  a
              */
             FlowFinder flowFinder = new FlowFinder();
-            FlowOnEdges flowOnEdges = flowFinder.EstimateFlowForEdges(edges, source, sink, (int) flowAmount);
+            FlowOnEdges flowOnEdges = flowFinder.EstimateFlowForEdges(new Graph(nodes, edges), source, sink, (int) flowAmount);
 
             double flowASrc = flowOnEdges.GetFlowOnEdge(srca);
             double flowBSrc = flowOnEdges.GetFlowOnEdge(srcb);
-            Assert.IsTrue(flowAmount - (flowASrc + flowBSrc) < ACCEPTED_ERROR);
+            Assert.IsTrue(flowAmount - (flowASrc + flowBSrc) < ACCEPTED_ERROR,
+                "flow should split equally, expected: " + flowAmount + ", calculated : " + (flowASrc + flowBSrc));
 
             double flowASink = flowOnEdges.GetFlowOnEdge(asink);
             double flowBSink = flowOnEdges.GetFlowOnEdge(bsink);
-            Assert.IsTrue(flowAmount - (flowASink + flowBSink) < ACCEPTED_ERROR);
+            Assert.IsTrue(flowAmount - (flowASink + flowBSink) < ACCEPTED_ERROR,
+                "flow should split equally, expected: " + flowAmount + ", calculated : " + (flowASink + flowBSink));
         }
     }
 }

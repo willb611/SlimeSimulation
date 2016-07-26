@@ -5,28 +5,42 @@ using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.Model;
 using SlimeSimulation.FlowCalculation;
+using NLog;
 
 namespace SlimeSimulation.Model {
     public class LoopWithDirectionOfFlow : Loop {
-        private readonly IEnumerable<Edge> clockwise;
-        private readonly IEnumerable<Edge> antiClockwise;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public LoopWithDirectionOfFlow(Loop other, IEnumerable<Edge> clockwise,
-            IEnumerable<Edge> antiClockwise) : base(other) {
+        private readonly List<Edge> clockwise;
+        private readonly List<Edge> antiClockwise;
+
+        public LoopWithDirectionOfFlow(Loop other, List<Edge> clockwise, List<Edge> antiClockwise) : base(other) {
             this.clockwise = clockwise;
             this.antiClockwise = antiClockwise;
+            if (clockwise.Count == 0) {
+                logger.Warn("Clockwise loop has 0 edges in it");
+            }
+            if (antiClockwise.Count == 0) {
+                logger.Warn("antiClockwise loop has 0 edges in it");
+            }
+            logger.Debug("Finished construction of " + this);
         }
 
-        public override IEnumerable<Edge> AntiClockwise {
+        public override List<Edge> AntiClockwise {
             get {
                 return antiClockwise;
             }
         }
 
-        public override IEnumerable<Edge> Clockwise {
+        public override List<Edge> Clockwise {
             get {
                 return clockwise;
             }
+        }
+
+        public override string ToString() {
+            return base.ToString() + ",LoopWithDirectionOfFlow{clockwise.Count=" + clockwise.Count() 
+                + ",anticlockwise.Count=" + antiClockwise.Count() + "}";
         }
     }
 }

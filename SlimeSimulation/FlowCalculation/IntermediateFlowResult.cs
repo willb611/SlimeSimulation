@@ -1,12 +1,11 @@
 using SlimeSimulation.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NLog;
 
 namespace SlimeSimulation.FlowCalculation {
     public class IntermediateFlowResult {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         internal double MaxErrorFoundOnCalculatingHeadLoss;
         private readonly List<LoopWithDirectionOfFlow> loops;
         private FlowOnEdges flowOnEdges;
@@ -15,6 +14,7 @@ namespace SlimeSimulation.FlowCalculation {
             MaxErrorFoundOnCalculatingHeadLoss = maxError;
             this.loops = loops;
             this.flowOnEdges = flowFound;
+            logger.Debug("Given number of loops: " + loops.Count +", and maxError: " + maxError);
         }
 
         public List<LoopWithDirectionOfFlow> Loops {

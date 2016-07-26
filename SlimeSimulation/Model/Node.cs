@@ -73,5 +73,9 @@ namespace SlimeSimulation.Model {
             }
             return result;
         }
+
+        public override string ToString() {
+            return this.GetType() + "{id=" + id + ", x=" + x + ", y=" + y + "}";
+        }
     }
 }

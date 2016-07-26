@@ -1,12 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.Model;
+using NLog;
+using System;
 
 namespace SlimeSimulation.FlowCalculation {
     public class FlowOnEdges {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly double maxErrorFoundOnCalculatingHeadLoss;
         private readonly Dictionary<Edge, double> flowOnEdgeMapping;
         
@@ -28,19 +28,29 @@ namespace SlimeSimulation.FlowCalculation {
             }
         }
 
-        internal double GetFlowOnEdge(Edge edge) {
-            double result;
-            bool found = flowOnEdgeMapping.TryGetValue(edge, out result);
-            if (!found) {
-                throw new ArgumentException("Given edge not contained in this flowResult");
+        internal double GetMaximumFlowOnAnyEdge() {
+            double max = 0;
+            foreach (double value in flowOnEdgeMapping.Values) {
+                max = Math.Max(max, value);
             }
-            return result;
+            return max;
+        }
+
+        internal double GetFlowOnEdge(Edge edge) {
+            return flowOnEdgeMapping[edge];
         }
 
         internal void IncreaseFlowOnEdgeBy(Edge edge, double amount) {
             double current = GetFlowOnEdge(edge);
             flowOnEdgeMapping.Remove(edge);
             flowOnEdgeMapping.Add(edge, current + amount);
+        }
+
+        internal void LogFlowInLoops() {
+            logger.Debug("Begin logging flow in loops");
+            foreach (Edge edge in flowOnEdgeMapping.Keys) {
+                logger.Debug("Edge " + edge + ", now has flow: " + GetFlowOnEdge(edge));
+            }
         }
     }
 }

@@ -71,13 +71,17 @@ namespace SlimeSimulation.Model {
             if (connectivity != other.Connectivity) {
                 return false;
             } else {
-                return A == other.A && B == other.B;
+                return A.Equals(other.A) && B.Equals(other.B);
             }
         }
 
         public override int GetHashCode() {
             return (connectivity.GetHashCode() * 17 + A.GetHashCode()) * 17
                     + B.GetHashCode();
+        }
+
+        public override string ToString() {
+            return "Edge{connectivity=" + connectivity + ", a.Id=" + a.Id + ", b.Id=" + b.Id + "}";
         }
     }
 }

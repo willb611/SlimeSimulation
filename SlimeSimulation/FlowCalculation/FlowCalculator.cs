@@ -68,13 +68,18 @@ namespace SlimeSimulation.FlowCalculation {
             logger.Debug("[ImproveEstimateForFlowInNetwork] Previous error in flow: " + previousFlowResult.MaxErrorFoundOnCalculatingHeadLoss);
             double maxError = 0;
             var flowOnEdges = new FlowOnEdges(previousFlowResult.FlowOnEdges);
+            if (previousFlowResult.Loops.Count == 0) {
+                logger.Warn("No loops given for graph, is the graph empty?");
+            }
             foreach (Loop loop in previousFlowResult.Loops) {
                 double headLossInLoop = CalculateHeadLossInLoop(loop, previousFlowResult.FlowOnEdges);
                 double sumQuantities = FindSumOfQuantitiesInLoop(loop, previousFlowResult.FlowOnEdges);
                 var deltaToBeApplied = headLossInLoop / sumQuantities;
                 maxError = Math.Max(maxError, deltaToBeApplied);
                 ApplyDeltaToEdgesInLoop(ref flowOnEdges, deltaToBeApplied, loop);
+                logger.Debug("For loop: " + loop + ", found maxError: " + maxError);
             }
+            flowOnEdges.LogFlowInLoops();
             return new IntermediateFlowResult(maxError, previousFlowResult.Loops, flowOnEdges);
         }
         
@@ -89,6 +94,10 @@ namespace SlimeSimulation.FlowCalculation {
             foreach (Edge edge in edges) {
                 double headInSection = edge.Resistance * (Expon(flowOnEdges.GetFlowOnEdge(edge), flowExponent));
                 sum += headInSection;
+                logger.Debug("[CalculateHeadInEdges] For edge " + edge + ", found head as " + headInSection);
+            }
+            if (sum == 0) {
+                logger.Warn("[CalculateHeadInEdges] Found sum of head as 0. Flow result will probably be wrong");
             }
             return sum;
         }
@@ -114,6 +123,9 @@ namespace SlimeSimulation.FlowCalculation {
             foreach (Edge edge in loop.Edges) {
                 double quantityInSection = flowExponent * edge.Resistance * Expon(flowOnEdges.GetFlowOnEdge(edge), flowExponent - 1);
                 sum += quantityInSection;
+            }
+            if (sum == 0) {
+                logger.Warn("[FindSumOfQuantitiesInLoop] Found sum as 0. Flow result will probably be wrong");
             }
             return sum;
         }

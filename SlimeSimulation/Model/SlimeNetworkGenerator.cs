@@ -13,9 +13,9 @@ namespace SlimeSimulation.View {
             List<Node> nodes = new List<Node>();
             FoodSourceNode source = new FoodSourceNode(1, 50, 50);
             Node a = new Node(2, 50, 200);
-            Edge srca = new Edge(source, a, 200);
+            Edge srca = new Edge(source, a, 15);
             Node b = new Node(3, 200, 50);
-            Edge srcb = new Edge(source, b, 200);
+            Edge srcb = new Edge(source, b, 15);
             FoodSourceNode sink = new FoodSourceNode(4, 200, 200);
             Edge asink = new Edge(a, sink, 2);
             Edge bsink = new Edge(b, sink, 2);
@@ -35,7 +35,7 @@ namespace SlimeSimulation.View {
 
             List<FoodSourceNode> foodSources = new List<FoodSourceNode>(2) { source, sink };
             Loop loop = new Loop(nodes, edges);
-            List<Loop> loops = new List<Loop>();
+            List<Loop> loops = new List<Loop>() { loop };
             SlimeNetwork slimeNetwork = new SlimeNetwork(nodes, foodSources, edges, loops);
             return slimeNetwork;
         }

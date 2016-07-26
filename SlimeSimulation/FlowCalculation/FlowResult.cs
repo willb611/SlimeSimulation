@@ -1,6 +1,7 @@
 using SlimeSimulation.Model;
 using System.Collections.Generic;
 using NLog;
+using System;
 
 namespace SlimeSimulation.FlowCalculation {
     public class FlowResult {
@@ -19,6 +20,10 @@ namespace SlimeSimulation.FlowCalculation {
             this.edges = edges;
             this.flowOnEdges = flowOnEdges;
             logger.Debug("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + edges.Count);
+        }
+
+        internal double GetMaximumFlowOnEdge() {
+            return flowOnEdges.GetMaximumFlowOnAnyEdge();
         }
 
         internal List<Edge> Edges {
@@ -47,6 +52,10 @@ namespace SlimeSimulation.FlowCalculation {
 
         public double FlowOnEdge(Edge edge) {
             return flowOnEdges.GetFlowOnEdge(edge);
+        }
+
+        public void LogFlowOnEdges() {
+            flowOnEdges.LogFlowInLoops();
         }
     }
 }

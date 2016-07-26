@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using SlimeSimulation.Model;
+using NLog;
 
 namespace SlimeSimulation.FlowCalculation {
     public class FlowFinder {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public List<LoopWithDirectionOfFlow> GetLoopsWithDirectionForFlow(List<Loop> loops, Node source, Node sink, Graph graph) {
             List<LoopWithDirectionOfFlow> loopsWithDirections = new List<LoopWithDirectionOfFlow>();
             List<Node> sourceVisitOrder = GetOrderVisitedDoingBfsFrom(graph, source);
@@ -54,27 +57,34 @@ namespace SlimeSimulation.FlowCalculation {
             FlowOnEdges flowOnEdges = new FlowOnEdges(graph.Edges);
             Dictionary<Node, double> inputFlowAtNode = new Dictionary<Node, double>();
             inputFlowAtNode.Add(source, flow);
-            List<Node> visitOrder = GetOrderVisitedDoingBfsFrom(graph, source);
-            for (int i = 0; i < visitOrder.Count; i++) {
-                var nodeToVisit = visitOrder[i];
-                var unvisitedNeighbours = graph.Neighbours(nodeToVisit);
-                unvisitedNeighbours.RemoveAll(node => visitOrder.IndexOf(node) < i);
-                SplitFlowIntoNeighbours(inputFlowAtNode[nodeToVisit], unvisitedNeighbours, ref inputFlowAtNode);
+            HashSet<Node> visited = new HashSet<Node>();
+            foreach (Node nodeToVisit in GetOrderVisitedDoingBfsFrom(graph, source)) {
+                logger.Debug("Visiting node: " + nodeToVisit);
+                var connectedEdges = graph.EdgesConnectedToNode(nodeToVisit);
+                connectedEdges.RemoveAll(edge => visited.Contains(edge.A) || visited.Contains(edge.B));
+                SplitFlowIntoNeighbours(nodeToVisit, connectedEdges, ref inputFlowAtNode, ref flowOnEdges);
+                visited.Add(nodeToVisit);
             }
             return flowOnEdges;
         }
 
-        private void SplitFlowIntoNeighbours(double inputFlow, List<Node> neighbours, ref Dictionary<Node, double> inputFlowAtNode) {
+        internal void SplitFlowIntoNeighbours(Node nodeToVisit, List<Edge> connectedEdges, 
+            ref Dictionary<Node, double> inputFlowAtNode, ref FlowOnEdges flowOnEdges) {
+            double inputFlow = inputFlowAtNode[nodeToVisit];
+            logger.Debug("For node being visited, splitting flow amount " + inputFlow);
             if (inputFlow == 0) {
                 return;
             }
-            double part = inputFlow / neighbours.Count;
-            foreach (Node node in neighbours) {
-                if (inputFlowAtNode.ContainsKey(node)) {
-                    inputFlowAtNode[node] = inputFlowAtNode[node] + part;
+            double part = inputFlow / connectedEdges.Count;
+            foreach (Edge edge in connectedEdges) {
+                logger.Debug("[SplitFlowIntoNeighbours] Putting some flow into edge: " + edge);
+                Node otherNode = edge.GetOtherNode(nodeToVisit);
+                if (inputFlowAtNode.ContainsKey(otherNode)) {
+                    inputFlowAtNode[otherNode] = inputFlowAtNode[otherNode] + part;
                 } else {
-                    inputFlowAtNode[node] = part;
+                    inputFlowAtNode[otherNode] = part;
                 }
+                flowOnEdges.IncreaseFlowOnEdgeBy(edge, part);
             }
         }
 
