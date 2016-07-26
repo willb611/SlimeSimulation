@@ -51,7 +51,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Model\FlowCalculatorTests.cs" />
+    <Compile Include="FlowCalculation\FlowCalculatorTests.cs" />
+    <Compile Include="FlowCalculation\FlowFinderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +60,9 @@
       <Project>{D02CBC46-C77E-49EB-BDEF-CA6FE0AD8CAB}</Project>
       <Name>SlimeSimulation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

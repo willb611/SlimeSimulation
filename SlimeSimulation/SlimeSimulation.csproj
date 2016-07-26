@@ -56,17 +56,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FlowCalculation\FlowFinder.cs" />
+    <Compile Include="FlowCalculation\Graph.cs" />
+    <Compile Include="FlowCalculation\IntermediateFlowResult.cs" />
     <Compile Include="Model\Edge.cs" />
-    <Compile Include="Model\FlowCalculator.cs" />
-    <Compile Include="Model\FlowOnEdges.cs" />
-    <Compile Include="Model\FlowResult.cs" />
+    <Compile Include="FlowCalculation\FlowCalculator.cs" />
+    <Compile Include="FlowCalculation\FlowOnEdges.cs" />
+    <Compile Include="FlowCalculation\FlowResult.cs" />
     <Compile Include="Model\FoodSourceNode.cs" />
-    <Compile Include="Model\Loop.cs" />
+    <Compile Include="FlowCalculation\Loop.cs" />
+    <Compile Include="FlowCalculation\LoopWithDirectionOfFlow.cs" />
     <Compile Include="Model\Node.cs" />
     <Compile Include="Model\SlimeNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\FlowResultWindow.cs" />
+    <Compile Include="View\GraphDrawingArea.cs" />
     <Compile Include="View\MainView.cs" />
+    <Compile Include="Model\SlimeNetworkGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

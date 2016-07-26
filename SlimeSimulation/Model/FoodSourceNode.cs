@@ -1,5 +1,5 @@
 namespace SlimeSimulation.Model {
-    internal class FoodSourceNode : Node {
+    public class FoodSourceNode : Node {
         public FoodSourceNode(int id, double x, double y) : base(id, x, y) {
         }
 

@@ -1,17 +1,25 @@
 using SlimeSimulation.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NLog;
 
 namespace SlimeSimulation.FlowCalculation {
     public class FlowResult {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly List<Edge> edges;
         private readonly Node source, sink;
-        private readonly double maximumErrorExclusive;
-        private readonly double flowExponentAmount; // in the hardy cross equation, this is called n
-        private readonly double amountOfFlowThroughNetwork;
+        private readonly int flowAmount;
+        private readonly FlowOnEdges flowOnEdges;
+
+        public FlowResult(List<Edge> edges, Node source, Node sink, int flowAmount,
+                FlowOnEdges flowOnEdges) {
+            this.source = source;
+            this.sink = sink;
+            this.flowAmount = flowAmount;
+            this.edges = edges;
+            this.flowOnEdges = flowOnEdges;
+            logger.Debug("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + edges.Count);
+        }
 
         internal List<Edge> Edges {
             get {
@@ -29,24 +37,16 @@ namespace SlimeSimulation.FlowCalculation {
             get {
                 return sink;
             }
-        }
+        }       
 
-        internal double MaximumErrorExclusive {
+        public int FlowAmount {
             get {
-                return maximumErrorExclusive;
+                return flowAmount;
             }
         }
 
-        internal double FlowExponentAmount {
-            get {
-                return flowExponentAmount;
-            }
-        }
-
-        internal double AmountOfFlowThroughNetwork {
-            get {
-                return amountOfFlowThroughNetwork;
-            }
+        public double FlowOnEdge(Edge edge) {
+            return flowOnEdges.GetFlowOnEdge(edge);
         }
     }
 }
