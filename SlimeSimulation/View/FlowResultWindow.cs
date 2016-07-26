@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.FlowCalculation;
 using Gtk;
 using NLog;
@@ -30,7 +25,7 @@ namespace SlimeSimulation.View {
             HBox hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
             thisWindow.Add(hbox);
-            DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges, new LineWidthController(flowResult));
+            DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineWidthController(flowResult));
             hbox.Add(flowResultArea);
         }
 

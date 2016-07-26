@@ -1,14 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.Model;
-using SlimeSimulation.View;
 using Gtk;
-using GLib;
-using Cairo;
 using NLog;
 
 namespace SlimeSimulation.View {

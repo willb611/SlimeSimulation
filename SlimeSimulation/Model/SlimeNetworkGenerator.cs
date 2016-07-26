@@ -1,4 +1,3 @@
-using System;
 using SlimeSimulation.Model;
 using System.Collections.Generic;
 using NLog;

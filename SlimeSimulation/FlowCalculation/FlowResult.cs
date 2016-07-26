@@ -1,7 +1,6 @@
 using SlimeSimulation.Model;
 using System.Collections.Generic;
 using NLog;
-using System;
 
 namespace SlimeSimulation.FlowCalculation {
     public class FlowResult {
