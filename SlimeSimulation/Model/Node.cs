@@ -61,14 +61,14 @@ namespace SlimeSimulation.Model {
                     + y.GetHashCode();
         }
 
-        internal List<Edge> GetEdgesAdjacent(List<Edge> edges) {
-            List<Edge> result = new List<Edge>();
+        internal List<Edge> GetEdgesAdjacent(ISet<Edge> edges) {
+            ISet<Edge> result = new HashSet<Edge>();
             foreach (Edge edge in edges) {
                 if (this == edge.A || this == edge.B) {
                     result.Add(edge);
                 }
             }
-            return result;
+            return new List<Edge>(result);
         }
 
         public override string ToString() {

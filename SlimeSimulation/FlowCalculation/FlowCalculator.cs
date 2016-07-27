@@ -34,7 +34,7 @@ namespace SlimeSimulation.FlowCalculation {
             }
         }
 
-        public FlowResult CalculateFlow(List<Edge> edges, List<Loop> loops,
+        public FlowResult CalculateFlow(ISet<Edge> edges, ISet<Loop> loops,
                 Node source, Node sink, int flowAmount) {
             if (edges == null) {
                 throw new ArgumentNullException("Given null edges");
@@ -58,9 +58,9 @@ namespace SlimeSimulation.FlowCalculation {
             return new FlowResult(edges, source, sink, flowAmount, flowEstimate.FlowOnEdges);
         }
 
-        internal IntermediateFlowResult GetInitialFlow(Graph graph, List<Loop> loops,
+        internal IntermediateFlowResult GetInitialFlow(Graph graph, ISet<Loop> loops,
             Node source, Node sink, int flowAmount) {
-            List<LoopWithDirectionOfFlow> loopsWithDirection = loopDirectionFinder.GetLoopsWithDirectionForFlow(loops, source, sink, graph);
+            ISet<LoopWithDirectionOfFlow> loopsWithDirection = loopDirectionFinder.GetLoopsWithDirectionForFlow(loops, source, sink, graph);
             FlowOnEdges flowOnEdges = initialFlowEstimator.EstimateFlowForEdges(graph, source, sink, flowAmount);
             return new IntermediateFlowResult(double.MaxValue, loopsWithDirection, flowOnEdges);
         }

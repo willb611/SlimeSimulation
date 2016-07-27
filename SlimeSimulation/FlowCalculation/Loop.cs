@@ -3,15 +3,15 @@ using System;
 
 namespace SlimeSimulation.Model {
     public class Loop {
-        List<Node> nodes;
-        List<Edge> edges;
+        ISet<Node> nodes;
+        ISet<Edge> edges;
 
         public Loop(Loop toCopy) {
-            this.nodes = new List<Node>(toCopy.Nodes);
-            this.edges = new List<Edge>(toCopy.Edges);
+            this.nodes = new HashSet<Node>(toCopy.Nodes);
+            this.edges = new HashSet<Edge>(toCopy.Edges);
         }
 
-        public Loop(List<Node> nodes, List<Edge> edges) {
+        public Loop(ISet<Node> nodes, ISet<Edge> edges) {
             this.nodes = nodes;
             this.edges = edges;
         }
@@ -20,25 +20,25 @@ namespace SlimeSimulation.Model {
             return nodes.Contains(node);
         }
 
-        public List<Node> Nodes {
+        public ISet<Node> Nodes {
             get {
                 return nodes;
             }
         }
 
-        public List<Edge> Edges {
+        public ISet<Edge> Edges {
             get {
                 return edges;
             }
         }
 
-        public virtual List<Edge> Clockwise {
+        public virtual ISet<Edge> Clockwise {
             get {
                 throw new NotImplementedException("Base class loop doesn't have direction of flow");
             }
         }
 
-        public virtual List<Edge> AntiClockwise {
+        public virtual ISet<Edge> AntiClockwise {
             get {
                 throw new NotImplementedException("Base class loop doesn't have direction of flow");
             }
@@ -52,13 +52,13 @@ namespace SlimeSimulation.Model {
                 if (adjacentEdges.Count != 2) {
                     throw new ApplicationException("Should always be 2 adjacent edges from any node in a loop");
                 }
-                List<Edge> clockwise = PathTo(last, first, adjacentEdges[0]);
-                List<Edge> antiClockwise = PathTo(last, first, adjacentEdges[1]);
+                ISet<Edge> clockwise = PathTo(last, first, adjacentEdges[0]);
+                ISet<Edge> antiClockwise = PathTo(last, first, adjacentEdges[1]);
                 return new LoopWithDirectionOfFlow(this, clockwise, antiClockwise);
             }
         }
 
-        internal List<Edge> PathTo(Node destination, Node start, Edge startingEdge) {
+        internal ISet<Edge> PathTo(Node destination, Node start, Edge startingEdge) {
             if (null == destination) {
                 throw new ArgumentNullException("Given null destination");
             } else if (null == start) {
@@ -68,11 +68,11 @@ namespace SlimeSimulation.Model {
             } else if (!startingEdge.Contains(start)) {
                 throw new ArgumentException("Starting edge doesnt contain the start");
             }
-            List<Edge> result = new List<Edge>();
+            ISet<Edge> result = new HashSet<Edge>();
             return PathToWithList(destination, start, startingEdge, ref result);
         }
 
-        internal List<Edge> PathToWithList(Node destination, Node start, Edge startingEdge, ref List<Edge> edgesInPath) {
+        internal ISet<Edge> PathToWithList(Node destination, Node start, Edge startingEdge, ref ISet<Edge> edgesInPath) {
             edgesInPath.Add(startingEdge);
             Node otherNodeInStartingEdge = startingEdge.GetOtherNode(start);
             if (otherNodeInStartingEdge == destination) {

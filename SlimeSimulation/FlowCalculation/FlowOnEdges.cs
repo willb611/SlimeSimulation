@@ -15,7 +15,7 @@ namespace SlimeSimulation.FlowCalculation {
             flowOnEdgeMapping = new Dictionary<Edge, double>(flowOnEdges.flowOnEdgeMapping);
         }
 
-        internal FlowOnEdges(List<Edge> edges) {
+        internal FlowOnEdges(ICollection<Edge> edges) {
             flowOnEdgeMapping = new Dictionary<Edge, double>();
             foreach (Edge edge in edges) {
                 flowOnEdgeMapping.Add(edge, 0);

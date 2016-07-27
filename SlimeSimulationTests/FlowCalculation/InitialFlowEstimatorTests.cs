@@ -35,8 +35,8 @@ namespace SlimeSimulation.FlowCalculation.Tests {
             double ACCEPTED_ERROR = 0.01;
             var calculator = new FlowCalculator();
             double flowAmount = 2;
-            List<Edge> edges = new List<Edge>();
-            List<Node> nodes = new List<Node>();
+            HashSet<Edge> edges = new HashSet<Edge>();
+            HashSet<Node> nodes = new HashSet<Node>();
             Node source = new Node(1, 1, 1);
             Node a = new Node(2, 1, 2);
             Edge srca = new Edge(source, a, 2);

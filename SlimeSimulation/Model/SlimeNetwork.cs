@@ -2,38 +2,38 @@ using System.Collections.Generic;
 
 namespace SlimeSimulation.Model {
     public class SlimeNetwork {
-        List<Node> nodes;
-        List<FoodSourceNode> foodSources;
-        List<Edge> edges;
-        List<Loop> loops;
+        ISet<Node> nodes;
+        ISet<FoodSourceNode> foodSources;
+        ISet<Edge> edges;
+        ISet<Loop> loops;
 
-        public SlimeNetwork(List<Node> nodes, List<FoodSourceNode> foodSources,
-            List<Edge> edges, List<Loop> loops) {
+        public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
+            ISet<Edge> edges, ISet<Loop> loops) {
             this.nodes = nodes;
             this.edges = edges;
             this.foodSources = foodSources;
             this.loops = loops;
         }
 
-        public List<Node> Nodes {
+        public ISet<Node> Nodes {
             get {
                 return nodes;
             }
         }
 
-        internal List<FoodSourceNode> FoodSources {
+        internal ISet<FoodSourceNode> FoodSources {
             get {
                 return foodSources;
             }
         }
 
-        public List<Edge> Edges {
+        public ISet<Edge> Edges {
             get {
                 return edges;
             }
         }
 
-        public List<Loop> Loops {
+        public ISet<Loop> Loops {
             get {
                 return loops;
             }

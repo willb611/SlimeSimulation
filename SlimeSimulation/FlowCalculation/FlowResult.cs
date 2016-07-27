@@ -6,12 +6,12 @@ namespace SlimeSimulation.FlowCalculation {
     public class FlowResult {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly List<Edge> edges;
+        private readonly ICollection<Edge> edges;
         private readonly Node source, sink;
         private readonly int flowAmount;
         private readonly FlowOnEdges flowOnEdges;
 
-        public FlowResult(List<Edge> edges, Node source, Node sink, int flowAmount,
+        public FlowResult(ICollection<Edge> edges, Node source, Node sink, int flowAmount,
                 FlowOnEdges flowOnEdges) {
             this.source = source;
             this.sink = sink;
@@ -25,7 +25,7 @@ namespace SlimeSimulation.FlowCalculation {
             return flowOnEdges.GetMaximumFlowOnAnyEdge();
         }
 
-        internal List<Edge> Edges {
+        internal ICollection<Edge> Edges {
             get {
                 return edges;
             }

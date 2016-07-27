@@ -56,7 +56,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FlowCalculation\FlowCalculatorTests.cs" />
-    <Compile Include="FlowCalculation\FlowFinderTests.cs" />
+    <Compile Include="FlowCalculation\InitialFlowEstimatorTests.cs" />
     <Compile Include="FlowCalculation\LoopDirectionFinderTests.cs" />
     <Compile Include="Model\DijkstrasTests.cs" />
     <Compile Include="Model\EdgeTests.cs" />

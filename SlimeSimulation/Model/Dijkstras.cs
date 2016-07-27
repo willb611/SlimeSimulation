@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Model {
     public class Dijkstras {
-        public static SortedDictionary<int, List<Node>> GetShortestPathToNodes(Node source, Graph graph) {
+        public static SortedDictionary<int, ISet<Node>> GetShortestPathToNodes(Node source, Graph graph) {
             var distanceToNodes = new Dictionary<Node, int>();
             foreach (Node node in graph.Nodes) {
                 distanceToNodes[node] = int.MaxValue;
@@ -27,14 +27,14 @@ namespace SlimeSimulation.Model {
             return BuildDistanceMapping(distanceToNodes);
         }
 
-        private static SortedDictionary<int, List<Node>> BuildDistanceMapping(Dictionary<Node, int> distanceToNodes) {
-            SortedDictionary<int, List<Node>> distanceMapping = new SortedDictionary<int, List<Node>>();
+        private static SortedDictionary<int, ISet<Node>> BuildDistanceMapping(Dictionary<Node, int> distanceToNodes) {
+            SortedDictionary<int, ISet<Node>> distanceMapping = new SortedDictionary<int, ISet<Node>>();
             foreach (Node key in distanceToNodes.Keys) {
                 int dist = distanceToNodes[key];
                 if (distanceMapping.ContainsKey(dist)) {
                     distanceMapping[dist].Add(key);
                 } else {
-                    List<Node> nodesAtDistance = new List<Node>() { key };
+                    ISet<Node> nodesAtDistance = new HashSet<Node>() { key };
                     distanceMapping[dist] = nodesAtDistance;
                 }
             }

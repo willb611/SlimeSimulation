@@ -6,10 +6,10 @@ namespace SlimeSimulation.Model {
     public class LoopWithDirectionOfFlow : Loop {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly List<Edge> clockwise;
-        private readonly List<Edge> antiClockwise;
+        private readonly ISet<Edge> clockwise;
+        private readonly ISet<Edge> antiClockwise;
 
-        public LoopWithDirectionOfFlow(Loop other, List<Edge> clockwise, List<Edge> antiClockwise) : base(other) {
+        public LoopWithDirectionOfFlow(Loop other, ISet<Edge> clockwise, ISet<Edge> antiClockwise) : base(other) {
             this.clockwise = clockwise;
             this.antiClockwise = antiClockwise;
             if (clockwise.Count == 0) {
@@ -21,21 +21,21 @@ namespace SlimeSimulation.Model {
             logger.Debug("Finished construction of " + this);
         }
 
-        public override List<Edge> AntiClockwise {
+        public override ISet<Edge> AntiClockwise {
             get {
                 return antiClockwise;
             }
         }
 
-        public override List<Edge> Clockwise {
+        public override ISet<Edge> Clockwise {
             get {
                 return clockwise;
             }
         }
 
         public override string ToString() {
-            return base.ToString() + ",LoopWithDirectionOfFlow{clockwise=" + LogHelper.ListToString(Clockwise)
-                + ",anticlockwise=" + LogHelper.ListToString(AntiClockwise) + "}";
+            return base.ToString() + ",LoopWithDirectionOfFlow{clockwise=" + LogHelper.CollectionToString(Clockwise)
+                + ",anticlockwise=" + LogHelper.CollectionToString(AntiClockwise) + "}";
         }
     }
 }

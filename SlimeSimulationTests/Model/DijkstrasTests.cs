@@ -21,7 +21,7 @@ namespace SlimeSimulation.Model.Tests {
             Edge srcb = new Edge(source, b, 2);
             Edge asink = new Edge(a, sink, 2);
             Edge bsink = new Edge(b, sink, 2);
-            List<Edge> edges = new List<Edge>() { srca, srcb, asink, bsink };
+            HashSet<Edge> edges = new HashSet<Edge>() { srca, srcb, asink, bsink };
 
             Graph graph = new Graph(edges);
             /*
@@ -29,7 +29,7 @@ namespace SlimeSimulation.Model.Tests {
              * |        |
              * source -  a
             */
-            SortedDictionary<int, List<Node>> distance = Dijkstras.GetShortestPathToNodes(source, graph);
+            SortedDictionary<int, ISet<Node>> distance = Dijkstras.GetShortestPathToNodes(source, graph);
 
             var nodesAtSource = distance[0];
             Assert.AreEqual(1, nodesAtSource.Count);

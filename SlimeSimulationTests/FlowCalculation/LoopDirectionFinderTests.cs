@@ -19,17 +19,17 @@ namespace SlimeSimulation.FlowCalculation.Tests {
             Node a = new Node(2, 1, 2);
             Node b = new Node(3, 2, 1);
             Node sink = new Node(4, 2, 2);
-            List<Node> nodes = new List<Node>() { source, a, b, sink };
+            HashSet<Node> nodes = new HashSet<Node>() { source, a, b, sink };
 
             Edge srca = new Edge(source, a, 2);
             Edge srcb = new Edge(source, b, 2);
             Edge asink = new Edge(a, sink, 2);
             Edge bsink = new Edge(b, sink, 2);
-            List<Edge> edges = new List<Edge>() { srca, srcb, asink, bsink };
+            ISet<Edge> edges = new HashSet<Edge>() { srca, srcb, asink, bsink };
 
-            List<Loop> loops = new List<Loop>() { new Loop(nodes, edges) };
-            List<Edge> asideEdge = new List<Edge>() { srca, asink };
-            List<Edge> bsideEdge = new List<Edge>() { srcb, bsink };
+            HashSet<Loop> loops = new HashSet<Loop>() { new Loop(nodes, edges) };
+            HashSet<Edge> asideEdge = new HashSet<Edge>() { srca, asink };
+            HashSet<Edge> bsideEdge = new HashSet<Edge>() { srcb, bsink };
             /*
              * b      -  sink
              * |        |
@@ -37,7 +37,7 @@ namespace SlimeSimulation.FlowCalculation.Tests {
             */
             LoopDirectionFinder loopDirectionFinder = new LoopDirectionFinder();
             Graph graph = new Graph(edges);
-            List<LoopWithDirectionOfFlow> loopsWithDirection = loopDirectionFinder.GetLoopsWithDirectionForFlow(loops, source, sink, graph);
+            ISet<LoopWithDirectionOfFlow> loopsWithDirection = loopDirectionFinder.GetLoopsWithDirectionForFlow(loops, source, sink, graph);
 
             LoopWithDirectionOfFlow actualLoopWithDirection = loopsWithDirection.First();
             if (ListEquals(actualLoopWithDirection.Clockwise, asideEdge)) {
@@ -46,16 +46,16 @@ namespace SlimeSimulation.FlowCalculation.Tests {
                 Assert.IsTrue(ListEquals(bsideEdge, actualLoopWithDirection.Clockwise));
             } else {
                 logger.Error("Aside not matched. Aside: ");
-                logger.Error(LogHelper.ListToString(asideEdge));
+                logger.Error(LogHelper.CollectionToString(asideEdge));
                 logger.Error("Clockwise: ");
-                logger.Error(LogHelper.ListToString(actualLoopWithDirection.Clockwise));
+                logger.Error(LogHelper.CollectionToString(actualLoopWithDirection.Clockwise));
                 logger.Error("Anticlockwise: ");
-                logger.Error(LogHelper.ListToString(actualLoopWithDirection.AntiClockwise));
+                logger.Error(LogHelper.CollectionToString(actualLoopWithDirection.AntiClockwise));
                 Assert.Fail("Calculated loop with direction was wrong: " + actualLoopWithDirection);
             }
         }
 
-        private bool ListEquals(List<Edge> a, List<Edge> b) {
+        private bool ListEquals(ICollection<Edge> a, ICollection<Edge> b) {
             bool ret = true;
             foreach (Edge edge in a) {
                 if (!b.Contains(edge)) {

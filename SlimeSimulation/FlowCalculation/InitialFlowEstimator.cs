@@ -15,7 +15,7 @@ namespace SlimeSimulation.FlowCalculation {
             HashSet<Node> visited = new HashSet<Node>();
             foreach (Node nodeToVisit in Bfs.DoBfsAndGetOrderNodesWereVisitedIn(graph, source)) {
                 logger.Debug("Visiting node: " + nodeToVisit);
-                var connectedEdges = graph.EdgesConnectedToNode(nodeToVisit);
+                var connectedEdges = new List<Edge>(graph.EdgesConnectedToNode(nodeToVisit));
                 connectedEdges.RemoveAll(edge => visited.Contains(edge.A) || visited.Contains(edge.B));
                 SplitFlowIntoNeighbours(nodeToVisit, connectedEdges, ref inputFlowAtNode, ref flowOnEdges);
                 visited.Add(nodeToVisit);
