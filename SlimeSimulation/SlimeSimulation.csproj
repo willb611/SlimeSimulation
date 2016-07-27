@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FlowCalculation\FlowFinder.cs" />
+    <Compile Include="LogHelper.cs" />
+    <Compile Include="Model\Bfs.cs" />
+    <Compile Include="Model\Dijkstras.cs" />
     <Compile Include="Model\Graph.cs" />
     <Compile Include="FlowCalculation\IntermediateFlowResult.cs" />
     <Compile Include="Model\Edge.cs" />

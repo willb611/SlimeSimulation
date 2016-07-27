@@ -13,7 +13,7 @@ namespace SlimeSimulation {
                 var flowCalculator = new FlowCalculator();
                 Node source = slimeNetwork.FoodSources.First();
                 Node sink = slimeNetwork.FoodSources.Last();
-                int flowAmount = 15;
+                int flowAmount = 4;
                 FlowResult flowResult = flowCalculator.CalculateFlow(slimeNetwork.Edges, slimeNetwork.Loops,
                     source, sink, flowAmount);
                 mainView.renderFlowResult(flowResult);

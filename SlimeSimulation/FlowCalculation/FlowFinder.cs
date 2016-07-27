@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SlimeSimulation.Model;
 using NLog;
+using System.Linq;
 
 namespace SlimeSimulation.FlowCalculation {
     public class FlowFinder {
@@ -9,50 +10,66 @@ namespace SlimeSimulation.FlowCalculation {
 
         public List<LoopWithDirectionOfFlow> GetLoopsWithDirectionForFlow(List<Loop> loops, Node source, Node sink, Graph graph) {
             List<LoopWithDirectionOfFlow> loopsWithDirections = new List<LoopWithDirectionOfFlow>();
-            List<Node> sourceVisitOrder = GetOrderVisitedDoingBfsFrom(graph, source);
-            List<Node> sinkVisitOrder = GetOrderVisitedDoingBfsFrom(graph, sink);
+            List<Node> visitOrderDoingBfsFromGraphSink = GetOrderVisitedDoingBfsFrom(graph, sink);
+            SortedDictionary<int, List<Node>> distanceFromGraphSource = Dijkstras.GetShortestPathToNodes(source, graph);
             foreach (Loop loop in loops) {
-                Node first = GetFirstNodeInLoopFromEnumerable(loop, sourceVisitOrder);
-                Node last = GetFirstNodeInLoopFromEnumerable(loop, sinkVisitOrder);
+                Node first = GetSourceForLoop(loop, distanceFromGraphSource, visitOrderDoingBfsFromGraphSink);
+                Node last = GetSinkInLoop(first, visitOrderDoingBfsFromGraphSink, loop);
                 loopsWithDirections.Add(loop.GetWithDirections(first, last));
             }
             return loopsWithDirections;
         }
 
+        // Get node closest to graph source contained in loop. If multiple, get the one which is furthest from the graph sink, if draw choose undefined.
+        private Node GetSourceForLoop(Loop loop, SortedDictionary<int, List<Node>> distanceFromGraphSource, List<Node> visitOrderFromGraphSink) {
+            if (distanceFromGraphSource.Count < 1) {
+                throw new ArgumentException("Expect at least 1 node in the list");
+            }
+            List<Node> candidates = new List<Node>();
+            foreach (List<Node> nodesSomeDistanceAway in distanceFromGraphSource.Values) {
+                candidates = new List<Node>(nodesSomeDistanceAway.Intersect(loop.Nodes));
+                if (candidates.Count() >= 1) {
+                    break;
+                }
+            }
+            if (candidates.Count() == 1) {
+                return candidates.First();
+            } else if (candidates.Count() > 1) {
+                List<Node> reverseVisitOrderFromSink = new List<Node>(visitOrderFromGraphSink);
+                reverseVisitOrderFromSink.Reverse();
+                return FirstNodeInSecondListWhichExistsInFirstList(candidates, reverseVisitOrderFromSink);
+            } else {
+                throw new ArgumentException("No nodes in the loop were found in the distanceFromGraphSource list");
+            }
+        }
+
+        // Get nodes x distance away from source. If multiple, choose the one which appears first in visitOrderFromGraphSink
+        private Node GetSinkInLoop(Node source, List<Node> visitOrderFromGraphSink, Loop loop) {
+            Graph loopGraph = new Graph(loop.Edges, loop.Nodes);
+            SortedDictionary<int, List<Node>> distanceFromSource = Dijkstras.GetShortestPathToNodes(source, loopGraph);
+            var lastNodes = distanceFromSource.Last().Value;
+            if (lastNodes.Count == 1) {
+                return lastNodes.First();
+            } else {
+                return FirstNodeInSecondListWhichExistsInFirstList(lastNodes, visitOrderFromGraphSink);
+            }
+        }
+
+        private T FirstNodeInSecondListWhichExistsInFirstList<T>(List<T> a, List<T> b) {
+            foreach (T ele in b) {
+                if (a.Contains(ele)) {
+                    return ele;
+                }
+            }
+            throw new ArgumentException("No element found in both lists");
+        }
+
         private List<Node> GetOrderVisitedDoingBfsFrom(Graph graph, Node node) {
             List<Node> visitOrder = new List<Node>();
-            DoBfs(node, graph, ref visitOrder);
+            Bfs.DoBfsAndStoreOrderVisitedInList(node, graph, ref visitOrder);
             return visitOrder;
         }
-
-        private Node GetFirstNodeInLoopFromEnumerable(Loop loop, IEnumerable<Node> enumerable) {
-            foreach (Node node in enumerable) {
-                if (loop.Contains(node)) {
-                    return node;
-                }
-            }
-            throw new ApplicationException("Unable to find node in enumerable which matches loop: " + loop);
-        }
-
-        private void DoBfs(Node source, Graph graph, ref List<Node> orderVisited) {
-            Queue<Node> nodesToVisit = new Queue<Node>();
-            nodesToVisit.Enqueue(source);
-            orderVisited.Add(source);
-            while (nodesToVisit.Count > 0) {
-                Node node = nodesToVisit.Dequeue();
-                VisitNeighbours(ref nodesToVisit, ref orderVisited, graph.Neighbours(node));
-            }
-        }
-
-        private void VisitNeighbours(ref Queue<Node> nodesToVisit, ref List<Node> orderVisited, IEnumerable<Node> neighbours) {
-            foreach (Node neighbour in neighbours) {
-                if (!orderVisited.Contains(neighbour)) {
-                    orderVisited.Add(neighbour);
-                    nodesToVisit.Enqueue(neighbour);
-                }
-            }
-        }
-
+        
         public FlowOnEdges EstimateFlowForEdges(Graph graph, Node source, Node sink, int flow) {
             FlowOnEdges flowOnEdges = new FlowOnEdges(graph.Edges);
             Dictionary<Node, double> inputFlowAtNode = new Dictionary<Node, double>();

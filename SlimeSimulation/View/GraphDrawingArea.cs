@@ -7,20 +7,20 @@ using Cairo;
 namespace SlimeSimulation.View {
     public class GraphDrawingArea : Gtk.DrawingArea {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly double MAX_LINE_WIDTH = 20;
-        private readonly double FOOD_SOURCE_POINT_SIZE = 20;
+        private readonly double MAX_LINE_WIDTH = 15;
+        private readonly double FOOD_SOURCE_POINT_SIZE = 15;
 
         private List<Edge> edges = new List<Edge>();
         private HashSet<Node> nodes = new HashSet<Node>();
         private double maxEdgeWeight = 0;
-        private readonly LineWidthController lineWidthController;
+        private readonly LineWeightController lineWeightController;
 
-        public GraphDrawingArea(List<Edge> edges, LineWidthController lineWidthController) {
+        public GraphDrawingArea(List<Edge> edges, LineWeightController lineWidthController) {
             foreach (Edge edge in edges) {
                 AddEdge(edge);
                 maxEdgeWeight = Math.Max(maxEdgeWeight, edge.Connectivity);
             }
-            this.lineWidthController = lineWidthController;
+            this.lineWeightController = lineWidthController;
             logger.Debug("[Constructor] Given number of edges: " + edges.Count);
         }
 
@@ -59,8 +59,8 @@ namespace SlimeSimulation.View {
         }
 
         private double GetLineWidthForEdge(Edge edge) {
-            double width = lineWidthController.GetLineWidthForEdge(edge);
-            double percent = width / lineWidthController.GetMaximumLineWidth();
+            double weight = lineWeightController.GetLineWeightForEdge(edge);
+            double percent = weight / lineWeightController.GetMaximumLineWeight();
             return percent * MAX_LINE_WIDTH;
         }
 
@@ -76,7 +76,7 @@ namespace SlimeSimulation.View {
                     if (node.IsFoodSource()) {
                         DrawPoint(g, node.X, node.Y, FOOD_SOURCE_POINT_SIZE);
                     } else {
-                        DrawPoint(g, node.X, node.Y, 1);
+                        DrawPoint(g, node.X, node.Y, 3);
                     }
                 }
             }

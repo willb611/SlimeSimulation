@@ -120,7 +120,7 @@ namespace SlimeSimulation.FlowCalculation.Tests {
              * source -  a
              */
             FlowFinder flowFinder = new FlowFinder();
-            FlowOnEdges flowOnEdges = flowFinder.EstimateFlowForEdges(new Graph(nodes, edges), source, sink, (int) flowAmount);
+            FlowOnEdges flowOnEdges = flowFinder.EstimateFlowForEdges(new Graph(edges, nodes), source, sink, (int) flowAmount);
 
             double flowASrc = flowOnEdges.GetFlowOnEdge(srca);
             double flowBSrc = flowOnEdges.GetFlowOnEdge(srcb);

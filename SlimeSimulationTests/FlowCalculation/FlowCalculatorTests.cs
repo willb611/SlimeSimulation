@@ -64,7 +64,7 @@ namespace SlimeSimulation.FlowCalculation.Tests {
              * source -  a
              */
             Loop loop = new Loop(nodes, edges);
-            IntermediateFlowResult intermediateResult = calculator.GetInitialFlow(new Graph(nodes, edges), new List<Loop>() { loop }, source, sink, flowAmount);
+            IntermediateFlowResult intermediateResult = calculator.GetInitialFlow(new Graph(edges, nodes), new List<Loop>() { loop }, source, sink, flowAmount);
             FlowOnEdges flowOnEdges = intermediateResult.FlowOnEdges;
             Assert.AreEqual(flowAmount / 2, flowOnEdges.GetFlowOnEdge(srca));
             Assert.AreEqual(flowAmount / 2, flowOnEdges.GetFlowOnEdge(srcb));

@@ -69,15 +69,19 @@ namespace SlimeSimulation.FlowCalculation {
             double maxError = 0;
             var flowOnEdges = new FlowOnEdges(previousFlowResult.FlowOnEdges);
             if (previousFlowResult.Loops.Count == 0) {
-                logger.Warn("No loops given for graph, is the graph empty?");
+                logger.Warn("[ImproveEstimateForFlowInNetwork] No loops given for graph, is the graph empty?");
             }
             foreach (Loop loop in previousFlowResult.Loops) {
+                logger.Debug("[ImproveEstimateForFlowInNetwork] Improving loop: " + loop);
                 double headLossInLoop = CalculateHeadLossInLoop(loop, previousFlowResult.FlowOnEdges);
+                logger.Debug("[ImproveEstimateForFlowInNetwork] Found head loss in loop as : " + headLossInLoop);
                 double sumQuantities = FindSumOfQuantitiesInLoop(loop, previousFlowResult.FlowOnEdges);
+                logger.Debug("[ImproveEstimateForFlowInNetwork] Found sum of quantites in loop as : " + sumQuantities);
                 var deltaToBeApplied = headLossInLoop / sumQuantities;
+                logger.Debug("[ImproveEstimateForFlowInNetwork] Found delta to be applied : " + deltaToBeApplied);
                 maxError = Math.Max(maxError, deltaToBeApplied);
                 ApplyDeltaToEdgesInLoop(ref flowOnEdges, deltaToBeApplied, loop);
-                logger.Debug("For loop: " + loop + ", found maxError: " + maxError);
+                logger.Debug("[ImproveEstimateForFlowInNetwork] For loop: " + loop + ", found maxError: " + maxError);
             }
             flowOnEdges.LogFlowInLoops();
             return new IntermediateFlowResult(maxError, previousFlowResult.Loops, flowOnEdges);
@@ -102,18 +106,19 @@ namespace SlimeSimulation.FlowCalculation {
             return sum;
         }
 
-        private double Expon(double v, int flowExponent) {
-            if (flowExponent < 0) {
-                throw new ArgumentException("Unexpected negative exponent. Given: " + flowExponent);
-            } else if (flowExponent == 0) {
+        private double Expon(double v, int exponent) {
+            if (exponent < 0) {
+                throw new ArgumentException("Unexpected negative exponent. Given: " + exponent);
+            } else if (exponent == 0) {
                 return 1;
-            } else if (flowExponent == 1) {
+            } else if (exponent == 1) {
                 return v;
             } else {
                 double sum = v;
-                for (int i = flowExponent; i > 1; i--) {
+                for (int i = exponent; i > 1; i--) {
                     sum *= v;
                 }
+                logger.Debug("[Expon] For exponent: " + exponent + ", and v: " + v + ", calculated sum: " + sum);
                 return sum;
             }
         }
@@ -123,6 +128,7 @@ namespace SlimeSimulation.FlowCalculation {
             foreach (Edge edge in loop.Edges) {
                 double quantityInSection = flowExponent * edge.Resistance * Expon(flowOnEdges.GetFlowOnEdge(edge), flowExponent - 1);
                 sum += quantityInSection;
+                logger.Debug("[FindSumOfQuantitiesInLoop] For edge: " + edge + ", found quantityInSection as: " + quantityInSection);
             }
             if (sum == 0) {
                 logger.Warn("[FindSumOfQuantitiesInLoop] Found sum as 0. Flow result will probably be wrong");

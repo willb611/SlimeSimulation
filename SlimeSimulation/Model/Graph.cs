@@ -1,11 +1,30 @@
 using SlimeSimulation.Model;
 using System.Collections.Generic;
+using System;
 
 namespace SlimeSimulation.FlowCalculation {
     public class Graph {
         private readonly List<Edge> edges;
         private readonly List<Node> nodes;
         private Dictionary<Node, List<Edge>> edgesConnectedToNodeMapping;
+
+        public Graph(List<Edge> edges) {
+            this.edges = edges;
+            List<Node> nodes = new List<Node>();
+            foreach (Edge edge in Edges) {
+                AddIfNotContained(edge.A, ref nodes);
+                AddIfNotContained(edge.B, ref nodes);
+            }
+            this.nodes = nodes;
+            edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
+        }
+
+        public Graph(List<Edge> edges, List<Node> nodes) {
+            this.nodes = nodes;
+            this.edges = edges;
+            edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
+        }
+
 
         public IEnumerable<Node> Nodes {
             get {
@@ -18,23 +37,7 @@ namespace SlimeSimulation.FlowCalculation {
                 return edges;
             }
         }
-
-        public Graph(List<Node> nodes, List<Edge> edges) {
-            this.nodes = nodes;
-            this.edges = edges;
-            edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
-        }
-
-        public Graph(List<Edge> edges) {
-            this.edges = edges;
-            List<Node> nodes = new List<Node>();
-            foreach (Edge edge in Edges) {
-                AddIfNotContained(edge.A, ref nodes);
-                AddIfNotContained(edge.B, ref nodes);
-            }
-            this.nodes = nodes;
-            edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
-        }
+        
 
         private Dictionary<Node, List<Edge>> MakeEdgesConnectedToNodeMapping(List<Edge> edges, List<Node> nodes) {
             Dictionary<Node, List<Edge>> mapping = new Dictionary<Node, List<Edge>>();

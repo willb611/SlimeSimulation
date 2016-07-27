@@ -3,7 +3,7 @@ using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 
 namespace SlimeSimulation.View {
-    internal class FlowResultLineWidthController : LineWidthController {
+    internal class FlowResultLineWidthController : LineWeightController {
         private FlowResult flowResult;
         private readonly double maxLineWidth;
 
@@ -12,11 +12,11 @@ namespace SlimeSimulation.View {
             maxLineWidth = flowResult.GetMaximumFlowOnEdge();
         }
 
-        public override double GetLineWidthForEdge(Edge edge) {
+        public override double GetLineWeightForEdge(Edge edge) {
             return flowResult.FlowOnEdge(edge);
         }
 
-        public override double GetMaximumLineWidth() {
+        public override double GetMaximumLineWeight() {
             return maxLineWidth;
         }
     }

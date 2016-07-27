@@ -34,8 +34,8 @@ namespace SlimeSimulation.Model {
         }
 
         public override string ToString() {
-            return base.ToString() + ",LoopWithDirectionOfFlow{clockwise.Count=" + clockwise.Count() 
-                + ",anticlockwise.Count=" + antiClockwise.Count() + "}";
+            return base.ToString() + ",LoopWithDirectionOfFlow{clockwise=" + LogHelper.ListToString(Clockwise)
+                + ",anticlockwise=" + LogHelper.ListToString(AntiClockwise) + "}";
         }
     }
 }
