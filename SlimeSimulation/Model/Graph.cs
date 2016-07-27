@@ -1,6 +1,9 @@
 using SlimeSimulation.Model;
 using System.Collections.Generic;
 using System;
+using NLog;
+using NLog.Targets.Wrappers;
+using System.Linq;
 
 namespace SlimeSimulation.FlowCalculation {
     public class Graph {
@@ -12,19 +15,20 @@ namespace SlimeSimulation.FlowCalculation {
             this.edges = edges;
             ISet<Node> nodes = new HashSet<Node>();
             foreach (Edge edge in Edges) {
-                AddIfNotContained(edge.A, ref nodes);
-                AddIfNotContained(edge.B, ref nodes);
+                AddNodesInEdgeNotContained(edge, ref nodes);
             }
             this.nodes = nodes;
             edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
         }
-
         public Graph(ISet<Edge> edges, ISet<Node> nodes) {
             this.nodes = nodes;
             this.edges = edges;
             edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
         }
-
+        private void AddNodesInEdgeNotContained(Edge edge, ref ISet<Node> nodes) {
+            nodes.Add(edge.A);
+            nodes.Add(edge.B);
+        }
 
         public IEnumerable<Node> Nodes {
             get {
@@ -36,8 +40,7 @@ namespace SlimeSimulation.FlowCalculation {
             get {
                 return edges;
             }
-        }
-        
+        }        
 
         private Dictionary<Node, ISet<Edge>> MakeEdgesConnectedToNodeMapping(ISet<Edge> edges, ISet<Node> nodes) {
             Dictionary<Node, ISet<Edge>> mapping = new Dictionary<Node, ISet<Edge>>();
@@ -51,17 +54,6 @@ namespace SlimeSimulation.FlowCalculation {
             return mapping;
         }
 
-        private void AddNodesInEdgeNotContained(Edge edge, ref ISet<Node> nodes) {
-            AddIfNotContained(edge.A, ref nodes);
-            AddIfNotContained(edge.B, ref nodes);
-        }
-
-        private void AddIfNotContained(Node node, ref ISet<Node> nodes) {
-            if (!nodes.Contains(node)) {
-                nodes.Add(node);
-            }
-        }
-
         internal IEnumerable<Node> Neighbours(Node node) {
             ISet<Node> connected = new HashSet<Node>();
             foreach (Edge edge in EdgesConnectedToNode(node)) {
@@ -72,6 +64,15 @@ namespace SlimeSimulation.FlowCalculation {
 
         internal ISet<Edge> EdgesConnectedToNode(Node node) {
             return edgesConnectedToNodeMapping[node];
+        }
+
+        internal Edge GetEdgeBetween(Node a, Node b) {
+            foreach (Edge edge in EdgesConnectedToNode(a)) {
+                if (edge.GetOtherNode(a).Equals(b)) {
+                    return edge;
+                }
+            }
+            throw new ArgumentException("Couldn't find an edge between nodes: " + a + ", and: " + b);
         }
     }
 }

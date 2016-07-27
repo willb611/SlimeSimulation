@@ -6,8 +6,9 @@ using System.Linq;
 namespace SlimeSimulation {
     class Program {
         static void Main(string[] args) {
-            var slimeNetworkGenerator = new SlimeNetworkGenerator();
+            var slimeNetworkGenerator = new LatticeSlimeNetworkGenerator();
             SlimeNetwork slimeNetwork = slimeNetworkGenerator.generate();
+            // Given edge with node, not foodNode. So in slimeNetworkGenerator an edge is not being updated with the new foodsource
             using (MainView mainView = new MainView()) {
 
                 var flowCalculator = new FlowCalculator();

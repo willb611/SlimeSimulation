@@ -81,7 +81,7 @@ namespace SlimeSimulation.Model {
         }
 
         public override string ToString() {
-            return "Edge{connectivity=" + connectivity + ", a.Id=" + a.Id + ", b.Id=" + b.Id + "}";
+            return "Edge{connectivity=" + connectivity + ", a=" + a + ", b=" + b + "}";
         }
     }
 }

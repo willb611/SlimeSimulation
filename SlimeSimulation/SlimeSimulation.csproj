@@ -80,7 +80,7 @@
     <Compile Include="View\GraphDrawingArea.cs" />
     <Compile Include="View\LineWidthController.cs" />
     <Compile Include="View\MainView.cs" />
-    <Compile Include="Model\SlimeNetworkGenerator.cs" />
+    <Compile Include="Model\LatticeSlimeNetworkGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

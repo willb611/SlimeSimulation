@@ -60,6 +60,8 @@
     <Compile Include="FlowCalculation\LoopDirectionFinderTests.cs" />
     <Compile Include="Model\DijkstrasTests.cs" />
     <Compile Include="Model\EdgeTests.cs" />
+    <Compile Include="Model\GraphTests.cs" />
+    <Compile Include="Model\SlimeNetworkGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

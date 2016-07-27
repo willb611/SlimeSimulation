@@ -15,6 +15,8 @@ namespace SlimeSimulation.Model {
             this.nodes = nodes;
             this.edges = edges;
         }
+        public Loop(ISet<Edge> edges, ISet<Node> nodes) : this(nodes, edges) {
+        }
 
         public bool Contains(Node node) {
             return nodes.Contains(node);
