@@ -5,7 +5,7 @@ using NLog;
 using System.Linq;
 
 namespace SlimeSimulation.FlowCalculation {
-    public class FlowFinder {
+    public class InitialFlowEstimator {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public FlowOnEdges EstimateFlowForEdges(Graph graph, Node source, Node sink, int flow) {

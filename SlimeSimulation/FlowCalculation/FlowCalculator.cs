@@ -11,7 +11,7 @@ namespace SlimeSimulation.FlowCalculation {
         private readonly static double DEFAULT_MAX_ERROR = 0.01;
         private readonly int flowExponent;
         private readonly double maxErrorAllowedWhileCalculatingHeadLoss;
-        private readonly FlowFinder flowFinder = new FlowFinder();
+        private readonly InitialFlowEstimator initialFlowEstimator = new InitialFlowEstimator();
         private readonly LoopDirectionFinder loopDirectionFinder = new LoopDirectionFinder();
 
         public FlowCalculator() : this(DEFAULT_FLOW_EXPONENT, DEFAULT_MAX_ERROR) {
@@ -61,7 +61,7 @@ namespace SlimeSimulation.FlowCalculation {
         internal IntermediateFlowResult GetInitialFlow(Graph graph, List<Loop> loops,
             Node source, Node sink, int flowAmount) {
             List<LoopWithDirectionOfFlow> loopsWithDirection = loopDirectionFinder.GetLoopsWithDirectionForFlow(loops, source, sink, graph);
-            FlowOnEdges flowOnEdges = flowFinder.EstimateFlowForEdges(graph, source, sink, flowAmount);
+            FlowOnEdges flowOnEdges = initialFlowEstimator.EstimateFlowForEdges(graph, source, sink, flowAmount);
             return new IntermediateFlowResult(double.MaxValue, loopsWithDirection, flowOnEdges);
         }
 

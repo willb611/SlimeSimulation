@@ -7,7 +7,7 @@ using NLog;
 namespace SlimeSimulation.FlowCalculation.Tests {
 
     [TestClass()]
-    public class FlowFinderTests {
+    public class InitialFlowEstimatorTests {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         [TestMethod()]
@@ -24,8 +24,8 @@ namespace SlimeSimulation.FlowCalculation.Tests {
             FlowOnEdges flowOnEdges = new FlowOnEdges(edges);
             mapping[src] = flowAmount;
 
-            var flowFinder = new FlowFinder();
-            flowFinder.SplitFlowIntoNeighbours(src, edges, ref mapping, ref flowOnEdges);
+            var initialFlowEstimator = new InitialFlowEstimator();
+            initialFlowEstimator.SplitFlowIntoNeighbours(src, edges, ref mapping, ref flowOnEdges);
             Assert.AreEqual(flowAmount / 2, mapping[a]);
             Assert.AreEqual(flowAmount / 2, mapping[b]);
         }
@@ -58,8 +58,8 @@ namespace SlimeSimulation.FlowCalculation.Tests {
              * |        |
              * source -  a
              */
-            FlowFinder flowFinder = new FlowFinder();
-            FlowOnEdges flowOnEdges = flowFinder.EstimateFlowForEdges(new Graph(edges, nodes), source, sink, (int) flowAmount);
+            var initialFlowEstimator = new InitialFlowEstimator();
+            FlowOnEdges flowOnEdges = initialFlowEstimator.EstimateFlowForEdges(new Graph(edges, nodes), source, sink, (int) flowAmount);
 
             double flowASrc = flowOnEdges.GetFlowOnEdge(srca);
             double flowBSrc = flowOnEdges.GetFlowOnEdge(srcb);
