@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Model {
     internal class Bfs {
-        public static void DoBfsAndStoreOrderVisitedInList(Node source, Graph graph, ref List<Node> orderVisited) {
+
+        public static List<Node> DoBfsAndGetOrderNodesWereVisitedIn(Graph graph, Node node) {
+            List<Node> visitOrder = new List<Node>();
+            DoBfsAndStoreOrderVisitedInList(node, graph, ref visitOrder);
+            return visitOrder;
+        }
+
+        private static void DoBfsAndStoreOrderVisitedInList(Node source, Graph graph, ref List<Node> orderVisited) {
             Queue<Node> nodesToVisit = new Queue<Node>();
             nodesToVisit.Enqueue(source);
             orderVisited.Add(source);
