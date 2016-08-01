@@ -20,9 +20,12 @@ namespace SlimeSimulation.View {
 
         private int columns, rows;
 
-        public SlimeNetwork generate() {
-            logger.Info("[generate] Starting.");
-            return GenerateLatticeNetwork(2, 2);
+        public SlimeNetwork generate(int size) {
+            if (size < 3) {
+                throw new ArgumentException("SIze must be > 3. Given: " + size);
+            }
+            logger.Info("[generate] Generating lattice size: " + size);
+            return GenerateLatticeNetwork(size, size);
         }
 
         private void Reset(int rows, int columns) {
@@ -45,13 +48,13 @@ namespace SlimeSimulation.View {
             int id = 1;
             List<Node> previousRowNodes = new List<Node>();
             /*Construct like:
-             * o    o    o
-             *  \  / \  / 
-             *   o    o
-             *  / \  /  \
-             * o    o    o 
-             *  \  / \  /
-             *    o    o
+             *   o    o    o   o
+             *  / \  /  \ / \ /
+             * o    o    o   o
+             *  \  / \  / \ / \
+             *   o    o    o   o
+             *  / \  /  \ / \ /
+             * o    o    o   o
              *    
              * etc
              * 
@@ -59,6 +62,9 @@ namespace SlimeSimulation.View {
             for (int row = 1; row <= rows; row++) {
                 List<Node> rowNodes = new List<Node>();
                 for (int col = 1; col <= columns; col++) {
+                    if (PointIsSkipped(row, col, rows)) {
+                        continue;
+                    }
                     Node node = MakeNextNode(ref id, row, col, foodSources, columnOffset);
                     rowNodes.Add(node);
                     nodes.Add(node);
@@ -70,9 +76,21 @@ namespace SlimeSimulation.View {
             }
             EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes();
             Graph graph = new Graph(edges, nodes);
-            HashSet<Loop> loops = GetLoopsFromLatticeGraph(graph);
-            SlimeNetwork slimeSimulation = new SlimeNetwork(nodes, foodSources, edges, loops);
+            //HashSet<Loop> loops = GetLoopsFromLatticeGraph(graph); TODO 
+            SlimeNetwork slimeSimulation = new SlimeNetwork(nodes, foodSources, edges, new HashSet<Loop>());
             return slimeSimulation;
+        }
+
+        private bool PointIsSkipped(int row, int col, int maxRows) {
+            if (row == 1 && col == maxRows) {
+                return true;
+            } else if (row == maxRows) {
+                if ((Even(maxRows) && col == 1)
+                    || (col == maxRows)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void MakeEdgesForNode(int row, int col, Node node, List<Node> previousRowNodes) {
@@ -87,18 +105,26 @@ namespace SlimeSimulation.View {
             }
         }
 
-        private void MakeEdgesForEvenRow(int rowIndex, int colIndex, Node node, List<Node> previousRowNodes) {
+        private void MakeEdgesForOddRow(int rowIndex, int colIndex, Node node, List<Node> previousRowNodes) {
+            if (PointIsSkipped(rowIndex + 1, colIndex + 1, rows)) {
+                return;
+            }
             if (colIndex > 0) {
                 Node left = previousRowNodes[colIndex - 1];
                 Edge leftEdge = new Edge(node, left, STARTING_CONNECTIVITY);
                 edges.Add(leftEdge);
             }
 
-            Node right = previousRowNodes[colIndex];
-            Edge rightEdge = new Edge(node, right, STARTING_CONNECTIVITY);
-            edges.Add(rightEdge);
+            if (!PointIsSkipped(rowIndex, colIndex + 1, rows)) {
+                Node right = previousRowNodes[colIndex];
+                Edge rightEdge = new Edge(node, right, STARTING_CONNECTIVITY);
+                edges.Add(rightEdge);
+            }
         }
-        private void MakeEdgesForOddRow(int rowIndex, int colIndex, Node node, List<Node> previousRowNodes) {
+        private void MakeEdgesForEvenRow(int rowIndex, int colIndex, Node node, List<Node> previousRowNodes) {
+            if (PointIsSkipped(rowIndex + 1, colIndex + 1, rows)) {
+                return;
+            }
             Node left = previousRowNodes[colIndex];
             Edge leftEdge = new Edge(node, left, STARTING_CONNECTIVITY);
             edges.Add(leftEdge);

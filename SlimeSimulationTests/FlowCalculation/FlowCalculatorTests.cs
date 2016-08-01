@@ -10,42 +10,42 @@ namespace SlimeSimulation.FlowCalculation.Tests {
         [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CalculateFlow_WhenNullEdges_ShouldThrowException() {
-            var calculator = new FlowCalculator();
+            var calculator = new HardyCrossFlowCalculator();
             calculator.CalculateFlow(null, new HashSet<Loop>(), new Node(1, 1, 1), new Node(2, 2, 2), 5);
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CalculateFlow_WhenNullLoops_ShouldThrowException() {
-            var calculator = new FlowCalculator();
+            var calculator = new HardyCrossFlowCalculator();
             calculator.CalculateFlow(new HashSet<Edge>(), null, new Node(1, 1, 1), new Node(2, 2, 2), 5);
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CalculateFlow_WhenNullSource_ShouldThrowException() {
-            var calculator = new FlowCalculator();
+            var calculator = new HardyCrossFlowCalculator();
             calculator.CalculateFlow(new HashSet<Edge>(), new HashSet<Loop>(), null, new Node(2, 2, 2), 5);
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CalculateFlow_WhenNullSink_ShouldThrowException() {
-            var calculator = new FlowCalculator();
+            var calculator = new HardyCrossFlowCalculator();
             calculator.CalculateFlow(new HashSet<Edge>(), new HashSet<Loop>(), new Node(1, 1, 1), null, 5);
         }
 
         [TestMethod()]
         [ExpectedException(typeof(ArgumentException))]
         public void CalculateFlow_WhenSourceEqualsSink_ShouldThrowException() {
-            var calculator = new FlowCalculator();
+            var calculator = new HardyCrossFlowCalculator();
             var node = new Node(1, 1, 1);
             calculator.CalculateFlow(new HashSet<Edge>(), new HashSet<Loop>(), node, node, 5);
         }
 
         [TestMethod()]
         public void GetInitialFlow_TotalFlowLeavingNodeAddsToFlowAmount() {
-            var calculator = new FlowCalculator();
+            var calculator = new HardyCrossFlowCalculator();
             int flowAmount = 10;
             Node source = new Node(1, 1, 1);
             Node a = new Node(2, 2, 1);

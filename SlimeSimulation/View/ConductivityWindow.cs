@@ -1,27 +1,27 @@
 using SlimeSimulation.FlowCalculation;
 using Gtk;
 using NLog;
-
+using System.Collections.Generic;
+using SlimeSimulation.Model;
 
 namespace SlimeSimulation.View {
-    class FlowResultWindow : WindowTemplate {
+    class ConductivityWindow : WindowTemplate {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private List<Edge> edges;
 
-        private FlowResult flowResult;
-
-        public FlowResultWindow(FlowResult flowResult) : base ("Flow result") {
-            this.flowResult = flowResult;
-            AttachFlowResultToWindow(this.Window);
+        public ConductivityWindow(List<Edge> edges) : base("ConductivityWindow") {
+            this.edges = edges;
+            AttachToWindow(this.Window);
         }
 
-        private void AttachFlowResultToWindow(Window window) {
+        private void AttachToWindow(Window window) {
             Gdk.Color bgColor = new Gdk.Color(255, 255, 255);
             window.ModifyBg(StateType.Normal, bgColor);
 
             HBox hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
             window.Add(hbox);
-            DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineWidthController(flowResult));
+            DrawingArea flowResultArea = new GraphDrawingArea(edges, new ConnectivityLineWidthController(edges));
             hbox.Add(flowResultArea);
         }
     }

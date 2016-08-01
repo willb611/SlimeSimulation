@@ -42,15 +42,16 @@ namespace SlimeSimulation.FlowCalculation {
 
         internal void IncreaseFlowOnEdgeBy(Edge edge, double amount) {
             double current = GetFlowOnEdge(edge);
-            flowOnEdgeMapping.Remove(edge);
-            flowOnEdgeMapping.Add(edge, current + amount);
+            flowOnEdgeMapping[edge] = current + amount;
+            logger.Debug("[IncreaseFlowOnEdgeBy] For edge: " + edge + ", flow is now: " + GetFlowOnEdge(edge));
         }
 
-        internal void LogFlowInLoops() {
-            logger.Debug("Begin logging flow in loops");
+        internal void LogFlowOnEdges() {
+            logger.Debug("[LogFlowOnEdges] Begin");
             foreach (Edge edge in flowOnEdgeMapping.Keys) {
                 logger.Debug("Edge " + edge + ", now has flow: " + GetFlowOnEdge(edge));
             }
+            logger.Debug("[LogFlowOnEdges] Finish");
         }
     }
 }

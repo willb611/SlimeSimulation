@@ -33,7 +33,7 @@ namespace SlimeSimulation.FlowCalculation.Tests {
         [TestMethod()]
         public void EstimateFlowForEdgesTest() {
             double ACCEPTED_ERROR = 0.01;
-            var calculator = new FlowCalculator();
+            var calculator = new HardyCrossFlowCalculator();
             double flowAmount = 2;
             HashSet<Edge> edges = new HashSet<Edge>();
             HashSet<Node> nodes = new HashSet<Node>();

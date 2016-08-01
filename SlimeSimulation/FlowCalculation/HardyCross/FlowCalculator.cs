@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using NLog;
 
 namespace SlimeSimulation.FlowCalculation {
-    public class FlowCalculator {
+    public class HardyCrossFlowCalculator {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly static int DEFAULT_FLOW_EXPONENT = 2;
@@ -14,10 +14,10 @@ namespace SlimeSimulation.FlowCalculation {
         private readonly InitialFlowEstimator initialFlowEstimator = new InitialFlowEstimator();
         private readonly LoopDirectionFinder loopDirectionFinder = new LoopDirectionFinder();
 
-        public FlowCalculator() : this(DEFAULT_FLOW_EXPONENT, DEFAULT_MAX_ERROR) {
+        public HardyCrossFlowCalculator() : this(DEFAULT_FLOW_EXPONENT, DEFAULT_MAX_ERROR) {
         }
 
-        public FlowCalculator(int flowExponent, double maximumErrorExclusiveAllowedDuringCalculation) {
+        public HardyCrossFlowCalculator(int flowExponent, double maximumErrorExclusiveAllowedDuringCalculation) {
             this.flowExponent = flowExponent;
             this.maxErrorAllowedWhileCalculatingHeadLoss = maximumErrorExclusiveAllowedDuringCalculation;
         }
@@ -84,7 +84,7 @@ namespace SlimeSimulation.FlowCalculation {
                 ApplyDeltaToEdgesInLoop(ref flowOnEdges, deltaToBeApplied, loop);
                 logger.Debug("[ImproveEstimateForFlowInNetwork] For loop: " + loop + ", found maxError: " + maxError);
             }
-            flowOnEdges.LogFlowInLoops();
+            flowOnEdges.LogFlowOnEdges();
             return new IntermediateFlowResult(maxError, previousFlowResult.Loops, flowOnEdges);
         }
         

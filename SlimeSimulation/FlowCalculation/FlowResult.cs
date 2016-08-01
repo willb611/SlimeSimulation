@@ -18,7 +18,8 @@ namespace SlimeSimulation.FlowCalculation {
             this.flowAmount = flowAmount;
             this.edges = edges;
             this.flowOnEdges = flowOnEdges;
-            logger.Debug("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + edges.Count);
+            logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + edges.Count);
+            logger.Info("[constructor] And source {0}, and Sink {1}", source, sink);
         }
 
         internal double GetMaximumFlowOnEdge() {
@@ -54,7 +55,7 @@ namespace SlimeSimulation.FlowCalculation {
         }
 
         public void LogFlowOnEdges() {
-            flowOnEdges.LogFlowInLoops();
+            flowOnEdges.LogFlowOnEdges();
         }
     }
 }

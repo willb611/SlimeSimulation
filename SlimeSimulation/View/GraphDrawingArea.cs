@@ -70,7 +70,7 @@ namespace SlimeSimulation.View {
             graphic.MoveTo(ScaleX(edge.A.X), ScaleY(edge.A.Y));
             graphic.SetSourceRGB(0, 0, 0);
             graphic.LineWidth = GetLineWidthForEdge(edge);
-            logger.Trace("[DrawEdge] For edge " + edge + ", using lineWidth: " + graphic.LineWidth);
+            logger.Debug("[DrawEdge] For edge " + edge + ", using lineWidth: " + graphic.LineWidth);
             graphic.LineTo(ScaleX(edge.B.X), ScaleY(edge.B.Y));
             graphic.Stroke();
 

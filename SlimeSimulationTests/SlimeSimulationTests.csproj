@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="FlowCalculation\FlowCalculatorTests.cs" />
     <Compile Include="FlowCalculation\InitialFlowEstimatorTests.cs" />
+    <Compile Include="FlowCalculation\LinearEquations\GaussianSolverTests.cs" />
     <Compile Include="FlowCalculation\LoopDirectionFinderTests.cs" />
     <Compile Include="Model\DijkstrasTests.cs" />
     <Compile Include="Model\EdgeTests.cs" />

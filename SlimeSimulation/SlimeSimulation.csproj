@@ -56,31 +56,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlowCalculation\InitialFlowEstimator.cs" />
-    <Compile Include="FlowCalculation\LoopDirectionFinder.cs" />
+    <Compile Include="FlowCalculation\HardyCross\InitialFlowEstimator.cs" />
+    <Compile Include="FlowCalculation\HardyCross\LoopDirectionFinder.cs" />
+    <Compile Include="FlowCalculation\LinearEquations\FlowCalculator.cs" />
+    <Compile Include="FlowCalculation\LinearEquations\GaussianSolver.cs" />
+    <Compile Include="FlowCalculation\LinearEquations\WrongFlowCalculator.cs" />
+    <Compile Include="FlowCalculation\LinearEquations\Pressures.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Model\Bfs.cs" />
     <Compile Include="Model\Dijkstras.cs" />
     <Compile Include="Model\ExampleSlimeNetworkGenerator.cs" />
     <Compile Include="Model\Graph.cs" />
-    <Compile Include="FlowCalculation\IntermediateFlowResult.cs" />
+    <Compile Include="FlowCalculation\HardyCross\IntermediateFlowResult.cs" />
     <Compile Include="Model\Edge.cs" />
-    <Compile Include="FlowCalculation\FlowCalculator.cs" />
+    <Compile Include="FlowCalculation\HardyCross\FlowCalculator.cs" />
     <Compile Include="FlowCalculation\FlowOnEdges.cs" />
     <Compile Include="FlowCalculation\FlowResult.cs" />
     <Compile Include="Model\FoodSourceNode.cs" />
-    <Compile Include="FlowCalculation\Loop.cs" />
-    <Compile Include="FlowCalculation\LoopWithDirectionOfFlow.cs" />
+    <Compile Include="FlowCalculation\HardyCross\Loop.cs" />
+    <Compile Include="FlowCalculation\HardyCross\LoopWithDirectionOfFlow.cs" />
     <Compile Include="Model\Node.cs" />
     <Compile Include="Model\SlimeNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\FlowResultLineWidthController.cs" />
+    <Compile Include="View\ConductivityWindow.cs" />
     <Compile Include="View\FlowResultWindow.cs" />
     <Compile Include="View\GraphDrawingArea.cs" />
     <Compile Include="View\LineWidthController.cs" />
     <Compile Include="View\MainView.cs" />
     <Compile Include="Model\LatticeSlimeNetworkGenerator.cs" />
+    <Compile Include="View\WindowTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

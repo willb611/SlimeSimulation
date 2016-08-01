@@ -2,6 +2,8 @@ using System;
 using SlimeSimulation.FlowCalculation;
 using Gtk;
 using NLog;
+using SlimeSimulation.Model;
+using System.Collections.Generic;
 
 namespace SlimeSimulation.View {
     public class MainView : IDisposable {
@@ -21,6 +23,12 @@ namespace SlimeSimulation.View {
             logger.Debug("Rendering FlowResult");
             var flowWindow = new FlowResultWindow(flowResult);
             flowWindow.Display();
+            Application.Run();
+        }
+
+        internal void renderConnectivity(ISet<Edge> edges) {
+            var window = new ConductivityWindow(new List<Edge>(edges));
+            window.Display();
             Application.Run();
         }
     }

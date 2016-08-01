@@ -74,5 +74,22 @@ namespace SlimeSimulation.FlowCalculation {
             }
             throw new ArgumentException("Couldn't find an edge between nodes: " + a + ", and: " + b);
         }
+
+        internal bool EdgeExistsBetween(Node a, Node b) {
+            foreach (Edge edge in EdgesConnectedToNode(a)) {
+                if (edge.GetOtherNode(a).Equals(b)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        internal double GetEdgeConnectivityOrZero(Node a, Node b) {
+            if (EdgeExistsBetween(a, b)) {
+                return GetEdgeBetween(a, b).Connectivity;
+            } else {
+                return 0;
+            }
+        }
     }
 }
