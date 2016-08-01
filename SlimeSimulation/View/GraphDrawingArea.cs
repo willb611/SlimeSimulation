@@ -67,6 +67,7 @@ namespace SlimeSimulation.View {
             graphic.Restore();
         }
 
+
         private void DrawEdge(Cairo.Context graphic, Edge edge) {
             graphic.Save();
             logger.Trace("[DrawEdge] Drawing from {0},{1} to {2},{3}", ScaleX(edge.A.X), ScaleY(edge.A.Y),
@@ -79,6 +80,17 @@ namespace SlimeSimulation.View {
             graphic.LineTo(ScaleX(edge.B.X), ScaleY(edge.B.Y));
             graphic.Stroke();
 
+            graphic.Restore();
+            //DrawText(graphic, "w:" + String.Format("{0:0.000}", lineWeightController.GetLineWeightForEdge(edge)),
+            //            ScaleX((edge.A.X + edge.B.X) / 2), ScaleY(edge.A.Y + edge.B.Y) / 2);
+        }
+
+        private void DrawText(Cairo.Context graphic, String s, double x, double y) {
+            graphic.Save();
+            
+            graphic.MoveTo(x - 30, y - 30);
+            graphic.ShowText(s);
+            
             graphic.Restore();
         }
 
