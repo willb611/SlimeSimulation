@@ -5,7 +5,7 @@ using NLog;
 using NLog.Targets.Wrappers;
 using System.Linq;
 
-namespace SlimeSimulation.FlowCalculation {
+namespace SlimeSimulation.Model {
     public class Graph {
         private readonly ISet<Edge> edges;
         private readonly ISet<Node> nodes;

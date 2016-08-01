@@ -19,15 +19,7 @@ namespace SlimeSimulation.View {
             Application.Quit();
         }
 
-        internal void renderFlowResult(FlowResult flowResult) {
-            logger.Debug("Rendering FlowResult");
-            var flowWindow = new FlowResultWindow(flowResult);
-            flowWindow.Display();
-            Application.Run();
-        }
-
-        internal void renderConnectivity(ISet<Edge> edges) {
-            var window = new ConductivityWindow(new List<Edge>(edges));
+        public void Display(WindowTemplate window) {
             window.Display();
             Application.Run();
         }

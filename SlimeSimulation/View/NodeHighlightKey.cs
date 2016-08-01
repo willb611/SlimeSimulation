@@ -8,7 +8,7 @@ using Gtk;
 using Cairo;
 
 namespace SlimeSimulation.View {
-    public class NodeHighlightKey { // TODO generify ?
+    public class NodeHighlightKey {
 
         public Gtk.Widget GetVisualKey() {
             VBox key = new VBox(true, 10);

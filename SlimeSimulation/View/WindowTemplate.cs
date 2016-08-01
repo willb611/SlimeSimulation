@@ -7,7 +7,7 @@ using Gtk;
 using NLog;
 
 namespace SlimeSimulation.View {
-    class WindowTemplate {
+    abstract public class WindowTemplate {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private Window window;
@@ -24,11 +24,14 @@ namespace SlimeSimulation.View {
             window.DeleteEvent += Window_DeleteEvent;
         }
 
+        protected abstract void AddToWindow(Window window);
+
         private void Window_DeleteEvent(object o, DeleteEventArgs args) {
             Application.Quit();
         }
 
         public void Display() {
+            AddToWindow(window);
             logger.Debug("[Display] Displaying..");
             window.ShowAll();
         }

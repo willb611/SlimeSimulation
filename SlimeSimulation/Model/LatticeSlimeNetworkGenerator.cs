@@ -4,7 +4,7 @@ using System;
 using NLog;
 using SlimeSimulation.FlowCalculation;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Model {
     public class LatticeSlimeNetworkGenerator {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 

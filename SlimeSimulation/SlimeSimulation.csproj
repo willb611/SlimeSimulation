@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\MainController.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
     <Compile Include="FlowCalculation\LinearEquations\GaussianSolver.cs" />
     <Compile Include="FlowCalculation\Pressures.cs" />

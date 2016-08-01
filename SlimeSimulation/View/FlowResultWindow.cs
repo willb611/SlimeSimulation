@@ -11,10 +11,9 @@ namespace SlimeSimulation.View {
 
         public FlowResultWindow(FlowResult flowResult) : base ("Flow result") {
             this.flowResult = flowResult;
-            AttachFlowResultToWindow(this.Window);
         }
 
-        private void AttachFlowResultToWindow(Window window) {
+        protected override void AddToWindow(Window window) {
             Gdk.Color bgColor = new Gdk.Color(255, 255, 255);
             window.ModifyBg(StateType.Normal, bgColor);
 
@@ -22,6 +21,7 @@ namespace SlimeSimulation.View {
             hbox.ModifyBg(StateType.Normal, bgColor);
             DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineWidthController(flowResult),
                 new FlowResultNodeHighlightController(flowResult));
+            AddEvent(flowResultArea);
 
 
             hbox.PackStart(flowResultArea, true, true, 0);
@@ -32,7 +32,6 @@ namespace SlimeSimulation.View {
             vbox.PackStart(hbox, true, true, 10);
             
             window.Add(vbox);
-            AddEvent(flowResultArea);
         }
 
         private void AddEvent(DrawingArea drawingArea) {

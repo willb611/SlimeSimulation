@@ -11,10 +11,9 @@ namespace SlimeSimulation.View {
 
         public ConductivityWindow(List<Edge> edges) : base("ConductivityWindow") {
             this.edges = edges;
-            AttachToWindow(this.Window);
         }
 
-        private void AttachToWindow(Window window) {
+        protected override void AddToWindow(Window window) {
             Gdk.Color bgColor = new Gdk.Color(255, 255, 255);
             window.ModifyBg(StateType.Normal, bgColor);
 
