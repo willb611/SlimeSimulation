@@ -56,9 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlowCalculation\LinearEquations\FlowCalculator.cs" />
+    <Compile Include="FlowCalculation\FlowCalculator.cs" />
     <Compile Include="FlowCalculation\LinearEquations\GaussianSolver.cs" />
-    <Compile Include="FlowCalculation\LinearEquations\Pressures.cs" />
+    <Compile Include="FlowCalculation\Pressures.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Model\Graph.cs" />
     <Compile Include="Model\Edge.cs" />

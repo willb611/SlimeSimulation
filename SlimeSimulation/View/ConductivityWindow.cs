@@ -25,5 +25,6 @@ namespace SlimeSimulation.View {
                 new ConnectivityNodeHighligthController());
             hbox.Add(flowResultArea);
         }
+
     }
 }

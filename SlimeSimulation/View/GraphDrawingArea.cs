@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SlimeSimulation.Model;
 using NLog;
 using Cairo;
+using Gdk;
 
 namespace SlimeSimulation.View {
     public class GraphDrawingArea : Gtk.DrawingArea {
@@ -15,6 +16,7 @@ namespace SlimeSimulation.View {
         private NodeHighlightController nodeHighlightController;
         private readonly ICollection<Edge> edges = new List<Edge>();
         private readonly ISet<Node> nodes = new HashSet<Node>();
+        private EdgeDrawing edgeDrawingOption = EdgeDrawing.WithoutWeight;
         private double maxEdgeWeight = 0;
         private double maxNodeX = 0;
         private double maxNodeY = 0;
@@ -42,20 +44,18 @@ namespace SlimeSimulation.View {
             this.lineWeightController = lineWidthController;
             logger.Debug("[Constructor] Given number of edges: " + edges.Count);
         }
-
         private void AddEdge(Edge edge) {
             edges.Add(edge);
             nodes.Add(edge.A);
             nodes.Add(edge.B);
         }
 
-
         private void DrawPoint(Cairo.Context graphic, Node node) {
             graphic.Save();
 
             double xscaled = ScaleX(node.X);
             double yscaled = ScaleY(node.Y);
-            logger.Debug("[DrawPoint] Drawing at: {0},{1}", xscaled, yscaled);
+            logger.Trace("[DrawPoint] Drawing at: {0},{1}", xscaled, yscaled);
             RGB color = nodeHighlightController.GetColourForNode(node);
             double size = nodeHighlightController.GetSizeForNode(node);
 
@@ -67,8 +67,7 @@ namespace SlimeSimulation.View {
             graphic.Restore();
         }
 
-
-        private void DrawEdge(Cairo.Context graphic, Edge edge) {
+        virtual protected void DrawEdge(Cairo.Context graphic, Edge edge) {
             graphic.Save();
             logger.Trace("[DrawEdge] Drawing from {0},{1} to {2},{3}", ScaleX(edge.A.X), ScaleY(edge.A.Y),
                 ScaleX(edge.B.X), ScaleY(edge.B.Y));
@@ -76,23 +75,26 @@ namespace SlimeSimulation.View {
             graphic.MoveTo(ScaleX(edge.A.X), ScaleY(edge.A.Y));
             graphic.SetSourceRGB(0, 0, 0);
             graphic.LineWidth = GetLineWidthForEdge(edge);
-            logger.Debug("[DrawEdge] For edge " + edge + ", using lineWidth: " + graphic.LineWidth);
+            logger.Trace("[DrawEdge] For edge " + edge + ", using lineWidth: " + graphic.LineWidth);
             graphic.LineTo(ScaleX(edge.B.X), ScaleY(edge.B.Y));
             graphic.Stroke();
 
             graphic.Restore();
-            //DrawText(graphic, "w:" + String.Format("{0:0.000}", lineWeightController.GetLineWeightForEdge(edge)),
-            //            ScaleX((edge.A.X + edge.B.X) / 2), ScaleY(edge.A.Y + edge.B.Y) / 2);
+            if (edgeDrawingOption == EdgeDrawing.WithWeight) {
+                DrawTextNearCoord(graphic, "w:" + String.Format("{0:0.000}", lineWeightController.GetLineWeightForEdge(edge)),
+                            ScaleX((edge.A.X + edge.B.X) / 2), ScaleY(edge.A.Y + edge.B.Y) / 2);
+            }
+        }
+        
+        private void DrawTextNearCoord(Cairo.Context graphic, String s, double x, double y) {
+           graphic.Save();
+
+           graphic.MoveTo(x - 30, y - 30);
+           graphic.ShowText(s);
+
+           graphic.Restore();
         }
 
-        private void DrawText(Cairo.Context graphic, String s, double x, double y) {
-            graphic.Save();
-            
-            graphic.MoveTo(x - 30, y - 30);
-            graphic.ShowText(s);
-            
-            graphic.Restore();
-        }
 
         private double ScaleX(double x) {
             double percent = (x - minNodeX) / (maxNodeX - minNodeX);
@@ -136,5 +138,10 @@ namespace SlimeSimulation.View {
             }
             return true;
         }
+
+    }
+
+    public enum EdgeDrawing {
+        WithWeight, WithoutWeight
     }
 }
