@@ -20,10 +20,18 @@ namespace SlimeSimulation.View {
 
             HBox hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
-            window.Add(hbox);
             DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineWidthController(flowResult),
                 new FlowResultNodeHighlightController(flowResult));
-            hbox.Add(flowResultArea);
+
+
+            hbox.PackStart(flowResultArea, true, true, 0);
+            hbox.PackStart(new NodeHighlightKey().GetVisualKey(), false, true, 0);
+            
+            VBox vbox = new VBox(false, 10);
+            vbox.PackStart(new Label("Network with amount of flow: " + flowResult.FlowAmount), false, true, 10);
+            vbox.PackStart(hbox, true, true, 10);
+            
+            window.Add(vbox);
         }
     }
 }

@@ -85,6 +85,7 @@
     <Compile Include="View\MainView.cs" />
     <Compile Include="Model\LatticeSlimeNetworkGenerator.cs" />
     <Compile Include="View\NodeHighlightController.cs" />
+    <Compile Include="View\NodeHighlightKey.cs" />
     <Compile Include="View\RGB.cs" />
     <Compile Include="View\WindowTemplate.cs" />
   </ItemGroup>
