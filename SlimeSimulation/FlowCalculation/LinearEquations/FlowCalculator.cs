@@ -13,13 +13,27 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
         public FlowResult CalculateFlow(ISet<Edge> edges, ISet<Node> nodes, Node source, Node sink, int flowAmount) {
             Graph graph = new Graph(edges, nodes);
             List<Node> nodeList = new List<Node>(nodes);
+            EnsureSourceSinkInCorrectPositions(nodeList, source, sink);
             GaussianSolver solver = new GaussianSolver();
             double[][] A = GetSystemOfEquations(graph, nodeList);
             double[] B = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, nodes.Count - 1);
             double[] solution = solver.FindX(A, B);
             Pressures pressures = new Pressures(solution, nodeList);
             FlowOnEdges flowOnEdges = GetFlowOnEdges(graph, pressures, nodeList);
-            return new FlowResult(edges, nodeList.First(), nodeList.Last(), flowAmount, flowOnEdges);
+            return new FlowResult(edges, source, sink, flowAmount, flowOnEdges);
+        }
+
+        private void EnsureSourceSinkInCorrectPositions(List<Node> nodeList, Node source, Node sink) {
+            Swap(nodeList, 0, nodeList.IndexOf(source));
+            Swap(nodeList, nodeList.Count - 1, nodeList.IndexOf(sink));
+        }
+
+        private void Swap(List<Node> nodeList, int a, int b) {
+            if (a != b) {
+                Node tmp = nodeList[a];
+                nodeList[a] = nodeList[b];
+                nodeList[b] = tmp;
+            }
         }
 
         private FlowOnEdges GetFlowOnEdges(Graph graph, Pressures pressures, List<Node> nodes) {
