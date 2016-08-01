@@ -5,14 +5,12 @@ namespace SlimeSimulation.Model {
         ISet<Node> nodes;
         ISet<FoodSourceNode> foodSources;
         ISet<Edge> edges;
-        ISet<Loop> loops;
 
         public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
-            ISet<Edge> edges, ISet<Loop> loops) {
+            ISet<Edge> edges) {
             this.nodes = nodes;
             this.edges = edges;
             this.foodSources = foodSources;
-            this.loops = loops;
         }
 
         public ISet<Node> Nodes {
@@ -30,12 +28,6 @@ namespace SlimeSimulation.Model {
         public ISet<Edge> Edges {
             get {
                 return edges;
-            }
-        }
-
-        public ISet<Loop> Loops {
-            get {
-                return loops;
             }
         }
     }

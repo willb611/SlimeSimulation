@@ -77,7 +77,7 @@ namespace SlimeSimulation.View {
             EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes();
             Graph graph = new Graph(edges, nodes);
             //HashSet<Loop> loops = GetLoopsFromLatticeGraph(graph); TODO 
-            SlimeNetwork slimeSimulation = new SlimeNetwork(nodes, foodSources, edges, new HashSet<Loop>());
+            SlimeNetwork slimeSimulation = new SlimeNetwork(nodes, foodSources, edges);
             return slimeSimulation;
         }
 
@@ -162,37 +162,6 @@ namespace SlimeSimulation.View {
                 edges.Add(replacementEdge);
             }
             logger.Trace("[EnsureFoodSources] Finished. resulting edges: " + LogHelper.CollectionToString(edges));
-        }
-
-        private HashSet<Loop> GetLoopsFromLatticeGraph(Graph graph) {
-            HashSet<Loop> loops = new HashSet<Loop>();
-            // Make loops starting at the bottom of the diamond
-            for (int row = 2; row < rows; row++) {
-                int colStart;
-                if (Even(row)) { // not offset
-                    colStart = 1;
-                } else {
-                    colStart = 0;
-                }
-                for (int col = colStart; col < columns; col++) {
-                    int nodeLeftIndex = Even(row) ? col - 1 : col;
-                    int nodeRightIndex = Even(row) ? col : col + 1;
-                    Node baseNode = nodeArray[row][col];
-                    Node leftDiamondNode = nodeArray[row - 1][nodeLeftIndex];
-                    Node rightDiamondNode = nodeArray[row - 1][nodeRightIndex];
-                    Node topNode = nodeArray[row - 2][col];
-                    HashSet<Node> nodesInLoop = new HashSet<Node>() { baseNode, leftDiamondNode, rightDiamondNode, topNode };
-                    Edge baseLeftEdge = graph.GetEdgeBetween(baseNode, leftDiamondNode);
-                    Edge baseRightEdge = graph.GetEdgeBetween(baseNode, rightDiamondNode);
-
-                    Edge topLeftEdge = graph.GetEdgeBetween(topNode, leftDiamondNode);
-                    Edge topRightEdge = graph.GetEdgeBetween(topNode, rightDiamondNode);
-                    HashSet<Edge> edgesInLoop = new HashSet<Edge>() { baseLeftEdge, baseRightEdge, topLeftEdge, topRightEdge };
-                    Loop loop = new Loop(edgesInLoop, nodesInLoop);
-                    loops.Add(loop);
-                }
-            }
-            return loops;
         }
 
         private bool Even(int i) {

@@ -56,24 +56,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlowCalculation\HardyCross\InitialFlowEstimator.cs" />
-    <Compile Include="FlowCalculation\HardyCross\LoopDirectionFinder.cs" />
     <Compile Include="FlowCalculation\LinearEquations\FlowCalculator.cs" />
     <Compile Include="FlowCalculation\LinearEquations\GaussianSolver.cs" />
     <Compile Include="FlowCalculation\LinearEquations\Pressures.cs" />
     <Compile Include="LogHelper.cs" />
-    <Compile Include="Model\Bfs.cs" />
-    <Compile Include="Model\Dijkstras.cs" />
-    <Compile Include="Model\ExampleSlimeNetworkGenerator.cs" />
     <Compile Include="Model\Graph.cs" />
-    <Compile Include="FlowCalculation\HardyCross\IntermediateFlowResult.cs" />
     <Compile Include="Model\Edge.cs" />
-    <Compile Include="FlowCalculation\HardyCross\FlowCalculator.cs" />
     <Compile Include="FlowCalculation\FlowOnEdges.cs" />
     <Compile Include="FlowCalculation\FlowResult.cs" />
     <Compile Include="Model\FoodSourceNode.cs" />
-    <Compile Include="FlowCalculation\HardyCross\Loop.cs" />
-    <Compile Include="FlowCalculation\HardyCross\LoopWithDirectionOfFlow.cs" />
     <Compile Include="Model\Node.cs" />
     <Compile Include="Model\SlimeNetwork.cs" />
     <Compile Include="Program.cs" />
