@@ -4,12 +4,23 @@ using SlimeSimulation.Model;
 using System;
 using System.Collections.Generic;
 using NLog;
+using SlimeSimulation.FlowCalculation.LinearEquations;
+using System.Linq;
 
 namespace SlimeSimulation.Controller {
     class MainController {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
-        public MainController() {
+        LatticeSlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator();
+        
+        public void RunSimulation() {
+            SlimeNetwork slimeNetwork = slimeNetworkGenerator.generate(5);
+            var flowCalculator = new FlowCalculator();
+            Node source = slimeNetwork.FoodSources.First();
+            Node sink = slimeNetwork.FoodSources.Last();
+            int flowAmount = 4;
+            var flowResult = flowCalculator.CalculateFlow(slimeNetwork.Edges, slimeNetwork.Nodes,
+                    source, sink, flowAmount);
+            RenderFlowResult(flowResult);
         }
 
         internal void RenderFlowResult(FlowResult flowResult) {
