@@ -21,7 +21,8 @@ namespace SlimeSimulation.View {
             HBox hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
             window.Add(hbox);
-            DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineWidthController(flowResult));
+            DrawingArea flowResultArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineWidthController(flowResult),
+                new FlowResultNodeHighlightController(flowResult));
             hbox.Add(flowResultArea);
         }
     }

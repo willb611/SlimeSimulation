@@ -9,10 +9,10 @@ namespace SlimeSimulation.View {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly double MAX_LINE_WIDTH = 15;
-        private readonly double FOOD_SOURCE_POINT_SIZE = 15;
         private readonly double WINDOW_SPACE_PERCENT_TO_DRAW_IN = 0.9;
 
         private readonly LineWeightController lineWeightController;
+        private NodeHighlightController nodeHighlightController;
         private readonly ICollection<Edge> edges = new List<Edge>();
         private readonly ISet<Node> nodes = new HashSet<Node>();
         private double maxEdgeWeight = 0;
@@ -25,7 +25,9 @@ namespace SlimeSimulation.View {
         private double maxWindowX = 100;
         private double maxWindowY = 100;
 
-        public GraphDrawingArea(ICollection<Edge> edges, LineWeightController lineWidthController) {
+        public GraphDrawingArea(ICollection<Edge> edges, LineWeightController lineWidthController,
+            NodeHighlightController nodeHighlightController) {
+            this.nodeHighlightController = nodeHighlightController;
             foreach (Edge edge in edges) {
                 AddEdge(edge);
                 maxEdgeWeight = Math.Max(maxEdgeWeight, edge.Connectivity);
@@ -48,13 +50,16 @@ namespace SlimeSimulation.View {
         }
 
 
-        private void DrawPoint(Cairo.Context graphic, double x, double y, double size) {
+        private void DrawPoint(Cairo.Context graphic, Node node) {
             graphic.Save();
-            double xscaled = ScaleX(x);
-            double yscaled = ScaleY(y);
-            logger.Debug("[DrawPoint] Drawing at: {0},{1}", xscaled, yscaled);
 
-            graphic.SetSourceRGB(255, 0, 0);
+            double xscaled = ScaleX(node.X);
+            double yscaled = ScaleY(node.Y);
+            logger.Debug("[DrawPoint] Drawing at: {0},{1}", xscaled, yscaled);
+            RGB color = nodeHighlightController.GetColourForNode(node);
+            double size = nodeHighlightController.GetSizeForNode(node);
+
+            graphic.SetSourceRGB(color.R, color.G, color.B);
             graphic.Rectangle(xscaled - size / 2, yscaled - size/2, size, size);
             graphic.Fill();
             graphic.Stroke();
@@ -111,9 +116,9 @@ namespace SlimeSimulation.View {
                 logger.Trace("[OnExposeEvent] Drawing all nodes, total #: " + nodes.Count);
                 foreach (Node node in nodes) {
                     if (node.IsFoodSource()) {
-                        DrawPoint(g, node.X, node.Y, FOOD_SOURCE_POINT_SIZE);
+                        DrawPoint(g, node);
                     } else {
-                        DrawPoint(g, node.X, node.Y, 3);
+                        DrawPoint(g, node);
                     }
                 }
             }
