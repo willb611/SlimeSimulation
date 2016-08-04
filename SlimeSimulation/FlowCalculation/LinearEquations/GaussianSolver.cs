@@ -62,21 +62,9 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
             int n = a.Length;
             int[] pi = MakePi(a.Length);
             for (int k = 0; k < n; k++) {
-                double p = 0;
-                int kdash = -1;
-                for (int i = k; i < n; i++) {
-                    if (Math.Abs(a[i][k]) > p) {
-                        p = Math.Abs(a[i][k]);
-                        kdash = i;
-                    }
-                }
-                if (p == 0) {
-                    throw new ArgumentException("A was singular");
-                }
+                int kdash = GetRowWithBiggestValueForColumn(a, k);
                 Exchange(ref pi[k], ref pi[kdash]);
-                for (int i = 0; i < n; i++) {
-                    Exchange(ref a[k][i], ref a[kdash][i]);
-                }
+                ExchangeRows(a, k, kdash);
                 for (int i = k + 1; i < n; i++) {
                     a[i][k] = a[i][k] / a[k][k];
                     for (int j = k + 1; j < n; j++) {
@@ -85,6 +73,28 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
                 }
             }
             return pi;
+        }
+
+        private void ExchangeRows(double[][] array, int rowOne, int rowTwo) {
+            for (int i = 0; i < array.Length; i++) {
+                Exchange(ref array[rowOne][i], ref array[rowTwo][i]);
+            }
+        }
+
+        private int GetRowWithBiggestValueForColumn(double[][] array, int columnNumber) {
+            double p = 0;
+            int kdash = -1;
+            for (int i = columnNumber; i < array.Length; i++) {
+                if (Math.Abs(array[i][columnNumber]) > p) {
+                    p = Math.Abs(array[i][columnNumber]);
+                    kdash = i;
+                }
+            }
+            if (p == 0) {
+                throw new ArgumentException("Array was singular");
+            } else {
+                return kdash;
+            }
         }
 
         private void Exchange(ref double v1, ref double v2) {
@@ -97,18 +107,6 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
             var tmp = v1;
             v1 = v2;
             v2 = tmp;
-        }
-
-        private void SwapRows(double[][] arr, int row, int otherRow) {
-            if (row == otherRow) {
-                return;
-            } else {
-                int len = arr[row].Length;
-                double[] tmp = new double[len];
-                Array.Copy(arr[row], tmp, len);
-                Array.Copy(arr[otherRow], arr[row], len);
-                Array.Copy(tmp, arr[row], len);
-            }
         }
     }
 
@@ -134,8 +132,10 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
         }
 
         public void LogUpper() {
-            logger.Trace("[LogUpper] Printing");
-            logger.Trace(LogHelper.PrintArr(upper));
+            if (logger.IsTraceEnabled) {
+                logger.Trace("[LogUpper] Printing");
+                logger.Trace(LogHelper.PrintArr(upper));
+            }
         }
         private double CheckedUpper(int i, int j) {
             if (i > j) {

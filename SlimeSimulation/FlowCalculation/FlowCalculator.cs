@@ -72,8 +72,10 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
                     equations[row][col] = GetValueForSystemOfEquations(graph, nodes[row], nodes[col]);
                 }
             }
-            logger.Trace("[GetSystemOfEquations] Printing return value ");
-            logger.Trace(LogHelper.PrintArr(equations));
+            if (logger.IsTraceEnabled) {
+                logger.Trace("[GetSystemOfEquations] Printing return value ");
+                logger.Trace(LogHelper.PrintArr(equations));
+            }
             return equations;
         }
 

@@ -1,3 +1,4 @@
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation {
     internal class LogHelper {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public static String CollectionToString<T>(ICollection<T> collection) {
             StringBuilder sb = new StringBuilder();
             sb.Append(collection.GetType());
@@ -18,10 +21,7 @@ namespace SlimeSimulation {
         }
 
         public static String PrintArr(double[] arr) {
-            return GetRow(arr);
-        }
-        public static String PrintArr(int[] arr) {
-            return GetRow(arr);
+            return AppendRowToBuilder(arr, new StringBuilder()).ToString();
         }
 
         public static String PrintArr(double[][] arr) {
@@ -33,10 +33,7 @@ namespace SlimeSimulation {
             sb.Append("[PrintArr] Finish ").Append(Environment.NewLine);
             return sb.ToString();
         }
-
-        public static String GetRow(double[] row) {
-            return AppendRowToBuilder(row, new StringBuilder()).ToString();
-        }
+        
         private static StringBuilder AppendRowToBuilder(double[] row, StringBuilder builder) {
             for (int j = 0; j < row.Length; j++) {
                 if (row[j] < 0) {
@@ -44,21 +41,6 @@ namespace SlimeSimulation {
                 } else {
                     builder.Append("+")
                         .Append(String.Format("{0, 5:f4}", row[j]));
-                }
-                builder.Append(" ");
-            }
-            return builder;
-        }
-        public static String GetRow(int[] row) {
-            return AppendRowToBuilder(row, new StringBuilder()).ToString();
-        }
-        private static StringBuilder AppendRowToBuilder(int[] row, StringBuilder builder) {
-            for (int j = 0; j < row.Length; j++) {
-                if (row[j] < 0) {
-                    builder.Append(String.Format("{0, 5:d}", row[j]));
-                } else {
-                    builder.Append("+")
-                        .Append(String.Format("{0, 5:d}", row[j]));
                 }
                 builder.Append(" ");
             }

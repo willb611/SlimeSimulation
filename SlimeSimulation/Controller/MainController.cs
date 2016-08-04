@@ -13,7 +13,7 @@ namespace SlimeSimulation.Controller {
         LatticeSlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator();
         
         public void RunSimulation() {
-            SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate(3);
+            SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate(55);
             var flowCalculator = new FlowCalculator();
             Node source = slimeNetwork.FoodSources.First();
             Node sink = slimeNetwork.FoodSources.Last();

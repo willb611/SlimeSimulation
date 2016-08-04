@@ -151,9 +151,13 @@ namespace SlimeSimulation.Model {
                 nodes.Add(replacement);
                 nodesList[index] = replacement;
                 UpdateEdgesWithReplacement(edges, nodeToReplace, replacement);
-                logger.Trace("[EnsureFoodSources] Replacing " + nodeToReplace + ", with: " + replacement);
+                if (logger.IsTraceEnabled) {
+                    logger.Trace("[EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes] Replacing " + nodeToReplace + ", with: " + replacement);
+                }
             }
-            logger.Trace("[EnsureFoodSources] Finished. resulting edges: " + LogHelper.CollectionToString(edges));
+            if (logger.IsTraceEnabled) {
+                logger.Trace("[EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes] Finished. resulting edges: " + LogHelper.CollectionToString(edges));
+            }
         }
         internal void UpdateEdgesWithReplacement(HashSet<Edge> edges, Node nodeToReplace, Node replacement) {
             foreach (Edge edge in nodeToReplace.GetEdgesAdjacent(edges)) {
@@ -162,7 +166,9 @@ namespace SlimeSimulation.Model {
                 edges.Remove(edge);
                 edges.Add(replacementEdge);
             }
-            logger.Trace("[EnsureFoodSources] Finished. resulting edges: " + LogHelper.CollectionToString(edges));
+            if (logger.IsTraceEnabled) {
+                logger.Trace("[EnsureFoodSources] Finished. resulting edges: " + LogHelper.CollectionToString(edges));
+            }
         }
 
         private bool Even(int i) {
