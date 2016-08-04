@@ -42,11 +42,11 @@ namespace SlimeSimulation.FlowCalculation {
         internal void ValidateFlowResult() {
             var acceptedError = 0.00001;
             double sourceFlow = GetFlowOnNode(Source);
-            logger.Info("[TestFlowResult] flow on source {0}: {1}", Source, sourceFlow);
+            logger.Info("[ValidateFlowResult] flow on source {0}: {1}", Source, sourceFlow);
             double sinkFlow = GetFlowOnNode(Sink);
-            logger.Info("[TestFlowResult] flow on Sink {0}: {1}", Sink, sinkFlow);
-            logger.Info("[TestFlowResult] Original flow: {0}", FlowAmount);
-            if (flowAmount - Math.Abs(sourceFlow) < acceptedError) {
+            logger.Info("[ValidateFlowResult] flow on Sink {0}: {1}", Sink, sinkFlow);
+            logger.Info("[ValidateFlowResult] Original flow: {0}", FlowAmount);
+            if (flowAmount - Math.Abs(sourceFlow) < acceptedError && flowAmount - Math.Abs(sinkFlow) < acceptedError) {
                 logger.Info("[ValidateFlowResult] VALID!");
             } else {
                 logger.Error("[ValidateFlowResult] INVALID!");
@@ -75,12 +75,12 @@ namespace SlimeSimulation.FlowCalculation {
             foreach (Edge edge in graph.EdgesConnectedToNode(node)) {
                 var flow = FlowOnEdge(edge);
                 if (edge.A == node) {
-                    sum += Math.Abs(flow);
+                    sum += flow;
                 } else {
-                    sum -= Math.Abs(flow);
+                    sum -= flow;
                 }
             }
-            logger.Debug("Flow into node {0} is: {1}", node, sum);
+            logger.Trace("Flow into node {0} is: {1}", node, sum);
             return sum;
         }
 
