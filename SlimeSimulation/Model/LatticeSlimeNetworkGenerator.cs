@@ -75,8 +75,7 @@ namespace SlimeSimulation.Model {
                 columnOffset = !columnOffset;
             }
             EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes();
-            Graph graph = new Graph(edges, nodes);
-            //HashSet<Loop> loops = GetLoopsFromLatticeGraph(graph); TODO 
+            Graph graph = new Graph(edges, nodes); 
             SlimeNetwork slimeSimulation = new SlimeNetwork(nodes, foodSources, edges);
             return slimeSimulation;
         }
