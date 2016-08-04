@@ -59,6 +59,7 @@
     <Compile Include="FlowCalculation\LinearEquations\GaussianSolverTests.cs" />
     <Compile Include="Model\EdgeTests.cs" />
     <Compile Include="Model\GraphTests.cs" />
+    <Compile Include="Model\LatticeSlimeNetworkGeneratorTests.cs" />
     <Compile Include="Model\SlimeNetworkGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

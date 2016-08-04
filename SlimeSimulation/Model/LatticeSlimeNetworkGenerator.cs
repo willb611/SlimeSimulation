@@ -9,8 +9,9 @@ namespace SlimeSimulation.Model {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private double PROBABILITY_NEW_NODE_IS_FOOD = 0.05;
-        private Random random = new Random();
+        private readonly int MINIMUM_NUMBER_FOOD_SOURCES = 2;
         private double STARTING_CONNECTIVITY = 1;
+        private Random random = new Random();
 
         private bool columnOffset = true;
         private HashSet<Node> nodes = new HashSet<Node>();
@@ -138,7 +139,7 @@ namespace SlimeSimulation.Model {
 
         private void EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes() {
             List<Node> nodesList = new List<Node>(nodes);
-            while (foodSources.Count < 2) {
+            while (foodSources.Count < MINIMUM_NUMBER_FOOD_SOURCES) {
                 int index = random.Next(nodes.Count - 1);
                 while (nodesList[index].IsFoodSource()) {
                     index = random.Next(nodes.Count - 1);
