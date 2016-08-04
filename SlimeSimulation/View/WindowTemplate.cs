@@ -7,8 +7,9 @@ using Gtk;
 using NLog;
 
 namespace SlimeSimulation.View {
-    abstract public class WindowTemplate {
+    abstract public class WindowTemplate : IDisposable {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        protected bool disposed = false;
 
         private Window window;
         public Window Window {
@@ -34,6 +35,19 @@ namespace SlimeSimulation.View {
             AddToWindow(window);
             logger.Debug("[Display] Displaying..");
             window.ShowAll();
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing) {
+            if (disposed) {
+                return;
+            } else if (disposing) {
+                window.Dispose();
+            }
+            disposed = true;
         }
     }
 }

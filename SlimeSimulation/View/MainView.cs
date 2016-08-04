@@ -8,6 +8,7 @@ using System.Collections.Generic;
 namespace SlimeSimulation.View {
     public class MainView : IDisposable {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        protected bool disposed = false;
 
         public MainView() {
             logger.Info("Entered constructor");
@@ -15,8 +16,17 @@ namespace SlimeSimulation.View {
         }
 
         public void Dispose() {
-            logger.Info("[Dispose] Quitting application");
-            Application.Quit();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing) {
+            if (disposed) {
+                return;
+            } else if (disposing) {
+                logger.Info("[Dispose] Quitting application");
+                Application.Quit();
+            }
+            disposed = true;
         }
 
         public void Display(WindowTemplate window) {

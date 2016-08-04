@@ -2,13 +2,14 @@ using SlimeSimulation.FlowCalculation;
 using Gtk;
 using NLog;
 using SlimeSimulation.Controller;
+using System;
 
 namespace SlimeSimulation.View {
     class FlowResultWindow : WindowTemplate {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private FlowResult flowResult;
-        private GraphDrawingArea flowResultArea;
+        private GraphDrawingArea graphDrawingArea;
         private MainController controller;
 
         public FlowResultWindow(FlowResult flowResult, MainController controller) : base ("Flow result") {
@@ -22,12 +23,12 @@ namespace SlimeSimulation.View {
 
             HBox hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
-            flowResultArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineViewController(flowResult),
+            graphDrawingArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineViewController(flowResult),
                 new FlowResultNodeViewController(flowResult));
-            AddEvent(flowResultArea);
+            AddEvent(graphDrawingArea);
 
 
-            hbox.PackStart(flowResultArea, true, true, 0);
+            hbox.PackStart(graphDrawingArea, true, true, 0);
             hbox.PackStart(new NodeHighlightKey().GetVisualKey(), false, true, 0);
             
             VBox vbox = new VBox(false, 10);
@@ -44,8 +45,17 @@ namespace SlimeSimulation.View {
 
         private void ButtonPressHandler(object obj, ButtonPressEventArgs args) {
             logger.Info("[ButtonPressHandler] Given args: {0}, x: {1}, y: {2}, type: {3}", args, args.Event.X, args.Event.Y, args.Event.Type);
-            flowResultArea.InvertEdgeDrawing();
+            graphDrawingArea.InvertEdgeDrawing();
             controller.OnClick(flowResult);
+        }
+
+        protected override void Dispose(bool disposing) {
+            if (disposed) {
+                return;
+            } else if (disposing) {
+                graphDrawingArea.Dispose();
+            }
+            disposed = true;
         }
     }
 }
