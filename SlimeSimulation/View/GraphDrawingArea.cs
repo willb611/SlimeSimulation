@@ -42,7 +42,7 @@ namespace SlimeSimulation.View {
                 minNodeY = Math.Min(node.Y, minNodeY);
             }
             this.lineWeightController = lineWidthController;
-            logger.Debug("[Constructor] Given number of edges: " + edges.Count);
+            logger.Debug("[Constructor] Given number of edges: {0}", edges.Count);
         }
         private void AddEdge(Edge edge) {
             edges.Add(edge);
@@ -75,7 +75,7 @@ namespace SlimeSimulation.View {
             graphic.MoveTo(ScaleX(edge.A.X), ScaleY(edge.A.Y));
             graphic.SetSourceRGB(0, 0, 0);
             graphic.LineWidth = GetLineWidthForEdge(edge);
-            logger.Trace("[DrawEdge] For edge " + edge + ", using lineWidth: " + graphic.LineWidth);
+            logger.Trace("[DrawEdge] For edge {0}, using lineWidth: {1}", edge, graphic.LineWidth);
             graphic.LineTo(ScaleX(edge.B.X), ScaleY(edge.B.Y));
             graphic.Stroke();
 
@@ -123,11 +123,11 @@ namespace SlimeSimulation.View {
             maxWindowX = allocation.Width;
             maxWindowY = allocation.Height;
             using (Context g = Gdk.CairoHelper.Create(args.Window)) {
-                logger.Trace("[OnExposeEvent] Drawing all edges, total #: " + edges.Count);
+                logger.Trace("[OnExposeEvent] Drawing all edges, total #: {0}", edges.Count);
                 foreach (Edge edge in edges) {
                     DrawEdge(g, edge);
                 }
-                logger.Trace("[OnExposeEvent] Drawing all nodes, total #: " + nodes.Count);
+                logger.Trace("[OnExposeEvent] Drawing all nodes, total #: {0}", nodes.Count);
                 foreach (Node node in nodes) {
                     if (node.IsFoodSource()) {
                         DrawPoint(g, node);

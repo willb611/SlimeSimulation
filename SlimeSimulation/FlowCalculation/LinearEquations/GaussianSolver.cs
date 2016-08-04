@@ -134,8 +134,8 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
         }
 
         public void LogUpper() {
-            logger.Debug("[LogUpper] Printing");
-            logger.Debug(LogHelper.PrintArr(upper));
+            logger.Trace("[LogUpper] Printing");
+            logger.Trace(LogHelper.PrintArr(upper));
         }
         private double CheckedUpper(int i, int j) {
             if (i > j) {

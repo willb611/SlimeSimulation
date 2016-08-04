@@ -73,7 +73,7 @@
     <Compile Include="View\ConductivityWindow.cs" />
     <Compile Include="View\FlowResultWindow.cs" />
     <Compile Include="View\GraphDrawingArea.cs" />
-    <Compile Include="View\LineWidthController.cs" />
+    <Compile Include="View\LineViewController.cs" />
     <Compile Include="View\MainView.cs" />
     <Compile Include="Model\LatticeSlimeNetworkGenerator.cs" />
     <Compile Include="View\NodeViewController.cs" />
