@@ -4,15 +4,15 @@ using System;
 using System.Collections.Generic;
 
 namespace SlimeSimulation.View {
-    public abstract class LineWeightController {
+    public abstract class LineViewController {
         public abstract double GetLineWeightForEdge(Edge edge);
         public abstract double GetMaximumLineWeight();
     }
-    internal class FlowResultLineWidthController : LineWeightController {
+    internal class FlowResultLineViewController : LineViewController {
         private FlowResult flowResult;
         private readonly double maxLineWidth;
 
-        public FlowResultLineWidthController(FlowResult flowResult) {
+        public FlowResultLineViewController(FlowResult flowResult) {
             this.flowResult = flowResult;
             maxLineWidth = flowResult.GetMaximumFlowOnEdge();
         }
@@ -25,10 +25,10 @@ namespace SlimeSimulation.View {
             return maxLineWidth;
         }
     }
-    internal class ConnectivityLineWidthController : LineWeightController {
+    internal class ConnectivityLineViewController : LineViewController {
         private List<Edge> edges;
         private readonly double max;
-        public ConnectivityLineWidthController(List<Edge> edges) {
+        public ConnectivityLineViewController(List<Edge> edges) {
             this.edges = edges;
             var max = 0.0;
             foreach (Edge edge in edges) {

@@ -12,8 +12,8 @@ namespace SlimeSimulation.View {
         private readonly double MAX_LINE_WIDTH = 15;
         private readonly double WINDOW_SPACE_PERCENT_TO_DRAW_IN = 0.9;
 
-        private readonly LineWeightController lineWeightController;
-        private NodeHighlightController nodeHighlightController;
+        private readonly LineViewController lineWeightController;
+        private NodeViewController nodeHighlightController;
         private readonly ICollection<Edge> edges = new List<Edge>();
         private readonly ISet<Node> nodes = new HashSet<Node>();
         private EdgeDrawing edgeDrawingOption = EdgeDrawing.WithoutWeight;
@@ -27,8 +27,8 @@ namespace SlimeSimulation.View {
         private double maxWindowX = 100;
         private double maxWindowY = 100;
 
-        public GraphDrawingArea(ICollection<Edge> edges, LineWeightController lineWidthController,
-            NodeHighlightController nodeHighlightController) {
+        public GraphDrawingArea(ICollection<Edge> edges, LineViewController lineWidthController,
+            NodeViewController nodeHighlightController) {
             this.nodeHighlightController = nodeHighlightController;
             foreach (Edge edge in edges) {
                 AddEdge(edge);

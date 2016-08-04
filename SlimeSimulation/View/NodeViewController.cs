@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.View {
 
-    public abstract class NodeHighlightController {
+    public abstract class NodeViewController {
         public abstract RGB GetColourForNode(Node node);
         public abstract int GetSizeForNode(Node node);
 
@@ -16,9 +16,9 @@ namespace SlimeSimulation.View {
         public const int FOOD_SOURCE_POINT_SIZE = 15;
     }
 
-    public class FlowResultNodeHighlightController : NodeHighlightController {
+    public class FlowResultNodeViewController : NodeViewController {
         private FlowResult flowResult;
-        public FlowResultNodeHighlightController(FlowResult result) {
+        public FlowResultNodeViewController(FlowResult result) {
             flowResult = result;
         }
 
@@ -56,7 +56,7 @@ namespace SlimeSimulation.View {
         }
     }
 
-    public class ConnectivityNodeHighligthController : NodeHighlightController {
+    public class ConnectivityNodeViewController : NodeViewController {
         public static RGB FoodColour {
             get {
                 return RGB.BLUE;

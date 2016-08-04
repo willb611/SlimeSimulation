@@ -15,15 +15,15 @@ namespace SlimeSimulation.View {
 
             HBox sourcePart = new HBox(true, 10);
             sourcePart.Add(new Label("Source"));
-            sourcePart.Add(GetBoxColour(FlowResultNodeHighlightController.SourceColour));
+            sourcePart.Add(GetBoxColour(FlowResultNodeViewController.SourceColour));
 
             HBox sinkPart = new HBox(true, 10);
             sinkPart.Add(new Label("Sink"));
-            sinkPart.Add(GetBoxColour(FlowResultNodeHighlightController.SinkColour));
+            sinkPart.Add(GetBoxColour(FlowResultNodeViewController.SinkColour));
 
             HBox normalPart = new HBox(true, 10);
             normalPart.Add(new Label("Normal node"));
-            normalPart.Add(GetBoxColour(FlowResultNodeHighlightController.NormalNodeColour));
+            normalPart.Add(GetBoxColour(FlowResultNodeViewController.NormalNodeColour));
 
             key.Add(sourcePart);
             key.Add(sinkPart);
