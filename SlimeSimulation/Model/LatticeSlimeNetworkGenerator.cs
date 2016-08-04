@@ -20,7 +20,7 @@ namespace SlimeSimulation.Model {
 
         private int columns, rows;
 
-        public SlimeNetwork generate(int size) {
+        public SlimeNetwork Generate(int size) {
             if (size < 3) {
                 throw new ArgumentException("SIze must be > 3. Given: " + size);
             }
@@ -81,12 +81,13 @@ namespace SlimeSimulation.Model {
             return slimeSimulation;
         }
 
+
         private bool PointIsSkipped(int row, int col, int maxRows) {
             if (row == 1 && col == maxRows) {
                 return true;
             } else if (row == maxRows) {
                 if ((Even(maxRows) && col == 1)
-                    || (col == maxRows)) {
+                    || (!Even(row) && col == maxRows)) {
                     return true;
                 }
             }

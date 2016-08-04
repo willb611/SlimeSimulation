@@ -31,7 +31,7 @@ namespace SlimeSimulation.FlowCalculation {
         internal double GetMaximumFlowOnAnyEdge() {
             double max = 0;
             foreach (double value in flowOnEdgeMapping.Values) {
-                max = Math.Max(max, value);
+                max = Math.Max(max, Math.Abs(value));
             }
             return max;
         }

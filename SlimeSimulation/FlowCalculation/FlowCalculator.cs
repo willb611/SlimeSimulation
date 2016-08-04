@@ -7,7 +7,7 @@ using NLog;
 using SlimeSimulation.Model;
 
 namespace SlimeSimulation.FlowCalculation.LinearEquations {
-    class FlowCalculator {
+    public class FlowCalculator {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         public FlowResult CalculateFlow(ISet<Edge> edges, ISet<Node> nodes, Node source, Node sink, int flowAmount) {
@@ -23,12 +23,15 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
             return new FlowResult(edges, source, sink, flowAmount, flowOnEdges);
         }
 
-        private void EnsureSourceSinkInCorrectPositions(List<Node> nodeList, Node source, Node sink) {
+        public void EnsureSourceSinkInCorrectPositions(List<Node> nodeList, Node source, Node sink) {
+            if (source == sink) {
+                throw new ArgumentException(String.Format("Source ({0}) matches sink ({1})", source, sink));
+            }
             Swap(nodeList, 0, nodeList.IndexOf(source));
             Swap(nodeList, nodeList.Count - 1, nodeList.IndexOf(sink));
         }
 
-        private void Swap(List<Node> nodeList, int a, int b) {
+        public void Swap(List<Node> nodeList, int a, int b) {
             if (a != b) {
                 Node tmp = nodeList[a];
                 nodeList[a] = nodeList[b];
@@ -42,7 +45,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations {
                 double pi = pressures.PressureAt(edge.A);
                 double pj = pressures.PressureAt(edge.B);
                 double flow = edge.Connectivity * (pi - pj);
-                result.IncreaseFlowOnEdgeBy(edge, Math.Abs(flow));
+                result.IncreaseFlowOnEdgeBy(edge, flow);
                 logger.Debug("For edge {0}, got pi {1}, pj {2}, and flow {3}", edge, pi, pj, flow);
             }
             return result;

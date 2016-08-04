@@ -13,7 +13,7 @@ namespace SlimeSimulation.Controller {
         LatticeSlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator();
         
         public void RunSimulation() {
-            SlimeNetwork slimeNetwork = slimeNetworkGenerator.generate(5);
+            SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate(15);
             var flowCalculator = new FlowCalculator();
             Node source = slimeNetwork.FoodSources.First();
             Node sink = slimeNetwork.FoodSources.Last();
@@ -25,8 +25,12 @@ namespace SlimeSimulation.Controller {
 
         internal void RenderFlowResult(FlowResult flowResult) {
             logger.Debug("Rendering FlowResult");
-            var flowWindow = new FlowResultWindow(flowResult);
+            var flowWindow = new FlowResultWindow(flowResult, this);
             Display(flowWindow);
+        }
+
+        public void OnClick(FlowResult result) {
+            result.ValidateFlowResult();
         }
 
         internal void RenderConnectivity(ISet<Edge> edges) {

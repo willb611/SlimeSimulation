@@ -139,7 +139,16 @@ namespace SlimeSimulation.View {
             return true;
         }
 
+        public void InvertEdgeDrawing() {
+            if (edgeDrawingOption == EdgeDrawing.WithoutWeight) {
+                edgeDrawingOption = EdgeDrawing.WithWeight;
+            } else {
+                edgeDrawingOption = EdgeDrawing.WithoutWeight;
+            }
+            QueueDraw();
+        }
     }
+
 
     public enum EdgeDrawing {
         WithWeight, WithoutWeight

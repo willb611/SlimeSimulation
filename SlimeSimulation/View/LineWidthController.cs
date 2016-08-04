@@ -18,7 +18,7 @@ namespace SlimeSimulation.View {
         }
 
         public override double GetLineWeightForEdge(Edge edge) {
-            return flowResult.FlowOnEdge(edge);
+            return Math.Abs(flowResult.FlowOnEdge(edge));
         }
 
         public override double GetMaximumLineWeight() {

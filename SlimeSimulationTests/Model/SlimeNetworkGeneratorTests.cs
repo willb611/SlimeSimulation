@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NLog;
 using SlimeSimulation.Model;
 using SlimeSimulation.View;
 using System;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 namespace SlimeSimulation.View.Tests {
     [TestClass()]
     public class SlimeNetworkGeneratorTests {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         [TestMethod()]
         public void UpdateEdgesWithReplacement_ShouldDoReplacement() {
             var slimeNetworkGenerator = new LatticeSlimeNetworkGenerator();
@@ -41,7 +44,7 @@ namespace SlimeSimulation.View.Tests {
                 Node connected = edge.GetOtherNode(replacement);
                 nodesReplacementShouldConnectTo.Remove(connected);
             }
-            Assert.IsFalse(edges.Any());
+            Assert.IsFalse(nodesReplacementShouldConnectTo.Any());
         }
     }
 }
