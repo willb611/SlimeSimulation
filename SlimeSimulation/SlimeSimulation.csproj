@@ -59,6 +59,7 @@
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
     <Compile Include="FlowCalculation\LinearEquations\GaussianSolver.cs" />
+    <Compile Include="FlowCalculation\LinearEquations\LineraEquationSolver.cs" />
     <Compile Include="FlowCalculation\Pressures.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Model\Graph.cs" />
@@ -73,10 +74,10 @@
     <Compile Include="View\ConductivityWindow.cs" />
     <Compile Include="View\FlowResultWindow.cs" />
     <Compile Include="View\GraphDrawingArea.cs" />
-    <Compile Include="View\LineViewController.cs" />
+    <Compile Include="Controller\LineViewController.cs" />
     <Compile Include="View\MainView.cs" />
     <Compile Include="Model\LatticeSlimeNetworkGenerator.cs" />
-    <Compile Include="View\NodeViewController.cs" />
+    <Compile Include="Controller\NodeViewController.cs" />
     <Compile Include="View\NodeHighlightKey.cs" />
     <Compile Include="View\RGB.cs" />
     <Compile Include="View\WindowTemplate.cs" />

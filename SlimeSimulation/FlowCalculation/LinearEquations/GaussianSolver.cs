@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SlimeSimulation.FlowCalculation.LinearEquations {
-    public class GaussianSolver {
+    public class GaussianSolver : LinearEquationSolver {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         // Ax = b
-        internal double[] FindX(double[][] a, double[] b) {
+        public double[] FindX(double[][] a, double[] b) {
             var pi = LupDecompose(a);
             var matrix = new UpperLowerMatrix(a);
             matrix.LogUpper();

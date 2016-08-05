@@ -9,15 +9,19 @@ using SlimeSimulation.Model;
 namespace SlimeSimulation.FlowCalculation.LinearEquations {
     public class FlowCalculator {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private LinearEquationSolver linearEquationSolver;
+
+        public FlowCalculator(LinearEquationSolver solver) {
+            linearEquationSolver = solver;
+        }
 
         public FlowResult CalculateFlow(ISet<Edge> edges, ISet<Node> nodes, Node source, Node sink, int flowAmount) {
             Graph graph = new Graph(edges, nodes);
             List<Node> nodeList = new List<Node>(nodes);
             EnsureSourceSinkInCorrectPositions(nodeList, source, sink);
-            GaussianSolver solver = new GaussianSolver();
             double[][] A = GetSystemOfEquations(graph, nodeList);
             double[] B = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, nodes.Count - 1);
-            double[] solution = solver.FindX(A, B);
+            double[] solution = linearEquationSolver.FindX(A, B);
             Pressures pressures = new Pressures(solution, nodeList);
             FlowOnEdges flowOnEdges = GetFlowOnEdges(graph, pressures, nodeList);
             return new FlowResult(edges, source, sink, flowAmount, flowOnEdges);

@@ -1,4 +1,4 @@
-using SlimeSimulation.Controller;
+using SlimeSimulation.View;
 
 namespace SlimeSimulation {
     class Program {
