@@ -11,7 +11,7 @@ namespace SlimeSimulation.View {
         private GraphDrawingArea graphDrawingArea;
         private FlowResultController controller;
 
-        public FlowResultWindow(FlowResult flowResult, FlowResultController controller) : base ("Flow result") {
+        public FlowResultWindow(FlowResult flowResult, FlowResultController controller) : base ("Flow result", controller) {
             this.flowResult = flowResult;
             this.controller = controller;
         }

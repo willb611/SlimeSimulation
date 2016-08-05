@@ -12,15 +12,14 @@ namespace SlimeSimulation.Model.Tests {
         [TestMethod()]
         [ExpectedException(typeof(ArgumentException))]
         public void Generate_SizeTwo_ShouldThrowException() {
-            var generator = new LatticeSlimeNetworkGenerator();
-            generator.Generate(2);
+            var generator = new LatticeSlimeNetworkGenerator(2);
         }
 
         [TestMethod()]
         public void Generate_SizeThree_ShouldWork() {
-            var generator = new LatticeSlimeNetworkGenerator();
             for (int i = 3; i < 9; i++) {
-                var network = generator.Generate(3);
+                var generator = new LatticeSlimeNetworkGenerator(i);
+                var network = generator.Generate();
                 Assert.IsTrue(network.FoodSources.Count >= 2, "2 food sources should always be produced");
             }
         }

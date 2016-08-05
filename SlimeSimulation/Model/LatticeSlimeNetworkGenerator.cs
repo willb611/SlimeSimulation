@@ -5,7 +5,7 @@ using NLog;
 using SlimeSimulation.FlowCalculation;
 
 namespace SlimeSimulation.Model {
-    public class LatticeSlimeNetworkGenerator {
+    public class LatticeSlimeNetworkGenerator : SlimeNetworkGenerator {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private double PROBABILITY_NEW_NODE_IS_FOOD = 0.05;
@@ -20,11 +20,17 @@ namespace SlimeSimulation.Model {
         private HashSet<FoodSourceNode> foodSources = new HashSet<FoodSourceNode>();
 
         private int columns, rows;
+        private int size;
 
-        public SlimeNetwork Generate(int size) {
+        public LatticeSlimeNetworkGenerator(int size) {
             if (size < 3) {
                 throw new ArgumentException("SIze must be > 3. Given: " + size);
             }
+            this.size = size;
+        }
+
+
+        public SlimeNetwork Generate() {
             logger.Info("[generate] Generating lattice size: " + size);
             return GenerateLatticeNetwork(size, size);
         }

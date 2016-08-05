@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Gtk;
 using NLog;
+using SlimeSimulation.Controller;
 
 namespace SlimeSimulation.View {
     abstract public class WindowTemplate : IDisposable {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         protected bool disposed = false;
+        private WindowController controller;
 
         private Window window;
         public Window Window {
@@ -18,19 +20,21 @@ namespace SlimeSimulation.View {
             }
         }
 
-        public WindowTemplate(String windowTitle) {
+        public WindowTemplate(String windowTitle, WindowController controller) {
+            this.controller = controller;
             window = new Window(windowTitle);
             //myWindow.Maximize();
             window.Resize(600, 600);
             window.DeleteEvent += Window_DeleteEvent;
         }
 
-        protected abstract void AddToWindow(Window window);
-
         private void Window_DeleteEvent(object o, DeleteEventArgs args) {
-            Application.Quit();
+            controller.OnQuit();
         }
 
+
+        protected abstract void AddToWindow(Window window);
+        
         public void Display() {
             AddToWindow(window);
             logger.Debug("[Display] Displaying..");
@@ -48,6 +52,7 @@ namespace SlimeSimulation.View {
                 window.Dispose();
             }
             disposed = true;
+            logger.Trace("[Dispose : bool] finished");
         }
     }
 }

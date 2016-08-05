@@ -29,8 +29,8 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests {
 
         [TestMethod()]
         public void CalculateFlowTest() {
-            var generator = new LatticeSlimeNetworkGenerator();
-            var network = generator.Generate(7);
+            var generator = new LatticeSlimeNetworkGenerator(7);
+            var network = generator.Generate();
             var calculator = new FlowCalculator(new GaussianSolver());
 
             Node source = network.FoodSources.First();

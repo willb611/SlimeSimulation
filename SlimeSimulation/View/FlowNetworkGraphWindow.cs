@@ -4,15 +4,18 @@ using NLog;
 using System.Collections.Generic;
 using SlimeSimulation.Model;
 using System;
+using SlimeSimulation.Controller;
 
 namespace SlimeSimulation.View {
-    class ConductivityWindow : WindowTemplate {
+    class FlowNetworkGraphWindow : WindowTemplate {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private List<Edge> edges;
         private DrawingArea graphDrawingArea;
+        private FlowNetworkGraphController controller;
 
-        public ConductivityWindow(List<Edge> edges) : base("ConductivityWindow") {
+        public FlowNetworkGraphWindow(List<Edge> edges, FlowNetworkGraphController controller) : base("ConductivityWindow", controller) {
             this.edges = edges;
+            this.controller = controller;
         }
 
         protected override void Dispose(bool disposing) {
@@ -22,6 +25,7 @@ namespace SlimeSimulation.View {
                 graphDrawingArea.Dispose();
             }
             disposed = true;
+            logger.Trace("[Dispose : bool] finished");
         }
 
         protected override void AddToWindow(Window window) {

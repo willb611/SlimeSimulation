@@ -11,20 +11,42 @@ using SlimeSimulation.Controller;
 namespace SlimeSimulation.View {
     class MainController {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        LatticeSlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator();
+
+        private readonly int flowAmount;
+        private SlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(13);
+        private FlowCalculator flowCalculator = new FlowCalculator(new GaussianSolver());
+
+        public MainController(int flowAmount) {
+            this.flowAmount = flowAmount;
+        }
+
         
         public void RunSimulation() {
-            SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate(13);
-            var flowCalculator = new FlowCalculator(new GaussianSolver());
-            Node source = slimeNetwork.FoodSources.First();
-            Node sink = slimeNetwork.FoodSources.Last();
-            int flowAmount = 4;
-            var flowResult = flowCalculator.CalculateFlow(slimeNetwork.Edges, slimeNetwork.Nodes,
-                    source, sink, flowAmount);
+            SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate();
             using (MainView view = new MainView()) {
-                new FlowResultController(view).RenderFlowResult(flowResult);
+                logger.Info("[RunSimulation] Using before flowNetworkGraphController");
+                new FlowNetworkGraphController(view).RenderConnectivity(slimeNetwork.Edges);
+                //var initialFlow = GetFlow(slimeNetwork, flowAmount);
+                //new FlowResultController(view).Render(initialFlow);
                 //new ConductivityController(view).RenderConnectivity(slimeNetwork.Edges);
+
+                // TODO figure out how to wait for the flow network controller to finish, then carry on with simulation
+                // TODO IDisposable things aren't being used properly. Following log statement never entered ? 
+                logger.Info("[RunSimulation] Using after flowNetworkGraphController");
             }
+            logger.Info("[RunSimulation] Finished!");
+        }
+
+
+        private FlowResult GetFlow(SlimeNetwork network, int flow) {
+            Node source = network.FoodSources.First();
+            Node sink = network.FoodSources.Last();
+            return GetFlow(network, flow, source, sink);
+        }
+        private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink) {
+            var flowResult = flowCalculator.CalculateFlow(network.Edges, network.Nodes,
+                    source, sink, flowAmount);
+            return flowResult;
         }
     }
 }

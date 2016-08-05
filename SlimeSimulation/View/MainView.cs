@@ -30,8 +30,11 @@ namespace SlimeSimulation.View {
         }
 
         public void Display(WindowTemplate window) {
+            logger.Trace("[Display] About to display");
             window.Display();
+            logger.Trace("[Display] About to run");
             Application.Run();
+            logger.Trace("[Display] Finished running");
         }
     }
 }

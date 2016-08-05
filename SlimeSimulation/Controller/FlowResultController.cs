@@ -8,22 +8,33 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SlimeSimulation.Controller {
-    class FlowResultController {
+    class FlowResultController : WindowController {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private MainView view;
+        private FlowResultWindow window;
 
         public FlowResultController(MainView view) {
             this.view = view;
         }
 
-        internal void RenderFlowResult(FlowResult flowResult) {
+        internal void Render(FlowResult flowResult) {
             logger.Debug("Rendering FlowResult");
-            var flowWindow = new FlowResultWindow(flowResult, this);
-            view.Display(flowWindow);
+            using (window = new FlowResultWindow(flowResult, this)) {
+                view.Display(window);
+            }
         }
 
         public void OnClick(FlowResult result) {
             result.Validate();
+        }
+
+        public void OnQuit() {
+            logger.Info("[OnQuit] Window closed!");
+            if (window != null) {
+                logger.Debug("[OnQuit] About to dispose of window");
+                window.Dispose();
+                logger.Debug("[OnQuit] Finished disposing of window");
+            }
         }
     }
 }

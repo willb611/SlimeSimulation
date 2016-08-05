@@ -15,7 +15,7 @@ namespace SlimeSimulation.View.Tests {
 
         [TestMethod()]
         public void UpdateEdgesWithReplacement_ShouldDoReplacement() {
-            var slimeNetworkGenerator = new LatticeSlimeNetworkGenerator();
+            var slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(15);
             Node c = new Node(1, 1, 1);
             Node replacement = new Node(155, 155, 155);
 
