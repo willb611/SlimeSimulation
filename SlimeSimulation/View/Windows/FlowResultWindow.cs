@@ -3,7 +3,7 @@ using Gtk;
 using NLog;
 using SlimeSimulation.Controller;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Controller {
     class FlowResultWindow : WindowTemplate {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -14,6 +14,7 @@ namespace SlimeSimulation.View {
         public FlowResultWindow(FlowResult flowResult, FlowResultController controller) : base ("Flow result", controller) {
             this.flowResult = flowResult;
             this.controller = controller;
+            logger.Debug("[constructor] Finished");
         }
 
         protected override void AddToWindow(Window window) {
@@ -60,6 +61,7 @@ namespace SlimeSimulation.View {
                 graphDrawingArea.Dispose();
             }
             disposed = true;
+            logger.Debug("[Dispose : bool] finished from within " + this);
         }
     }
 }

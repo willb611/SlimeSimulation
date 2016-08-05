@@ -3,7 +3,7 @@ using SlimeSimulation.Model;
 using System;
 using System.Collections.Generic;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Controller {
     public abstract class LineViewController {
         public abstract double GetLineWeightForEdge(Edge edge);
         public abstract double GetMaximumLineWeight();

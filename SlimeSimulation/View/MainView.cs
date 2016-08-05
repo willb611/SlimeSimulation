@@ -5,10 +5,11 @@ using NLog;
 using SlimeSimulation.Model;
 using System.Collections.Generic;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Controller {
     public class MainView : IDisposable {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         protected bool disposed = false;
+        protected bool running = false;
 
         public MainView() {
             logger.Info("Entered constructor");
@@ -30,11 +31,18 @@ namespace SlimeSimulation.View {
         }
 
         public void Display(WindowTemplate window) {
-            logger.Trace("[Display] About to display");
-            window.Display();
-            logger.Trace("[Display] About to run");
-            Application.Run();
-            logger.Trace("[Display] Finished running");
+            try {
+                logger.Debug("[Display] About to display window {0}, running: {1}", window, running);
+                window.Display();
+                //if (!running) {
+                  //  logger.Debug("[Display] About to set running to true");
+                 //   running = true;
+                    Application.Run();
+              //  }
+            } catch (Exception e) {
+                logger.Error(e, "Error: ");
+            } finally {
+            }
         }
     }
 }

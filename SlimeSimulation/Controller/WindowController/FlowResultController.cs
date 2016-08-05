@@ -1,6 +1,6 @@
 using NLog;
 using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.View;
+using SlimeSimulation.Controller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +13,16 @@ namespace SlimeSimulation.Controller {
         private MainView view;
         private FlowResult flowResult;
 
-        public FlowResultController(MainView view, FlowResult flowResult) {
+        public FlowResultController(MainController main, MainView view, FlowResult flowResult) : base(main) {
             this.view = view;
             this.flowResult = flowResult;
         }
 
         public override void Render() {
-            logger.Debug("Rendering FlowResult");
+            logger.Debug("[Render] Entered");
             using (window = new FlowResultWindow(flowResult, this)) {
                 view.Display(window);
+                logger.Debug("[Render] Displayed");
             }
         }
 

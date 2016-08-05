@@ -5,7 +5,7 @@ using NLog;
 using Cairo;
 using Gdk;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Controller {
     public class GraphDrawingArea : Gtk.DrawingArea {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 

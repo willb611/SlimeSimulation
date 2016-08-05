@@ -7,7 +7,7 @@ using Gdk;
 using Gtk;
 using Cairo;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Controller {
     public class NodeHighlightKey {
 
         public Gtk.Widget GetVisualKey() {

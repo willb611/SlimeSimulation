@@ -7,7 +7,7 @@ using Gtk;
 using NLog;
 using SlimeSimulation.Controller;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Controller {
     abstract public class WindowTemplate : IDisposable {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         protected bool disposed = false;
@@ -44,15 +44,17 @@ namespace SlimeSimulation.View {
         public void Dispose() {
             Dispose(true);
             GC.SuppressFinalize(this);
+            logger.Debug("[Dispose] Overriden method called from within " + this);
         }
         protected virtual void Dispose(bool disposing) {
             if (disposed) {
                 return;
             } else if (disposing) {
                 window.Dispose();
+                Application.Quit();
             }
             disposed = true;
-            logger.Trace("[Dispose : bool] finished");
+            logger.Debug("[Dispose : bool] finished from within " + this);
         }
     }
 }

@@ -1,52 +1,85 @@
 using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.View;
 using SlimeSimulation.Model;
 using System;
 using System.Collections.Generic;
 using NLog;
 using SlimeSimulation.FlowCalculation.LinearEquations;
 using System.Linq;
-using SlimeSimulation.Controller;
+using System.Threading.Tasks;
+using SlimeSimulation.Model.Simulation;
+using SlimeSimulation.Controller.SimulationUpdaters;
 
-namespace SlimeSimulation.View {
-    class MainController {
+namespace SlimeSimulation.Controller {
+    public class MainController {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly int flowAmount;
         private SlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(13);
-        private FlowCalculator flowCalculator = new FlowCalculator(new GaussianSolver());
+        private SimulationUpdater simulationUpdater;
+
+        private MainView mainView;
+        private bool simulationDoingStep = false;
+        private SimulationState state;
 
         public MainController(int flowAmount) {
             this.flowAmount = flowAmount;
+            simulationUpdater = new SimulationUpdater(new FlowCalculator(new GaussianSolver()), new SlimeNetworkAdapterCalculator());
         }
-
         
         public void RunSimulation() {
-            SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate();
-            using (MainView view = new MainView()) {
-                logger.Info("[RunSimulation] Using before flowNetworkGraphController");
-                new FlowNetworkGraphController(view, slimeNetwork.Edges).Render();
-                //var initialFlow = GetFlow(slimeNetwork, flowAmount);
-                //new FlowResultController(view).Render(initialFlow);
-                //new ConductivityController(view).RenderConnectivity(slimeNetwork.Edges);
-
-                // TODO figure out how to wait for the flow network controller to finish, then carry on with simulation
-                // TODO IDisposable things aren't being used properly. Following log statement never entered ? 
-                logger.Info("[RunSimulation] Using after flowNetworkGraphController");
+            try {
+                var slimeNetwork = slimeNetworkGenerator.Generate();
+                state = new SimulationState(slimeNetwork);
+                using (mainView = new MainView()) {
+                    logger.Info("[RunSimulation] Using before ");
+                    UpdateDisplayFromState(state);
+                    logger.Info("[RunSimulation] Using after ");
+                }
+                logger.Info("[RunSimulation] Finished!");
+            } catch (Exception e) {
+                logger.Fatal(e, "[RunSimulation] Unexpected exception: ", e.Data);
             }
-            logger.Info("[RunSimulation] Finished!");
         }
 
-
-        private FlowResult GetFlow(SlimeNetwork network, int flow) {
-            Node source = network.FoodSources.First();
-            Node sink = network.FoodSources.Last();
-            return GetFlow(network, flow, source, sink);
+        public void DoNextSimulationStep() {
+            if (simulationDoingStep) {
+                logger.Debug("[DoNextSimulationStep] Not starting next step as it's already in progress");
+            } else {
+                logger.Debug("[DoNextSimulationStep] Stepping");
+                simulationDoingStep = true;
+                var nextState = simulationUpdater.GetNextState(state, flowAmount);
+                UpdateControllerState(nextState);
+            }
         }
-        private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink) {
-            var flowResult = flowCalculator.CalculateFlow(network.Edges, network.Nodes,
-                    source, sink, flowAmount);
-            return flowResult;
+
+        async private void UpdateControllerState(Task<SimulationState> stateParam) {
+            try {
+                state = await stateParam;
+                logger.Debug("[UpdateControllerState] State: {0} about to update view", state);
+                Gtk.Application.Invoke(delegate {
+                    logger.Debug("[UpdateControllerState] Invoking from main thread ");
+                    UpdateDisplayFromState(state);
+                });
+                simulationDoingStep = false;
+            } catch (Exception e) {
+                logger.Error(e, "[UpdateControllerState] Error: ");
+            }
+        }
+
+        private void UpdateDisplayFromState(SimulationState state) {
+            if (state.FlowResult == null) {
+                DisplayConnectivityInNetwork(state.SlimeNetwork);
+            } else {
+                DisplayFlowResult(state.FlowResult);
+            }
+        }
+
+        private void DisplayFlowResult(FlowResult flowResult) {
+            new FlowResultController(this, mainView, flowResult).Render();
+        }
+
+        private void DisplayConnectivityInNetwork(SlimeNetwork network) {
+            new FlowNetworkGraphController(this, mainView, network.Edges).Render();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Controller {
 
     public abstract class NodeViewController {
         public abstract RGB GetColourForNode(Node node);

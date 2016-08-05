@@ -6,7 +6,7 @@ using SlimeSimulation.Model;
 using System;
 using SlimeSimulation.Controller;
 
-namespace SlimeSimulation.View {
+namespace SlimeSimulation.Controller {
     class FlowNetworkGraphWindow : WindowTemplate {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private List<Edge> edges;
@@ -25,7 +25,7 @@ namespace SlimeSimulation.View {
                 graphDrawingArea.Dispose();
             }
             disposed = true;
-            logger.Trace("[Dispose : bool] finished");
+            logger.Debug("[Dispose : bool] finished from within " + this);
         }
 
         protected override void AddToWindow(Window window) {

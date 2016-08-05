@@ -1,6 +1,6 @@
 using NLog;
 using SlimeSimulation.Model;
-using SlimeSimulation.View;
+using SlimeSimulation.Controller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace SlimeSimulation.Controller {
         private MainView view;
         private ISet<Edge> edges;
 
-        public FlowNetworkGraphController(MainView view, ISet<Edge> edges) {
+        public FlowNetworkGraphController(MainController mainController, MainView view, ISet<Edge> edges) : base(mainController) {
             this.view = view;
             this.edges = edges;
         }
