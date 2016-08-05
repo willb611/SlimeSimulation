@@ -39,7 +39,7 @@ namespace SlimeSimulation.FlowCalculation {
             }
         }
 
-        internal void ValidateFlowResult() {
+        internal void Validate() {
             var acceptedError = 0.00001;
             double sourceFlow = GetFlowOnNode(Source);
             logger.Info("[ValidateFlowResult] flow on source {0}: {1}", Source, sourceFlow);
@@ -82,10 +82,6 @@ namespace SlimeSimulation.FlowCalculation {
             }
             logger.Trace("Flow into node {0} is: {1}", node, sum);
             return sum;
-        }
-
-        public void LogFlowOnEdges() {
-            flowOnEdges.LogFlowOnEdges();
         }
     }
 }

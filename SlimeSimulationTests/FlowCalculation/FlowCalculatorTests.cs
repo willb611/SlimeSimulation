@@ -20,7 +20,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests {
             Node other = new Node(3, 1, 1);
             List<Node> nodes = new List<Node>() { sink, source, other };
 
-            FlowCalculator flowCalculator = new FlowCalculator();
+            FlowCalculator flowCalculator = new FlowCalculator(new GaussianSolver());
             flowCalculator.EnsureSourceSinkInCorrectPositions(nodes, source, sink);
             Assert.AreEqual(nodes[0], source);
             Assert.AreEqual(nodes[2], sink);
@@ -31,7 +31,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests {
         public void CalculateFlowTest() {
             var generator = new LatticeSlimeNetworkGenerator();
             var network = generator.Generate(7);
-            var calculator = new FlowCalculator();
+            var calculator = new FlowCalculator(new GaussianSolver());
 
             Node source = network.FoodSources.First();
             Node sink = network.FoodSources.Last();

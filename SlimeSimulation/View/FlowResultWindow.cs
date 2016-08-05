@@ -1,8 +1,7 @@
 using SlimeSimulation.FlowCalculation;
 using Gtk;
 using NLog;
-using SlimeSimulation.View;
-using System;
+using SlimeSimulation.Controller;
 
 namespace SlimeSimulation.View {
     class FlowResultWindow : WindowTemplate {
@@ -10,9 +9,9 @@ namespace SlimeSimulation.View {
 
         private FlowResult flowResult;
         private GraphDrawingArea graphDrawingArea;
-        private MainController controller;
+        private FlowResultController controller;
 
-        public FlowResultWindow(FlowResult flowResult, MainController controller) : base ("Flow result") {
+        public FlowResultWindow(FlowResult flowResult, FlowResultController controller) : base ("Flow result") {
             this.flowResult = flowResult;
             this.controller = controller;
         }

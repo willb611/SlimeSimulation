@@ -56,10 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\ConductivityController.cs" />
+    <Compile Include="Controller\FlowResultController.cs" />
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
     <Compile Include="FlowCalculation\LinearEquations\GaussianSolver.cs" />
-    <Compile Include="FlowCalculation\LinearEquations\LineraEquationSolver.cs" />
+    <Compile Include="FlowCalculation\LinearEquations\LinearEquationSolver.cs" />
     <Compile Include="FlowCalculation\Pressures.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Model\Graph.cs" />

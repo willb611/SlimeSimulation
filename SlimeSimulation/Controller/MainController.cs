@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using NLog;
 using SlimeSimulation.FlowCalculation.LinearEquations;
 using System.Linq;
+using SlimeSimulation.Controller;
 
 namespace SlimeSimulation.View {
     class MainController {
@@ -13,34 +14,16 @@ namespace SlimeSimulation.View {
         LatticeSlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator();
         
         public void RunSimulation() {
-            SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate(55);
+            SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate(13);
             var flowCalculator = new FlowCalculator(new GaussianSolver());
             Node source = slimeNetwork.FoodSources.First();
             Node sink = slimeNetwork.FoodSources.Last();
             int flowAmount = 4;
             var flowResult = flowCalculator.CalculateFlow(slimeNetwork.Edges, slimeNetwork.Nodes,
                     source, sink, flowAmount);
-            RenderFlowResult(flowResult);
-        }
-
-        internal void RenderFlowResult(FlowResult flowResult) {
-            logger.Debug("Rendering FlowResult");
-            var flowWindow = new FlowResultWindow(flowResult, this);
-            Display(flowWindow);
-        }
-
-        public void OnClick(FlowResult result) {
-            result.ValidateFlowResult();
-        }
-
-        internal void RenderConnectivity(ISet<Edge> edges) {
-            var window = new ConductivityWindow(new List<Edge>(edges));
-            Display(window);
-        }
-
-        private void Display(WindowTemplate windowTemplate) {
             using (MainView view = new MainView()) {
-                view.Display(windowTemplate);
+                new FlowResultController(view).RenderFlowResult(flowResult);
+                //new ConductivityController(view).RenderConnectivity(slimeNetwork.Edges);
             }
         }
     }
