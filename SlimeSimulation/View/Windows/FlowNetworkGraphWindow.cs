@@ -37,7 +37,19 @@ namespace SlimeSimulation.View {
             window.Add(hbox);
             graphDrawingArea = new GraphDrawingArea(edges, new ConnectivityLineViewController(edges),
                 new ConnectivityNodeViewController());
+            ListenToClicksOn(graphDrawingArea);
+
             hbox.Add(graphDrawingArea);
+        }
+
+        private void ListenToClicksOn(DrawingArea drawingArea) {
+            drawingArea.Events |= Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask;
+            drawingArea.ButtonPressEvent += new ButtonPressEventHandler(ButtonPressHandler);
+        }
+
+        private void ButtonPressHandler(object obj, ButtonPressEventArgs args) {
+            logger.Info("[ButtonPressHandler] Given args: {0}, x: {1}, y: {2}, type: {3}", args, args.Event.X, args.Event.Y, args.Event.Type);
+            controller.OnClick();
         }
 
     }

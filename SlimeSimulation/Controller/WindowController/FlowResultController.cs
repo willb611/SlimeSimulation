@@ -11,30 +11,24 @@ namespace SlimeSimulation.Controller {
     class FlowResultController : WindowController {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private MainView view;
-        private FlowResultWindow window;
+        private FlowResult flowResult;
 
-        public FlowResultController(MainView view) {
+        public FlowResultController(MainView view, FlowResult flowResult) {
             this.view = view;
+            this.flowResult = flowResult;
         }
 
-        internal void Render(FlowResult flowResult) {
+        public override void Render() {
             logger.Debug("Rendering FlowResult");
             using (window = new FlowResultWindow(flowResult, this)) {
                 view.Display(window);
             }
         }
 
-        public void OnClick(FlowResult result) {
-            result.Validate();
-        }
-
-        public void OnQuit() {
-            logger.Info("[OnQuit] Window closed!");
-            if (window != null) {
-                logger.Debug("[OnQuit] About to dispose of window");
-                window.Dispose();
-                logger.Debug("[OnQuit] Finished disposing of window");
-            }
+        public override void OnClick() {
+            flowResult.Validate();
+            //window.InvertEdgeDrawing();
+            ((FlowResultWindow) window).GraphDrawingArea.InvertEdgeDrawing();
         }
     }
 }

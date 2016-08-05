@@ -25,7 +25,7 @@ namespace SlimeSimulation.View {
             SlimeNetwork slimeNetwork = slimeNetworkGenerator.Generate();
             using (MainView view = new MainView()) {
                 logger.Info("[RunSimulation] Using before flowNetworkGraphController");
-                new FlowNetworkGraphController(view).RenderConnectivity(slimeNetwork.Edges);
+                new FlowNetworkGraphController(view, slimeNetwork.Edges).Render();
                 //var initialFlow = GetFlow(slimeNetwork, flowAmount);
                 //new FlowResultController(view).Render(initialFlow);
                 //new ConductivityController(view).RenderConnectivity(slimeNetwork.Edges);

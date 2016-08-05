@@ -24,7 +24,7 @@ namespace SlimeSimulation.View {
             hbox.ModifyBg(StateType.Normal, bgColor);
             graphDrawingArea = new GraphDrawingArea(flowResult.Edges, new FlowResultLineViewController(flowResult),
                 new FlowResultNodeViewController(flowResult));
-            AddEvent(graphDrawingArea);
+            ListenToClicksOn(graphDrawingArea);
 
 
             hbox.PackStart(graphDrawingArea, true, true, 0);
@@ -37,15 +37,20 @@ namespace SlimeSimulation.View {
             window.Add(vbox);
         }
 
-        private void AddEvent(DrawingArea drawingArea) {
+        public GraphDrawingArea GraphDrawingArea {
+            get {
+                return graphDrawingArea;
+            }
+        }
+
+        private void ListenToClicksOn(DrawingArea drawingArea) {
             drawingArea.Events |= Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask;
             drawingArea.ButtonPressEvent += new ButtonPressEventHandler(ButtonPressHandler);
         }
 
         private void ButtonPressHandler(object obj, ButtonPressEventArgs args) {
             logger.Info("[ButtonPressHandler] Given args: {0}, x: {1}, y: {2}, type: {3}", args, args.Event.X, args.Event.Y, args.Event.Type);
-            graphDrawingArea.InvertEdgeDrawing();
-            controller.OnClick(flowResult);
+            controller.OnClick();
         }
 
         protected override void Dispose(bool disposing) {
