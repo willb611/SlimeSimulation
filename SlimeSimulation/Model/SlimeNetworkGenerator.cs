@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Model
 {
-  public interface SlimeNetworkGenerator
-  {
-    SlimeNetwork Generate();
-  }
+    public interface SlimeNetworkGenerator
+    {
+        SlimeNetwork Generate();
+    }
 }

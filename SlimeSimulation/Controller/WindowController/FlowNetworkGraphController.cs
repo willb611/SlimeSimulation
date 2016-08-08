@@ -9,31 +9,31 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Controller
 {
-  class FlowNetworkGraphController : WindowController
-  {
-    private static Logger logger = LogManager.GetCurrentClassLogger();
-    private MainView view;
-    private ISet<Edge> edges;
-
-    public FlowNetworkGraphController(MainController mainController, MainView view, ISet<Edge> edges)
-      : base(mainController)
+    class FlowNetworkGraphController : WindowController
     {
-      this.view = view;
-      this.edges = edges;
-    }
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private MainView view;
+        private ISet<Edge> edges;
 
-    public override void Render()
-    {
-      logger.Debug("[RenderConnectivity] Making new window");
-      using (window = new FlowNetworkGraphWindow(new List<Edge>(edges), this))
-      {
-        view.Display(window);
-      }
-    }
+        public FlowNetworkGraphController(MainController mainController, MainView view, ISet<Edge> edges)
+          : base(mainController)
+        {
+            this.view = view;
+            this.edges = edges;
+        }
 
-    public override void OnClick()
-    {
-      logger.Debug("[OnClick] Clicked!");
+        public override void Render()
+        {
+            logger.Debug("[RenderConnectivity] Making new window");
+            using (window = new FlowNetworkGraphWindow(new List<Edge>(edges), this))
+            {
+                view.Display(window);
+            }
+        }
+
+        public override void OnClick()
+        {
+            logger.Debug("[OnClick] Clicked!");
+        }
     }
-  }
 }

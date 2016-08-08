@@ -2,33 +2,30 @@ using System.Collections.Generic;
 
 namespace SlimeSimulation.Model
 {
-  public class SlimeNetwork
-  {
-    ISet<Node> nodes;
-    ISet<FoodSourceNode> foodSources;
-    ISet<Edge> edges;
-
-    public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
-      ISet<Edge> edges)
+    public class SlimeNetwork
     {
-      this.nodes = nodes;
-      this.edges = edges;
-      this.foodSources = foodSources;
-    }
+        ISet<Node> nodes;
+        ISet<FoodSourceNode> foodSources;
+        ISet<Edge> edges;
 
-    public ISet<Node> Nodes
-    {
-      get { return nodes; }
-    }
+        public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
+          ISet<Edge> edges)
+        {
+            this.nodes = nodes;
+            this.edges = edges;
+            this.foodSources = foodSources;
+        }
 
-    internal ISet<FoodSourceNode> FoodSources
-    {
-      get { return foodSources; }
-    }
+        public ISet<Node> Nodes {
+            get { return nodes; }
+        }
 
-    public ISet<Edge> Edges
-    {
-      get { return edges; }
+        internal ISet<FoodSourceNode> FoodSources {
+            get { return foodSources; }
+        }
+
+        public ISet<Edge> Edges {
+            get { return edges; }
+        }
     }
-  }
 }

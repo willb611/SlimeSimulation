@@ -7,28 +7,28 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Model.Simulation
 {
-  public class SimulationState
-  {
-    public SlimeNetwork SlimeNetwork { get; private set; }
-    public FlowResult FlowResult { get; private set; }
-
-    public SimulationState(SlimeNetwork network)
+    public class SimulationState
     {
-      if (network == null)
-      {
-        throw new ArgumentNullException("Cannot create state with null network");
-      }
-      this.SlimeNetwork = network;
-    }
+        public SlimeNetwork SlimeNetwork { get; private set; }
+        public FlowResult FlowResult { get; private set; }
 
-    public SimulationState(SlimeNetwork network, FlowResult flowResult) : this(network)
-    {
-      this.FlowResult = flowResult;
-    }
+        public SimulationState(SlimeNetwork network)
+        {
+            if (network == null)
+            {
+                throw new ArgumentNullException("Cannot create state with null network");
+            }
+            this.SlimeNetwork = network;
+        }
 
-    public override string ToString()
-    {
-      return base.ToString() + ", hash: " + base.GetHashCode();
+        public SimulationState(SlimeNetwork network, FlowResult flowResult) : this(network)
+        {
+            this.FlowResult = flowResult;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + ", hash: " + base.GetHashCode();
+        }
     }
-  }
 }

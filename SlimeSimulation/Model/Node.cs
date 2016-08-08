@@ -3,91 +3,88 @@ using System.Collections.Generic;
 
 namespace SlimeSimulation.Model
 {
-  public class Node : IEquatable<Node>
-  {
-    private readonly int id;
-    private readonly double x, y;
-
-    public Node(int id, double x, double y)
+    public class Node : IEquatable<Node>
     {
-      this.id = id;
-      this.x = x;
-      this.y = y;
-    }
+        private readonly int id;
+        private readonly double x, y;
 
-    public int Id
-    {
-      get { return id; }
-    }
-
-    public double X
-    {
-      get { return x; }
-    }
-
-    public double Y
-    {
-      get { return y; }
-    }
-
-    public virtual bool IsFoodSource()
-    {
-      return false;
-    }
-
-    public override bool Equals(object obj)
-    {
-      return this.Equals(obj as Node);
-    }
-
-    public bool Equals(Node other)
-    {
-      if (Object.ReferenceEquals(other, null))
-      {
-        return false;
-      }
-      else if (Object.ReferenceEquals(other, this))
-      {
-        return true;
-      }
-
-      if (this.GetType() != other.GetType())
-      {
-        return false;
-      }
-
-      if (id != other.Id)
-      {
-        return false;
-      }
-      else
-      {
-        return X == other.X && Y == other.Y;
-      }
-    }
-
-    public override int GetHashCode()
-    {
-      return (id.GetHashCode() * 17 + x.GetHashCode()) * 17
-             + y.GetHashCode();
-    }
-
-    internal List<Edge> GetEdgesAdjacent(ISet<Edge> edges)
-    {
-      ISet<Edge> result = new HashSet<Edge>();
-      foreach (Edge edge in edges)
-      {
-        if (this == edge.A || this == edge.B)
+        public Node(int id, double x, double y)
         {
-          result.Add(edge);
+            this.id = id;
+            this.x = x;
+            this.y = y;
         }
-      }
-      return new List<Edge>(result);
-    }
 
-    public override string ToString()
-    {
-      return this.GetType() + "{id=" + id + ", x=" + x + ", y=" + y + "}";
+        public int Id {
+            get { return id; }
+        }
+
+        public double X {
+            get { return x; }
+        }
+
+        public double Y {
+            get { return y; }
+        }
+
+        public virtual bool IsFoodSource()
+        {
+            return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as Node);
+        }
+
+        public bool Equals(Node other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            else if (Object.ReferenceEquals(other, this))
+            {
+                return true;
+            }
+
+            if (this.GetType() != other.GetType())
+            {
+                return false;
+            }
+
+            if (id != other.Id)
+            {
+                return false;
+            }
+            else
+            {
+                return X == other.X && Y == other.Y;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return (id.GetHashCode() * 17 + x.GetHashCode()) * 17
+                   + y.GetHashCode();
+        }
+
+        internal List<Edge> GetEdgesAdjacent(ISet<Edge> edges)
+        {
+            ISet<Edge> result = new HashSet<Edge>();
+            foreach (Edge edge in edges)
+            {
+                if (this == edge.A || this == edge.B)
+                {
+                    result.Add(edge);
+                }
+            }
+            return new List<Edge>(result);
+        }
+
+        public override string ToString()
+        {
+            return this.GetType() + "{id=" + id + ", x=" + x + ", y=" + y + "}";
+        }
     }
-  }
 }

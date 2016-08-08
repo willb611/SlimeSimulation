@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.FlowCalculation.LinearEquations
 {
-  public interface LinearEquationSolver
-  {
-    double[] FindX(double[][] a, double[] b);
-  }
+    public interface LinearEquationSolver
+    {
+        double[] FindX(double[][] a, double[] b);
+    }
 }

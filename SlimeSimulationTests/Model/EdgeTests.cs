@@ -2,14 +2,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SlimeSimulation.Model.Tests
 {
-  [TestClass()]
-  public class EdgeTests
-  {
-    [TestMethod()]
-    public void Equals_WhenComparingSameObject_ShouldReturnTrue()
+    [TestClass()]
+    public class EdgeTests
     {
-      Node a = new Node(1, 2, 2);
-      Assert.AreEqual(a, a);
+        [TestMethod()]
+        public void Equals_WhenComparingSameObject_ShouldReturnTrue()
+        {
+            Node a = new Node(1, 2, 2);
+            Assert.AreEqual(a, a);
+        }
     }
-  }
 }

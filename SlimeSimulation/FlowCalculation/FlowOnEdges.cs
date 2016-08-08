@@ -5,53 +5,52 @@ using System;
 
 namespace SlimeSimulation.FlowCalculation
 {
-  public class FlowOnEdges
-  {
-    private static Logger logger = LogManager.GetCurrentClassLogger();
-
-    private readonly double maxErrorFoundOnCalculatingHeadLoss;
-    private readonly Dictionary<Edge, double> flowOnEdgeMapping;
-
-    public FlowOnEdges(FlowOnEdges flowOnEdges)
+    public class FlowOnEdges
     {
-      maxErrorFoundOnCalculatingHeadLoss = 0;
-      flowOnEdgeMapping = new Dictionary<Edge, double>(flowOnEdges.flowOnEdgeMapping);
-    }
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-    internal FlowOnEdges(ICollection<Edge> edges)
-    {
-      flowOnEdgeMapping = new Dictionary<Edge, double>();
-      foreach (Edge edge in edges)
-      {
-        flowOnEdgeMapping.Add(edge, 0);
-      }
-    }
+        private readonly double maxErrorFoundOnCalculatingHeadLoss;
+        private readonly Dictionary<Edge, double> flowOnEdgeMapping;
 
-    public double MaxErrorFoundOnCalculatingHeadLoss
-    {
-      get { return maxErrorFoundOnCalculatingHeadLoss; }
-    }
+        public FlowOnEdges(FlowOnEdges flowOnEdges)
+        {
+            maxErrorFoundOnCalculatingHeadLoss = 0;
+            flowOnEdgeMapping = new Dictionary<Edge, double>(flowOnEdges.flowOnEdgeMapping);
+        }
 
-    internal double GetMaximumFlowOnAnyEdge()
-    {
-      double max = 0;
-      foreach (double value in flowOnEdgeMapping.Values)
-      {
-        max = Math.Max(max, Math.Abs(value));
-      }
-      return max;
-    }
+        internal FlowOnEdges(ICollection<Edge> edges)
+        {
+            flowOnEdgeMapping = new Dictionary<Edge, double>();
+            foreach (Edge edge in edges)
+            {
+                flowOnEdgeMapping.Add(edge, 0);
+            }
+        }
 
-    internal double GetFlowOnEdge(Edge edge)
-    {
-      return flowOnEdgeMapping[edge];
-    }
+        public double MaxErrorFoundOnCalculatingHeadLoss {
+            get { return maxErrorFoundOnCalculatingHeadLoss; }
+        }
 
-    internal void IncreaseFlowOnEdgeBy(Edge edge, double amount)
-    {
-      double current = GetFlowOnEdge(edge);
-      flowOnEdgeMapping[edge] = current + amount;
-      logger.Trace("[IncreaseFlowOnEdgeBy] For edge: {0}, flow is now: {1}", edge, GetFlowOnEdge(edge));
+        internal double GetMaximumFlowOnAnyEdge()
+        {
+            double max = 0;
+            foreach (double value in flowOnEdgeMapping.Values)
+            {
+                max = Math.Max(max, Math.Abs(value));
+            }
+            return max;
+        }
+
+        internal double GetFlowOnEdge(Edge edge)
+        {
+            return flowOnEdgeMapping[edge];
+        }
+
+        internal void IncreaseFlowOnEdgeBy(Edge edge, double amount)
+        {
+            double current = GetFlowOnEdge(edge);
+            flowOnEdgeMapping[edge] = current + amount;
+            logger.Trace("[IncreaseFlowOnEdgeBy] For edge: {0}, flow is now: {1}", edge, GetFlowOnEdge(edge));
+        }
     }
-  }
 }

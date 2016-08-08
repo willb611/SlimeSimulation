@@ -10,45 +10,45 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Controller.Tests
 {
-  [TestClass()]
-  public class SlimeNetworkGeneratorTests
-  {
-    private static Logger logger = LogManager.GetCurrentClassLogger();
-
-    [TestMethod()]
-    public void UpdateEdgesWithReplacement_ShouldDoReplacement()
+    [TestClass()]
+    public class SlimeNetworkGeneratorTests
     {
-      var slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(15);
-      Node c = new Node(1, 1, 1);
-      Node replacement = new Node(155, 155, 155);
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
-      Node a = new Node(2, 2, 2);
-      Node b = new Node(3, 3, 3);
-      /*
-       * a ------- b
-       * |        /
-       * replace (c)
-       */
-      Edge ab = new Edge(a, b, 1);
-      Edge ac = new Edge(a, c, 1);
-      Edge bc = new Edge(b, c, 1);
-      HashSet<Edge> edges = new HashSet<Edge>() {ac, ab, bc};
+        [TestMethod()]
+        public void UpdateEdgesWithReplacement_ShouldDoReplacement()
+        {
+            var slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(15);
+            Node c = new Node(1, 1, 1);
+            Node replacement = new Node(155, 155, 155);
 
-      slimeNetworkGenerator.UpdateEdgesWithReplacement(edges, c, replacement);
-      // Check edges connecting to c were removed
-      Assert.IsFalse(edges.Contains(ac));
-      Assert.IsFalse(edges.Contains(bc));
+            Node a = new Node(2, 2, 2);
+            Node b = new Node(3, 3, 3);
+            /*
+             * a ------- b
+             * |        /
+             * replace (c)
+             */
+            Edge ab = new Edge(a, b, 1);
+            Edge ac = new Edge(a, c, 1);
+            Edge bc = new Edge(b, c, 1);
+            HashSet<Edge> edges = new HashSet<Edge>() { ac, ab, bc };
 
-      edges.Remove(ab);
-      // Check edges left are conections from a -> replacement, and b -> replacement
-      Assert.IsTrue(edges.Count == 2);
-      List<Node> nodesReplacementShouldConnectTo = new List<Node>() {a, b};
-      foreach (Edge edge in edges)
-      {
-        Node connected = edge.GetOtherNode(replacement);
-        nodesReplacementShouldConnectTo.Remove(connected);
-      }
-      Assert.IsFalse(nodesReplacementShouldConnectTo.Any());
+            slimeNetworkGenerator.UpdateEdgesWithReplacement(edges, c, replacement);
+            // Check edges connecting to c were removed
+            Assert.IsFalse(edges.Contains(ac));
+            Assert.IsFalse(edges.Contains(bc));
+
+            edges.Remove(ab);
+            // Check edges left are conections from a -> replacement, and b -> replacement
+            Assert.IsTrue(edges.Count == 2);
+            List<Node> nodesReplacementShouldConnectTo = new List<Node>() { a, b };
+            foreach (Edge edge in edges)
+            {
+                Node connected = edge.GetOtherNode(replacement);
+                nodesReplacementShouldConnectTo.Remove(connected);
+            }
+            Assert.IsFalse(nodesReplacementShouldConnectTo.Any());
+        }
     }
-  }
 }
