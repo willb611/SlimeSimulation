@@ -60,7 +60,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations
         double pj = pressures.PressureAt(edge.B);
         double flow = edge.Connectivity * (pi - pj);
         result.IncreaseFlowOnEdgeBy(edge, flow);
-        logger.Debug("For edge {0}, got pi {1}, pj {2}, and flow {3}", edge, pi, pj, flow);
+        logger.Trace("For edge {0}, got pi {1}, pj {2}, and flow {3}", edge, pi, pj, flow);
       }
       return result;
     }

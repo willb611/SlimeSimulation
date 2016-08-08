@@ -2,13 +2,14 @@ using SlimeSimulation.Controller;
 
 namespace SlimeSimulation
 {
-  class Program
-  {
-    static void Main(string[] args)
+    class Program
     {
-      var flowAmount = 3;
-      var controller = new MainController(flowAmount);
-      controller.RunSimulation();
+        static void Main(string[] args)
+        {
+            var flowAmount = 3;
+            var feedbackParameter = 1.8;
+            var controller = new MainController(flowAmount, feedbackParameter);
+            controller.RunSimulation();
+        }
     }
-  }
 }

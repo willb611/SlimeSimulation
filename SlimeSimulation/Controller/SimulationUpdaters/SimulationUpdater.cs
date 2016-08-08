@@ -9,62 +9,62 @@ using SlimeSimulation.FlowCalculation.LinearEquations;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {
-  internal class SimulationUpdater
-  {
-    private static Logger logger = LogManager.GetCurrentClassLogger();
-    private FlowCalculator flowCalculator;
-    private SlimeNetworkAdapterCalculator slimeNetworkAdapterCalculator;
-
-    public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdapterCalculator slimeNetworkAdapterCalculator)
+    internal class SimulationUpdater
     {
-      this.flowCalculator = flowCalculator;
-      this.slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
-    }
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private FlowCalculator flowCalculator;
+        private SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator;
 
-    internal Task<SimulationState> GetNextState(SimulationState state, int flowAmount)
-    {
-      if (state.FlowResult == null)
-      {
-        logger.Info("[GetNextState] Calculating flowResult");
-        return GetStateWithFlow(state.SlimeNetwork, flowAmount);
-      }
-      else
-      {
-        logger.Info("[GetNextState] Updating simulation based on flow result pre-existing");
-        return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult);
-      }
-    }
+        public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator)
+        {
+            this.flowCalculator = flowCalculator;
+            this.slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
+        }
 
-    private Task<SimulationState> GetNextStateWithUpdatedConductivites(SlimeNetwork slimeNetwork, FlowResult flowResult)
-    {
-      return Task<SimulationState>.Run(() =>
-      {
-        var nextNetwork = slimeNetworkAdapterCalculator.CalculateNextStep(slimeNetwork);
-        return new SimulationState(nextNetwork);
-      });
-    }
+        internal Task<SimulationState> GetNextState(SimulationState state, int flowAmount)
+        {
+            if (state.FlowResult == null)
+            {
+                logger.Info("[GetNextState] Calculating flowResult");
+                return GetStateWithFlow(state.SlimeNetwork, flowAmount);
+            }
+            else
+            {
+                logger.Info("[GetNextState] Updating simulation based on flow result pre-existing");
+                return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult);
+            }
+        }
 
-    private Task<SimulationState> GetStateWithFlow(SlimeNetwork slimeNetwork, int flowAmount)
-    {
-      return Task<SimulationState>.Run(() =>
-      {
-        var flowResult = GetFlow(slimeNetwork, flowAmount);
-        return new SimulationState(slimeNetwork, flowResult);
-      });
-    }
+        private Task<SimulationState> GetNextStateWithUpdatedConductivites(SlimeNetwork slimeNetwork, FlowResult flowResult)
+        {
+            return Task<SimulationState>.Run(() =>
+            {
+                var nextNetwork = slimeNetworkAdapterCalculator.CalculateNextStep(slimeNetwork, flowResult);
+                return new SimulationState(nextNetwork);
+            });
+        }
 
-    private FlowResult GetFlow(SlimeNetwork network, int flow)
-    {
-      Node source = network.FoodSources.First();
-      Node sink = network.FoodSources.Last();
-      return GetFlow(network, flow, source, sink);
-    }
+        private Task<SimulationState> GetStateWithFlow(SlimeNetwork slimeNetwork, int flowAmount)
+        {
+            return Task<SimulationState>.Run(() =>
+            {
+                var flowResult = GetFlow(slimeNetwork, flowAmount);
+                return new SimulationState(slimeNetwork, flowResult);
+            });
+        }
 
-    private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink)
-    {
-      var flowResult = flowCalculator.CalculateFlow(network.Edges, network.Nodes,
-        source, sink, flow);
-      return flowResult;
+        private FlowResult GetFlow(SlimeNetwork network, int flow)
+        {
+            Node source = network.FoodSources.First();
+            Node sink = network.FoodSources.Last();
+            return GetFlow(network, flow, source, sink);
+        }
+
+        private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink)
+        {
+            var flowResult = flowCalculator.CalculateFlow(network.Edges, network.Nodes,
+              source, sink, flow);
+            return flowResult;
+        }
     }
-  }
 }
