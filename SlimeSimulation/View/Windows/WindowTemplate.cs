@@ -25,8 +25,8 @@ namespace SlimeSimulation.View
         {
             this.controller = controller;
             window = new Window(windowTitle);
-            //myWindow.Maximize();
-            window.Resize(600, 600);
+            window.Maximize();
+            //window.Resize(600, 600);
             window.DeleteEvent += Window_DeleteEvent;
         }
 

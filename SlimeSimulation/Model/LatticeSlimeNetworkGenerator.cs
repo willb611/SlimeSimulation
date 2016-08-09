@@ -10,9 +10,11 @@ namespace SlimeSimulation.Model
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private double PROBABILITY_NEW_NODE_IS_FOOD = 0.05;
-        private readonly int MINIMUM_NUMBER_FOOD_SOURCES = 2;
-        private double STARTING_CONNECTIVITY = 1;
+        private static readonly double STARTING_CONNECTIVITY = 1;
+        private static readonly double DEFAULT_PROBABILITY_NEW_NODE_IS_FOOD = 0.05;
+        private static readonly int DEFAULT_MINIMUM_FOOD_SOURCES = 2;
+
+
         private Random random = new Random();
 
         private bool columnOffset = true;
@@ -20,9 +22,30 @@ namespace SlimeSimulation.Model
         private HashSet<Edge> edges = new HashSet<Edge>();
         private List<List<Node>> nodeArray = new List<List<Node>>();
         private HashSet<FoodSourceNode> foodSources = new HashSet<FoodSourceNode>();
+        private readonly double probabilityNewNodeIsFood = DEFAULT_PROBABILITY_NEW_NODE_IS_FOOD;
+        private readonly int minimumFoodSources = DEFAULT_MINIMUM_FOOD_SOURCES;
 
         private int columns, rows;
         private int size;
+
+        public LatticeSlimeNetworkGenerator(int size, double probabilityNewNodeIsFoodSource, int minimumFoodSources) : this(size, probabilityNewNodeIsFoodSource)
+        {
+            if (minimumFoodSources < 2)
+            {
+                throw new ArgumentException("Must have at least 2 food sources in network");
+            }
+            this.probabilityNewNodeIsFood = probabilityNewNodeIsFoodSource;
+            this.minimumFoodSources = minimumFoodSources;
+        }
+
+        public LatticeSlimeNetworkGenerator(int size, double probabilityNewNodeIsFoodSource) : this(size)
+        {
+            if (minimumFoodSources > size * size - 4)
+            {
+                throw new ArgumentException("Wont be enough nodes in the graph for minimum number of food nodes");
+            }
+            this.probabilityNewNodeIsFood = probabilityNewNodeIsFoodSource;
+        }
 
         public LatticeSlimeNetworkGenerator(int size)
         {
@@ -177,7 +200,7 @@ namespace SlimeSimulation.Model
         private void EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes()
         {
             List<Node> nodesList = new List<Node>(nodes);
-            while (foodSources.Count < MINIMUM_NUMBER_FOOD_SOURCES)
+            while (foodSources.Count < minimumFoodSources)
             {
                 int index = random.Next(nodes.Count - 1);
                 while (nodesList[index].IsFoodSource())
@@ -247,7 +270,7 @@ namespace SlimeSimulation.Model
 
         private bool IsFoodSource()
         {
-            return random.NextDouble() <= PROBABILITY_NEW_NODE_IS_FOOD;
+            return random.NextDouble() <= probabilityNewNodeIsFood;
         }
     }
 }

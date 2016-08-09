@@ -1,4 +1,6 @@
 using SlimeSimulation.Controller;
+using SlimeSimulation.Controller.SimulationUpdaters;
+using SlimeSimulation.FlowCalculation.LinearEquations;
 
 namespace SlimeSimulation
 {
@@ -8,7 +10,9 @@ namespace SlimeSimulation
         {
             var flowAmount = 3;
             var feedbackParameter = 1.8;
-            var controller = new MainController(flowAmount, feedbackParameter);
+            var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
+            SimulationUpdater simulationUpdater = new SimulationUpdater(flowCalculator, new SlimeNetworkAdaptionCalculator(feedbackParameter));
+            var controller = new MainController(flowAmount, simulationUpdater);
             controller.RunSimulation();
         }
     }

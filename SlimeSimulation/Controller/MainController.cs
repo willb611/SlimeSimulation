@@ -17,18 +17,17 @@ namespace SlimeSimulation.Controller
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly int flowAmount;
-        private SlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(13);
+        private SlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(13, 0.05);
         private SimulationUpdater simulationUpdater;
 
         private MainView mainView;
         private bool simulationDoingStep = false;
         private SimulationState state;
 
-        public MainController(int flowAmount, double feedbackParameter)
+        public MainController(int flowAmount, SimulationUpdater simulationUpdater)
         {
             this.flowAmount = flowAmount;
-            simulationUpdater = new SimulationUpdater(new FlowCalculator(new LupDecompositionSolver()),
-                new SlimeNetworkAdaptionCalculator(feedbackParameter));
+            this.simulationUpdater = simulationUpdater;
         }
 
         public void RunSimulation()
@@ -39,15 +38,15 @@ namespace SlimeSimulation.Controller
                 state = new SimulationState(slimeNetwork);
                 using (mainView = new MainView())
                 {
-                    logger.Info("[RunSimulation] Using before ");
+                    logger.Debug("[RunSimulation] Using before ");
                     UpdateDisplayFromState(state);
-                    logger.Info("[RunSimulation] Using after ");
+                    logger.Debug("[RunSimulation] Using after ");
                 }
                 logger.Info("[RunSimulation] Finished!");
             }
             catch (Exception e)
             {
-                logger.Fatal(e, "[RunSimulation] Unexpected exception: ", e.Data);
+				logger.Fatal(e, "[RunSimulation] Unexpected exception: " + e, e.Data);
             }
         }
 

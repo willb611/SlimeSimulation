@@ -10,7 +10,7 @@ using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {
-    internal class SimulationUpdater
+    public class SimulationUpdater
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private FlowCalculator flowCalculator;
@@ -49,8 +49,16 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
             return Task<SimulationState>.Run(() =>
             {
-                var flowResult = GetFlow(slimeNetwork, flowAmount);
-                return new SimulationState(slimeNetwork, flowResult);
+                try
+                {
+                    var flowResult = GetFlow(slimeNetwork, flowAmount);
+                    return new SimulationState(slimeNetwork, flowResult);
+                }
+                catch (SingularMatrixException e)
+                {
+                    logger.Error("Error due to singular matrix in current network. Not able to calculate flow. Error: " + e);
+                    return new SimulationState(slimeNetwork);
+                }
             });
         }
 

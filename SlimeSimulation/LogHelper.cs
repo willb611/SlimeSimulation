@@ -24,24 +24,52 @@ namespace SlimeSimulation
             return sb.ToString();
         }
 
+        internal static string PrintArrWithNewLines(double[] arr)
+        {
+            return AppendRowToBuilderLineDelim(arr, new StringBuilder()).ToString();
+        }
+
+        private static object AppendRowToBuilderLineDelim(double[] arr, StringBuilder stringBuilder)
+        {
+            return AppendRowToBuilder(arr, Environment.NewLine, stringBuilder);
+        }
+
         public static String PrintArr(double[] arr)
         {
-            return AppendRowToBuilder(arr, new StringBuilder()).ToString();
+            return AppendRowToBuilderCommaDelim(arr, new StringBuilder()).ToString();
+        }
+
+
+        internal static string PrintArrWithSpaces(double[][] arr)
+        {
+            return PrintArr(arr, " ");
         }
 
         public static String PrintArr(double[][] arr)
+        {
+            return PrintArr(arr, ", ");
+        }
+
+        public static String PrintArr(double[][] arr, String delim)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("[PrintArr] Start").Append(Environment.NewLine);
             for (int i = 0; i < arr.Length; i++)
             {
-                AppendRowToBuilder(arr[i], sb).Append(Environment.NewLine);
+                AppendRowToBuilder(arr[i], delim, sb).Append(Environment.NewLine);
             }
             sb.Append("[PrintArr] Finish ").Append(Environment.NewLine);
             return sb.ToString();
         }
 
-        private static StringBuilder AppendRowToBuilder(double[] row, StringBuilder builder)
+
+
+        private static StringBuilder AppendRowToBuilderCommaDelim(double[] row, StringBuilder builder)
+        {
+            return AppendRowToBuilder(row, ", ", builder);
+        }
+
+        private static StringBuilder AppendRowToBuilder(double[] row, String delim, StringBuilder builder)
         {
             for (int j = 0; j < row.Length; j++)
             {
@@ -54,7 +82,10 @@ namespace SlimeSimulation
                     builder.Append("+")
                       .Append(String.Format("{0, 5:f4}", row[j]));
                 }
-                builder.Append(" ");
+                if (j + 1 < row.Length)
+                {
+                    builder.Append(delim);
+                }
             }
             return builder;
         }
