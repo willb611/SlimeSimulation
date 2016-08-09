@@ -26,8 +26,8 @@ namespace SlimeSimulation.Controller
         public MainController(int flowAmount, double feedbackParameter)
         {
             this.flowAmount = flowAmount;
-            simulationUpdater = new SimulationUpdater(new FlowCalculator(new GaussianSolver()),
-              new SlimeNetworkAdaptionCalculator(feedbackParameter));
+            simulationUpdater = new SimulationUpdater(new FlowCalculator(new LupDecompositionSolver()),
+                new SlimeNetworkAdaptionCalculator(feedbackParameter));
         }
 
         public void RunSimulation()

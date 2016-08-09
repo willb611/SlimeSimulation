@@ -7,17 +7,36 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.FlowCalculation.LinearEquations
 {
-    public class GaussianSolver : LinearEquationSolver
+    public class LupDecompositionSolver : LinearEquationSolver
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         // Ax = b
         public double[] FindX(double[][] a, double[] b)
         {
+            LogDensity(a);
             var pi = LupDecompose(a);
             var matrix = new UpperLowerMatrix(a);
             matrix.LogUpper();
             return LupSolve(matrix, pi, b);
+        }
+
+        private void LogDensity(double[][] a)
+        {
+            int count = 0;
+            int total = 0;
+            for (int i = 0; i < a.Length; i++)
+            {
+                for (int j = 0; j < a[i].Length; j++)
+                {
+                    total++;
+                    if (a[i][j] != 0)
+                    {
+                        count++;
+                    }
+                }
+            }
+            logger.Debug("[LogDensity] Found nonzero: {0}, total: {1}, density %: {2}%", count, total, (count / (double)total) * 100);
         }
 
         private int[] MakePi(int length)
@@ -113,7 +132,8 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations
             }
             if (p == 0)
             {
-                throw new ArgumentException("Array was singular");
+                String arrayString = LogHelper.PrintArr(array);
+                throw new ArgumentException("Array was singular: " + arrayString);
             }
             else
             {

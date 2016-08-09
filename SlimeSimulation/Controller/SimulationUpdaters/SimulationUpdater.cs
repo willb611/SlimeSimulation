@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using NLog;
 using SlimeSimulation.FlowCalculation.LinearEquations;
+using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {
@@ -55,8 +56,12 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private FlowResult GetFlow(SlimeNetwork network, int flow)
         {
-            Node source = network.FoodSources.First();
-            Node sink = network.FoodSources.Last();
+            Node source = network.FoodSources.PickRandom();
+            Node sink = network.FoodSources.PickRandom();
+            while (sink == source)
+            {
+                sink = network.FoodSources.PickRandom();
+            }
             return GetFlow(network, flow, source, sink);
         }
 

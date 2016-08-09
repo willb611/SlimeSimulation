@@ -84,7 +84,7 @@
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Controller\WindowController\WindowController.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
-    <Compile Include="FlowCalculation\LinearEquations\GaussianSolver.cs" />
+    <Compile Include="FlowCalculation\LinearEquations\LupDecompositionSolver.cs" />
     <Compile Include="FlowCalculation\LinearEquations\LinearEquationSolver.cs" />
     <Compile Include="FlowCalculation\Pressures.cs" />
     <Compile Include="LogHelper.cs" />
@@ -99,6 +99,7 @@
     <Compile Include="Model\SlimeNetworkGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StdLibHelpers\EnumerableExtension.cs" />
     <Compile Include="View\Windows\FlowNetworkGraphWindow.cs" />
     <Compile Include="View\Windows\FlowResultWindow.cs" />
     <Compile Include="View\WindowComponents\GraphDrawingArea.cs" />

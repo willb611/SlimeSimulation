@@ -12,7 +12,9 @@ namespace SlimeSimulation.Controller
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly double MAX_LINE_WIDTH = 15;
+
         private readonly double WINDOW_SPACE_PERCENT_TO_DRAW_IN = 0.9;
+        private readonly double LINE_PADDING_PERCENT = 0.05;
 
         private readonly LineViewController lineWeightController;
         private NodeViewController nodeHighlightController;
@@ -127,7 +129,7 @@ namespace SlimeSimulation.Controller
         {
             double weight = lineWeightController.GetLineWeightForEdge(edge);
             double percent = weight / lineWeightController.GetMaximumLineWeight();
-            double padding = MAX_LINE_WIDTH * 0.1;
+            double padding = MAX_LINE_WIDTH * LINE_PADDING_PERCENT;
             return percent * (MAX_LINE_WIDTH - 2 * padding) + padding;
         }
 
