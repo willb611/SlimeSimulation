@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Gdk;
 using Gtk;
 using Cairo;
+using SlimeSimulation.Controller;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.View
 {
     public class NodeHighlightKey
     {

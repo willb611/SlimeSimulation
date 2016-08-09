@@ -1,5 +1,6 @@
 using NLog;
 using SlimeSimulation.Controller;
+using SlimeSimulation.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;

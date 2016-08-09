@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SlimeSimulation.Model.Simulation;
 using SlimeSimulation.Controller.SimulationUpdaters;
+using SlimeSimulation.View;
 
 namespace SlimeSimulation.Controller
 {

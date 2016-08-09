@@ -3,9 +3,9 @@ using Gtk;
 using NLog;
 using SlimeSimulation.Controller;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.View.Windows
 {
-    class FlowResultWindow : WindowTemplate
+    class FlowResultWindow : WindowTemplate, GraphDrawingWindow
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 

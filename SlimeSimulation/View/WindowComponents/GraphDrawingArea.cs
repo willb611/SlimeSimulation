@@ -4,8 +4,9 @@ using SlimeSimulation.Model;
 using NLog;
 using Cairo;
 using Gdk;
+using SlimeSimulation.Controller;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.View
 {
     public class GraphDrawingArea : Gtk.DrawingArea
     {

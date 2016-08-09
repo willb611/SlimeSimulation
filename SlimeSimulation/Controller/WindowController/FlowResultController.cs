@@ -1,11 +1,12 @@
 using NLog;
+using SlimeSimulation.View.Windows;
 using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.Controller;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SlimeSimulation.View;
 
 namespace SlimeSimulation.Controller
 {
@@ -34,8 +35,7 @@ namespace SlimeSimulation.Controller
         public override void OnClick()
         {
             flowResult.Validate();
-            //window.InvertEdgeDrawing();
-            ((FlowResultWindow)window).GraphDrawingArea.InvertEdgeDrawing();
+            ((GraphDrawingWindow)window).GraphDrawingArea.InvertEdgeDrawing();
         }
     }
 }

@@ -6,14 +6,20 @@ using SlimeSimulation.Model;
 using System;
 using SlimeSimulation.Controller;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.View.Windows
 {
-    class FlowNetworkGraphWindow : WindowTemplate
+    class FlowNetworkGraphWindow : WindowTemplate, GraphDrawingWindow
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private List<Edge> edges;
-        private DrawingArea graphDrawingArea;
+        private GraphDrawingArea graphDrawingArea;
         private FlowNetworkGraphController controller;
+
+        public GraphDrawingArea GraphDrawingArea {
+            get {
+                return graphDrawingArea;
+            }
+        }
 
         public FlowNetworkGraphWindow(List<Edge> edges, FlowNetworkGraphController controller)
           : base("ConductivityWindow", controller)

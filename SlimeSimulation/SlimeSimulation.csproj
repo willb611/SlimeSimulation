@@ -109,6 +109,7 @@
     <Compile Include="Controller\WindowComponentsController\NodeViewController.cs" />
     <Compile Include="View\WindowComponents\NodeHighlightKey.cs" />
     <Compile Include="View\RGB.cs" />
+    <Compile Include="View\Windows\GraphDrawingWindow.cs" />
     <Compile Include="View\Windows\WindowTemplate.cs" />
   </ItemGroup>
   <ItemGroup>

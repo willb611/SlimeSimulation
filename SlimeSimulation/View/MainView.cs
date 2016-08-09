@@ -5,7 +5,7 @@ using NLog;
 using SlimeSimulation.Model;
 using System.Collections.Generic;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.View
 {
     public class MainView : IDisposable
     {

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SlimeSimulation.View;
+using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller
 {
@@ -34,6 +36,7 @@ namespace SlimeSimulation.Controller
         public override void OnClick()
         {
             logger.Debug("[OnClick] Clicked!");
+            ((GraphDrawingWindow)window).GraphDrawingArea.InvertEdgeDrawing();
         }
     }
 }

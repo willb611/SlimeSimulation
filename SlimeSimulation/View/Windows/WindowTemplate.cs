@@ -7,7 +7,7 @@ using Gtk;
 using NLog;
 using SlimeSimulation.Controller;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.View
 {
     abstract public class WindowTemplate : IDisposable
     {
