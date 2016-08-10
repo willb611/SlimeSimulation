@@ -1,6 +1,7 @@
 using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.SimulationUpdaters;
-using SlimeSimulation.FlowCalculation.LinearEquations;
+using SlimeSimulation.LinearEquations;
+using SlimeSimulation.FlowCalculation;
 
 namespace SlimeSimulation
 {

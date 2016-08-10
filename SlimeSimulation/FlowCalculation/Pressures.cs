@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SlimeSimulation.Model;
 using NLog;
 
-namespace SlimeSimulation.FlowCalculation.LinearEquations
+namespace SlimeSimulation.FlowCalculation
 {
     public class Pressures
     {

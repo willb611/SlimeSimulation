@@ -5,8 +5,8 @@ using SlimeSimulation.Model.Simulation;
 using System.Threading.Tasks;
 using System.Linq;
 using NLog;
-using SlimeSimulation.FlowCalculation.LinearEquations;
 using SlimeSimulation.StdLibHelpers;
+using SlimeSimulation.LinearEquations;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {

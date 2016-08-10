@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlimeSimulation.FlowCalculation.LinearEquations;
+using SlimeSimulation.LinearEquations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

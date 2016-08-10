@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using NLog;
 using SlimeSimulation.Model;
+using SlimeSimulation.LinearEquations;
 
-namespace SlimeSimulation.FlowCalculation.LinearEquations
+namespace SlimeSimulation.FlowCalculation
 {
     public class FlowCalculator
     {

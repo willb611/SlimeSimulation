@@ -115,9 +115,9 @@
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Controller\WindowController\WindowController.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
-    <Compile Include="FlowCalculation\LinearEquations\LupDecompositionSolver.cs" />
-    <Compile Include="FlowCalculation\LinearEquations\LinearEquationSolver.cs" />
-    <Compile Include="FlowCalculation\LinearEquations\SingularMatrixException.cs" />
+    <Compile Include="LinearEquations\LupDecompositionSolver.cs" />
+    <Compile Include="LinearEquations\LinearEquationSolver.cs" />
+    <Compile Include="LinearEquations\SingularMatrixException.cs" />
     <Compile Include="FlowCalculation\Pressures.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Model\Graph.cs" />
