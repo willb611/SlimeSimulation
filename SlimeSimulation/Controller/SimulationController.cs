@@ -12,37 +12,31 @@ using SlimeSimulation.View;
 
 namespace SlimeSimulation.Controller
 {
-    public class MainController
+    public class SimulationController
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly int flowAmount;
-        private SlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(13, 0.05);
         private SimulationUpdater simulationUpdater;
 
-        private MainView mainView;
+        private MainView mainView = MainView.Instance;
         private bool simulationDoingStep = false;
         private SimulationState state;
 
-        public MainController(int flowAmount, SimulationUpdater simulationUpdater)
+        public SimulationController(int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial)
         {
             this.flowAmount = flowAmount;
             this.simulationUpdater = simulationUpdater;
+            state = new SimulationState(initial);
         }
 
         public void RunSimulation()
         {
             try
             {
-                var slimeNetwork = slimeNetworkGenerator.Generate();
-                state = new SimulationState(slimeNetwork);
-                using (mainView = new MainView())
-                {
-                    logger.Debug("[RunSimulation] Using before ");
-                    UpdateDisplayFromState(state);
-                    logger.Debug("[RunSimulation] Using after ");
-                }
-                logger.Info("[RunSimulation] Finished!");
+                logger.Debug("[RunSimulation] Using before ");
+                UpdateDisplayFromState(state);
+                logger.Debug("[RunSimulation] Using after ");
             }
             catch (Exception e)
             {

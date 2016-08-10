@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Gtk;
 using NLog;
 using SlimeSimulation.Controller;
+using SlimeSimulation.View.Factories;
 
 namespace SlimeSimulation.View
 {
@@ -35,6 +36,19 @@ namespace SlimeSimulation.View
             controller.OnQuit();
         }
 
+        protected void ListenToClicksOn(Gtk.Widget widget)
+        {
+            var factory = new ButtonPressHandlerFactory(widget, controller.OnClickCallback);
+            logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using controllers OnClickCallback: {1}",
+                widget, controller);
+            ListenToClicksOn(widget, factory);
+        }
+        protected void ListenToClicksOn(Gtk.Widget widget, ButtonPressHandlerFactory factory)
+        {
+            logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using factory: {1}", widget, factory);
+            widget.Events |= Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask;
+            widget.ButtonPressEvent += new ButtonPressEventHandler(factory.ButtonPressHandler);
+        }
 
         protected abstract void AddToWindow(Window window);
 
@@ -61,7 +75,6 @@ namespace SlimeSimulation.View
             else if (disposing)
             {
                 window.Dispose();
-                Application.Quit();
             }
             disposed = true;
             logger.Debug("[Dispose : bool] finished from within " + this);

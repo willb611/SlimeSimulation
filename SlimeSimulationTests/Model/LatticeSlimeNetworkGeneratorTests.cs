@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Model;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,11 @@ namespace SlimeSimulation.Model.Tests
     public class LatticeSlimeNetworkGeneratorTests
     {
         [TestMethod()]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Generate_SizeTwo_ShouldThrowException()
-        {
-            var generator = new LatticeSlimeNetworkGenerator(2);
-        }
-
-        [TestMethod()]
         public void Generate_SizeThree_ShouldWork()
         {
             for (int i = 3; i < 9; i++)
             {
-                var generator = new LatticeSlimeNetworkGenerator(i);
+                var generator = new LatticeSlimeNetworkGenerator(new LatticeSlimeNetworkGenerationConfig(i));
                 var network = generator.Generate();
                 Assert.IsTrue(network.FoodSources.Count >= 2, "2 food sources should always be produced");
             }

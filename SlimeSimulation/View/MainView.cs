@@ -11,10 +11,24 @@ namespace SlimeSimulation.View
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         protected bool disposed = false;
-        protected bool running = false;
+
+        public static MainView instance;
+
+        public static MainView Instance {
+            get {
+                return instance;
+            }
+        }
 
         public MainView()
         {
+            if (instance != null)
+            {
+                throw new ApplicationException("Attempting to make multiple views");
+            } else
+            {
+                instance = this;
+            }
             logger.Info("Entered constructor");
             Application.Init();
         }
@@ -39,17 +53,17 @@ namespace SlimeSimulation.View
             disposed = true;
         }
 
+        public void StartBeingAbleToDisplay()
+        {
+            Application.Run();
+        }
+
         public void Display(WindowTemplate window)
         {
             try
             {
-                logger.Debug("[Display] About to display window {0}, running: {1}", window, running);
+                logger.Debug("[Display] About to display window {0}", window);
                 window.Display();
-                //if (!running) {
-                //  logger.Debug("[Display] About to set running to true");
-                //   running = true;
-                Application.Run();
-                //  }
             }
             catch (Exception e)
             {

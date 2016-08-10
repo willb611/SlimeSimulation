@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.Model;
 using NLog;
+using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
 {
@@ -33,7 +34,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
         [TestMethod()]
         public void CalculateFlowTest()
         {
-            var generator = new LatticeSlimeNetworkGenerator(7);
+            var generator = new LatticeSlimeNetworkGenerator(new LatticeSlimeNetworkGenerationConfig(7));
             var network = generator.Generate();
             var calculator = new FlowCalculator(new LupDecompositionSolver());
 

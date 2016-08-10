@@ -7,16 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.View;
+using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller
 {
-    class FlowResultController : WindowController
+    class FlowResultController : SimulationStepWindowController
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private MainView view;
         private FlowResult flowResult;
 
-        public FlowResultController(MainController main, MainView view, FlowResult flowResult) : base(main)
+        public FlowResultController(SimulationController main, MainView view, FlowResult flowResult) : base(main)
         {
             this.view = view;
             this.flowResult = flowResult;
@@ -31,11 +32,16 @@ namespace SlimeSimulation.Controller
                 logger.Debug("[Render] Displayed");
             }
         }
-
-        public override void OnClick()
+        
+        public override void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args)
         {
+            logger.Debug("[OnClick] Clicked!");
             flowResult.Validate();
-            ((GraphDrawingWindow)window).GraphDrawingArea.InvertEdgeDrawing();
+            GraphDrawingArea area = widget as GraphDrawingArea;
+            if (area != null)
+            {
+                area.InvertEdgeDrawing();
+            }
         }
     }
 }
