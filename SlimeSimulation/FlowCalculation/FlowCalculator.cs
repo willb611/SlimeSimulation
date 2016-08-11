@@ -75,8 +75,11 @@ namespace SlimeSimulation.FlowCalculation
         {
             double[] arr = new double[n];
             arr[0] = flowAmount;
-            logger.Debug("[GetMatrixOfFlowGainedAtNodeFromZeroToN] Printing ");
-            logger.Debug(LogHelper.PrintArr(arr));
+            if (logger.IsTraceEnabled)
+            {
+                logger.Trace("[GetMatrixOfFlowGainedAtNodeFromZeroToN] Printing ");
+                logger.Trace(LogHelper.PrintArr(arr));
+            }
             return arr;
         }
 

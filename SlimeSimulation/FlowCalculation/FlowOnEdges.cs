@@ -8,13 +8,11 @@ namespace SlimeSimulation.FlowCalculation
     public class FlowOnEdges
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-
-        private readonly double maxErrorFoundOnCalculatingHeadLoss;
+        
         private readonly Dictionary<Edge, double> flowOnEdgeMapping;
 
         public FlowOnEdges(FlowOnEdges flowOnEdges)
         {
-            maxErrorFoundOnCalculatingHeadLoss = 0;
             flowOnEdgeMapping = new Dictionary<Edge, double>(flowOnEdges.flowOnEdgeMapping);
         }
 
@@ -23,12 +21,8 @@ namespace SlimeSimulation.FlowCalculation
             flowOnEdgeMapping = new Dictionary<Edge, double>();
             foreach (Edge edge in edges)
             {
-                flowOnEdgeMapping.Add(edge, 0);
+                flowOnEdgeMapping.Add(edge, 0.0000001);
             }
-        }
-
-        public double MaxErrorFoundOnCalculatingHeadLoss {
-            get { return maxErrorFoundOnCalculatingHeadLoss; }
         }
 
         internal double GetMaximumFlowOnAnyEdge()
