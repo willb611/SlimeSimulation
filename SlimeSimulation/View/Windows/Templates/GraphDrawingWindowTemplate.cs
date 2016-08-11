@@ -1,5 +1,7 @@
 using NLog;
 using SlimeSimulation.Controller;
+using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.View.Windows.Templates;
 using System;
 using System.Collections.Generic;
 using System.Linq;

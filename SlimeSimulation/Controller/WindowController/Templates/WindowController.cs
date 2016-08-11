@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.Controller.WindowController
 {
     public abstract class WindowController
     {

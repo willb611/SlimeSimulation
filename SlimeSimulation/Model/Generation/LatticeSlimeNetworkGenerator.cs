@@ -5,7 +5,7 @@ using NLog;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Configuration;
 
-namespace SlimeSimulation.Model
+namespace SlimeSimulation.Model.Generation
 {
     public class LatticeSlimeNetworkGenerator : SlimeNetworkGenerator
     {

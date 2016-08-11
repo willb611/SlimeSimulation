@@ -88,11 +88,11 @@
     <Compile Include="Configuration\SimulationConfiguration.cs" />
     <Compile Include="Controller\SimulationUpdaters\SimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkAdaptionCalculator.cs" />
-    <Compile Include="Controller\WindowControllers\FlowNetworkGraphController.cs" />
-    <Compile Include="Controller\WindowControllers\FlowResultController.cs" />
+    <Compile Include="Controller\WindowController\FlowNetworkGraphController.cs" />
+    <Compile Include="Controller\WindowController\FlowResultController.cs" />
     <Compile Include="Controller\SimulationController.cs" />
-    <Compile Include="Controller\WindowControllers\Templates\SimulationStepWindowController.cs" />
-    <Compile Include="Controller\WindowControllers\Templates\WindowController.cs" />
+    <Compile Include="Controller\WindowController\Templates\SimulationStepWindowController.cs" />
+    <Compile Include="Controller\WindowController\Templates\WindowController.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
     <Compile Include="LinearEquations\LupDecompositionSolver.cs" />
     <Compile Include="LinearEquations\LinearEquationSolver.cs" />
@@ -107,21 +107,22 @@
     <Compile Include="Model\Node.cs" />
     <Compile Include="Model\Simulation\SimulationState.cs" />
     <Compile Include="Model\SlimeNetwork.cs" />
-    <Compile Include="Model\SlimeNetworkGenerator.cs" />
+    <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLibHelpers\EnumerableExtension.cs" />
-    <Compile Include="Controller\WindowControllers\ApplicationStartController.cs" />
+    <Compile Include="Controller\WindowController\ApplicationStartController.cs" />
     <Compile Include="View\Factories\ButtonPressHandlerFactory.cs" />
+    <Compile Include="View\WindowComponent\ColorArea.cs" />
     <Compile Include="View\Windows\ApplicationStartWindow.cs" />
     <Compile Include="View\Windows\FlowNetworkGraphWindow.cs" />
     <Compile Include="View\Windows\FlowResultWindow.cs" />
-    <Compile Include="View\WindowComponents\GraphDrawingArea.cs" />
-    <Compile Include="Controller\WindowComponentsController\LineViewController.cs" />
+    <Compile Include="View\WindowComponent\GraphDrawingArea.cs" />
+    <Compile Include="Controller\WindowComponentController\LineViewController.cs" />
     <Compile Include="View\GtkLifecycleController.cs" />
-    <Compile Include="Model\LatticeSlimeNetworkGenerator.cs" />
-    <Compile Include="Controller\WindowComponentsController\NodeViewController.cs" />
-    <Compile Include="View\WindowComponents\NodeHighlightKey.cs" />
+    <Compile Include="Model\Generation\LatticeSlimeNetworkGenerator.cs" />
+    <Compile Include="Controller\WindowComponentController\NodeViewController.cs" />
+    <Compile Include="View\WindowComponent\NodeHighlightKey.cs" />
     <Compile Include="View\RGB.cs" />
     <Compile Include="View\Windows\Templates\GraphDrawingWindowTemplate.cs" />
     <Compile Include="View\Windows\Templates\OnClickCallback.cs" />
@@ -149,6 +150,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using SlimeSimulation.Model.Simulation;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.View;
+using SlimeSimulation.Controller.WindowController;
 
 namespace SlimeSimulation.Controller
 {
@@ -19,7 +20,7 @@ namespace SlimeSimulation.Controller
         private readonly int flowAmount;
         private SimulationUpdater simulationUpdater;
 
-        private GtkLifecycleController mainView = GtkLifecycleController.Instance;
+        private GtkLifecycleController gtkLifecycleController = GtkLifecycleController.Instance;
         private bool simulationDoingStep = false;
         private SimulationState state;
 
@@ -96,12 +97,12 @@ namespace SlimeSimulation.Controller
 
         private void DisplayFlowResult(FlowResult flowResult)
         {
-            new FlowResultController(this, mainView, flowResult).Render();
+            new FlowResultController(this, gtkLifecycleController, flowResult).Render();
         }
 
         private void DisplayConnectivityInNetwork(SlimeNetwork network)
         {
-            new FlowNetworkGraphController(this, mainView, network.Edges).Render();
+            new FlowNetworkGraphController(this, gtkLifecycleController, network.Edges).Render();
         }
     }
 }

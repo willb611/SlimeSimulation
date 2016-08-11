@@ -1,16 +1,14 @@
 using System;
-using SlimeSimulation.Controller;
 using SlimeSimulation.View;
 using SlimeSimulation.View.Windows;
 using NLog;
 using SlimeSimulation.Configuration;
-using SlimeSimulation.Model;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
 using SlimeSimulation.Controller.SimulationUpdaters;
-using System.Threading.Tasks;
+using SlimeSimulation.Model.Generation;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.Controller.WindowController
 {
     public class ApplicationStartController : WindowController
     {
@@ -25,16 +23,16 @@ namespace SlimeSimulation.Controller
 
         public override void Render()
         {
-            using (var mainView = new GtkLifecycleController())
+            using (var gtkLifecycleController = new GtkLifecycleController())
             {
                 using (window = new ApplicationStartWindow("Slime simulation parameter selection", this))
                 {
                     logger.Debug("[Render] Made window");
                     startingWindow = window as ApplicationStartWindow;
                     logger.Debug("[Render] Display with main view");
-                    mainView.Display(window);
+                    gtkLifecycleController.Display(window);
                     logger.Debug("[Render] Start running application");
-                    mainView.StartBeingAbleToDisplay();
+                    gtkLifecycleController.StartBeingAbleToDisplay();
                     logger.Debug("[Render] Left main GTK loop ? ");
                 }
                 logger.Debug("[Render] Finished");

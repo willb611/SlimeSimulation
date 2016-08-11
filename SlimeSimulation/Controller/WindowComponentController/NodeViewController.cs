@@ -1,12 +1,13 @@
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
+using SlimeSimulation.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.Controller.WindowsComponentController
 {
     public abstract class NodeViewController
     {

@@ -1,7 +1,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.Controller.WindowController
 {
     abstract class SimulationStepWindowController : WindowController
     {

@@ -1,7 +1,9 @@
 using SlimeSimulation.FlowCalculation;
 using Gtk;
 using NLog;
-using SlimeSimulation.Controller;
+using SlimeSimulation.Controller.WindowsComponentController;
+using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.Windows
 {

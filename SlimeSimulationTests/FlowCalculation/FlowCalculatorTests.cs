@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using SlimeSimulation.Model;
 using NLog;
 using SlimeSimulation.Configuration;
+using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
 {

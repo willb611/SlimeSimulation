@@ -3,7 +3,7 @@ using SlimeSimulation.Model;
 using System;
 using System.Collections.Generic;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.Controller.WindowsComponentController
 {
     public abstract class LineViewController
     {

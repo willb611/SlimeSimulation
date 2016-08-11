@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using SlimeSimulation.Model;
 using System;
 using SlimeSimulation.Controller;
+using SlimeSimulation.Controller.WindowsComponentController;
+using SlimeSimulation.Controller.WindowController;
 
 namespace SlimeSimulation.View.Windows
 {

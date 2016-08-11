@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SlimeSimulation.Model
+namespace SlimeSimulation.Model.Generation
 {
     public interface SlimeNetworkGenerator
     {

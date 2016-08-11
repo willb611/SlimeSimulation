@@ -5,6 +5,7 @@ using NLog;
 using Cairo;
 using Gdk;
 using SlimeSimulation.Controller;
+using SlimeSimulation.Controller.WindowsComponentController;
 
 namespace SlimeSimulation.View
 {

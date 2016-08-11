@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SlimeSimulation.Controller
+namespace SlimeSimulation.View
 {
     public class RGB
     {
