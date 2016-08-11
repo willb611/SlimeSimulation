@@ -80,6 +80,10 @@ namespace SlimeSimulation.View
 
         virtual protected void DrawEdge(Cairo.Context graphic, Edge edge)
         {
+            if (Math.Abs(lineWeightController.GetLineWeightForEdge(edge)) < 0.0001)
+            {
+                return;
+            }
             graphic.Save();
             logger.Trace("[DrawEdge] Drawing from {0},{1} to {2},{3}", ScaleX(edge.A.X), ScaleY(edge.A.Y),
               ScaleX(edge.B.X), ScaleY(edge.B.Y));
