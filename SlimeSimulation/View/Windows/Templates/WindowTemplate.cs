@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Gtk;
 using NLog;
 using SlimeSimulation.Controller;
+using SlimeSimulation.View.Factories;
 
 namespace SlimeSimulation.View
 {
@@ -35,14 +36,40 @@ namespace SlimeSimulation.View
             controller.OnQuit();
         }
 
+        protected void ListenToClicksOn(Gtk.Widget widget)
+        {
+            var factory = new ButtonPressHandlerFactory(widget, controller.OnClickCallback);
+            logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using controllers OnClickCallback: {1}",
+                widget, controller);
+            ListenToClicksOn(widget, factory);
+        }
+        protected void ListenToClicksOn(Gtk.Widget widget, ButtonPressHandlerFactory factory)
+        {
+            logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using factory: {1}", widget, factory);
+            widget.Events |= Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask;
+            widget.ButtonPressEvent += new ButtonPressEventHandler(factory.ButtonPressHandler);
+        }
 
         protected abstract void AddToWindow(Window window);
 
-        public void Display()
+        public void InitialDisplay()
         {
             AddToWindow(window);
             logger.Debug("[Display] Displaying..");
+            Display();
+            GtkLifecycleController.Instance.ApplicationRun();
+        }
+
+        public void Display()
+        {
+            logger.Debug("[Display] Called from {0}", this);
             window.ShowAll();
+        }
+
+        public void Hide()
+        {
+            logger.Debug("[Hide] Called from {0}", this);
+            window.HideAll();
         }
 
         public void Dispose()
@@ -60,8 +87,8 @@ namespace SlimeSimulation.View
             }
             else if (disposing)
             {
+                GtkLifecycleController.Instance.ApplicationQuit();
                 window.Dispose();
-                Application.Quit();
             }
             disposed = true;
             logger.Debug("[Dispose : bool] finished from within " + this);

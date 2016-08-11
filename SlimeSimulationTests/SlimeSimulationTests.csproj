@@ -55,12 +55,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Configuration\LatticeSlimeNetworkGenerationConfigTests.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkAdaptionCalculatorTests.cs" />
     <Compile Include="FlowCalculation\FlowCalculatorTests.cs" />
     <Compile Include="FlowCalculation\LinearEquations\LupDecompositionSolverTests.cs" />
     <Compile Include="Model\EdgeTests.cs" />
     <Compile Include="Model\GraphTests.cs" />
     <Compile Include="Model\LatticeSlimeNetworkGeneratorTests.cs" />
+    <Compile Include="Model\NodeTests.cs" />
     <Compile Include="Model\SlimeNetworkGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,19 +8,20 @@ using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.View;
 using SlimeSimulation.View.Windows;
+using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller
 {
-    class FlowNetworkGraphController : WindowController
+    class FlowNetworkGraphController : SimulationStepWindowController
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private MainView view;
+        private GtkLifecycleController gtkLifecycleController;
         private ISet<Edge> edges;
 
-        public FlowNetworkGraphController(MainController mainController, MainView view, ISet<Edge> edges)
+        public FlowNetworkGraphController(SimulationController mainController, GtkLifecycleController view, ISet<Edge> edges)
           : base(mainController)
         {
-            this.view = view;
+            this.gtkLifecycleController = view;
             this.edges = edges;
         }
 
@@ -29,14 +30,17 @@ namespace SlimeSimulation.Controller
             logger.Debug("[RenderConnectivity] Making new window");
             using (window = new FlowNetworkGraphWindow(new List<Edge>(edges), this))
             {
-                view.Display(window);
+                gtkLifecycleController.Display(window);
             }
         }
-
-        public override void OnClick()
+        
+        public override void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args)
         {
             logger.Debug("[OnClick] Clicked!");
-            ((GraphDrawingWindow)window).GraphDrawingArea.InvertEdgeDrawing();
+            GraphDrawingArea area = widget as GraphDrawingArea;
+            if (area != null) { 
+                area.InvertEdgeDrawing();
+            }
         }
     }
 }

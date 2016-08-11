@@ -1,3 +1,4 @@
+using NLog;
 using System;
 using System.Collections.Generic;
 
@@ -5,6 +6,8 @@ namespace SlimeSimulation.Model
 {
     public class Node : IEquatable<Node>
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly int id;
         private readonly double x, y;
 
@@ -85,6 +88,26 @@ namespace SlimeSimulation.Model
         public override string ToString()
         {
             return this.GetType() + "{id=" + id + ", x=" + x + ", y=" + y + "}";
+        }
+
+        internal void ReplaceWithGivenNodeInEdges(Node replacement, HashSet<Edge> edges)
+        {
+            if (logger.IsTraceEnabled)
+            {
+                logger.Trace("[ReplaceWithGivenNodeInEdges] Replacing {0}, with: {1}",
+                    this, replacement);
+            }
+            foreach (Edge edge in GetEdgesAdjacent(edges))
+            {
+                Node otherNode = edge.GetOtherNode(this);
+                Edge replacementEdge = new Edge(replacement, otherNode, edge.Connectivity);
+                edges.Remove(edge);
+                edges.Add(replacementEdge);
+            }
+            if (logger.IsTraceEnabled)
+            {
+                logger.Trace("[EnsureFoodSources] Finished. resulting edges: " + LogHelper.CollectionToString(edges));
+            }
         }
     }
 }
