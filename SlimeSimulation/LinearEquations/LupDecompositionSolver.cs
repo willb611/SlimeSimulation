@@ -14,7 +14,7 @@ namespace SlimeSimulation.LinearEquations
         // Ax = b
         public double[] FindX(double[][] a, double[] b)
         {
-            logger.Debug("A: " + LogHelper.PrintArrWithSpaces(a) + ", B: " + LogHelper.PrintArrWithNewLines(b));
+            logger.Trace("A: " + LogHelper.PrintArrWithSpaces(a) + ", B: " + LogHelper.PrintArrWithNewLines(b));
             LogDensity(a);
             var pi = LupDecompose(a);
             var matrix = new UpperLowerMatrix(a);

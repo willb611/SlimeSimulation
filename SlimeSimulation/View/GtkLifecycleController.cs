@@ -4,23 +4,39 @@ using Gtk;
 using NLog;
 using SlimeSimulation.Model;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace SlimeSimulation.View
 {
-    public class MainView : IDisposable
+    public class GtkLifecycleController : IDisposable
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         protected bool disposed = false;
+        private int runningCount = 0;
 
-        public static MainView instance;
+        public static GtkLifecycleController instance;
 
-        public static MainView Instance {
+        public static GtkLifecycleController Instance {
             get {
                 return instance;
             }
         }
 
-        public MainView()
+        internal void ApplicationRun()
+        {
+            Interlocked.Increment(ref runningCount);
+            logger.Debug("[ApplicationRun] After incrementing, count: {0}", runningCount);
+            Application.Run();
+        }
+
+        internal void ApplicationQuit()
+        {
+            Interlocked.Decrement(ref runningCount);
+            logger.Debug("[ApplicationQuit] After decrementing, count: {0}", runningCount);
+            Application.Quit();
+        }
+
+        public GtkLifecycleController()
         {
             if (instance != null)
             {
@@ -48,14 +64,14 @@ namespace SlimeSimulation.View
             else if (disposing)
             {
                 logger.Info("[Dispose] Quitting application");
-                Application.Quit();
+                ApplicationQuit();
             }
             disposed = true;
         }
 
         public void StartBeingAbleToDisplay()
         {
-            Application.Run();
+            ApplicationRun();
         }
 
         public void Display(WindowTemplate window)
@@ -63,7 +79,7 @@ namespace SlimeSimulation.View
             try
             {
                 logger.Debug("[Display] About to display window {0}", window);
-                window.Display();
+                window.InitialDisplay();
             }
             catch (Exception e)
             {

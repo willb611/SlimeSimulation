@@ -5,12 +5,11 @@ using SlimeSimulation.Controller;
 
 namespace SlimeSimulation.View.Windows
 {
-    class FlowResultWindow : WindowTemplate, GraphDrawingWindow
+    class FlowResultWindow : GraphDrawingWindowTemplate
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private FlowResult flowResult;
-        private GraphDrawingArea graphDrawingArea;
         private FlowResultController controller;
 
         public FlowResultWindow(FlowResult flowResult, FlowResultController controller) : base("Flow result", controller)
@@ -39,24 +38,6 @@ namespace SlimeSimulation.View.Windows
             vbox.PackStart(hbox, true, true, 10);
 
             window.Add(vbox);
-        }
-
-        public GraphDrawingArea GraphDrawingArea {
-            get { return graphDrawingArea; }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposed)
-            {
-                return;
-            }
-            else if (disposing)
-            {
-                graphDrawingArea.Dispose();
-            }
-            disposed = true;
-            logger.Debug("[Dispose : bool] finished from within " + this);
         }
     }
 }

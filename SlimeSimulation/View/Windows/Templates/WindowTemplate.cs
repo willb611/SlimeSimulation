@@ -52,11 +52,24 @@ namespace SlimeSimulation.View
 
         protected abstract void AddToWindow(Window window);
 
-        public void Display()
+        public void InitialDisplay()
         {
             AddToWindow(window);
             logger.Debug("[Display] Displaying..");
+            Display();
+            GtkLifecycleController.Instance.ApplicationRun();
+        }
+
+        public void Display()
+        {
+            logger.Debug("[Display] Called from {0}", this);
             window.ShowAll();
+        }
+
+        public void Hide()
+        {
+            logger.Debug("[Hide] Called from {0}", this);
+            window.HideAll();
         }
 
         public void Dispose()
@@ -74,6 +87,7 @@ namespace SlimeSimulation.View
             }
             else if (disposing)
             {
+                GtkLifecycleController.Instance.ApplicationQuit();
                 window.Dispose();
             }
             disposed = true;

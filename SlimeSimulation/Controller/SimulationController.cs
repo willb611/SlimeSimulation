@@ -19,12 +19,16 @@ namespace SlimeSimulation.Controller
         private readonly int flowAmount;
         private SimulationUpdater simulationUpdater;
 
-        private MainView mainView = MainView.Instance;
+        private GtkLifecycleController mainView = GtkLifecycleController.Instance;
         private bool simulationDoingStep = false;
         private SimulationState state;
 
-        public SimulationController(int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial)
+        private readonly ApplicationStartController startingController;
+
+        public SimulationController(ApplicationStartController startingController,
+            int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial)
         {
+            this.startingController = startingController;
             this.flowAmount = flowAmount;
             this.simulationUpdater = simulationUpdater;
             state = new SimulationState(initial);

@@ -15,13 +15,13 @@ namespace SlimeSimulation.Controller
     class FlowNetworkGraphController : SimulationStepWindowController
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private MainView view;
+        private GtkLifecycleController gtkLifecycleController;
         private ISet<Edge> edges;
 
-        public FlowNetworkGraphController(SimulationController mainController, MainView view, ISet<Edge> edges)
+        public FlowNetworkGraphController(SimulationController mainController, GtkLifecycleController view, ISet<Edge> edges)
           : base(mainController)
         {
-            this.view = view;
+            this.gtkLifecycleController = view;
             this.edges = edges;
         }
 
@@ -30,7 +30,7 @@ namespace SlimeSimulation.Controller
             logger.Debug("[RenderConnectivity] Making new window");
             using (window = new FlowNetworkGraphWindow(new List<Edge>(edges), this))
             {
-                view.Display(window);
+                gtkLifecycleController.Display(window);
             }
         }
         

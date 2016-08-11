@@ -25,7 +25,7 @@ namespace SlimeSimulation.Controller
 
         public override void Render()
         {
-            using (var mainView = new MainView())
+            using (var mainView = new GtkLifecycleController())
             {
                 using (window = new ApplicationStartWindow("Slime simulation parameter selection", this))
                 {
@@ -43,28 +43,24 @@ namespace SlimeSimulation.Controller
 
         internal void StartSimulation(SimulationConfiguration config)
         {
-            var controllerConstruction = CreateSimulationController(config);
-            AsyncStart(controllerConstruction);
-        }
-
-        private Task<SimulationController> CreateSimulationController(SimulationConfiguration config)
-        {
-            return Task.Run(() =>
+            var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
+            SlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(config.GenerationConfig);
+            SimulationUpdater simulationUpdater = new SimulationUpdater(flowCalculator, new SlimeNetworkAdaptionCalculator(config.FeedbackParam));
+            var initial = slimeNetworkGenerator.Generate();
+            var controller = new SimulationController(this, config.FlowAmount, simulationUpdater, initial);
+            logger.Info("[StartSimulation] Running simulation from user supplied parameters");
+            Gtk.Application.Invoke(delegate
             {
-                logger.Debug("[StartSimulation] Constructing");
-                var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
-                SlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(config.GenerationConfig);
-                SimulationUpdater simulationUpdater = new SimulationUpdater(flowCalculator, new SlimeNetworkAdaptionCalculator(config.FeedbackParam));
-                var initial = slimeNetworkGenerator.Generate();
-                return new SimulationController(config.FlowAmount, simulationUpdater, initial);
+                logger.Debug("[StartSimulation] Invoking from main thread ");
+                startingWindow.Hide();
+                controller.RunSimulation();
             });
         }
 
-        private async void AsyncStart(Task<SimulationController> controllerConstruction)
+        public void FinishSimulation(SimulationController controller)
         {
-            SimulationController controller = await controllerConstruction;
-            logger.Info("[StartSimulation] Running simulation from user supplied parameters");
-            controller.RunSimulation();
+            logger.Info("[FinishSimulation] Finished");
+            startingWindow.Display();
         }
 
         public override void OnQuit()

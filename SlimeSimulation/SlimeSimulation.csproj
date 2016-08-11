@@ -118,12 +118,12 @@
     <Compile Include="View\Windows\FlowResultWindow.cs" />
     <Compile Include="View\WindowComponents\GraphDrawingArea.cs" />
     <Compile Include="Controller\WindowComponentsController\LineViewController.cs" />
-    <Compile Include="View\MainView.cs" />
+    <Compile Include="View\GtkLifecycleController.cs" />
     <Compile Include="Model\LatticeSlimeNetworkGenerator.cs" />
     <Compile Include="Controller\WindowComponentsController\NodeViewController.cs" />
     <Compile Include="View\WindowComponents\NodeHighlightKey.cs" />
     <Compile Include="View\RGB.cs" />
-    <Compile Include="View\Windows\Templates\GraphDrawingWindow.cs" />
+    <Compile Include="View\Windows\Templates\GraphDrawingWindowTemplate.cs" />
     <Compile Include="View\Windows\Templates\OnClickCallback.cs" />
     <Compile Include="View\Windows\Templates\WindowTemplate.cs" />
   </ItemGroup>
@@ -132,7 +132,6 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -8,38 +8,17 @@ using SlimeSimulation.Controller;
 
 namespace SlimeSimulation.View.Windows
 {
-    class FlowNetworkGraphWindow : WindowTemplate, GraphDrawingWindow
+    class FlowNetworkGraphWindow : GraphDrawingWindowTemplate
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private List<Edge> edges;
-        private GraphDrawingArea graphDrawingArea;
         private FlowNetworkGraphController controller;
-
-        public GraphDrawingArea GraphDrawingArea {
-            get {
-                return graphDrawingArea;
-            }
-        }
-
+        
         public FlowNetworkGraphWindow(List<Edge> edges, FlowNetworkGraphController controller)
           : base("ConductivityWindow", controller)
         {
             this.edges = edges;
             this.controller = controller;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposed)
-            {
-                return;
-            }
-            else if (disposing)
-            {
-                graphDrawingArea.Dispose();
-            }
-            disposed = true;
-            logger.Debug("[Dispose : bool] finished from within " + this);
         }
 
         protected override void AddToWindow(Window window)
