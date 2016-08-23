@@ -12,16 +12,16 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.View.Windows
 {
-    class FlowNetworkGraphWindow : GraphDrawingWindowTemplate
+    class SlimeNetworkWindow : GraphDrawingWindowTemplate
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly List<Edge> _edges;
-        private readonly FlowNetworkGraphController _controller;
+        private readonly SlimeNetworkWindowController _controller;
 
         private CheckButton _shouldSimulationStepsBeDisplayedButton;
         
-        public FlowNetworkGraphWindow(List<Edge> edges, FlowNetworkGraphController controller)
-          : base("FlowNetworkGraphWindow", controller)
+        public SlimeNetworkWindow(List<Edge> edges, SlimeNetworkWindowController controller)
+          : base("SlimeNetworkWindow", controller)
         {
             this._edges = edges;
             this._controller = controller;

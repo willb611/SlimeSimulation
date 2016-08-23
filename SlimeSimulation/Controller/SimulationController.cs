@@ -125,12 +125,12 @@ namespace SlimeSimulation.Controller
 
         private void DisplayFlowResult(FlowResult flowResult)
         {
-            new FlowResultController(this, _gtkLifecycleController, flowResult).Render();
+            new FlowResultWindowController(this, _gtkLifecycleController, flowResult).Render();
         }
 
         private void DisplayConnectivityInNetwork(SlimeNetwork network)
         {
-            new FlowNetworkGraphController(this, _gtkLifecycleController, network.Edges).Render();
+            new SlimeNetworkWindowController(this, _gtkLifecycleController, network.Edges).Render();
         }
     }
 }

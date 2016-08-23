@@ -13,13 +13,13 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    class FlowResultController : SimulationStepWindowController
+    class FlowResultWindowController : SimulationStepWindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly GtkLifecycleController _gtkLifecycleController;
         private readonly FlowResult _flowResult;
 
-        public FlowResultController(SimulationController main, GtkLifecycleController gtkLifecycleController, FlowResult flowResult) : base(main)
+        public FlowResultWindowController(SimulationController main, GtkLifecycleController gtkLifecycleController, FlowResult flowResult) : base(main)
         {
             this._gtkLifecycleController = gtkLifecycleController;
             this._flowResult = flowResult;

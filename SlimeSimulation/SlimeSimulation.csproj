@@ -88,8 +88,8 @@
     <Compile Include="Configuration\SimulationConfiguration.cs" />
     <Compile Include="Controller\SimulationUpdaters\SimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkAdaptionCalculator.cs" />
-    <Compile Include="Controller\WindowController\FlowNetworkGraphController.cs" />
-    <Compile Include="Controller\WindowController\FlowResultController.cs" />
+    <Compile Include="Controller\WindowController\SlimeNetworkWindowController.cs" />
+    <Compile Include="Controller\WindowController\FlowResultWindowController.cs" />
     <Compile Include="Controller\SimulationController.cs" />
     <Compile Include="Controller\WindowController\Templates\SimulationStepWindowController.cs" />
     <Compile Include="Controller\WindowController\Templates\WindowController.cs" />
@@ -115,7 +115,7 @@
     <Compile Include="View\Factories\ButtonPressHandlerFactory.cs" />
     <Compile Include="View\WindowComponent\ColorArea.cs" />
     <Compile Include="View\Windows\ApplicationStartWindow.cs" />
-    <Compile Include="View\Windows\FlowNetworkGraphWindow.cs" />
+    <Compile Include="View\Windows\SlimeNetworkWindow.cs" />
     <Compile Include="View\Windows\FlowResultWindow.cs" />
     <Compile Include="View\WindowComponent\GraphDrawingArea.cs" />
     <Compile Include="Controller\WindowComponentController\LineViewController.cs" />

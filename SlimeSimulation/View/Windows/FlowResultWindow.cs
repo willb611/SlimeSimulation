@@ -13,12 +13,12 @@ namespace SlimeSimulation.View.Windows
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly FlowResult _flowResult;
-        private FlowResultController _controller;
+        private FlowResultWindowController _windowController;
 
-        public FlowResultWindow(FlowResult flowResult, FlowResultController controller) : base("Flow result", controller)
+        public FlowResultWindow(FlowResult flowResult, FlowResultWindowController windowController) : base("Flow result", windowController)
         {
             this._flowResult = flowResult;
-            this._controller = controller;
+            this._windowController = windowController;
             Logger.Debug("[constructor] Finished");
         }
 
@@ -38,7 +38,7 @@ namespace SlimeSimulation.View.Windows
 
             VBox vbox = new VBox(false, 10);
             vbox.PackStart(new Label("Network with amount of flow: " + _flowResult.FlowAmount), false, true, 10);
-            vbox.PackStart(new SimulationStepButton(_controller), false, true, 10);
+            vbox.PackStart(new SimulationStepButton(_windowController), false, true, 10);
             vbox.PackStart(hbox, true, true, 10);
 
             window.Add(vbox);

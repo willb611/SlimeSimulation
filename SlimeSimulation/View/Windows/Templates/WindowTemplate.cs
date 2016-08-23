@@ -16,7 +16,7 @@ namespace SlimeSimulation.View.Windows.Templates
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         protected bool Disposed = false;
-        private readonly WindowController _controller;
+        private readonly WindowController _windowController;
 
         private readonly Window _window;
 
@@ -24,9 +24,9 @@ namespace SlimeSimulation.View.Windows.Templates
             get { return _window; }
         }
 
-        public WindowTemplate(String windowTitle, WindowController controller)
+        public WindowTemplate(String windowTitle, WindowController windowController)
         {
-            this._controller = controller;
+            this._windowController = windowController;
             _window = new Window(windowTitle);
             _window.Maximize();
             
@@ -35,14 +35,14 @@ namespace SlimeSimulation.View.Windows.Templates
 
         private void Window_DeleteEvent(object o, DeleteEventArgs args)
         {
-            _controller.OnQuit();
+            _windowController.OnQuit();
         }
 
         protected void ListenToClicksOn(Gtk.Widget widget)
         {
-            var factory = new ButtonPressHandlerFactory(widget, _controller.OnClickCallback);
+            var factory = new ButtonPressHandlerFactory(widget, _windowController.OnClickCallback);
             Logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using controllers OnClickCallback: {1}",
-                widget, _controller);
+                widget, _windowController);
             ListenToClicksOn(widget, factory);
         }
         protected void ListenToClicksOn(Gtk.Widget widget, ButtonPressHandlerFactory factory)

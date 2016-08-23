@@ -14,13 +14,13 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    class FlowNetworkGraphController : SimulationStepWindowController
+    class SlimeNetworkWindowController : SimulationStepWindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly GtkLifecycleController _gtkLifecycleController;
         private readonly ISet<Edge> _edges;
 
-        public FlowNetworkGraphController(SimulationController mainController, GtkLifecycleController view, ISet<Edge> edges)
+        public SlimeNetworkWindowController(SimulationController mainController, GtkLifecycleController view, ISet<Edge> edges)
           : base(mainController)
         {
             this._gtkLifecycleController = view;
@@ -30,7 +30,7 @@ namespace SlimeSimulation.Controller.WindowController
         public override void Render()
         {
             Logger.Debug("[RenderConnectivity] Making new window");
-            using (Window = new FlowNetworkGraphWindow(new List<Edge>(_edges), this))
+            using (Window = new SlimeNetworkWindow(new List<Edge>(_edges), this))
             {
                 _gtkLifecycleController.Display(Window);
             }
