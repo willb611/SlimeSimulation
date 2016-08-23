@@ -7,28 +7,28 @@ namespace SlimeSimulation.FlowCalculation
 {
     public class FlowOnEdges
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        private readonly Dictionary<Edge, double> flowOnEdgeMapping;
+        private readonly Dictionary<Edge, double> _flowOnEdgeMapping;
 
         public FlowOnEdges(FlowOnEdges flowOnEdges)
         {
-            flowOnEdgeMapping = new Dictionary<Edge, double>(flowOnEdges.flowOnEdgeMapping);
+            _flowOnEdgeMapping = new Dictionary<Edge, double>(flowOnEdges._flowOnEdgeMapping);
         }
 
         internal FlowOnEdges(ICollection<Edge> edges)
         {
-            flowOnEdgeMapping = new Dictionary<Edge, double>();
+            _flowOnEdgeMapping = new Dictionary<Edge, double>();
             foreach (Edge edge in edges)
             {
-                flowOnEdgeMapping.Add(edge, 0.0000001);
+                _flowOnEdgeMapping.Add(edge, 0.0000001);
             }
         }
 
         internal double GetMaximumFlowOnAnyEdge()
         {
             double max = 0;
-            foreach (double value in flowOnEdgeMapping.Values)
+            foreach (double value in _flowOnEdgeMapping.Values)
             {
                 max = Math.Max(max, Math.Abs(value));
             }
@@ -37,14 +37,14 @@ namespace SlimeSimulation.FlowCalculation
 
         internal double GetFlowOnEdge(Edge edge)
         {
-            return flowOnEdgeMapping[edge];
+            return _flowOnEdgeMapping[edge];
         }
 
         internal void IncreaseFlowOnEdgeBy(Edge edge, double amount)
         {
             double current = GetFlowOnEdge(edge);
-            flowOnEdgeMapping[edge] = current + amount;
-            logger.Trace("[IncreaseFlowOnEdgeBy] For edge: {0}, flow is now: {1}", edge, GetFlowOnEdge(edge));
+            _flowOnEdgeMapping[edge] = current + amount;
+            Logger.Trace("[IncreaseFlowOnEdgeBy] For edge: {0}, flow is now: {1}", edge, GetFlowOnEdge(edge));
         }
     }
 }

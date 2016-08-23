@@ -15,7 +15,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
     [TestClass()]
     public class FlowCalculatorTests
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [TestMethod()]
         public void SwapTest()
@@ -29,7 +29,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
             flowCalculator.EnsureSourceSinkInCorrectPositions(nodes, source, sink);
             Assert.AreEqual(nodes[0], source);
             Assert.AreEqual(nodes[2], sink);
-            logger.Info(LogHelper.CollectionToString(nodes));
+            Logger.Info(LogHelper.CollectionToString(nodes));
         }
 
         [TestMethod()]

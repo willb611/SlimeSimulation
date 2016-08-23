@@ -12,26 +12,26 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 {
     public class SimulationUpdater
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        private FlowCalculator flowCalculator;
-        private SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly FlowCalculator _flowCalculator;
+        private readonly SlimeNetworkAdaptionCalculator _slimeNetworkAdapterCalculator;
 
         public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator)
         {
-            this.flowCalculator = flowCalculator;
-            this.slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
+            this._flowCalculator = flowCalculator;
+            this._slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
         }
 
         internal Task<SimulationState> GetNextState(SimulationState state, int flowAmount)
         {
             if (state.FlowResult == null)
             {
-                logger.Info("[GetNextState] Calculating flowResult");
+                Logger.Info("[GetNextState] Calculating flowResult");
                 return GetStateWithFlow(state.SlimeNetwork, flowAmount);
             }
             else
             {
-                logger.Info("[GetNextState] Updating simulation based on flow result pre-existing");
+                Logger.Info("[GetNextState] Updating simulation based on flow result pre-existing");
                 return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult);
             }
         }
@@ -40,7 +40,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
             return Task<SimulationState>.Run(() =>
             {
-                var nextNetwork = slimeNetworkAdapterCalculator.CalculateNextStep(slimeNetwork, flowResult);
+                var nextNetwork = _slimeNetworkAdapterCalculator.CalculateNextStep(slimeNetwork, flowResult);
                 return new SimulationState(nextNetwork);
             });
         }
@@ -56,7 +56,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 }
                 catch (SingularMatrixException e)
                 {
-                    logger.Error("Error due to singular matrix in current network. Not able to calculate flow. Error: " + e);
+                    Logger.Error("Error due to singular matrix in current network. Not able to calculate flow. Error: " + e);
                     return new SimulationState(slimeNetwork);
                 }
             });
@@ -75,7 +75,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink)
         {
-            var flowResult = flowCalculator.CalculateFlow(network.Edges, network.Nodes,
+            var flowResult = _flowCalculator.CalculateFlow(network.Edges, network.Nodes,
               source, sink, flow);
             return flowResult;
         }

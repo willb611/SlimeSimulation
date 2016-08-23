@@ -11,9 +11,9 @@ namespace SlimeSimulation.View
 {
     public class GtkLifecycleController : IDisposable
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        protected bool disposed = false;
-        private int runningCount = 0;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        protected bool Disposed = false;
+        private int _runningCount = 0;
 
         public static GtkLifecycleController instance;
 
@@ -25,15 +25,15 @@ namespace SlimeSimulation.View
 
         internal void ApplicationRun()
         {
-            Interlocked.Increment(ref runningCount);
-            logger.Debug("[ApplicationRun] After incrementing, count: {0}", runningCount);
+            Interlocked.Increment(ref _runningCount);
+            Logger.Debug("[ApplicationRun] After incrementing, count: {0}", _runningCount);
             Application.Run();
         }
 
         internal void ApplicationQuit()
         {
-            Interlocked.Decrement(ref runningCount);
-            logger.Debug("[ApplicationQuit] After decrementing, count: {0}", runningCount);
+            Interlocked.Decrement(ref _runningCount);
+            Logger.Debug("[ApplicationQuit] After decrementing, count: {0}", _runningCount);
             Application.Quit();
         }
 
@@ -46,7 +46,7 @@ namespace SlimeSimulation.View
             {
                 instance = this;
             }
-            logger.Info("Entered constructor");
+            Logger.Info("Entered constructor");
             Application.Init();
         }
 
@@ -58,16 +58,16 @@ namespace SlimeSimulation.View
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (Disposed)
             {
                 return;
             }
             else if (disposing)
             {
-                logger.Info("[Dispose] Quitting application");
+                Logger.Info("[Dispose] Quitting application");
                 ApplicationQuit();
             }
-            disposed = true;
+            Disposed = true;
         }
 
         public void StartBeingAbleToDisplay()
@@ -79,12 +79,12 @@ namespace SlimeSimulation.View
         {
             try
             {
-                logger.Debug("[Display] About to display window {0}", window);
+                Logger.Debug("[Display] About to display window {0}", window);
                 window.InitialDisplay();
             }
             catch (Exception e)
             {
-                logger.Error(e, "Error: ");
+                Logger.Error(e, "Error: ");
             }
             finally
             {

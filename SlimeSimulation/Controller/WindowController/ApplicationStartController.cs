@@ -12,53 +12,53 @@ namespace SlimeSimulation.Controller.WindowController
 {
     public class ApplicationStartController : WindowController
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        private ApplicationStartWindow startingWindow;
+        private ApplicationStartWindow _startingWindow;
         
         public override void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args)
         {
-            logger.Info("[OnClickCallback] Entered. Doing nothing");
+            Logger.Info("[OnClickCallback] Entered. Doing nothing");
         }
 
         public override void Render()
         {
             using (var gtkLifecycleController = new GtkLifecycleController())
             {
-                using (window = new ApplicationStartWindow("Slime simulation parameter selection", this))
+                using (Window = new ApplicationStartWindow("Slime simulation parameter selection", this))
                 {
-                    logger.Debug("[Render] Made window");
-                    startingWindow = window as ApplicationStartWindow;
-                    logger.Debug("[Render] Display with main view");
-                    gtkLifecycleController.Display(window);
-                    logger.Debug("[Render] Start running application");
+                    Logger.Debug("[Render] Made window");
+                    _startingWindow = Window as ApplicationStartWindow;
+                    Logger.Debug("[Render] Display with main view");
+                    gtkLifecycleController.Display(Window);
+                    Logger.Debug("[Render] Start running application");
                     gtkLifecycleController.StartBeingAbleToDisplay();
-                    logger.Debug("[Render] Left main GTK loop ? ");
+                    Logger.Debug("[Render] Left main GTK loop ? ");
                 }
-                logger.Debug("[Render] Finished");
+                Logger.Debug("[Render] Finished");
             }
         }
 
         internal void StartSimulation(SimulationConfiguration config)
         {
             var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
-            SlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(config.GenerationConfig);
+            ISlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(config.GenerationConfig);
             SimulationUpdater simulationUpdater = new SimulationUpdater(flowCalculator, new SlimeNetworkAdaptionCalculator(config.FeedbackParam));
             var initial = slimeNetworkGenerator.Generate();
             var controller = new SimulationController(this, config.FlowAmount, simulationUpdater, initial);
-            logger.Info("[StartSimulation] Running simulation from user supplied parameters");
+            Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Gtk.Application.Invoke(delegate
             {
-                logger.Debug("[StartSimulation] Invoking from main thread ");
-                startingWindow.Hide();
+                Logger.Debug("[StartSimulation] Invoking from main thread ");
+                _startingWindow.Hide();
                 controller.RunSimulation();
             });
         }
 
         public void FinishSimulation(SimulationController controller)
         {
-            logger.Info("[FinishSimulation] Finished");
-            startingWindow.Display();
+            Logger.Info("[FinishSimulation] Finished");
+            _startingWindow.Display();
         }
 
         public override void OnQuit()
@@ -69,8 +69,8 @@ namespace SlimeSimulation.Controller.WindowController
 
         private void DisposeOfView()
         {
-            logger.Debug("[DisposeOfView] Disposing of view..");
-            startingWindow.Dispose();
+            Logger.Debug("[DisposeOfView] Disposing of view..");
+            _startingWindow.Dispose();
         }
     }
 }

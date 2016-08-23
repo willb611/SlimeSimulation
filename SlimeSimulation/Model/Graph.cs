@@ -9,27 +9,27 @@ namespace SlimeSimulation.Model
 {
     public class Graph
     {
-        private readonly ISet<Edge> edges;
-        private readonly ISet<Node> nodes;
-        private Dictionary<Node, ISet<Edge>> edgesConnectedToNodeMapping;
+        private readonly ISet<Edge> _edges;
+        private readonly ISet<Node> _nodes;
+        private readonly Dictionary<Node, ISet<Edge>> _edgesConnectedToNodeMapping;
 
         public Graph(ISet<Edge> edges)
         {
-            this.edges = edges;
+            this._edges = edges;
             ISet<Node> nodes = new HashSet<Node>();
             foreach (Edge edge in Edges)
             {
                 AddNodesInEdgeNotContained(edge, ref nodes);
             }
-            this.nodes = nodes;
-            edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
+            this._nodes = nodes;
+            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
         }
 
         public Graph(ISet<Edge> edges, ISet<Node> nodes)
         {
-            this.nodes = nodes;
-            this.edges = edges;
-            edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
+            this._nodes = nodes;
+            this._edges = edges;
+            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
         }
 
         private void AddNodesInEdgeNotContained(Edge edge, ref ISet<Node> nodes)
@@ -39,11 +39,11 @@ namespace SlimeSimulation.Model
         }
 
         public IEnumerable<Node> Nodes {
-            get { return nodes; }
+            get { return _nodes; }
         }
 
         public ISet<Edge> Edges {
-            get { return edges; }
+            get { return _edges; }
         }
 
         private Dictionary<Node, ISet<Edge>> MakeEdgesConnectedToNodeMapping(ISet<Edge> edges, ISet<Node> nodes)
@@ -73,7 +73,7 @@ namespace SlimeSimulation.Model
 
         internal ISet<Edge> EdgesConnectedToNode(Node node)
         {
-            return edgesConnectedToNodeMapping[node];
+            return _edgesConnectedToNodeMapping[node];
         }
 
         internal Edge GetEdgeBetween(Node a, Node b)

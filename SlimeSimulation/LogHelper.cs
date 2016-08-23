@@ -9,7 +9,7 @@ namespace SlimeSimulation
 {
     internal class LogHelper
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static String CollectionToString<T>(ICollection<T> collection)
         {

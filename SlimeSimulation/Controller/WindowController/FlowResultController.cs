@@ -13,30 +13,30 @@ namespace SlimeSimulation.Controller.WindowController
 {
     class FlowResultController : SimulationStepWindowController
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        private GtkLifecycleController gtkLifecycleController;
-        private FlowResult flowResult;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly GtkLifecycleController _gtkLifecycleController;
+        private readonly FlowResult _flowResult;
 
         public FlowResultController(SimulationController main, GtkLifecycleController gtkLifecycleController, FlowResult flowResult) : base(main)
         {
-            this.gtkLifecycleController = gtkLifecycleController;
-            this.flowResult = flowResult;
+            this._gtkLifecycleController = gtkLifecycleController;
+            this._flowResult = flowResult;
         }
 
         public override void Render()
         {
-            logger.Debug("[Render] Entered");
-            using (window = new FlowResultWindow(flowResult, this))
+            Logger.Debug("[Render] Entered");
+            using (Window = new FlowResultWindow(_flowResult, this))
             {
-                gtkLifecycleController.Display(window);
-                logger.Debug("[Render] Displayed");
+                _gtkLifecycleController.Display(Window);
+                Logger.Debug("[Render] Displayed");
             }
         }
         
         public override void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args)
         {
-            logger.Debug("[OnClick] Clicked!");
-            flowResult.Validate();
+            Logger.Debug("[OnClick] Clicked!");
+            _flowResult.Validate();
             GraphDrawingArea area = widget as GraphDrawingArea;
             if (area != null)
             {

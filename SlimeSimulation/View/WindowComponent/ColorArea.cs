@@ -10,11 +10,11 @@ namespace SlimeSimulation.View.WindowComponent
 {
     public class ColorArea : Gtk.DrawingArea
     {
-        private RGB color;
+        private readonly Rgb _color;
 
-        public ColorArea(RGB color)
+        public ColorArea(Rgb color)
         {
-            this.color = color;
+            this._color = color;
         }
 
         protected override bool OnExposeEvent(EventExpose args)
@@ -31,7 +31,7 @@ namespace SlimeSimulation.View.WindowComponent
         {
             graphic.Save();
 
-            graphic.SetSourceRGB(color.R, color.G, color.B);
+            graphic.SetSourceRGB(_color.R, _color.G, _color.B);
             graphic.Rectangle(0, 0, width, height);
             graphic.Fill();
             graphic.Stroke();

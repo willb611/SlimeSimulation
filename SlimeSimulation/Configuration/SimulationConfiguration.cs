@@ -8,10 +8,10 @@ namespace SlimeSimulation.Configuration
 {
     public class SimulationConfiguration
     {
-        private static readonly int DEFAULT_FLOW_AMOUNT = 2;
-        private static readonly double DEFAULT_FEEDBACK_PARAM = 1;
+        private static readonly int DefaultFlowAmount = 2;
+        private static readonly double DefaultFeedbackParam = 1;
 
-        public SimulationConfiguration() : this(new LatticeSlimeNetworkGenerationConfig(), DEFAULT_FLOW_AMOUNT, DEFAULT_FEEDBACK_PARAM)
+        public SimulationConfiguration() : this(new LatticeSlimeNetworkGenerationConfig(), DefaultFlowAmount, DefaultFeedbackParam)
         {
         }
 

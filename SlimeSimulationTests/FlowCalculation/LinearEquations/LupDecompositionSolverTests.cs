@@ -12,10 +12,10 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
     [TestClass()]
     public class LupDecompositionSolverTests
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         [TestMethod()]
-        public void exchangeTest()
+        public void ExchangeTest()
         {
             int v1 = 6;
             int a = v1;
@@ -29,7 +29,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
         }
 
         [TestMethod()]
-        public void testFindX()
+        public void TestFindX()
         {
             double[][] arr = new double[][]
             {
@@ -45,7 +45,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
         }
 
         [TestMethod()]
-        public void testLupDecompose()
+        public void TestLupDecompose()
         {
             double[][] arr = new double[][]
             {
@@ -57,7 +57,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
             int[] expectedPi = { 2, 0, 3, 1 };
             for (int i = 0; i < pi.Length; i++)
             {
-                logger.Debug("[testLupDecompose] i: {0}, pi[i]: {1}", i, pi[i]);
+                Logger.Debug("[testLupDecompose] i: {0}, pi[i]: {1}", i, pi[i]);
                 Assert.AreEqual(expectedPi[i], pi[i]);
             }
 
@@ -71,14 +71,14 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
             {
                 for (int col = 0; col < cols; col++)
                 {
-                    logger.Debug("[testLupDecompose] row {0}, col {1}, arr[row][col] = {2}", row, col, arr[row][col]);
+                    Logger.Debug("[testLupDecompose] row {0}, col {1}, arr[row][col] = {2}", row, col, arr[row][col]);
                     Assert.AreEqual(expectedArr[pi[row]][col], arr[row][col], 0.000001);
                 }
             }
         }
 
         [TestMethod()]
-        public void testForwardSubstituteForY()
+        public void TestForwardSubstituteForY()
         {
             double[][] lowerUpper = new double[][]
             {
@@ -100,7 +100,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
 
 
         [TestMethod()]
-        public void testBackSubstitutionForX()
+        public void TestBackSubstitutionForX()
         {
             double[][] lowerUpper = new double[][]
             {

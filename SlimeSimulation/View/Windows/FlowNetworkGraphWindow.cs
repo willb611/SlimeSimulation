@@ -12,15 +12,15 @@ namespace SlimeSimulation.View.Windows
 {
     class FlowNetworkGraphWindow : GraphDrawingWindowTemplate
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        private List<Edge> edges;
-        private FlowNetworkGraphController controller;
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly List<Edge> _edges;
+        private FlowNetworkGraphController _controller;
         
         public FlowNetworkGraphWindow(List<Edge> edges, FlowNetworkGraphController controller)
           : base("ConductivityWindow", controller)
         {
-            this.edges = edges;
-            this.controller = controller;
+            this._edges = edges;
+            this._controller = controller;
         }
 
         protected override void AddToWindow(Window window)
@@ -31,11 +31,11 @@ namespace SlimeSimulation.View.Windows
             HBox hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
             window.Add(hbox);
-            graphDrawingArea = new GraphDrawingArea(edges, new ConnectivityLineViewController(edges),
+            GraphDrawingArea = new GraphDrawingArea(_edges, new ConnectivityLineViewController(_edges),
               new ConnectivityNodeViewController());
-            base.ListenToClicksOn(graphDrawingArea);
+            base.ListenToClicksOn(GraphDrawingArea);
 
-            hbox.Add(graphDrawingArea);
+            hbox.Add(GraphDrawingArea);
         }
 
     }

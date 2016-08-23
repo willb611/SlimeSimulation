@@ -8,22 +8,22 @@ namespace SlimeSimulation.Configuration
 {
     public class LatticeSlimeNetworkGenerationConfig
     {
-        private static readonly double DEFAULT_PROBABILITY_NEW_NODE_IS_FOOD = 0.05;
-        private static readonly int DEFAULT_MINIMUM_FOOD_SOURCES = 2;
-        private static readonly int DEFAULT_STARTING_CONNECTIVITY = 1;
-        private static readonly int DEFAULT_SIZE = 5;
+        private static readonly double DefaultProbabilityNewNodeIsFood = 0.05;
+        private static readonly int DefaultMinimumFoodSources = 2;
+        private static readonly int DefaultStartingConnectivity = 1;
+        private static readonly int DefaultSize = 5;
 
-        public LatticeSlimeNetworkGenerationConfig() : this(DEFAULT_SIZE)
+        public LatticeSlimeNetworkGenerationConfig() : this(DefaultSize)
         {
         }
 
-        public LatticeSlimeNetworkGenerationConfig(int size) : this(size, DEFAULT_PROBABILITY_NEW_NODE_IS_FOOD, DEFAULT_MINIMUM_FOOD_SOURCES)
+        public LatticeSlimeNetworkGenerationConfig(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources)
         {
         }
 
         public LatticeSlimeNetworkGenerationConfig(int size,
             double probabilityNewNodeIsFoodSource, int minimumFoodSources) : this(size, probabilityNewNodeIsFoodSource,
-                minimumFoodSources, DEFAULT_STARTING_CONNECTIVITY)
+                minimumFoodSources, DefaultStartingConnectivity)
         {
         }
 

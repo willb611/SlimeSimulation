@@ -6,17 +6,17 @@ namespace SlimeSimulation.Controller.WindowController
     abstract class SimulationStepWindowController : WindowController
     {
 
-        protected SimulationController simulationController;
+        protected SimulationController SimulationController;
 
         public SimulationStepWindowController(SimulationController simulationController)
         {
-            this.simulationController = simulationController;
+            this.SimulationController = simulationController;
         }
 
         public override void OnQuit()
         {
             base.OnQuit();
-            simulationController.DoNextSimulationStep();
+            SimulationController.DoNextSimulationStep();
         }
     }
 }

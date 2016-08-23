@@ -11,41 +11,41 @@ namespace SlimeSimulation.Controller.WindowsComponentController
 {
     public abstract class NodeViewController
     {
-        public abstract RGB GetColourForNode(Node node);
+        public abstract Rgb GetColourForNode(Node node);
         public abstract int GetSizeForNode(Node node);
 
-        public const int NON_FOOD_SOURCE_POINT_SIZE = 3;
-        public const int FOOD_SOURCE_POINT_SIZE = 15;
+        public const int NonFoodSourcePointSize = 3;
+        public const int FoodSourcePointSize = 15;
     }
 
     public class FlowResultNodeViewController : NodeViewController
     {
-        private FlowResult flowResult;
+        private readonly FlowResult _flowResult;
 
         public FlowResultNodeViewController(FlowResult result)
         {
-            flowResult = result;
+            _flowResult = result;
         }
 
-        public static RGB SourceColour {
-            get { return RGB.BLUE; }
+        public static Rgb SourceColour {
+            get { return Rgb.Blue; }
         }
 
-        public static RGB SinkColour {
-            get { return RGB.RED; }
+        public static Rgb SinkColour {
+            get { return Rgb.Red; }
         }
 
-        public static RGB NormalNodeColour {
-            get { return RGB.BLACK; }
+        public static Rgb NormalNodeColour {
+            get { return Rgb.Black; }
         }
 
-        public override RGB GetColourForNode(Node node)
+        public override Rgb GetColourForNode(Node node)
         {
-            if (flowResult.Source.Equals(node))
+            if (_flowResult.Source.Equals(node))
             {
                 return SourceColour;
             }
-            else if (flowResult.Sink.Equals(node))
+            else if (_flowResult.Sink.Equals(node))
             {
                 return SinkColour;
             }
@@ -57,28 +57,28 @@ namespace SlimeSimulation.Controller.WindowsComponentController
 
         public override int GetSizeForNode(Node node)
         {
-            if (flowResult.Source.Equals(node) || flowResult.Sink.Equals(node))
+            if (_flowResult.Source.Equals(node) || _flowResult.Sink.Equals(node))
             {
-                return FOOD_SOURCE_POINT_SIZE;
+                return FoodSourcePointSize;
             }
             else
             {
-                return NON_FOOD_SOURCE_POINT_SIZE;
+                return NonFoodSourcePointSize;
             }
         }
     }
 
     public class ConnectivityNodeViewController : NodeViewController
     {
-        public static RGB FoodColour {
-            get { return RGB.BLUE; }
+        public static Rgb FoodColour {
+            get { return Rgb.Blue; }
         }
 
-        public static RGB NormalNodeColour {
-            get { return RGB.BLACK; }
+        public static Rgb NormalNodeColour {
+            get { return Rgb.Black; }
         }
 
-        public override RGB GetColourForNode(Node node)
+        public override Rgb GetColourForNode(Node node)
         {
             if (node.IsFoodSource())
             {
@@ -94,11 +94,11 @@ namespace SlimeSimulation.Controller.WindowsComponentController
         {
             if (node.IsFoodSource())
             {
-                return FOOD_SOURCE_POINT_SIZE;
+                return FoodSourcePointSize;
             }
             else
             {
-                return NON_FOOD_SOURCE_POINT_SIZE;
+                return NonFoodSourcePointSize;
             }
         }
     }

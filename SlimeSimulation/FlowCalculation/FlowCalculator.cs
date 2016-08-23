@@ -11,12 +11,12 @@ namespace SlimeSimulation.FlowCalculation
 {
     public class FlowCalculator
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        private LinearEquationSolver linearEquationSolver;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILinearEquationSolver _linearEquationSolver;
 
-        public FlowCalculator(LinearEquationSolver solver)
+        public FlowCalculator(ILinearEquationSolver solver)
         {
-            linearEquationSolver = solver;
+            _linearEquationSolver = solver;
         }
 
         public FlowResult CalculateFlow(ISet<Edge> edges, ISet<Node> nodes, Node source, Node sink, int flowAmount)
@@ -24,9 +24,9 @@ namespace SlimeSimulation.FlowCalculation
             Graph graph = new Graph(edges, nodes);
             List<Node> nodeList = new List<Node>(nodes);
             EnsureSourceSinkInCorrectPositions(nodeList, source, sink);
-            double[][] A = GetSystemOfEquations(graph, nodeList);
-            double[] B = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, nodes.Count - 1);
-            double[] solution = linearEquationSolver.FindX(A, B);
+            double[][] a = GetSystemOfEquations(graph, nodeList);
+            double[] b = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, nodes.Count - 1);
+            double[] solution = _linearEquationSolver.FindX(a, b);
             Pressures pressures = new Pressures(solution, nodeList);
             FlowOnEdges flowOnEdges = GetFlowOnEdges(graph, pressures, nodeList);
             return new FlowResult(edges, source, sink, flowAmount, flowOnEdges);
@@ -61,7 +61,7 @@ namespace SlimeSimulation.FlowCalculation
                 double pj = pressures.PressureAt(edge.B);
                 double flow = edge.Connectivity * (pi - pj);
                 result.IncreaseFlowOnEdgeBy(edge, flow);
-                logger.Trace("For edge {0}, got pi {1}, pj {2}, and flow {3}", edge, pi, pj, flow);
+                Logger.Trace("For edge {0}, got pi {1}, pj {2}, and flow {3}", edge, pi, pj, flow);
             }
             return result;
         }
@@ -75,10 +75,10 @@ namespace SlimeSimulation.FlowCalculation
         {
             double[] arr = new double[n];
             arr[0] = flowAmount;
-            if (logger.IsTraceEnabled)
+            if (Logger.IsTraceEnabled)
             {
-                logger.Trace("[GetMatrixOfFlowGainedAtNodeFromZeroToN] Printing ");
-                logger.Trace(LogHelper.PrintArr(arr));
+                Logger.Trace("[GetMatrixOfFlowGainedAtNodeFromZeroToN] Printing ");
+                Logger.Trace(LogHelper.PrintArr(arr));
             }
             return arr;
         }
@@ -95,10 +95,10 @@ namespace SlimeSimulation.FlowCalculation
                     equations[row][col] = GetValueForSystemOfEquations(graph, nodes[row], nodes[col]);
                 }
             }
-            if (logger.IsTraceEnabled)
+            if (Logger.IsTraceEnabled)
             {
-                logger.Trace("[GetSystemOfEquations] Printing return value ");
-                logger.Trace(LogHelper.PrintArr(equations));
+                Logger.Trace("[GetSystemOfEquations] Printing return value ");
+                Logger.Trace(LogHelper.PrintArr(equations));
             }
             return equations;
         }

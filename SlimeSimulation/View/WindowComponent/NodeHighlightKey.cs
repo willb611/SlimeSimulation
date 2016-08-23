@@ -36,7 +36,7 @@ namespace SlimeSimulation.View.WindowComponent
             return key;
         }
 
-        private DrawingArea GetBoxColour(RGB color)
+        private DrawingArea GetBoxColour(Rgb color)
         {
             return new ColorArea(color);
         }

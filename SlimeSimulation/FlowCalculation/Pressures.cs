@@ -10,16 +10,16 @@ namespace SlimeSimulation.FlowCalculation
 {
     public class Pressures
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private double[] pressures;
-        private List<Node> nodes;
+        private readonly double[] _pressures;
+        private readonly List<Node> _nodes;
 
         public Pressures(double[] pressures, List<Node> nodes)
         {
-            this.pressures = pressures;
-            this.nodes = nodes;
-            logger.Debug("[constructor] Given pressures array size: {0}, so total number of nodes: {1}",
+            this._pressures = pressures;
+            this._nodes = nodes;
+            Logger.Debug("[constructor] Given pressures array size: {0}, so total number of nodes: {1}",
               pressures.Length, pressures.Length + 1);
         }
 
@@ -30,28 +30,28 @@ namespace SlimeSimulation.FlowCalculation
             {
                 throw new ArgumentOutOfRangeException("Index must be positive. Given: " + index);
             }
-            else if (index < pressures.Length)
+            else if (index < _pressures.Length)
             {
-                result = pressures[index];
+                result = _pressures[index];
             }
-            else if (index == pressures.Length)
+            else if (index == _pressures.Length)
             {
                 // Pressure at node n is set to 0
             }
             else
             {
-                throw new ArgumentOutOfRangeException("Index must be <= " + pressures.Length
+                throw new ArgumentOutOfRangeException("Index must be <= " + _pressures.Length
                                                       + ". Given: " + index);
             }
-            logger.Trace("[PressureAt] For index {0} returning {1}", index, result);
+            Logger.Trace("[PressureAt] For index {0} returning {1}", index, result);
             return result;
         }
 
         public double PressureAt(Node node)
         {
-            if (nodes.Contains(node))
+            if (_nodes.Contains(node))
             {
-                return PressureAt(nodes.IndexOf(node));
+                return PressureAt(_nodes.IndexOf(node));
             }
             else
             {

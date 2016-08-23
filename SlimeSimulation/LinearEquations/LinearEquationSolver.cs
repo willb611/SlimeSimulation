@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.LinearEquations
 {
-    public interface LinearEquationSolver
+    public interface ILinearEquationSolver
     {
         double[] FindX(double[][] a, double[] b);
     }

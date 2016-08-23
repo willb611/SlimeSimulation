@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.View
 {
-    public class RGB
+    public class Rgb
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static readonly RGB BLUE = new RGB(0, 0, 255);
-        public static readonly RGB RED = new RGB(255, 0, 0);
-        public static readonly RGB BLACK = new RGB(0, 0, 0);
+        public static readonly Rgb Blue = new Rgb(0, 0, 255);
+        public static readonly Rgb Red = new Rgb(255, 0, 0);
+        public static readonly Rgb Black = new Rgb(0, 0, 0);
         public ushort R { get; private set; }
         public ushort G { get; private set; }
         public ushort B { get; private set; }
 
-        public RGB(int r, int g, int b)
+        public Rgb(int r, int g, int b)
         {
             R = (ushort)r;
             G = (ushort)g;
@@ -28,7 +28,7 @@ namespace SlimeSimulation.View
         public Gdk.Color AsGdkColor()
         {
             Gdk.Color color = new Gdk.Color((byte)R, (byte)G, (byte)B);
-            logger.Debug("Got gdk color: {0}, {1}, {2}", color.Blue, color.Green, color.Red);
+            Logger.Debug("Got gdk color: {0}, {1}, {2}", color.Blue, color.Green, color.Red);
             return color;
         }
     }

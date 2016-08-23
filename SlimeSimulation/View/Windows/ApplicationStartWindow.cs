@@ -11,29 +11,30 @@ namespace SlimeSimulation.View.Windows
 {
     class ApplicationStartWindow : WindowTemplate
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private ApplicationStartController controller;
-        private Button beginSimulationButton;
+        private readonly ApplicationStartController _controller;
+        private readonly SimulationConfiguration _defaultConfig = new SimulationConfiguration();
+        private readonly Dictionary<TextView, Label> _textViewLabelMapping = new Dictionary<TextView, Label>();
 
-        private TextView latticeGenerator_RowSizeTextView;
-        private TextView latticeGenerator_ProbabiltyOfNewFoodTextView;
-        private TextView latticeGenerator_MinimumFoodSourcesTextView;
+        private Button _beginSimulationButton;
 
-        private TextView feedbackParamTextView;
-        private TextView flowAmountTextView;
+        private TextView _latticeGeneratorRowSizeTextView;
+        private TextView _latticeGeneratorProbabiltyOfNewFoodTextView;
+        private TextView _latticeGeneratorMinimumFoodSourcesTextView;
 
-        private Label errorLabel;
+        private TextView _feedbackParamTextView;
+        private TextView _flowAmountTextView;
 
-        private SimulationConfiguration DEFAULT_CONFIG = new SimulationConfiguration();
-        private Dictionary<TextView, Label> textViewLabelMapping = new Dictionary<TextView, Label>();
+        private Label _errorLabel;
 
-        private List<String> errors = new List<string>();
+
+        private List<String> _errors = new List<string>();
 
 
         public ApplicationStartWindow(string windowTitle, ApplicationStartController controller) : base(windowTitle, controller)
         {
-            this.controller = controller;
+            this._controller = controller;
         }
 
         protected override void AddToWindow(Window window)
@@ -45,43 +46,43 @@ namespace SlimeSimulation.View.Windows
             container.Add(BeginSimulationButton());
             container.Add(ErrorLabel());
             window.Add(container);
-            beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
+            _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
         }
         
         private void BeginSimulationButton_Clicked(object obj, EventArgs args)
         {
-            logger.Debug("[BeginSimulationButton_Clicked] Entered");
+            Logger.Debug("[BeginSimulationButton_Clicked] Entered");
             var config = GetConfigFromViews();
             if (config == null)
             {
-                logger.Info("[BeginSimulationButton_Clicked] Not starting simulation due to invalid parameters");
+                Logger.Info("[BeginSimulationButton_Clicked] Not starting simulation due to invalid parameters");
             }
             else
             {
-                controller.StartSimulation(config);
+                _controller.StartSimulation(config);
             }
         }
 
         private Widget ErrorLabel()
         {
-            if (errorLabel == null)
+            if (_errorLabel == null)
             {
-                errorLabel = new Label();
+                _errorLabel = new Label();
             }
             HBox box = new HBox();
-            box.Add(errorLabel);
+            box.Add(_errorLabel);
             return box;
         }
 
 
         private SimulationConfiguration GetConfigFromViews()
         {
-            errors = new List<string>();
-            double? feedbackParam = ExtractDoubleFromView(feedbackParamTextView);
-            int? flowAmount = ExtractIntFromView(flowAmountTextView);
-            double? probabilityNewNodeIsFood = ExtractDoubleFromView(latticeGenerator_ProbabiltyOfNewFoodTextView);
-            int? minFoodSources = ExtractIntFromView(latticeGenerator_MinimumFoodSourcesTextView);
-            int? rowSize = ExtractIntFromView(latticeGenerator_RowSizeTextView);
+            _errors = new List<string>();
+            double? feedbackParam = ExtractDoubleFromView(_feedbackParamTextView);
+            int? flowAmount = ExtractIntFromView(_flowAmountTextView);
+            double? probabilityNewNodeIsFood = ExtractDoubleFromView(_latticeGeneratorProbabiltyOfNewFoodTextView);
+            int? minFoodSources = ExtractIntFromView(_latticeGeneratorMinimumFoodSourcesTextView);
+            int? rowSize = ExtractIntFromView(_latticeGeneratorRowSizeTextView);
             if (feedbackParam.HasValue && flowAmount.HasValue && 
                 probabilityNewNodeIsFood.HasValue && minFoodSources.HasValue && rowSize.HasValue)
             {
@@ -93,7 +94,7 @@ namespace SlimeSimulation.View.Windows
                 } catch (ArgumentException e)
                 {
                     string errorMsg = "Invalid parameter: " + e.Message;
-                    logger.Info(errorMsg);
+                    Logger.Info(errorMsg);
                     DisplayError(errorMsg);
                 }
             }
@@ -103,11 +104,11 @@ namespace SlimeSimulation.View.Windows
 
         private Button BeginSimulationButton()
         {
-            if (beginSimulationButton == null)
+            if (_beginSimulationButton == null)
             {
-                beginSimulationButton = new Button(new Label("Begin simulation"));
+                _beginSimulationButton = new Button(new Label("Begin simulation"));
             }
-            return beginSimulationButton;
+            return _beginSimulationButton;
         }
         
         private Widget MatrixGenerationProperties()
@@ -123,8 +124,8 @@ namespace SlimeSimulation.View.Windows
         {
             Label description = new Label("Minimum number of food sources in the network");
             TextView textView = new TextView();
-            textView.Buffer.Text = DEFAULT_CONFIG.GenerationConfig.MinimumFoodSources.ToString();
-            latticeGenerator_MinimumFoodSourcesTextView = textView;
+            textView.Buffer.Text = _defaultConfig.GenerationConfig.MinimumFoodSources.ToString();
+            _latticeGeneratorMinimumFoodSourcesTextView = textView;
             return HBox(description, textView);
         }
 
@@ -132,8 +133,8 @@ namespace SlimeSimulation.View.Windows
         {
             Label description = new Label("Probability new nodes in network are food sources");
             TextView textView = new TextView();
-            textView.Buffer.Text = DEFAULT_CONFIG.GenerationConfig.ProbabilityNewNodeIsFoodSource.ToString();
-            latticeGenerator_ProbabiltyOfNewFoodTextView = textView;
+            textView.Buffer.Text = _defaultConfig.GenerationConfig.ProbabilityNewNodeIsFoodSource.ToString();
+            _latticeGeneratorProbabiltyOfNewFoodTextView = textView;
             return HBox(description, textView);
         }
 
@@ -141,8 +142,8 @@ namespace SlimeSimulation.View.Windows
         {
             Label description = new Label("Number of rows in lattice to generate");
             TextView textView = new TextView();
-            textView.Buffer.Text = DEFAULT_CONFIG.GenerationConfig.Size.ToString();
-            latticeGenerator_RowSizeTextView = textView;
+            textView.Buffer.Text = _defaultConfig.GenerationConfig.Size.ToString();
+            _latticeGeneratorRowSizeTextView = textView;
             return HBox(description, textView);
         }
 
@@ -150,8 +151,8 @@ namespace SlimeSimulation.View.Windows
         {
             Label description = new Label("Feedback parameter for updating slime simulation at each step");
             TextView textView = new TextView();
-            textView.Buffer.Text = DEFAULT_CONFIG.FeedbackParam.ToString();
-            feedbackParamTextView = textView;
+            textView.Buffer.Text = _defaultConfig.FeedbackParam.ToString();
+            _feedbackParamTextView = textView;
             return HBox(description, textView);
         }
 
@@ -159,8 +160,8 @@ namespace SlimeSimulation.View.Windows
         {
             Label description = new Label("Flow through system per iteration");
             TextView textView = new TextView();
-            textView.Buffer.Text = DEFAULT_CONFIG.FlowAmount.ToString();
-            flowAmountTextView = textView;
+            textView.Buffer.Text = _defaultConfig.FlowAmount.ToString();
+            _flowAmountTextView = textView;
             return HBox(description, textView);
         }
 
@@ -169,7 +170,7 @@ namespace SlimeSimulation.View.Windows
             HBox hBox = new HBox();
             hBox.Add(description);
             hBox.Add(textView);
-            textViewLabelMapping[textView] = description;
+            _textViewLabelMapping[textView] = description;
             return hBox;
         }
         
@@ -206,17 +207,17 @@ namespace SlimeSimulation.View.Windows
         private void HighlightErrorOn(TextView view)
         {
             DisplayError("Not valid value for input box matching: " 
-                + textViewLabelMapping[view].Text);
+                + _textViewLabelMapping[view].Text);
         }
 
         private void DisplayError(string error)
         {
-            errors.Add(error);
+            _errors.Add(error);
         }
         private void DisplayErrors()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (string error in errors)
+            foreach (string error in _errors)
             {
                 if (sb.Length > 0)
                 {
@@ -224,23 +225,23 @@ namespace SlimeSimulation.View.Windows
                 }
                 sb.Append(error);
             }
-            errorLabel.Text = sb.ToString();
+            _errorLabel.Text = sb.ToString();
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposed)
+            if (Disposed)
             {
                 return;
             }
             else if (disposing)
             {
                 base.Dispose(true);
-                beginSimulationButton.Dispose();
-                errorLabel.Dispose();
+                _beginSimulationButton.Dispose();
+                _errorLabel.Dispose();
             }
-            disposed = true;
-            logger.Debug("[Dispose : bool] finished from within " + this);
+            Disposed = true;
+            Logger.Debug("[Dispose : bool] finished from within " + this);
         }
     }
 }

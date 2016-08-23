@@ -13,15 +13,15 @@ namespace SlimeSimulation.Controller.WindowController
 {
     public abstract class WindowController
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected WindowTemplate window;
+        protected WindowTemplate Window;
 
         public virtual void OnQuit()
         {
-            logger.Debug("[OnQuit] About to dispose of window: {0}", window);
-            window.Dispose();
-            logger.Debug("[OnQuit] Disposed of window.");
+            Logger.Debug("[OnQuit] About to dispose of window: {0}", Window);
+            Window.Dispose();
+            Logger.Debug("[OnQuit] Disposed of window.");
         }
 
         public abstract void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args);

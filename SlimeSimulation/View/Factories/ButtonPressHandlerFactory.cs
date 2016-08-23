@@ -11,20 +11,20 @@ namespace SlimeSimulation.View.Factories
 {
     public class ButtonPressHandlerFactory
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private Gtk.Widget widget;
-        private OnClickCallback callback;
+        private readonly Gtk.Widget _widget;
+        private readonly OnClickCallback _callback;
         public ButtonPressHandlerFactory(Gtk.Widget widget, OnClickCallback callback)
         {
-            this.widget = widget;
-            this.callback = callback;
+            this._widget = widget;
+            this._callback = callback;
         }
         public void ButtonPressHandler(object obj, Gtk.ButtonPressEventArgs args)
         {
-            logger.Debug("[ButtonPressHandler] Given args: {0}, x: {1}, y: {2}, type: {3}", args, args.Event.X, args.Event.Y,
+            Logger.Debug("[ButtonPressHandler] Given args: {0}, x: {1}, y: {2}, type: {3}", args, args.Event.X, args.Event.Y,
               args.Event.Type);
-            callback(widget, args);
+            _callback(_widget, args);
         }
     }
 }

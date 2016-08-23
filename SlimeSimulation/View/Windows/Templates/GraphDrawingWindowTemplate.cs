@@ -12,26 +12,26 @@ namespace SlimeSimulation.View.Windows
 {
     abstract class GraphDrawingWindowTemplate : WindowTemplate
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected GraphDrawingArea graphDrawingArea;
+        protected GraphDrawingArea GraphDrawingArea;
         public GraphDrawingWindowTemplate(string windowTitle, WindowController controller) : base(windowTitle, controller)
         {
         }
         
         protected override void Dispose(bool disposing)
         {
-            if (disposed)
+            if (Disposed)
             {
                 return;
             }
             else if (disposing)
             {
                 base.Dispose(disposing);
-                graphDrawingArea.Dispose();
+                GraphDrawingArea.Dispose();
             }
-            disposed = true;
-            logger.Debug("[Dispose : bool] finished from within " + this);
+            Disposed = true;
+            Logger.Debug("[Dispose : bool] finished from within " + this);
         }
     }
 }

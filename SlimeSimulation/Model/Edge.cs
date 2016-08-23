@@ -4,39 +4,40 @@ namespace SlimeSimulation.Model
 {
     public class Edge
     {
-        private readonly double connectivity;
-        private Node a, b;
+        private readonly double _connectivity;
+        private readonly Node _a;
+        private readonly Node _b;
 
         public Edge(Node a, Node b, double connectivity)
         {
-            this.a = a;
-            this.b = b;
-            this.connectivity = connectivity;
+            this._a = a;
+            this._b = b;
+            this._connectivity = connectivity;
         }
 
         public double Connectivity {
-            get { return connectivity; }
+            get { return _connectivity; }
         }
 
         public double Resistance {
             get {
-                if (connectivity == 0)
+                if (_connectivity == 0)
                 {
                     return double.MaxValue;
                 }
                 else
                 {
-                    return 1 / connectivity;
+                    return 1 / _connectivity;
                 }
             }
         }
 
         public Node A {
-            get { return a; }
+            get { return _a; }
         }
 
         public Node B {
-            get { return b; }
+            get { return _b; }
         }
 
         public bool Contains(Node node)
@@ -81,7 +82,7 @@ namespace SlimeSimulation.Model
                 return false;
             }
 
-            if (connectivity != other.Connectivity)
+            if (_connectivity != other.Connectivity)
             {
                 return false;
             }
@@ -93,13 +94,13 @@ namespace SlimeSimulation.Model
 
         public override int GetHashCode()
         {
-            return (connectivity.GetHashCode() * 17 + A.GetHashCode()) * 17
+            return (_connectivity.GetHashCode() * 17 + A.GetHashCode()) * 17
                    + B.GetHashCode();
         }
 
         public override string ToString()
         {
-            return "Edge{connectivity=" + connectivity + ", a=" + a + ", b=" + b + "}";
+            return "Edge{connectivity=" + _connectivity + ", a=" + _a + ", b=" + _b + "}";
         }
     }
 }

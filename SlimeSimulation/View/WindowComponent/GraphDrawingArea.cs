@@ -11,54 +11,54 @@ namespace SlimeSimulation.View
 {
     public class GraphDrawingArea : Gtk.DrawingArea
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly double MAX_LINE_WIDTH = 15;
+        private readonly double _maxLineWidth = 15;
 
-        private readonly double WINDOW_SPACE_PERCENT_TO_DRAW_IN = 0.9;
-        private readonly double LINE_PADDING_PERCENT = 0.05;
+        private readonly double _windowSpacePercentToDrawIn = 0.9;
+        private readonly double _linePaddingPercent = 0.05;
 
-        private readonly LineViewController lineWeightController;
-        private NodeViewController nodeHighlightController;
-        private readonly ICollection<Edge> edges = new List<Edge>();
-        private readonly ISet<Node> nodes = new HashSet<Node>();
-        private EdgeDrawing edgeDrawingOption = EdgeDrawing.WithoutWeight;
-        private double maxEdgeWeight = 0;
-        private double maxNodeX = 0;
-        private double maxNodeY = 0;
+        private readonly LineViewController _lineWeightController;
+        private readonly NodeViewController _nodeHighlightController;
+        private readonly ICollection<Edge> _edges = new List<Edge>();
+        private readonly ISet<Node> _nodes = new HashSet<Node>();
+        private EdgeDrawing _edgeDrawingOption = EdgeDrawing.WithoutWeight;
+        private readonly double _maxEdgeWeight = 0;
+        private readonly double _maxNodeX = 0;
+        private readonly double _maxNodeY = 0;
 
-        private double minNodeY = double.MaxValue;
-        private double minNodeX = double.MaxValue;
+        private readonly double _minNodeY = double.MaxValue;
+        private readonly double _minNodeX = double.MaxValue;
 
-        private double maxWindowX = 100;
-        private double maxWindowY = 100;
+        private double _maxWindowX = 100;
+        private double _maxWindowY = 100;
 
         public GraphDrawingArea(ICollection<Edge> edges, LineViewController lineWidthController,
           NodeViewController nodeHighlightController)
         {
-            this.nodeHighlightController = nodeHighlightController;
+            this._nodeHighlightController = nodeHighlightController;
             foreach (Edge edge in edges)
             {
                 AddEdge(edge);
-                maxEdgeWeight = Math.Max(maxEdgeWeight, edge.Connectivity);
+                _maxEdgeWeight = Math.Max(_maxEdgeWeight, edge.Connectivity);
             }
-            foreach (Node node in nodes)
+            foreach (Node node in _nodes)
             {
-                maxNodeX = Math.Max(node.X, maxNodeX);
-                maxNodeY = Math.Max(node.Y, maxNodeY);
+                _maxNodeX = Math.Max(node.X, _maxNodeX);
+                _maxNodeY = Math.Max(node.Y, _maxNodeY);
 
-                minNodeX = Math.Min(node.X, minNodeX);
-                minNodeY = Math.Min(node.Y, minNodeY);
+                _minNodeX = Math.Min(node.X, _minNodeX);
+                _minNodeY = Math.Min(node.Y, _minNodeY);
             }
-            this.lineWeightController = lineWidthController;
-            logger.Debug("[Constructor] Given number of edges: {0}", edges.Count);
+            this._lineWeightController = lineWidthController;
+            Logger.Debug("[Constructor] Given number of edges: {0}", edges.Count);
         }
 
         private void AddEdge(Edge edge)
         {
-            edges.Add(edge);
-            nodes.Add(edge.A);
-            nodes.Add(edge.B);
+            _edges.Add(edge);
+            _nodes.Add(edge.A);
+            _nodes.Add(edge.B);
         }
 
         private void DrawPoint(Cairo.Context graphic, Node node)
@@ -67,9 +67,9 @@ namespace SlimeSimulation.View
 
             double xscaled = ScaleX(node.X);
             double yscaled = ScaleY(node.Y);
-            logger.Trace("[DrawPoint] Drawing at: {0},{1}", xscaled, yscaled);
-            RGB color = nodeHighlightController.GetColourForNode(node);
-            double size = nodeHighlightController.GetSizeForNode(node);
+            Logger.Trace("[DrawPoint] Drawing at: {0},{1}", xscaled, yscaled);
+            Rgb color = _nodeHighlightController.GetColourForNode(node);
+            double size = _nodeHighlightController.GetSizeForNode(node);
 
             graphic.SetSourceRGB(color.R, color.G, color.B);
             graphic.Rectangle(xscaled - size / 2, yscaled - size / 2, size, size);
@@ -81,25 +81,25 @@ namespace SlimeSimulation.View
 
         virtual protected void DrawEdge(Cairo.Context graphic, Edge edge)
         {
-            if (Math.Abs(lineWeightController.GetLineWeightForEdge(edge)) < 0.0001)
+            if (Math.Abs(_lineWeightController.GetLineWeightForEdge(edge)) < 0.0001)
             {
                 return;
             }
             graphic.Save();
-            logger.Trace("[DrawEdge] Drawing from {0},{1} to {2},{3}", ScaleX(edge.A.X), ScaleY(edge.A.Y),
+            Logger.Trace("[DrawEdge] Drawing from {0},{1} to {2},{3}", ScaleX(edge.A.X), ScaleY(edge.A.Y),
               ScaleX(edge.B.X), ScaleY(edge.B.Y));
 
             graphic.MoveTo(ScaleX(edge.A.X), ScaleY(edge.A.Y));
             graphic.SetSourceRGB(0, 0, 0);
             graphic.LineWidth = GetLineWidthForEdge(edge);
-            logger.Trace("[DrawEdge] For edge {0}, using lineWidth: {1}", edge, graphic.LineWidth);
+            Logger.Trace("[DrawEdge] For edge {0}, using lineWidth: {1}", edge, graphic.LineWidth);
             graphic.LineTo(ScaleX(edge.B.X), ScaleY(edge.B.Y));
             graphic.Stroke();
 
             graphic.Restore();
-            if (edgeDrawingOption == EdgeDrawing.WithWeight)
+            if (_edgeDrawingOption == EdgeDrawing.WithWeight)
             {
-                DrawTextNearCoord(graphic, "w:" + String.Format("{0:0.000}", lineWeightController.GetLineWeightForEdge(edge)),
+                DrawTextNearCoord(graphic, "w:" + String.Format("{0:0.000}", _lineWeightController.GetLineWeightForEdge(edge)),
                   ScaleX((edge.A.X + edge.B.X) / 2), ScaleY(edge.A.Y + edge.B.Y) / 2);
             }
         }
@@ -117,43 +117,43 @@ namespace SlimeSimulation.View
 
         private double ScaleX(double x)
         {
-            double percent = (x - minNodeX) / (maxNodeX - minNodeX);
-            double availableDrawingSpace = maxWindowX * WINDOW_SPACE_PERCENT_TO_DRAW_IN;
-            double padding = (maxWindowX - availableDrawingSpace) / 2;
+            double percent = (x - _minNodeX) / (_maxNodeX - _minNodeX);
+            double availableDrawingSpace = _maxWindowX * _windowSpacePercentToDrawIn;
+            double padding = (_maxWindowX - availableDrawingSpace) / 2;
             return availableDrawingSpace * percent + padding;
         }
 
         private double ScaleY(double y)
         {
-            double percent = (y - minNodeY) / (maxNodeY - minNodeY);
-            double availableDrawingSpace = maxWindowY * WINDOW_SPACE_PERCENT_TO_DRAW_IN;
-            double padding = (maxWindowY - availableDrawingSpace) / 2;
+            double percent = (y - _minNodeY) / (_maxNodeY - _minNodeY);
+            double availableDrawingSpace = _maxWindowY * _windowSpacePercentToDrawIn;
+            double padding = (_maxWindowY - availableDrawingSpace) / 2;
             return availableDrawingSpace * percent + padding;
         }
 
         private double GetLineWidthForEdge(Edge edge)
         {
-            double weight = lineWeightController.GetLineWeightForEdge(edge);
-            double percent = weight / lineWeightController.GetMaximumLineWeight();
-            double padding = MAX_LINE_WIDTH * LINE_PADDING_PERCENT;
-            return percent * (MAX_LINE_WIDTH - 2 * padding) + padding;
+            double weight = _lineWeightController.GetLineWeightForEdge(edge);
+            double percent = weight / _lineWeightController.GetMaximumLineWeight();
+            double padding = _maxLineWidth * _linePaddingPercent;
+            return percent * (_maxLineWidth - 2 * padding) + padding;
         }
 
         protected override bool OnExposeEvent(Gdk.EventExpose args)
         {
-            logger.Debug("[OnExposeEvent] Redrawing");
+            Logger.Debug("[OnExposeEvent] Redrawing");
             Gdk.Rectangle allocation = this.Allocation;
-            maxWindowX = allocation.Width;
-            maxWindowY = allocation.Height;
+            _maxWindowX = allocation.Width;
+            _maxWindowY = allocation.Height;
             using (Context g = Gdk.CairoHelper.Create(args.Window))
             {
-                logger.Trace("[OnExposeEvent] Drawing all edges, total #: {0}", edges.Count);
-                foreach (Edge edge in edges)
+                Logger.Trace("[OnExposeEvent] Drawing all edges, total #: {0}", _edges.Count);
+                foreach (Edge edge in _edges)
                 {
                     DrawEdge(g, edge);
                 }
-                logger.Trace("[OnExposeEvent] Drawing all nodes, total #: {0}", nodes.Count);
-                foreach (Node node in nodes)
+                Logger.Trace("[OnExposeEvent] Drawing all nodes, total #: {0}", _nodes.Count);
+                foreach (Node node in _nodes)
                 {
                     if (node.IsFoodSource())
                     {
@@ -170,13 +170,13 @@ namespace SlimeSimulation.View
 
         public void InvertEdgeDrawing()
         {
-            if (edgeDrawingOption == EdgeDrawing.WithoutWeight)
+            if (_edgeDrawingOption == EdgeDrawing.WithoutWeight)
             {
-                edgeDrawingOption = EdgeDrawing.WithWeight;
+                _edgeDrawingOption = EdgeDrawing.WithWeight;
             }
             else
             {
-                edgeDrawingOption = EdgeDrawing.WithoutWeight;
+                _edgeDrawingOption = EdgeDrawing.WithoutWeight;
             }
             QueueDraw();
         }

@@ -15,51 +15,51 @@ namespace SlimeSimulation.Controller
 {
     public class SimulationController
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly int flowAmount;
-        private SimulationUpdater simulationUpdater;
+        private readonly int _flowAmount;
+        private readonly SimulationUpdater _simulationUpdater;
 
-        private GtkLifecycleController gtkLifecycleController = GtkLifecycleController.Instance;
-        private bool simulationDoingStep = false;
-        private SimulationState state;
+        private readonly GtkLifecycleController _gtkLifecycleController = GtkLifecycleController.Instance;
+        private bool _simulationDoingStep = false;
+        private SimulationState _state;
 
-        private readonly ApplicationStartController startingController;
+        private readonly ApplicationStartController _startingController;
 
         public SimulationController(ApplicationStartController startingController,
             int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial)
         {
-            this.startingController = startingController;
-            this.flowAmount = flowAmount;
-            this.simulationUpdater = simulationUpdater;
-            state = new SimulationState(initial);
+            this._startingController = startingController;
+            this._flowAmount = flowAmount;
+            this._simulationUpdater = simulationUpdater;
+            _state = new SimulationState(initial);
         }
 
         public void RunSimulation()
         {
             try
             {
-                logger.Debug("[RunSimulation] Using before ");
-                UpdateDisplayFromState(state);
-                logger.Debug("[RunSimulation] Using after ");
+                Logger.Debug("[RunSimulation] Using before ");
+                UpdateDisplayFromState(_state);
+                Logger.Debug("[RunSimulation] Using after ");
             }
             catch (Exception e)
             {
-				logger.Fatal(e, "[RunSimulation] Unexpected exception: " + e, e.Data);
+				Logger.Fatal(e, "[RunSimulation] Unexpected exception: " + e, e.Data);
             }
         }
 
         public void DoNextSimulationStep()
         {
-            if (simulationDoingStep)
+            if (_simulationDoingStep)
             {
-                logger.Debug("[DoNextSimulationStep] Not starting next step as it's already in progress");
+                Logger.Debug("[DoNextSimulationStep] Not starting next step as it's already in progress");
             }
             else
             {
-                logger.Debug("[DoNextSimulationStep] Stepping");
-                simulationDoingStep = true;
-                var nextState = simulationUpdater.GetNextState(state, flowAmount);
+                Logger.Debug("[DoNextSimulationStep] Stepping");
+                _simulationDoingStep = true;
+                var nextState = _simulationUpdater.GetNextState(_state, _flowAmount);
                 UpdateControllerState(nextState);
             }
         }
@@ -68,18 +68,18 @@ namespace SlimeSimulation.Controller
         {
             try
             {
-                state = await stateParam;
-                logger.Debug("[UpdateControllerState] State: {0} about to update view", state);
+                _state = await stateParam;
+                Logger.Debug("[UpdateControllerState] State: {0} about to update view", _state);
                 Gtk.Application.Invoke(delegate
                 {
-                    logger.Debug("[UpdateControllerState] Invoking from main thread ");
-                    UpdateDisplayFromState(state);
+                    Logger.Debug("[UpdateControllerState] Invoking from main thread ");
+                    UpdateDisplayFromState(_state);
                 });
-                simulationDoingStep = false;
+                _simulationDoingStep = false;
             }
             catch (Exception e)
             {
-                logger.Error(e, "[UpdateControllerState] Error: ");
+                Logger.Error(e, "[UpdateControllerState] Error: ");
             }
         }
 
@@ -97,12 +97,12 @@ namespace SlimeSimulation.Controller
 
         private void DisplayFlowResult(FlowResult flowResult)
         {
-            new FlowResultController(this, gtkLifecycleController, flowResult).Render();
+            new FlowResultController(this, _gtkLifecycleController, flowResult).Render();
         }
 
         private void DisplayConnectivityInNetwork(SlimeNetwork network)
         {
-            new FlowNetworkGraphController(this, gtkLifecycleController, network.Edges).Render();
+            new FlowNetworkGraphController(this, _gtkLifecycleController, network.Edges).Render();
         }
     }
 }

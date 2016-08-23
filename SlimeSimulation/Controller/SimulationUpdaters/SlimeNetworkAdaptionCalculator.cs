@@ -10,10 +10,10 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 {
     public class SlimeNetworkAdaptionCalculator
     {
-        private double feedbackParameter;
+        private readonly double _feedbackParameter;
 
         public SlimeNetworkAdaptionCalculator(double feedbackParameter) {
-            this.feedbackParameter = feedbackParameter;
+            this._feedbackParameter = feedbackParameter;
         }
 
         internal SlimeNetwork CalculateNextStep(SlimeNetwork slimeNetwork, FlowResult flowResult)
@@ -31,7 +31,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         public double FunctionOfFlow(double flow)
         {
-            double flowRaisedToSigma = Math.Pow(Math.Abs(flow), feedbackParameter);
+            double flowRaisedToSigma = Math.Pow(Math.Abs(flow), _feedbackParameter);
             double functionResult = flowRaisedToSigma / (1 + flowRaisedToSigma);
             return functionResult;
         }

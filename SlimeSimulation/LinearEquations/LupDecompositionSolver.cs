@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.LinearEquations
 {
-    public class LupDecompositionSolver : LinearEquationSolver
+    public class LupDecompositionSolver : ILinearEquationSolver
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         // Ax = b
         public double[] FindX(double[][] a, double[] b)
         {
-            if (logger.IsTraceEnabled)
+            if (Logger.IsTraceEnabled)
             {
-                logger.Trace("A: " + LogHelper.PrintArrWithSpaces(a) + ", B: " + LogHelper.PrintArrWithNewLines(b));
+                Logger.Trace("A: " + LogHelper.PrintArrWithSpaces(a) + ", B: " + LogHelper.PrintArrWithNewLines(b));
             }
             LogDensity(a);
             var pi = LupDecompose(a);
@@ -40,7 +40,7 @@ namespace SlimeSimulation.LinearEquations
                     }
                 }
             }
-            logger.Debug("[LogDensity] Found nonzero: {0}, total: {1}, density %: {2}%", count, total, (count / (double)total) * 100);
+            Logger.Debug("[LogDensity] Found nonzero: {0}, total: {1}, density %: {2}%", count, total, (count / (double)total) * 100);
         }
 
         private int[] MakePi(int length)
@@ -72,7 +72,7 @@ namespace SlimeSimulation.LinearEquations
                     sequenceSum += matrix.Upper(i, j) * x[j];
                 }
                 x[i] = (y[i] - sequenceSum) / matrix.Upper(i, i);
-                logger.Trace("[LupSolve] for i {0} sequenceSum: {1}, x[i]: {2}", i, sequenceSum, x[i]);
+                Logger.Trace("[LupSolve] for i {0} sequenceSum: {1}, x[i]: {2}", i, sequenceSum, x[i]);
             }
             return x;
         }
@@ -88,7 +88,7 @@ namespace SlimeSimulation.LinearEquations
                     sequenceSum += matrix.Lower(i, j) * y[j];
                 }
                 y[i] = b[pi[i]] - sequenceSum;
-                logger.Trace("[ForwardSubstituteForY] for i {0} sequenceSum: {1}, y[i]: {2}", i, sequenceSum, y[i]);
+                Logger.Trace("[ForwardSubstituteForY] for i {0} sequenceSum: {1}, y[i]: {2}", i, sequenceSum, y[i]);
             }
             return y;
         }
@@ -138,7 +138,7 @@ namespace SlimeSimulation.LinearEquations
             {
                 String arrayString = LogHelper.PrintArr(array);
                 String logstr = "Array  A was singular: " + arrayString;
-                logger.Fatal(logstr);
+                Logger.Fatal(logstr);
                 throw new SingularMatrixException(logstr);
             }
             else
@@ -164,14 +164,14 @@ namespace SlimeSimulation.LinearEquations
 
     internal class UpperLowerMatrix
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        private double[][] original;
-        private double[][] upper;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly double[][] _original;
+        private readonly double[][] _upper;
 
         public UpperLowerMatrix(double[][] a)
         {
-            this.original = a;
-            upper = MakeUpper(a);
+            this._original = a;
+            _upper = MakeUpper(a);
         }
 
         private double[][] MakeUpper(double[][] array)
@@ -190,10 +190,10 @@ namespace SlimeSimulation.LinearEquations
 
         public void LogUpper()
         {
-            if (logger.IsTraceEnabled)
+            if (Logger.IsTraceEnabled)
             {
-                logger.Trace("[LogUpper] Printing");
-                logger.Trace(LogHelper.PrintArr(upper));
+                Logger.Trace("[LogUpper] Printing");
+                Logger.Trace(LogHelper.PrintArr(_upper));
             }
         }
 
@@ -205,7 +205,7 @@ namespace SlimeSimulation.LinearEquations
             }
             else
             {
-                return original[i][j];
+                return _original[i][j];
             }
         }
 
@@ -215,19 +215,19 @@ namespace SlimeSimulation.LinearEquations
             CheckArg(j);
             if (i <= j)
             {
-                logger.Warn("Lower matrix requested element which would have been upper");
+                Logger.Warn("Lower matrix requested element which would have been upper");
                 return 0;
             }
-            logger.Trace("[Lower] Request for i, j: {0}, {1} returning {2}", i, j, original[i][j]);
-            return original[i][j];
+            Logger.Trace("[Lower] Request for i, j: {0}, {1} returning {2}", i, j, _original[i][j]);
+            return _original[i][j];
         }
 
         internal double Upper(int i, int j)
         {
-            logger.Trace("[Upper] Request for i, j: {0}, {1}", i, j);
+            Logger.Trace("[Upper] Request for i, j: {0}, {1}", i, j);
             CheckArg(i);
             CheckArg(j);
-            return upper[i][j];
+            return _upper[i][j];
         }
 
         private void CheckArg(int i)
@@ -236,9 +236,9 @@ namespace SlimeSimulation.LinearEquations
             {
                 throw new ArgumentOutOfRangeException("Must be positive. Given: " + i);
             }
-            else if (i >= original.Length)
+            else if (i >= _original.Length)
             {
-                throw new ArgumentOutOfRangeException("Must be 0 indexed index. Max: " + original.Length + ", Given: " + i);
+                throw new ArgumentOutOfRangeException("Must be 0 indexed index. Max: " + _original.Length + ", Given: " + i);
             }
         }
     }

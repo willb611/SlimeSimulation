@@ -7,67 +7,67 @@ namespace SlimeSimulation.FlowCalculation
 {
     public class FlowResult
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ISet<Edge> edges;
-        private readonly Node source, sink;
-        private readonly int flowAmount;
-        private readonly FlowOnEdges flowOnEdges;
+        private readonly ISet<Edge> _edges;
+        private readonly Node _source, _sink;
+        private readonly int _flowAmount;
+        private readonly FlowOnEdges _flowOnEdges;
 
         public FlowResult(ISet<Edge> edges, Node source, Node sink, int flowAmount,
           FlowOnEdges flowOnEdges)
         {
-            this.source = source;
-            this.sink = sink;
-            this.flowAmount = flowAmount;
-            this.edges = edges;
-            this.flowOnEdges = flowOnEdges;
-            logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + edges.Count);
-            logger.Info("[constructor] And source {0}, and Sink {1}", source, sink);
+            this._source = source;
+            this._sink = sink;
+            this._flowAmount = flowAmount;
+            this._edges = edges;
+            this._flowOnEdges = flowOnEdges;
+            Logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + edges.Count);
+            Logger.Info("[constructor] And source {0}, and Sink {1}", source, sink);
         }
 
         internal double GetMaximumFlowOnEdge()
         {
-            return flowOnEdges.GetMaximumFlowOnAnyEdge();
+            return _flowOnEdges.GetMaximumFlowOnAnyEdge();
         }
 
         internal ISet<Edge> Edges {
-            get { return edges; }
+            get { return _edges; }
         }
 
         internal Node Source {
-            get { return source; }
+            get { return _source; }
         }
 
         internal void Validate()
         {
             var acceptedError = 0.00001;
             double sourceFlow = GetFlowOnNode(Source);
-            logger.Info("[ValidateFlowResult] flow on source {0}: {1}", Source, sourceFlow);
+            Logger.Info("[ValidateFlowResult] flow on source {0}: {1}", Source, sourceFlow);
             double sinkFlow = GetFlowOnNode(Sink);
-            logger.Info("[ValidateFlowResult] flow on Sink {0}: {1}", Sink, sinkFlow);
-            logger.Info("[ValidateFlowResult] Original flow: {0}", FlowAmount);
-            if (flowAmount - Math.Abs(sourceFlow) < acceptedError && flowAmount - Math.Abs(sinkFlow) < acceptedError)
+            Logger.Info("[ValidateFlowResult] flow on Sink {0}: {1}", Sink, sinkFlow);
+            Logger.Info("[ValidateFlowResult] Original flow: {0}", FlowAmount);
+            if (_flowAmount - Math.Abs(sourceFlow) < acceptedError && _flowAmount - Math.Abs(sinkFlow) < acceptedError)
             {
-                logger.Info("[ValidateFlowResult] VALID!");
+                Logger.Info("[ValidateFlowResult] VALID!");
             }
             else
             {
-                logger.Error("[ValidateFlowResult] INVALID!");
+                Logger.Error("[ValidateFlowResult] INVALID!");
             }
         }
 
         internal Node Sink {
-            get { return sink; }
+            get { return _sink; }
         }
 
         public int FlowAmount {
-            get { return flowAmount; }
+            get { return _flowAmount; }
         }
 
         public double FlowOnEdge(Edge edge)
         {
-            return flowOnEdges.GetFlowOnEdge(edge);
+            return _flowOnEdges.GetFlowOnEdge(edge);
         }
 
         internal double GetFlowOnNode(Node node)
@@ -86,7 +86,7 @@ namespace SlimeSimulation.FlowCalculation
                     sum -= flow;
                 }
             }
-            logger.Trace("Flow into node {0} is: {1}", node, sum);
+            Logger.Trace("Flow into node {0} is: {1}", node, sum);
             return sum;
         }
     }

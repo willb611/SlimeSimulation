@@ -6,28 +6,28 @@ namespace SlimeSimulation.Model
 {
     public class Node : IEquatable<Node>
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly int id;
-        private readonly double x, y;
+        private readonly int _id;
+        private readonly double _x, _y;
 
         public Node(int id, double x, double y)
         {
-            this.id = id;
-            this.x = x;
-            this.y = y;
+            this._id = id;
+            this._x = x;
+            this._y = y;
         }
 
         public int Id {
-            get { return id; }
+            get { return _id; }
         }
 
         public double X {
-            get { return x; }
+            get { return _x; }
         }
 
         public double Y {
-            get { return y; }
+            get { return _y; }
         }
 
         public virtual bool IsFoodSource()
@@ -56,7 +56,7 @@ namespace SlimeSimulation.Model
                 return false;
             }
 
-            if (id != other.Id)
+            if (_id != other.Id)
             {
                 return false;
             }
@@ -68,8 +68,8 @@ namespace SlimeSimulation.Model
 
         public override int GetHashCode()
         {
-            return (id.GetHashCode() * 17 + x.GetHashCode()) * 17
-                   + y.GetHashCode();
+            return (_id.GetHashCode() * 17 + _x.GetHashCode()) * 17
+                   + _y.GetHashCode();
         }
 
         internal List<Edge> GetEdgesAdjacent(ISet<Edge> edges)
@@ -87,14 +87,14 @@ namespace SlimeSimulation.Model
 
         public override string ToString()
         {
-            return this.GetType() + "{id=" + id + ", x=" + x + ", y=" + y + "}";
+            return this.GetType() + "{id=" + _id + ", x=" + _x + ", y=" + _y + "}";
         }
 
         internal void ReplaceWithGivenNodeInEdges(Node replacement, HashSet<Edge> edges)
         {
-            if (logger.IsTraceEnabled)
+            if (Logger.IsTraceEnabled)
             {
-                logger.Trace("[ReplaceWithGivenNodeInEdges] Replacing {0}, with: {1}",
+                Logger.Trace("[ReplaceWithGivenNodeInEdges] Replacing {0}, with: {1}",
                     this, replacement);
             }
             foreach (Edge edge in GetEdgesAdjacent(edges))
@@ -104,9 +104,9 @@ namespace SlimeSimulation.Model
                 edges.Remove(edge);
                 edges.Add(replacementEdge);
             }
-            if (logger.IsTraceEnabled)
+            if (Logger.IsTraceEnabled)
             {
-                logger.Trace("[EnsureFoodSources] Finished. resulting edges: " + LogHelper.CollectionToString(edges));
+                Logger.Trace("[EnsureFoodSources] Finished. resulting edges: " + LogHelper.CollectionToString(edges));
             }
         }
     }
