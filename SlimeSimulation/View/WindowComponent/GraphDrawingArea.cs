@@ -18,6 +18,8 @@ namespace SlimeSimulation.View.WindowComponent
         private const double WindowSpacePercentToDrawIn = 0.9;
         private const double LinePaddingPercent = 0.05;
 
+        private const double MinEdgeWeightToDraw = 0.0001;
+
         private readonly LineViewController _lineWeightController;
         private readonly NodeViewController _nodeHighlightController;
         private readonly ICollection<Edge> _edges = new List<Edge>();
@@ -32,6 +34,7 @@ namespace SlimeSimulation.View.WindowComponent
 
         private double _maxWindowX = 100;
         private double _maxWindowY = 100;
+
 
         public GraphDrawingArea(ICollection<Edge> edges, LineViewController lineWidthController,
           NodeViewController nodeHighlightController)
@@ -81,7 +84,7 @@ namespace SlimeSimulation.View.WindowComponent
 
         protected virtual void DrawEdge(Cairo.Context graphic, Edge edge)
         {
-            if (Math.Abs(_lineWeightController.GetLineWeightForEdge(edge)) < 0.0001)
+            if (Math.Abs(_lineWeightController.GetLineWeightForEdge(edge)) < MinEdgeWeightToDraw)
             {
                 return;
             }
