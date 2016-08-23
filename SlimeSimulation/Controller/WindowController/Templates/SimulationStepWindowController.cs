@@ -34,5 +34,10 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             base.OnWindowClose();
             SimulationController.DoNextSimulationSteps(numberOfSteps);
         }
+
+        internal bool StepWithoutShowingFlowResult()
+        {
+            return !SimulationController.ShouldFlowResultsBeDisplayed;
+        }
     }
 }
