@@ -16,7 +16,7 @@ namespace SlimeSimulation.Model.Simulation
         {
             if (network == null)
             {
-                throw new ArgumentNullException("Cannot create state with null network");
+                throw new ArgumentNullException(nameof(network));
             }
             this.SlimeNetwork = network;
         }

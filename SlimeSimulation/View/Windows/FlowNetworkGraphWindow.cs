@@ -7,6 +7,7 @@ using System;
 using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.WindowsComponentController;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.Windows
 {
@@ -14,7 +15,7 @@ namespace SlimeSimulation.View.Windows
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly List<Edge> _edges;
-        private FlowNetworkGraphController _controller;
+        private readonly FlowNetworkGraphController _controller;
         
         public FlowNetworkGraphWindow(List<Edge> edges, FlowNetworkGraphController controller)
           : base("ConductivityWindow", controller)
@@ -25,18 +26,28 @@ namespace SlimeSimulation.View.Windows
 
         protected override void AddToWindow(Window window)
         {
-            Gdk.Color bgColor = new Gdk.Color(255, 255, 255);
+            var bgColor = new Gdk.Color(255, 255, 255);
             window.ModifyBg(StateType.Normal, bgColor);
 
-            HBox hbox = new HBox();
+            var hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
-            window.Add(hbox);
             GraphDrawingArea = new GraphDrawingArea(_edges, new ConnectivityLineViewController(_edges),
               new ConnectivityNodeViewController());
             base.ListenToClicksOn(GraphDrawingArea);
 
             hbox.Add(GraphDrawingArea);
+
+            var vbox = new VBox(false, 10);
+            vbox.PackStart(StepNumberLabel(), false, true, 10);
+            vbox.PackStart(hbox, true, true, 10);
+
+            window.Add(vbox);
         }
 
+        private Label StepNumberLabel()
+        {
+            var stepNumber = _controller.StepsSoFarInSimulation();
+            return new Label("Simulation steps completed number: " + stepNumber);
+        }
     }
 }

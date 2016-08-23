@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.View;
+using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller.WindowController

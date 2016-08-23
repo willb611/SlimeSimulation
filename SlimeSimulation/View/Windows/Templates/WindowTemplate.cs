@@ -11,7 +11,7 @@ using SlimeSimulation.Controller.WindowController;
 
 namespace SlimeSimulation.View.Windows.Templates
 {
-    abstract public class WindowTemplate : IDisposable
+    public abstract class WindowTemplate : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         protected bool Disposed = false;

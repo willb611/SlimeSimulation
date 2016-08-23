@@ -26,6 +26,8 @@ namespace SlimeSimulation.Controller
 
         private readonly ApplicationStartController _startingController;
 
+        public int SimulationStepsCompleted { get; internal set; }
+
         public SimulationController(ApplicationStartController startingController,
             int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial)
         {
@@ -64,7 +66,7 @@ namespace SlimeSimulation.Controller
             }
         }
 
-        async private void UpdateControllerState(Task<SimulationState> stateParam)
+        private async void UpdateControllerState(Task<SimulationState> stateParam)
         {
             try
             {
@@ -76,6 +78,10 @@ namespace SlimeSimulation.Controller
                     UpdateDisplayFromState(_state);
                 });
                 _simulationDoingStep = false;
+                if (_state.FlowResult != null)
+                {
+                    SimulationStepsCompleted++;
+                }
             }
             catch (Exception e)
             {

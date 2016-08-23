@@ -7,16 +7,16 @@ using Gdk;
 using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.WindowsComponentController;
 
-namespace SlimeSimulation.View
+namespace SlimeSimulation.View.WindowComponent
 {
     public class GraphDrawingArea : Gtk.DrawingArea
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly double _maxLineWidth = 15;
+        private const double MaxLineWidth = 15;
 
-        private readonly double _windowSpacePercentToDrawIn = 0.9;
-        private readonly double _linePaddingPercent = 0.05;
+        private const double WindowSpacePercentToDrawIn = 0.9;
+        private const double LinePaddingPercent = 0.05;
 
         private readonly LineViewController _lineWeightController;
         private readonly NodeViewController _nodeHighlightController;
@@ -79,7 +79,7 @@ namespace SlimeSimulation.View
             graphic.Restore();
         }
 
-        virtual protected void DrawEdge(Cairo.Context graphic, Edge edge)
+        protected virtual void DrawEdge(Cairo.Context graphic, Edge edge)
         {
             if (Math.Abs(_lineWeightController.GetLineWeightForEdge(edge)) < 0.0001)
             {
@@ -118,7 +118,7 @@ namespace SlimeSimulation.View
         private double ScaleX(double x)
         {
             double percent = (x - _minNodeX) / (_maxNodeX - _minNodeX);
-            double availableDrawingSpace = _maxWindowX * _windowSpacePercentToDrawIn;
+            double availableDrawingSpace = _maxWindowX * WindowSpacePercentToDrawIn;
             double padding = (_maxWindowX - availableDrawingSpace) / 2;
             return availableDrawingSpace * percent + padding;
         }
@@ -126,7 +126,7 @@ namespace SlimeSimulation.View
         private double ScaleY(double y)
         {
             double percent = (y - _minNodeY) / (_maxNodeY - _minNodeY);
-            double availableDrawingSpace = _maxWindowY * _windowSpacePercentToDrawIn;
+            double availableDrawingSpace = _maxWindowY * WindowSpacePercentToDrawIn;
             double padding = (_maxWindowY - availableDrawingSpace) / 2;
             return availableDrawingSpace * percent + padding;
         }
@@ -135,8 +135,8 @@ namespace SlimeSimulation.View
         {
             double weight = _lineWeightController.GetLineWeightForEdge(edge);
             double percent = weight / _lineWeightController.GetMaximumLineWeight();
-            double padding = _maxLineWidth * _linePaddingPercent;
-            return percent * (_maxLineWidth - 2 * padding) + padding;
+            double padding = MaxLineWidth * LinePaddingPercent;
+            return percent * (MaxLineWidth - 2 * padding) + padding;
         }
 
         protected override bool OnExposeEvent(Gdk.EventExpose args)

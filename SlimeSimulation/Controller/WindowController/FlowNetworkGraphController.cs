@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.View;
+using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows;
 using SlimeSimulation.View.Windows.Templates;
 
@@ -37,10 +38,13 @@ namespace SlimeSimulation.Controller.WindowController
         public override void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args)
         {
             Logger.Debug("[OnClick] Clicked!");
-            GraphDrawingArea area = widget as GraphDrawingArea;
-            if (area != null) { 
-                area.InvertEdgeDrawing();
-            }
+            var area = widget as GraphDrawingArea;
+            area?.InvertEdgeDrawing();
+        }
+
+        internal int StepsSoFarInSimulation()
+        {
+            return SimulationController.SimulationStepsCompleted;
         }
     }
 }
