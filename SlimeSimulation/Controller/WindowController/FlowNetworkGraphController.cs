@@ -46,5 +46,15 @@ namespace SlimeSimulation.Controller.WindowController
         {
             return SimulationController.SimulationStepsCompleted;
         }
+
+        internal void ToggleAreFlowResultsDisplayed(bool shouldResultsBeDisplayed)
+        {
+            SimulationController.ToggleAreFlowResultsDisplayed(shouldResultsBeDisplayed);
+        }
+
+        internal bool WillFlowResultsBeDisplayed()
+        {
+            return SimulationController.ShouldFlowResultsBeDisplayed;
+        }
     }
 }
