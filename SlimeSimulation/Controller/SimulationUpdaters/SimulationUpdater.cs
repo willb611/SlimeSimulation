@@ -65,8 +65,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             }
             catch (SingularMatrixException e)
             {
-                Logger.Error("Error due to singular matrix in current network. Not able to calculate flow. Error: " + e);
-                return new SimulationState(slimeNetwork);
+                Logger.Error(e);
+                throw;
             }
         }
 

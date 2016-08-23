@@ -68,7 +68,7 @@ namespace SlimeSimulation.Controller
         {
             _simulationDoingStep = true;
             Task<SimulationState> taskForState = null;
-            SimulationState mostRecentState = _state;
+            var mostRecentState = _state;
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
                 if (taskForState != null)

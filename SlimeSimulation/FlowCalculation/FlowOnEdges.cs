@@ -8,7 +8,8 @@ namespace SlimeSimulation.FlowCalculation
     public class FlowOnEdges
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+
+        private const double SmallAmountToPreventNodesFromGettingDisconnected = 0.0000001;
         private readonly Dictionary<Edge, double> _flowOnEdgeMapping;
 
         public FlowOnEdges(FlowOnEdges flowOnEdges)
@@ -21,9 +22,10 @@ namespace SlimeSimulation.FlowCalculation
             _flowOnEdgeMapping = new Dictionary<Edge, double>();
             foreach (Edge edge in edges)
             {
-                _flowOnEdgeMapping.Add(edge, 0.0000001);
+                _flowOnEdgeMapping.Add(edge, SmallAmountToPreventNodesFromGettingDisconnected);
             }
         }
+
 
         internal double GetMaximumFlowOnAnyEdge()
         {

@@ -136,8 +136,8 @@ namespace SlimeSimulation.LinearEquations
             }
             if (p == 0)
             {
-                String arrayString = LogHelper.PrintArr(array);
-                String logstr = "Array  A was singular: " + arrayString;
+                var arrayString = LogHelper.PrintArr(array);
+                var logstr = "No values found in column " + columnNumber + ". Meaning array A was singular: " + arrayString;
                 Logger.Fatal(logstr);
                 throw new SingularMatrixException(logstr);
             }
