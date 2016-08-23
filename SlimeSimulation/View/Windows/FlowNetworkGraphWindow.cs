@@ -20,7 +20,7 @@ namespace SlimeSimulation.View.Windows
         private CheckButton _shouldSimulationStepsBeDisplayedButton;
         
         public FlowNetworkGraphWindow(List<Edge> edges, FlowNetworkGraphController controller)
-          : base("ConductivityWindow", controller)
+          : base("FlowNetworkGraphWindow", controller)
         {
             this._edges = edges;
             this._controller = controller;
@@ -50,18 +50,18 @@ namespace SlimeSimulation.View.Windows
         private Widget ShouldSimulationStepResultsBeDisplayedInput()
         {
             _shouldSimulationStepsBeDisplayedButton = new CheckButton("Should simulation step result (flow graph) be displayed?");
-            _logger.Debug("[ShouldSimulationStepResultsBeDisplayedInput] " + _controller.WillFlowResultsBeDisplayed());
+            _logger.Debug("[ShouldSimulationStepResultsBeDisplayedInput] Setting initial value to: " + _controller.WillFlowResultsBeDisplayed());
+
             if (_controller.WillFlowResultsBeDisplayed())
             {
                 _shouldSimulationStepsBeDisplayedButton.Active = true;
             }
-            _shouldSimulationStepsBeDisplayedButton.Toggled += OnCheckToggled;
-            return _shouldSimulationStepsBeDisplayedButton;
-        }
 
-        void OnCheckToggled(object obj, EventArgs args)
-        {
-            _controller.ToggleAreFlowResultsDisplayed(_shouldSimulationStepsBeDisplayedButton.Active);
+            _shouldSimulationStepsBeDisplayedButton.Toggled += delegate
+            {
+                _controller.ToggleAreFlowResultsDisplayed(_shouldSimulationStepsBeDisplayedButton.Active);
+            };
+            return _shouldSimulationStepsBeDisplayedButton;
         }
 
         private Label StepNumberLabel()

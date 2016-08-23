@@ -1,3 +1,6 @@
+using System;
+using GLib;
+using Gtk;
 using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.LinearEquations;

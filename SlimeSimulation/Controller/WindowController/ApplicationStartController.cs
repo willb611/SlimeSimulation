@@ -65,6 +65,7 @@ namespace SlimeSimulation.Controller.WindowController
         {
             base.OnQuit();
             DisposeOfView();
+            GtkLifecycleController.Instance.ApplicationQuit();
         }
 
         private void DisposeOfView()
