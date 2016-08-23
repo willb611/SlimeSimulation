@@ -35,7 +35,7 @@ namespace SlimeSimulation.View.Windows.Templates
 
         private void Window_DeleteEvent(object o, DeleteEventArgs args)
         {
-            _windowController.OnQuit();
+            _windowController.OnWindowClose();
         }
 
         protected void ListenToClicksOn(Gtk.Widget widget)

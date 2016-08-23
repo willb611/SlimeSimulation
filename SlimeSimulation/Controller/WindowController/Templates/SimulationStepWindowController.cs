@@ -1,3 +1,4 @@
+using System;
 using NLog;
 
 namespace SlimeSimulation.Controller.WindowController.Templates
@@ -13,9 +14,9 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             this.SimulationController = simulationController;
         }
 
-        public override void OnQuit() // called when window is closed.
+        public override void OnWindowClose()
         {
-            base.OnQuit();
+            base.OnWindowClose();
             SimulationController.FinishSimulation();
         }
 
@@ -24,8 +25,14 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             _logger.Debug("[OnStepCompleted] Entered");
             SimulationController.DoNextSimulationStep();
             _logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
-            base.OnQuit();
-            _logger.Debug("[OnStepCompleted] base.OnQuit(); finished");
+            base.OnWindowClose();
+            _logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");
+        }
+
+        internal void RunNumberOfSteps(int numberOfSteps)
+        {
+            base.OnWindowClose();
+            SimulationController.DoNextSimulationSteps(numberOfSteps);
         }
     }
 }

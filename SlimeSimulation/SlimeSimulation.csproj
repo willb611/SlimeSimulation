@@ -114,6 +114,8 @@
     <Compile Include="Controller\WindowController\ApplicationStartController.cs" />
     <Compile Include="View\Factories\ButtonPressHandlerFactory.cs" />
     <Compile Include="View\WindowComponent\ColorArea.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlBox.cs" />
+    <Compile Include="View\WindowComponent\SimulationStepNumberOfTimesComponent.cs" />
     <Compile Include="View\Windows\ApplicationStartWindow.cs" />
     <Compile Include="View\Windows\SlimeNetworkWindow.cs" />
     <Compile Include="View\Windows\FlowResultWindow.cs" />

@@ -9,11 +9,11 @@ namespace SlimeSimulation.Controller.WindowController.Templates
 
         protected WindowTemplate Window;
 
-        public virtual void OnQuit()
+        public virtual void OnWindowClose()
         {
-            Logger.Debug("[OnQuit] About to dispose of window: {0}", Window);
+            Logger.Debug("[OnWindowClose] About to dispose of window: {0}", Window);
             Window.Dispose();
-            Logger.Debug("[OnQuit] Disposed of window.");
+            Logger.Debug("[OnWindowClose] Disposed of window.");
         }
 
         public abstract void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args);

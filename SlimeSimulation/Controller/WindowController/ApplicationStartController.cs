@@ -59,9 +59,9 @@ namespace SlimeSimulation.Controller.WindowController
             _startingWindow.Display();
         }
 
-        public override void OnQuit()
+        public override void OnWindowClose()
         {
-            base.OnQuit();
+            base.OnWindowClose();
             DisposeOfView();
             GtkLifecycleController.Instance.ApplicationQuit();
         }

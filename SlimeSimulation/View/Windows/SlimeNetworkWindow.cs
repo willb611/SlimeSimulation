@@ -50,7 +50,7 @@ namespace SlimeSimulation.View.Windows
 
         private Widget SimulationStateInterface()
         {
-            return new HBox {StepNumberLabel(), new SimulationStepButton(_controller)};
+            return new VBox {StepNumberLabel(), new SimulationControlBox(_controller, Window)};
         }
 
         private Widget ShouldSimulationStepResultsBeDisplayedInput()

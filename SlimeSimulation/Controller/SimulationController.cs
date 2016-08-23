@@ -64,6 +64,24 @@ namespace SlimeSimulation.Controller
             ShouldFlowResultsBeDisplayed = shouldResultsBeDisplayed;
         }
 
+        internal void DoNextSimulationSteps(int numberOfSteps)
+        {
+            _simulationDoingStep = true;
+            Task<SimulationState> taskForState = null;
+            SimulationState mostRecentState = _state;
+            for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
+            {
+                if (taskForState != null)
+                {
+                    taskForState.Wait();
+                    mostRecentState = taskForState.Result;
+                }
+                taskForState = _simulationUpdater.CalculateFlowAndUpdateNetwork(mostRecentState, _flowAmount);
+            }
+            SimulationStepsCompleted += numberOfSteps;
+            UpdateControllerState(taskForState);
+        }
+
         public void DoNextSimulationStep()
         {
             if (_simulationDoingStep)
