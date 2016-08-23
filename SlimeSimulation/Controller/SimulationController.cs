@@ -53,6 +53,12 @@ namespace SlimeSimulation.Controller
             }
         }
 
+        internal void FinishSimulation()
+        {
+            _startingController.FinishSimulation(this);
+        }
+
+
         internal void ToggleAreFlowResultsDisplayed(bool shouldResultsBeDisplayed)
         {
             ShouldFlowResultsBeDisplayed = shouldResultsBeDisplayed;

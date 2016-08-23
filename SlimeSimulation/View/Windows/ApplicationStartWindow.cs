@@ -29,12 +29,13 @@ namespace SlimeSimulation.View.Windows
         private Label _errorLabel;
 
 
-        private List<String> _errors = new List<string>();
+        private List<string> _errors = new List<string>();
 
 
         public ApplicationStartWindow(string windowTitle, ApplicationStartController controller) : base(windowTitle, controller)
         {
             this._controller = controller;
+            Window.Resize(600, 600);
         }
 
         protected override void AddToWindow(Window window)

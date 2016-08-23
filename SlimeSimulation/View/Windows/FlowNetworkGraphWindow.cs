@@ -8,6 +8,7 @@ using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.WindowsComponentController;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.WindowComponent;
+using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.View.Windows
 {
@@ -40,11 +41,16 @@ namespace SlimeSimulation.View.Windows
             hbox.Add(GraphDrawingArea);
 
             var vbox = new VBox(false, 10);
-            vbox.PackStart(StepNumberLabel(), false, true, 10);
+            vbox.PackStart(SimulationStateInterface(), false, true, 10);
             vbox.PackStart(ShouldSimulationStepResultsBeDisplayedInput(), false, true, 10);
             vbox.PackStart(hbox, true, true, 10);
 
             window.Add(vbox);
+        }
+
+        private Widget SimulationStateInterface()
+        {
+            return new HBox {StepNumberLabel(), new SimulationStepButton(_controller)};
         }
 
         private Widget ShouldSimulationStepResultsBeDisplayedInput()
@@ -67,7 +73,7 @@ namespace SlimeSimulation.View.Windows
         private Label StepNumberLabel()
         {
             var stepNumber = _controller.StepsSoFarInSimulation();
-            return new Label("Simulation steps completed number: " + stepNumber);
+            return new Label("Simulation steps completed: " + stepNumber);
         }
     }
 }

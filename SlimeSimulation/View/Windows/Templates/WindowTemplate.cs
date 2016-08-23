@@ -8,6 +8,7 @@ using NLog;
 using SlimeSimulation.Controller;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.Controller.WindowController.Templates;
 
 namespace SlimeSimulation.View.Windows.Templates
 {
@@ -28,7 +29,7 @@ namespace SlimeSimulation.View.Windows.Templates
             this._controller = controller;
             _window = new Window(windowTitle);
             _window.Maximize();
-            //window.Resize(600, 600);
+            
             _window.DeleteEvent += Window_DeleteEvent;
         }
 
@@ -88,6 +89,7 @@ namespace SlimeSimulation.View.Windows.Templates
             }
             else if (disposing)
             {
+                Hide();
                 GtkLifecycleController.Instance.ApplicationQuit();
                 _window.Dispose();
             }

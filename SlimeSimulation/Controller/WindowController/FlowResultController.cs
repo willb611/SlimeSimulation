@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.View;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows.Templates;
@@ -30,7 +31,7 @@ namespace SlimeSimulation.Controller.WindowController
             using (Window = new FlowResultWindow(_flowResult, this))
             {
                 _gtkLifecycleController.Display(Window);
-                Logger.Debug("[Render] Displayed");
+                Logger.Debug("[Render]  _gtkLifecycleController.Display(Window); has finished running");
             }
         }
         

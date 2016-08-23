@@ -1,10 +1,10 @@
 using NLog;
-using System;
-using System.Collections.Generic;
-namespace SlimeSimulation.Controller.WindowController
+
+namespace SlimeSimulation.Controller.WindowController.Templates
 {
     abstract class SimulationStepWindowController : WindowController
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         protected SimulationController SimulationController;
 
@@ -13,10 +13,19 @@ namespace SlimeSimulation.Controller.WindowController
             this.SimulationController = simulationController;
         }
 
-        public override void OnQuit()
+        public override void OnQuit() // called when window is closed.
         {
             base.OnQuit();
+            SimulationController.FinishSimulation();
+        }
+
+        public void OnStepCompleted()
+        {
+            _logger.Debug("[OnStepCompleted] Entered");
             SimulationController.DoNextSimulationStep();
+            _logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
+            base.OnQuit();
+            _logger.Debug("[OnStepCompleted] base.OnQuit(); finished");
         }
     }
 }

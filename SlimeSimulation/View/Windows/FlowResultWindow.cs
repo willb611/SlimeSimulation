@@ -4,6 +4,7 @@ using NLog;
 using SlimeSimulation.Controller.WindowsComponentController;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.WindowComponent;
+using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.View.Windows
 {
@@ -37,6 +38,7 @@ namespace SlimeSimulation.View.Windows
 
             VBox vbox = new VBox(false, 10);
             vbox.PackStart(new Label("Network with amount of flow: " + _flowResult.FlowAmount), false, true, 10);
+            vbox.PackStart(new SimulationStepButton(_controller), false, true, 10);
             vbox.PackStart(hbox, true, true, 10);
 
             window.Add(vbox);

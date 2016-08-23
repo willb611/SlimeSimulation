@@ -124,6 +124,7 @@
     <Compile Include="Controller\WindowComponentController\NodeViewController.cs" />
     <Compile Include="View\WindowComponent\NodeHighlightKey.cs" />
     <Compile Include="View\RGB.cs" />
+    <Compile Include="View\WindowComponent\SimulationStepButton.cs" />
     <Compile Include="View\Windows\Templates\GraphDrawingWindowTemplate.cs" />
     <Compile Include="View\Windows\Templates\OnClickCallback.cs" />
     <Compile Include="View\Windows\Templates\WindowTemplate.cs" />

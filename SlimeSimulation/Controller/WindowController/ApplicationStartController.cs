@@ -10,7 +10,7 @@ using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    public class ApplicationStartController : WindowController
+    public class ApplicationStartController : Templates.WindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
@@ -31,8 +31,6 @@ namespace SlimeSimulation.Controller.WindowController
                     _startingWindow = Window as ApplicationStartWindow;
                     Logger.Debug("[Render] Display with main view");
                     gtkLifecycleController.Display(Window);
-                    Logger.Debug("[Render] Start running application");
-                    gtkLifecycleController.StartBeingAbleToDisplay();
                     Logger.Debug("[Render] Left main GTK loop ? ");
                 }
                 Logger.Debug("[Render] Finished");

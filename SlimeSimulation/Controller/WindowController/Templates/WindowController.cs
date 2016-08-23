@@ -1,15 +1,7 @@
-using Gtk;
 using NLog;
-using SlimeSimulation.Controller;
-using SlimeSimulation.View;
 using SlimeSimulation.View.Windows.Templates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SlimeSimulation.Controller.WindowController
+namespace SlimeSimulation.Controller.WindowController.Templates
 {
     public abstract class WindowController
     {

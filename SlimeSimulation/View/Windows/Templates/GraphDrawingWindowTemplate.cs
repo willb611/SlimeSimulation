@@ -1,15 +1,8 @@
 using NLog;
-using SlimeSimulation.Controller;
-using SlimeSimulation.Controller.WindowController;
-using SlimeSimulation.View.Windows.Templates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.View.WindowComponent;
 
-namespace SlimeSimulation.View.Windows
+namespace SlimeSimulation.View.Windows.Templates
 {
     abstract class GraphDrawingWindowTemplate : WindowTemplate
     {
