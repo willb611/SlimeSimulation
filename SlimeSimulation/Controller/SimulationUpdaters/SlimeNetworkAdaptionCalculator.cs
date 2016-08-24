@@ -18,12 +18,12 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         internal SlimeNetwork CalculateNextStep(SlimeNetwork slimeNetwork, FlowResult flowResult)
         {
-            ISet<Edge> edges = new HashSet<Edge>();
-            foreach (Edge edge in slimeNetwork.Edges)
+            ISet<SlimeEdge> edges = new HashSet<SlimeEdge>();
+            foreach (SlimeEdge edge in slimeNetwork.Edges)
             {
                 double connectivityInNextStepForEdge = NextConnectivityForEdge(edge, flowResult.FlowOnEdge(edge));
-                Edge updatedEdge = new Edge(edge.A, edge.B, connectivityInNextStepForEdge);
-                edges.Add(updatedEdge);
+                SlimeEdge updatedSlimeEdge = new SlimeEdge(edge.A, edge.B, connectivityInNextStepForEdge);
+                edges.Add(updatedSlimeEdge);
             }
             SlimeNetwork networkInNextStep = new SlimeNetwork(slimeNetwork.Nodes, slimeNetwork.FoodSources, edges);
             return networkInNextStep;
@@ -36,10 +36,10 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return functionResult;
         }
 
-        internal double NextConnectivityForEdge(Edge edge, double flow)
+        internal double NextConnectivityForEdge(SlimeEdge slimeEdge, double flow)
         {
-            double rateOfChangeOfConnectivity = FunctionOfFlow(flow) - edge.Connectivity;
-            double updatedConnectivity = edge.Connectivity + rateOfChangeOfConnectivity;
+            double rateOfChangeOfConnectivity = FunctionOfFlow(flow) - slimeEdge.Connectivity;
+            double updatedConnectivity = slimeEdge.Connectivity + rateOfChangeOfConnectivity;
             return updatedConnectivity;
         }
     }

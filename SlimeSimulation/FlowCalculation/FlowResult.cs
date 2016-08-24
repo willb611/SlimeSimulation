@@ -9,12 +9,12 @@ namespace SlimeSimulation.FlowCalculation
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ISet<Edge> _edges;
+        private readonly ISet<SlimeEdge> _edges;
         private readonly Node _source, _sink;
         private readonly int _flowAmount;
         private readonly FlowOnEdges _flowOnEdges;
 
-        public FlowResult(ISet<Edge> edges, Node source, Node sink, int flowAmount,
+        public FlowResult(ISet<SlimeEdge> edges, Node source, Node sink, int flowAmount,
           FlowOnEdges flowOnEdges)
         {
             this._source = source;
@@ -31,7 +31,7 @@ namespace SlimeSimulation.FlowCalculation
             return _flowOnEdges.GetMaximumFlowOnAnyEdge();
         }
 
-        internal ISet<Edge> Edges {
+        internal ISet<SlimeEdge> Edges {
             get { return _edges; }
         }
 
@@ -65,16 +65,16 @@ namespace SlimeSimulation.FlowCalculation
             get { return _flowAmount; }
         }
 
-        public double FlowOnEdge(Edge edge)
+        public double FlowOnEdge(SlimeEdge slimeEdge)
         {
-            return _flowOnEdges.GetFlowOnEdge(edge);
+            return _flowOnEdges.GetFlowOnEdge(slimeEdge);
         }
 
         internal double GetFlowOnNode(Node node)
         {
             Graph graph = new Model.Graph(Edges);
             double sum = 0;
-            foreach (Edge edge in graph.EdgesConnectedToNode(node))
+            foreach (SlimeEdge edge in graph.EdgesConnectedToNode(node))
             {
                 var flow = FlowOnEdge(edge);
                 if (edge.A == node)

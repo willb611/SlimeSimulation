@@ -15,12 +15,12 @@ namespace SlimeSimulation.View.Windows
     class SlimeNetworkWindow : GraphDrawingWindowTemplate
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly List<Edge> _edges;
+        private readonly List<SlimeEdge> _edges;
         private readonly SlimeNetworkWindowController _controller;
 
         private CheckButton _shouldSimulationStepsBeDisplayedButton;
         
-        public SlimeNetworkWindow(List<Edge> edges, SlimeNetworkWindowController controller)
+        public SlimeNetworkWindow(List<SlimeEdge> edges, SlimeNetworkWindowController controller)
           : base("SlimeNetworkWindow", controller)
         {
             this._edges = edges;

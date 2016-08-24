@@ -19,7 +19,7 @@ namespace SlimeSimulation.FlowCalculation
             _linearEquationSolver = solver;
         }
 
-        public FlowResult CalculateFlow(ISet<Edge> edges, ISet<Node> nodes, Node source, Node sink, int flowAmount)
+        public FlowResult CalculateFlow(ISet<SlimeEdge> edges, ISet<Node> nodes, Node source, Node sink, int flowAmount)
         {
             Graph graph = new Graph(edges, nodes);
             List<Node> nodeList = new List<Node>(nodes);
@@ -55,7 +55,7 @@ namespace SlimeSimulation.FlowCalculation
         private FlowOnEdges GetFlowOnEdges(Graph graph, Pressures pressures, List<Node> nodes)
         {
             FlowOnEdges result = new FlowOnEdges(graph.Edges);
-            foreach (Edge edge in graph.Edges)
+            foreach (SlimeEdge edge in graph.Edges)
             {
                 double pi = pressures.PressureAt(edge.A);
                 double pj = pressures.PressureAt(edge.B);
@@ -108,7 +108,7 @@ namespace SlimeSimulation.FlowCalculation
             double value = 0;
             if (a == b)
             {
-                foreach (Edge connected in graph.EdgesConnectedToNode(a))
+                foreach (SlimeEdge connected in graph.EdgesConnectedToNode(a))
                 {
                     value += connected.Connectivity;
                 }

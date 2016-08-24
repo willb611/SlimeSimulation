@@ -1,57 +1,37 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SlimeSimulation.Model
 {
-    public class Edge
+    class Edge
     {
-        private readonly double _connectivity;
         private readonly Node _a;
         private readonly Node _b;
 
-        public Edge(Node a, Node b, double connectivity)
+        public Edge(Node a, Node b)
         {
-            this._a = a;
-            this._b = b;
-            this._connectivity = connectivity;
+            _a = a;
+            _b = b;
         }
 
-        public double Connectivity {
-            get { return _connectivity; }
-        }
-
-        public double Resistance {
-            get {
-                if (_connectivity == 0)
-                {
-                    return double.MaxValue;
-                }
-                else
-                {
-                    return 1 / _connectivity;
-                }
-            }
-        }
-
-        public Node A {
-            get { return _a; }
-        }
-
-        public Node B {
-            get { return _b; }
-        }
+        public Node A => _a;
+        public Node B => _b;
 
         public bool Contains(Node node)
         {
-            return A == node || B == node;
+            return A.Equals(node) || B.Equals(node);
         }
 
         public Node GetOtherNode(Node node)
         {
-            if (node == A)
+            if (Equals(node, A))
             {
                 return B;
             }
-            else if (node == B)
+            else if (Equals(node, B))
             {
                 return A;
             }
@@ -82,10 +62,6 @@ namespace SlimeSimulation.Model
                 return false;
             }
 
-            if (_connectivity != other.Connectivity)
-            {
-                return false;
-            }
             else
             {
                 return A.Equals(other.A) && B.Equals(other.B);
@@ -94,13 +70,12 @@ namespace SlimeSimulation.Model
 
         public override int GetHashCode()
         {
-            return (_connectivity.GetHashCode() * 17 + A.GetHashCode()) * 17
-                   + B.GetHashCode();
+            return A.GetHashCode() * 17 + B.GetHashCode();
         }
 
         public override string ToString()
         {
-            return "Edge{connectivity=" + _connectivity + ", a=" + _a + ", b=" + _b + "}";
+            return "Edge{a=" + _a + ", b=" + _b + "}";
         }
     }
 }

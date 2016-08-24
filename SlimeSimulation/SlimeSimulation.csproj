@@ -99,8 +99,9 @@
     <Compile Include="LinearEquations\SingularMatrixException.cs" />
     <Compile Include="FlowCalculation\Pressures.cs" />
     <Compile Include="LogHelper.cs" />
-    <Compile Include="Model\Graph.cs" />
     <Compile Include="Model\Edge.cs" />
+    <Compile Include="Model\Graph.cs" />
+    <Compile Include="Model\SlimeEdge.cs" />
     <Compile Include="FlowCalculation\FlowOnEdges.cs" />
     <Compile Include="FlowCalculation\FlowResult.cs" />
     <Compile Include="Model\FoodSourceNode.cs" />

@@ -30,7 +30,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
             double connectivity = 0.5;
             Node a = new Node(1, 1, 1);
             Node b = new Node(2, 2, 2);
-            Edge edge = new Edge(a, b, connectivity);
+            SlimeEdge edge = new SlimeEdge(a, b, connectivity);
 
             double flow = 2;
             double expected = 0.8;

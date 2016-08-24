@@ -72,17 +72,17 @@ namespace SlimeSimulation.Model
                    + _y.GetHashCode();
         }
 
-        internal List<Edge> GetEdgesAdjacent(ISet<Edge> edges)
+        internal List<SlimeEdge> GetEdgesAdjacent(ISet<SlimeEdge> edges)
         {
-            ISet<Edge> result = new HashSet<Edge>();
-            foreach (Edge edge in edges)
+            ISet<SlimeEdge> result = new HashSet<SlimeEdge>();
+            foreach (SlimeEdge edge in edges)
             {
                 if (this == edge.A || this == edge.B)
                 {
                     result.Add(edge);
                 }
             }
-            return new List<Edge>(result);
+            return new List<SlimeEdge>(result);
         }
 
         public override string ToString()
@@ -90,19 +90,19 @@ namespace SlimeSimulation.Model
             return this.GetType() + "{id=" + _id + ", x=" + _x + ", y=" + _y + "}";
         }
 
-        internal void ReplaceWithGivenNodeInEdges(Node replacement, HashSet<Edge> edges)
+        internal void ReplaceWithGivenNodeInEdges(Node replacement, HashSet<SlimeEdge> edges)
         {
             if (Logger.IsTraceEnabled)
             {
                 Logger.Trace("[ReplaceWithGivenNodeInEdges] Replacing {0}, with: {1}",
                     this, replacement);
             }
-            foreach (Edge edge in GetEdgesAdjacent(edges))
+            foreach (SlimeEdge edge in GetEdgesAdjacent(edges))
             {
                 Node otherNode = edge.GetOtherNode(this);
-                Edge replacementEdge = new Edge(replacement, otherNode, edge.Connectivity);
+                SlimeEdge replacementSlimeEdge = new SlimeEdge(replacement, otherNode, edge.Connectivity);
                 edges.Remove(edge);
-                edges.Add(replacementEdge);
+                edges.Add(replacementSlimeEdge);
             }
             if (Logger.IsTraceEnabled)
             {

@@ -25,10 +25,10 @@ namespace SlimeSimulation.Model.Tests
              * |        /
              * replace (c)
              */
-            Edge ab = new Edge(a, b, 1);
-            Edge ac = new Edge(a, c, 1);
-            Edge bc = new Edge(b, c, 1);
-            HashSet<Edge> edges = new HashSet<Edge>() { ac, ab, bc };
+            SlimeEdge ab = new SlimeEdge(a, b, 1);
+            SlimeEdge ac = new SlimeEdge(a, c, 1);
+            SlimeEdge bc = new SlimeEdge(b, c, 1);
+            HashSet<SlimeEdge> edges = new HashSet<SlimeEdge>() { ac, ab, bc };
 
             c.ReplaceWithGivenNodeInEdges(replacement, edges);
             // Check edges connecting to c were removed
@@ -39,7 +39,7 @@ namespace SlimeSimulation.Model.Tests
             // Check edges left are conections from a -> replacement, and b -> replacement
             Assert.IsTrue(edges.Count == 2);
             List<Node> nodesReplacementShouldConnectTo = new List<Node>() { a, b };
-            foreach (Edge edge in edges)
+            foreach (SlimeEdge edge in edges)
             {
                 Node connected = edge.GetOtherNode(replacement);
                 nodesReplacementShouldConnectTo.Remove(connected);

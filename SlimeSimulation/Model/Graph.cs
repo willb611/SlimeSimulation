@@ -9,11 +9,11 @@ namespace SlimeSimulation.Model
 {
     public class Graph
     {
-        private readonly ISet<Edge> _edges;
+        private readonly ISet<SlimeEdge> _edges;
         private readonly ISet<Node> _nodes;
-        private readonly Dictionary<Node, ISet<Edge>> _edgesConnectedToNodeMapping;
+        private readonly Dictionary<Node, ISet<SlimeEdge>> _edgesConnectedToNodeMapping;
 
-        public Graph(ISet<Edge> edges)
+        public Graph(ISet<SlimeEdge> edges)
         {
             this._edges = edges;
             ISet<Node> nodes = new HashSet<Node>();
@@ -25,33 +25,33 @@ namespace SlimeSimulation.Model
             _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
         }
 
-        public Graph(ISet<Edge> edges, ISet<Node> nodes)
+        public Graph(ISet<SlimeEdge> edges, ISet<Node> nodes)
         {
             this._nodes = nodes;
             this._edges = edges;
             _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
         }
 
-        private void AddNodesInEdgeNotContained(Edge edge, ref ISet<Node> nodes)
+        private void AddNodesInEdgeNotContained(SlimeEdge slimeEdge, ref ISet<Node> nodes)
         {
-            nodes.Add(edge.A);
-            nodes.Add(edge.B);
+            nodes.Add(slimeEdge.A);
+            nodes.Add(slimeEdge.B);
         }
 
         public IEnumerable<Node> Nodes {
             get { return _nodes; }
         }
 
-        public ISet<Edge> Edges {
+        public ISet<SlimeEdge> Edges {
             get { return _edges; }
         }
 
-        private Dictionary<Node, ISet<Edge>> MakeEdgesConnectedToNodeMapping(ISet<Edge> edges, ISet<Node> nodes)
+        private Dictionary<Node, ISet<SlimeEdge>> MakeEdgesConnectedToNodeMapping(ISet<SlimeEdge> edges, ISet<Node> nodes)
         {
-            var mapping = new Dictionary<Node, ISet<Edge>>();
+            var mapping = new Dictionary<Node, ISet<SlimeEdge>>();
             foreach (var node in nodes)
             {
-                mapping[node] = new HashSet<Edge>();
+                mapping[node] = new HashSet<SlimeEdge>();
             }
             foreach (var edge in edges)
             {
@@ -71,12 +71,12 @@ namespace SlimeSimulation.Model
             return connected;
         }
 
-        internal ISet<Edge> EdgesConnectedToNode(Node node)
+        internal ISet<SlimeEdge> EdgesConnectedToNode(Node node)
         {
             return _edgesConnectedToNodeMapping[node];
         }
 
-        internal Edge GetEdgeBetween(Node a, Node b)
+        internal SlimeEdge GetEdgeBetween(Node a, Node b)
         {
             foreach (var edge in EdgesConnectedToNode(a))
             {
@@ -85,7 +85,7 @@ namespace SlimeSimulation.Model
                     return edge;
                 }
             }
-            throw new ArgumentException("Couldn't find an edge between nodes: " + a + ", and: " + b);
+            throw new ArgumentException("Couldn't find an SlimeEdge between nodes: " + a + ", and: " + b);
         }
 
         internal bool EdgeExistsBetween(Node a, Node b)

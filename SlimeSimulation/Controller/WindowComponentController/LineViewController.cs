@@ -7,7 +7,7 @@ namespace SlimeSimulation.Controller.WindowsComponentController
 {
     public abstract class LineViewController
     {
-        public abstract double GetLineWeightForEdge(Edge edge);
+        public abstract double GetLineWeightForEdge(SlimeEdge edge);
         public abstract double GetMaximumLineWeight();
     }
 
@@ -22,7 +22,7 @@ namespace SlimeSimulation.Controller.WindowsComponentController
             _maxLineWidth = flowResult.GetMaximumFlowOnEdge();
         }
 
-        public override double GetLineWeightForEdge(Edge edge)
+        public override double GetLineWeightForEdge(SlimeEdge edge)
         {
             return Math.Abs(_flowResult.FlowOnEdge(edge));
         }
@@ -35,21 +35,21 @@ namespace SlimeSimulation.Controller.WindowsComponentController
 
     internal class ConnectivityLineViewController : LineViewController
     {
-        private List<Edge> _edges;
+        private List<SlimeEdge> _edges;
         private readonly double _max;
 
-        public ConnectivityLineViewController(List<Edge> edges)
+        public ConnectivityLineViewController(List<SlimeEdge> edges)
         {
             this._edges = edges;
             var max = 0.0;
-            foreach (Edge edge in edges)
+            foreach (SlimeEdge edge in edges)
             {
                 max = Math.Max(edge.Connectivity, max);
             }
             this._max = max;
         }
 
-        public override double GetLineWeightForEdge(Edge edge)
+        public override double GetLineWeightForEdge(SlimeEdge edge)
         {
             return edge.Connectivity;
         }

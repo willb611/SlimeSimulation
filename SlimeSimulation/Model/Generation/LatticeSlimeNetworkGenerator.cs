@@ -15,7 +15,7 @@ namespace SlimeSimulation.Model.Generation
 
         private bool _columnOffset = true;
         private HashSet<Node> _nodes = new HashSet<Node>();
-        private HashSet<Edge> _edges = new HashSet<Edge>();
+        private HashSet<SlimeEdge> _edges = new HashSet<SlimeEdge>();
         private List<List<Node>> _nodeArray = new List<List<Node>>();
         private HashSet<FoodSourceNode> _foodSources = new HashSet<FoodSourceNode>();
         
@@ -37,7 +37,7 @@ namespace SlimeSimulation.Model.Generation
             _nodeArray = new List<List<Node>>();
             _columnOffset = true;
             _nodes = new HashSet<Node>();
-            _edges = new HashSet<Edge>();
+            _edges = new HashSet<SlimeEdge>();
             _foodSources = new HashSet<FoodSourceNode>();
         }
 
@@ -131,15 +131,15 @@ namespace SlimeSimulation.Model.Generation
             if (colIndex > 0)
             {
                 Node left = previousRowNodes[colIndex - 1];
-                Edge leftEdge = new Edge(node, left, _config.StartingConnectivity);
-                _edges.Add(leftEdge);
+                SlimeEdge leftSlimeEdge = new SlimeEdge(node, left, _config.StartingConnectivity);
+                _edges.Add(leftSlimeEdge);
             }
 
             if (!PointIsSkipped(rowIndex, colIndex + 1, _rows))
             {
                 Node right = previousRowNodes[colIndex];
-                Edge rightEdge = new Edge(node, right, _config.StartingConnectivity);
-                _edges.Add(rightEdge);
+                SlimeEdge rightSlimeEdge = new SlimeEdge(node, right, _config.StartingConnectivity);
+                _edges.Add(rightSlimeEdge);
             }
         }
 
@@ -150,14 +150,14 @@ namespace SlimeSimulation.Model.Generation
                 return;
             }
             Node left = previousRowNodes[colIndex];
-            Edge leftEdge = new Edge(node, left, _config.StartingConnectivity);
-            _edges.Add(leftEdge);
+            SlimeEdge leftSlimeEdge = new SlimeEdge(node, left, _config.StartingConnectivity);
+            _edges.Add(leftSlimeEdge);
 
             if (colIndex + 1 < _columns)
             {
                 Node right = previousRowNodes[colIndex + 1];
-                Edge rightEdge = new Edge(node, right, _config.StartingConnectivity);
-                _edges.Add(rightEdge);
+                SlimeEdge rightSlimeEdge = new SlimeEdge(node, right, _config.StartingConnectivity);
+                _edges.Add(rightSlimeEdge);
             }
         }
 
