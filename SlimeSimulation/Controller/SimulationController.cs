@@ -24,15 +24,15 @@ namespace SlimeSimulation.Controller
         private bool _simulationDoingStep = false;
         private SimulationState _state;
 
-        private readonly ApplicationStartController _startingController;
+        private readonly ApplicationStartWindowController _applicationStartWindowController;
 
         public int SimulationStepsCompleted { get; internal set; }
         public bool ShouldFlowResultsBeDisplayed { get; private set; }
 
-        public SimulationController(ApplicationStartController startingController,
+        public SimulationController(ApplicationStartWindowController startingWindowController,
             int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial)
         {
-            this._startingController = startingController;
+            this._applicationStartWindowController = startingWindowController;
             this._flowAmount = flowAmount;
             this._simulationUpdater = simulationUpdater;
             _state = new SimulationState(initial);
@@ -43,9 +43,7 @@ namespace SlimeSimulation.Controller
         {
             try
             {
-                Logger.Debug("[RunSimulation] Using before ");
                 UpdateDisplayFromState(_state);
-                Logger.Debug("[RunSimulation] Using after ");
             }
             catch (Exception e)
             {
@@ -55,7 +53,7 @@ namespace SlimeSimulation.Controller
 
         internal void FinishSimulation()
         {
-            _startingController.FinishSimulation(this);
+            _applicationStartWindowController.FinishSimulation(this);
         }
 
 

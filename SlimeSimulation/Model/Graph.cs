@@ -17,7 +17,7 @@ namespace SlimeSimulation.Model
         {
             this._edges = edges;
             ISet<Node> nodes = new HashSet<Node>();
-            foreach (Edge edge in Edges)
+            foreach (var edge in Edges)
             {
                 AddNodesInEdgeNotContained(edge, ref nodes);
             }
@@ -48,12 +48,12 @@ namespace SlimeSimulation.Model
 
         private Dictionary<Node, ISet<Edge>> MakeEdgesConnectedToNodeMapping(ISet<Edge> edges, ISet<Node> nodes)
         {
-            Dictionary<Node, ISet<Edge>> mapping = new Dictionary<Node, ISet<Edge>>();
-            foreach (Node node in nodes)
+            var mapping = new Dictionary<Node, ISet<Edge>>();
+            foreach (var node in nodes)
             {
                 mapping[node] = new HashSet<Edge>();
             }
-            foreach (Edge edge in edges)
+            foreach (var edge in edges)
             {
                 mapping[edge.A].Add(edge);
                 mapping[edge.B].Add(edge);
@@ -64,7 +64,7 @@ namespace SlimeSimulation.Model
         internal IEnumerable<Node> Neighbours(Node node)
         {
             ISet<Node> connected = new HashSet<Node>();
-            foreach (Edge edge in EdgesConnectedToNode(node))
+            foreach (var edge in EdgesConnectedToNode(node))
             {
                 connected.Add(edge.GetOtherNode(node));
             }
@@ -78,7 +78,7 @@ namespace SlimeSimulation.Model
 
         internal Edge GetEdgeBetween(Node a, Node b)
         {
-            foreach (Edge edge in EdgesConnectedToNode(a))
+            foreach (var edge in EdgesConnectedToNode(a))
             {
                 if (edge.GetOtherNode(a).Equals(b))
                 {
@@ -90,14 +90,7 @@ namespace SlimeSimulation.Model
 
         internal bool EdgeExistsBetween(Node a, Node b)
         {
-            foreach (Edge edge in EdgesConnectedToNode(a))
-            {
-                if (edge.GetOtherNode(a).Equals(b))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return EdgesConnectedToNode(a).Any(edge => edge.GetOtherNode(a).Equals(b));
         }
 
         internal double GetEdgeConnectivityOrZero(Node a, Node b)

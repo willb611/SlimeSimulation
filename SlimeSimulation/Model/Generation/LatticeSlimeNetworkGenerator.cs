@@ -84,9 +84,7 @@ namespace SlimeSimulation.Model.Generation
                 _columnOffset = !_columnOffset;
             }
             EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes();
-            Graph graph = new Graph(_edges, _nodes);
-            SlimeNetwork slimeSimulation = new SlimeNetwork(_nodes, _foodSources, _edges);
-            return slimeSimulation;
+            return new SlimeNetwork(_nodes, _foodSources, _edges);
         }
 
 

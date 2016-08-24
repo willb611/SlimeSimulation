@@ -111,7 +111,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLibHelpers\EnumerableExtension.cs" />
-    <Compile Include="Controller\WindowController\ApplicationStartController.cs" />
+    <Compile Include="Controller\WindowController\ApplicationStartWindowController.cs" />
     <Compile Include="View\Factories\ButtonPressHandlerFactory.cs" />
     <Compile Include="View\WindowComponent\ColorArea.cs" />
     <Compile Include="View\WindowComponent\SimulationControlBox.cs" />

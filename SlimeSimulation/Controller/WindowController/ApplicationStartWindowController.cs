@@ -10,7 +10,7 @@ using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    public class ApplicationStartController : Templates.WindowController
+    public class ApplicationStartWindowController : Templates.WindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         

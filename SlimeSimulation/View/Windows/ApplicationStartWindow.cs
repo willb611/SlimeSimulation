@@ -13,7 +13,7 @@ namespace SlimeSimulation.View.Windows
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ApplicationStartController _controller;
+        private readonly ApplicationStartWindowController _windowController;
         private readonly SimulationConfiguration _defaultConfig = new SimulationConfiguration();
         private readonly Dictionary<TextView, Label> _textViewLabelMapping = new Dictionary<TextView, Label>();
 
@@ -32,9 +32,9 @@ namespace SlimeSimulation.View.Windows
         private List<string> _errors = new List<string>();
 
 
-        public ApplicationStartWindow(string windowTitle, ApplicationStartController controller) : base(windowTitle, controller)
+        public ApplicationStartWindow(string windowTitle, ApplicationStartWindowController windowController) : base(windowTitle, windowController)
         {
-            this._controller = controller;
+            this._windowController = windowController;
             Window.Resize(600, 600);
         }
 
@@ -60,7 +60,7 @@ namespace SlimeSimulation.View.Windows
             }
             else
             {
-                _controller.StartSimulation(config);
+                _windowController.StartSimulation(config);
             }
         }
 

@@ -14,7 +14,7 @@ namespace SlimeSimulation
     {
         static void Main(string[] args)
         {
-            var applicationStarter = new ApplicationStartController();
+            var applicationStarter = new ApplicationStartWindowController();
             applicationStarter.Render();
         }
     }
