@@ -20,25 +20,25 @@ namespace SlimeSimulation.FlowCalculation.Tests
              *   \   /
              *     c
              * */
-            Node a = new Node(1, 1, 1);
-            Node b = new Node(2, 2, 2);
-            Node c = new Node(3, 3, 1);
-            HashSet<Node> nodes = new HashSet<Node>() { a, b, c };
+            var a = new Node(1, 1, 1);
+            var b = new Node(2, 2, 2);
+            var c = new Node(3, 3, 1);
+            var nodes = new HashSet<Node>() { a, b, c };
 
-            SlimeEdge ab = new SlimeEdge(a, b, 1);
-            SlimeEdge ac = new SlimeEdge(a, c, 1);
-            SlimeEdge bc = new SlimeEdge(b, c, 1);
-            HashSet<SlimeEdge> edges = new HashSet<SlimeEdge>() { ac, bc, ab };
+            var ab = new Edge(a, b);
+            var ac = new Edge(a, c);
+            var bc = new Edge(b, c);
+            var edges = new HashSet<Edge>() { ac, bc, ab };
 
-            Graph graph = new Graph(edges, nodes);
+            var graph = new Graph(edges, nodes);
 
-            SlimeEdge acActual = graph.GetEdgeBetween(a, c);
+            var acActual = graph.GetEdgeBetween(a, c);
             Assert.AreEqual(ac, acActual);
 
-            SlimeEdge bcActual = graph.GetEdgeBetween(b, c);
+            var bcActual = graph.GetEdgeBetween(b, c);
             Assert.AreEqual(bc, bcActual);
 
-            SlimeEdge abActual = graph.GetEdgeBetween(a, b);
+            var abActual = graph.GetEdgeBetween(a, b);
             Assert.AreEqual(ab, abActual);
         }
     }

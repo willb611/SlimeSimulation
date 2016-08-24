@@ -19,17 +19,16 @@ namespace SlimeSimulation.FlowCalculation
             _linearEquationSolver = solver;
         }
 
-        public FlowResult CalculateFlow(ISet<SlimeEdge> edges, ISet<Node> nodes, Node source, Node sink, int flowAmount)
+        public FlowResult CalculateFlow(SlimeNetwork network, Node source, Node sink, int flowAmount)
         {
-            Graph graph = new Graph(edges, nodes);
-            List<Node> nodeList = new List<Node>(nodes);
+            List<Node> nodeList = new List<Node>(network.Nodes);
             EnsureSourceSinkInCorrectPositions(nodeList, source, sink);
-            double[][] a = GetSystemOfEquations(graph, nodeList);
-            double[] b = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, nodes.Count - 1);
+            double[][] a = GetSystemOfEquations(network, nodeList);
+            double[] b = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, network.Nodes.Count() - 1);
             double[] solution = _linearEquationSolver.FindX(a, b);
             Pressures pressures = new Pressures(solution, nodeList);
-            FlowOnEdges flowOnEdges = GetFlowOnEdges(graph, pressures, nodeList);
-            return new FlowResult(edges, source, sink, flowAmount, flowOnEdges);
+            FlowOnEdges flowOnEdges = GetFlowOnEdges(network, pressures, nodeList);
+            return new FlowResult(network, source, sink, flowAmount, flowOnEdges);
         }
 
         public void EnsureSourceSinkInCorrectPositions(List<Node> nodeList, Node source, Node sink)
@@ -52,10 +51,10 @@ namespace SlimeSimulation.FlowCalculation
             }
         }
 
-        private FlowOnEdges GetFlowOnEdges(Graph graph, Pressures pressures, List<Node> nodes)
+        private FlowOnEdges GetFlowOnEdges(SlimeNetwork network, Pressures pressures, List<Node> nodes)
         {
-            FlowOnEdges result = new FlowOnEdges(graph.Edges);
-            foreach (SlimeEdge edge in graph.Edges)
+            FlowOnEdges result = new FlowOnEdges(network.Edges);
+            foreach (SlimeEdge edge in network.Edges)
             {
                 double pi = pressures.PressureAt(edge.A);
                 double pj = pressures.PressureAt(edge.B);
@@ -64,11 +63,6 @@ namespace SlimeSimulation.FlowCalculation
                 Logger.Trace("For edge {0}, got pi {1}, pj {2}, and flow {3}", edge, pi, pj, flow);
             }
             return result;
-        }
-
-        private double GetFlowForEdge(double connectivityOnEdge, int i, int j, Pressures pressures)
-        {
-            return connectivityOnEdge * (pressures[i] - pressures[j]);
         }
 
         private double[] GetMatrixOfFlowGainedAtNodeFromZeroToN(int flowAmount, int n)
@@ -83,16 +77,16 @@ namespace SlimeSimulation.FlowCalculation
             return arr;
         }
 
-        private double[][] GetSystemOfEquations(Graph graph, List<Node> nodes)
+        private double[][] GetSystemOfEquations(SlimeNetwork network, List<Node> nodes)
         {
-            int upperlimit = graph.Nodes.Count() - 1;
+            int upperlimit = network.Nodes.Count() - 1;
             double[][] equations = new double[upperlimit][];
             for (int row = 0; row < upperlimit; row++)
             {
                 equations[row] = new double[upperlimit];
                 for (int col = 0; col < upperlimit; col++)
                 {
-                    equations[row][col] = GetValueForSystemOfEquations(graph, nodes[row], nodes[col]);
+                    equations[row][col] = GetValueForSystemOfEquations(network, nodes[row], nodes[col]);
                 }
             }
             if (Logger.IsTraceEnabled)
@@ -103,13 +97,14 @@ namespace SlimeSimulation.FlowCalculation
             return equations;
         }
 
-        private double GetValueForSystemOfEquations(Graph graph, Node a, Node b)
+        private double GetValueForSystemOfEquations(SlimeNetwork graph, Node a, Node b)
         {
             double value = 0;
             if (a == b)
             {
-                foreach (SlimeEdge connected in graph.EdgesConnectedToNode(a))
+                foreach (var edge in graph.EdgesConnectedToNode(a))
                 {
+                    var connected = (SlimeEdge) edge;
                     value += connected.Connectivity;
                 }
             }

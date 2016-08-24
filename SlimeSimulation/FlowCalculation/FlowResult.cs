@@ -9,20 +9,20 @@ namespace SlimeSimulation.FlowCalculation
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ISet<SlimeEdge> _edges;
+        private readonly SlimeNetwork _network;
         private readonly Node _source, _sink;
         private readonly int _flowAmount;
         private readonly FlowOnEdges _flowOnEdges;
 
-        public FlowResult(ISet<SlimeEdge> edges, Node source, Node sink, int flowAmount,
+        public FlowResult(SlimeNetwork network, Node source, Node sink, int flowAmount,
           FlowOnEdges flowOnEdges)
         {
-            this._source = source;
-            this._sink = sink;
-            this._flowAmount = flowAmount;
-            this._edges = edges;
-            this._flowOnEdges = flowOnEdges;
-            Logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + edges.Count);
+            _source = source;
+            _sink = sink;
+            _flowAmount = flowAmount;
+            _network = network;
+            _flowOnEdges = flowOnEdges;
+            Logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + network.Edges.Count);
             Logger.Info("[constructor] And source {0}, and Sink {1}", source, sink);
         }
 
@@ -32,7 +32,7 @@ namespace SlimeSimulation.FlowCalculation
         }
 
         internal ISet<SlimeEdge> Edges {
-            get { return _edges; }
+            get { return _network.Edges; }
         }
 
         internal Node Source {
@@ -72,12 +72,12 @@ namespace SlimeSimulation.FlowCalculation
 
         internal double GetFlowOnNode(Node node)
         {
-            Graph graph = new Model.Graph(Edges);
             double sum = 0;
-            foreach (SlimeEdge edge in graph.EdgesConnectedToNode(node))
+            foreach (var edge in _network.EdgesConnectedToNode(node))
             {
-                var flow = FlowOnEdge(edge);
-                if (edge.A == node)
+                var slimeEdge = (SlimeEdge) edge;
+                var flow = FlowOnEdge(slimeEdge);
+                if (slimeEdge.A == node)
                 {
                     sum += flow;
                 }

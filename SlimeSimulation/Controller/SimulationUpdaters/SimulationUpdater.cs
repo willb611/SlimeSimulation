@@ -83,7 +83,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink)
         {
-            var flowResult = _flowCalculator.CalculateFlow(network.Edges, network.Nodes,
+            var flowResult = _flowCalculator.CalculateFlow(network,
               source, sink, flow);
             return flowResult;
         }

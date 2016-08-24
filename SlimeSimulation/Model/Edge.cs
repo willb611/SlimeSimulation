@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Model
 {
-    class Edge
+    public class Edge
     {
         private readonly Node _a;
         private readonly Node _b;

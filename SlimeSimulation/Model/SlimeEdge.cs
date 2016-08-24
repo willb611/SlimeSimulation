@@ -2,20 +2,16 @@ using System;
 
 namespace SlimeSimulation.Model
 {
-    public class SlimeEdge
+    public class SlimeEdge : Edge
     {
         private readonly double _connectivity;
-        private readonly Edge _edge;
 
-        public SlimeEdge(Node a, Node b, double connectivity)
+        public SlimeEdge(Node a, Node b, double connectivity) : base(a, b)
         {
-            _edge = new Edge(a, b);
             this._connectivity = connectivity;
         }
 
         public double Connectivity => _connectivity;
-        public Node A => _edge.A;
-        public Node B => _edge.B;
 
         public double Resistance {
             get {
@@ -29,29 +25,7 @@ namespace SlimeSimulation.Model
                 }
             }
         }
-
-
-        public bool Contains(Node node)
-        {
-            return A == node || B == node;
-        }
-
-        public Node GetOtherNode(Node node)
-        {
-            if (node == A)
-            {
-                return B;
-            }
-            else if (node == B)
-            {
-                return A;
-            }
-            else
-            {
-                throw new ApplicationException("Node is not contained in this edge");
-            }
-        }
-
+        
         public override bool Equals(object obj)
         {
             return this.Equals(obj as SlimeEdge);
@@ -79,18 +53,18 @@ namespace SlimeSimulation.Model
             }
             else
             {
-                return _edge.Equals(other._edge);
+                return base.Equals(other);
             }
         }
 
         public override int GetHashCode()
         {
-            return _connectivity.GetHashCode() * 17 + _edge.GetHashCode();
+            return _connectivity.GetHashCode() * 17 + base.GetHashCode();
         }
 
         public override string ToString()
         {
-            return "SlimeEdge{connectivity=" + _connectivity + ", Edge=" + _edge + "}";
+            return "SlimeEdge{connectivity=" + _connectivity + ", Edge=" + base.ToString() + "}";
         }
     }
 }
