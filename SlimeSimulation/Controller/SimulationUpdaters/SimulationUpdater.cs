@@ -53,7 +53,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private SimulationState GetNextStateWithUpdatedConductivites(SlimeNetwork slimeNetwork, FlowResult flowResult)
         {
             var nextNetwork = _slimeNetworkAdapterCalculator.CalculateNextStep(slimeNetwork, flowResult);
-            return new SimulationState(nextNetwork);
+            return new SimulationState(nextNetwork, true);
         }
 
         private SimulationState GetStateWithFlow(SlimeNetwork slimeNetwork, int flowAmount)
@@ -79,6 +79,11 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 sink = network.FoodSources.PickRandom();
             }
             return GetFlow(network, flow, source, sink);
+        }
+
+        internal Task<SimulationState> ExpandSlime(SimulationState state)
+        {
+            throw new NotImplementedException();
         }
 
         private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink)

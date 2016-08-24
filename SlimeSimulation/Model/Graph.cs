@@ -93,5 +93,33 @@ namespace SlimeSimulation.Model
             return EdgesConnectedToNode(a).Any(edge => edge.GetOtherNode(a).Equals(b));
         }
 
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as Graph);
+        }
+
+        public bool Equals(Graph other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            else if (Object.ReferenceEquals(other, this))
+            {
+                return true;
+            }
+
+            if (this.GetType() != other.GetType())
+            {
+                return false;
+            }
+
+            return Edges.Equals(other.Edges) && Nodes.Equals(other.Nodes);
+        }
+
+        public override int GetHashCode()
+        {
+            return Edges.GetHashCode() * 17 + Nodes.GetHashCode();
+        }
     }
 }

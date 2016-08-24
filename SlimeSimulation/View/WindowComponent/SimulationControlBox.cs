@@ -4,22 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gtk;
-using SlimeSimulation.Controller.WindowController.Templates;
 
 namespace SlimeSimulation.View.WindowComponent
 {
-    class SimulationControlBox : VBox
+    abstract class SimulationControlBox : VBox
     {
 
-        public SimulationControlBox(SimulationStepWindowController simulationStepWindowController, Window parentWindow) : base(true, 10)
+        public SimulationControlBox(bool homogeneous, int spacing) : base(homogeneous, spacing)
         {
-            AddControls(simulationStepWindowController, parentWindow);
-        }
-
-        private void AddControls(SimulationStepWindowController simulationStepWindowController, Window parentWindow)
-        {
-            Add(new SimulationStepButton(simulationStepWindowController));
-            Add(new SimulationStepNumberOfTimesComponent(simulationStepWindowController, parentWindow));
         }
     }
 }

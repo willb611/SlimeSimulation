@@ -24,6 +24,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         {
             _logger.Debug("[OnStepCompleted] Entered");
             SimulationController.DoNextSimulationStep();
+            SimulationController.UpdateDisplay();
             _logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
             base.OnWindowClose();
             _logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");
@@ -33,6 +34,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         {
             base.OnWindowClose();
             SimulationController.DoNextSimulationSteps(numberOfSteps);
+            SimulationController.UpdateDisplay();
         }
 
         internal bool StepWithoutShowingFlowResult()

@@ -10,6 +10,7 @@ using SlimeSimulation.Model.Simulation;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.View;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.View.Factories;
 
 namespace SlimeSimulation.Controller
 {
@@ -20,7 +21,7 @@ namespace SlimeSimulation.Controller
         private readonly int _flowAmount;
         private readonly SimulationUpdater _simulationUpdater;
         private readonly GtkLifecycleController _gtkLifecycleController = GtkLifecycleController.Instance;
-
+        
         private bool _simulationDoingStep = false;
         private SimulationState _state;
 
@@ -30,12 +31,13 @@ namespace SlimeSimulation.Controller
         public bool ShouldFlowResultsBeDisplayed { get; private set; }
 
         public SimulationController(ApplicationStartWindowController startingWindowController,
-            int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial)
+            int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial,
+            GraphWithFoodSources graphWithFoodSources)
         {
             this._applicationStartWindowController = startingWindowController;
             this._flowAmount = flowAmount;
             this._simulationUpdater = simulationUpdater;
-            _state = new SimulationState(initial);
+            _state = new SimulationState(initial, graphWithFoodSources.Equals(initial));
             ShouldFlowResultsBeDisplayed = true;
         }
 
@@ -64,20 +66,10 @@ namespace SlimeSimulation.Controller
 
         internal void DoNextSimulationSteps(int numberOfSteps)
         {
-            _simulationDoingStep = true;
-            Task<SimulationState> taskForState = null;
-            var mostRecentState = _state;
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
-                if (taskForState != null)
-                {
-                    taskForState.Wait();
-                    mostRecentState = taskForState.Result;
-                }
-                taskForState = _simulationUpdater.CalculateFlowAndUpdateNetwork(mostRecentState, _flowAmount);
+                DoNextSimulationStep();
             }
-            SimulationStepsCompleted += numberOfSteps;
-            UpdateControllerState(taskForState);
         }
 
         public void DoNextSimulationStep()
@@ -91,7 +83,10 @@ namespace SlimeSimulation.Controller
                 Logger.Debug("[DoNextSimulationStep] Stepping");
                 _simulationDoingStep = true;
                 Task<SimulationState> nextState;
-                if (ShouldFlowResultsBeDisplayed)
+                if (!_state.HasFinishedExpanding)
+                {
+                    nextState = _simulationUpdater.ExpandSlime(_state);
+                } else if (ShouldFlowResultsBeDisplayed)
                 {
                     if (_state.FlowResult != null)
                     {
@@ -113,12 +108,6 @@ namespace SlimeSimulation.Controller
             try
             {
                 _state = await stateParam;
-                Logger.Debug("[UpdateControllerState] State: {0} about to update view", _state);
-                Gtk.Application.Invoke(delegate
-                {
-                    Logger.Debug("[UpdateControllerState] Invoking from main thread ");
-                    UpdateDisplayFromState(_state);
-                });
                 _simulationDoingStep = false;
             }
             catch (Exception e)
@@ -127,9 +116,21 @@ namespace SlimeSimulation.Controller
             }
         }
 
+        public void UpdateDisplay()
+        {
+            Gtk.Application.Invoke(delegate
+            {
+                Logger.Debug("[UpdateControllerState] Invoking from main thread ");
+                UpdateDisplayFromState(_state);
+            });
+        }
+
         private void UpdateDisplayFromState(SimulationState state)
         {
-            if (state.FlowResult == null || !ShouldFlowResultsBeDisplayed)
+            if (!state.HasFinishedExpanding)
+            {
+                DisplayNotFullyExpandedSlime(state.SlimeNetwork);
+            } else if (state.FlowResult == null || !ShouldFlowResultsBeDisplayed)
             {
                 DisplayConnectivityInNetwork(state.SlimeNetwork);
             }
@@ -139,6 +140,11 @@ namespace SlimeSimulation.Controller
             }
         }
 
+        private void DisplayNotFullyExpandedSlime(SlimeNetwork slimeNetwork)
+        {
+            throw new NotImplementedException();
+        }
+
         private void DisplayFlowResult(FlowResult flowResult)
         {
             new FlowResultWindowController(this, _gtkLifecycleController, flowResult).Render();
@@ -146,7 +152,7 @@ namespace SlimeSimulation.Controller
 
         private void DisplayConnectivityInNetwork(SlimeNetwork network)
         {
-            new SlimeNetworkWindowController(this, _gtkLifecycleController, network.Edges).Render();
+            new SlimeNetworkWindowController(this, _gtkLifecycleController, network.Edges, new SimulationAdaptionPhaseControlBoxFactory()).Render();
         }
     }
 }

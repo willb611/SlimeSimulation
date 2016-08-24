@@ -41,9 +41,9 @@ namespace SlimeSimulation.Controller.WindowController
         {
             var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
             ISlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(config.GenerationConfig);
-            SimulationUpdater simulationUpdater = new SimulationUpdater(flowCalculator, new SlimeNetworkAdaptionCalculator(config.FeedbackParam));
+            var simulationUpdater = new SimulationUpdater(flowCalculator, new SlimeNetworkAdaptionCalculator(config.FeedbackParam));
             var initial = slimeNetworkGenerator.Generate();
-            var controller = new SimulationController(this, config.FlowAmount, simulationUpdater, initial);
+            var controller = new SimulationController(this, config.FlowAmount, simulationUpdater, initial, initial);
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Gtk.Application.Invoke(delegate
             {

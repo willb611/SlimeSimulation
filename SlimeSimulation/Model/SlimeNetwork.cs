@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace SlimeSimulation.Model
 {
-    public class SlimeNetwork : Graph
+    public class SlimeNetwork : GraphWithFoodSources
     {
         public ISet<FoodSourceNode> FoodSources { get; }
         public new ISet<SlimeEdge> Edges { get; }
@@ -12,7 +12,7 @@ namespace SlimeSimulation.Model
         {
         }
         public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
-          ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges), nodes)
+          ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges), nodes, foodSources)
         {
             this.Edges = edges;
             this.FoodSources = foodSources;

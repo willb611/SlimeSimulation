@@ -31,7 +31,7 @@ namespace SlimeSimulation.View.WindowComponent
             if (!StepWithoutShowingFlowResultIsTicked())
             {
                 MessageDialog confirmSkipFlowResultsDialog = new MessageDialog(_parentWindow, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.OkCancel,
-                    "Flow results are set to be displayed, running this will not show flow results. Continue?");
+                    "Flow results are set to be displayed, running this will disable show flow results. Continue?");
                 confirmSkipFlowResultsDialog.Title = "Ok to skip flow results?";
                 ResponseType response = (ResponseType)confirmSkipFlowResultsDialog.Run();
                 if (response == ResponseType.DeleteEvent || response == ResponseType.Cancel)

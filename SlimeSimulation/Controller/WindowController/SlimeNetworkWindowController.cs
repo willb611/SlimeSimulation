@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.View;
+using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows;
 using SlimeSimulation.View.Windows.Templates;
@@ -19,18 +20,21 @@ namespace SlimeSimulation.Controller.WindowController
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly GtkLifecycleController _gtkLifecycleController;
         private readonly ISet<SlimeEdge> _edges;
+        private readonly ISimulationControlBoxFactory _simulationControlBoxFactory;
 
-        public SlimeNetworkWindowController(SimulationController mainController, GtkLifecycleController view, ISet<SlimeEdge> edges)
+        public SlimeNetworkWindowController(SimulationController mainController, GtkLifecycleController gtkLifecycleController, ISet<SlimeEdge> edges,
+            ISimulationControlBoxFactory simulationControlBoxFactory)
           : base(mainController)
         {
-            this._gtkLifecycleController = view;
+            this._gtkLifecycleController = gtkLifecycleController;
             this._edges = edges;
+            _simulationControlBoxFactory = simulationControlBoxFactory;
         }
 
         public override void Render()
         {
             Logger.Debug("[RenderConnectivity] Making new window");
-            using (Window = new SlimeNetworkWindow(new List<SlimeEdge>(_edges), this))
+            using (Window = new SlimeNetworkWindow(new List<SlimeEdge>(_edges), this, _simulationControlBoxFactory))
             {
                 _gtkLifecycleController.Display(Window);
             }

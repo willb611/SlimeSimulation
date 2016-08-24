@@ -11,17 +11,19 @@ namespace SlimeSimulation.Model.Simulation
     {
         public SlimeNetwork SlimeNetwork { get; private set; }
         public FlowResult FlowResult { get; private set; }
+        public bool HasFinishedExpanding { get; private set; }
 
-        public SimulationState(SlimeNetwork network)
+        public SimulationState(SlimeNetwork network, bool hasFinishedExpanding)
         {
             if (network == null)
             {
                 throw new ArgumentNullException(nameof(network));
             }
             this.SlimeNetwork = network;
+            HasFinishedExpanding = hasFinishedExpanding;
         }
 
-        public SimulationState(SlimeNetwork network, FlowResult flowResult) : this(network)
+        public SimulationState(SlimeNetwork network, FlowResult flowResult) : this(network, true)
         {
             this.FlowResult = flowResult;
         }

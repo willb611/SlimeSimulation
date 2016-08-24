@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Configuration\LatticeSlimeNetworkGenerationConfig.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />
+    <Compile Include="Model\GraphWithFoodSources.cs" />
     <Compile Include="Controller\SimulationUpdaters\SimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkAdaptionCalculator.cs" />
     <Compile Include="Controller\WindowController\SlimeNetworkWindowController.cs" />
@@ -114,7 +115,10 @@
     <Compile Include="StdLibHelpers\EnumerableExtension.cs" />
     <Compile Include="Controller\WindowController\ApplicationStartWindowController.cs" />
     <Compile Include="View\Factories\ButtonPressHandlerFactory.cs" />
+    <Compile Include="View\Factories\SimulationAdaptionPhaseControlBoxFactory.cs" />
+    <Compile Include="View\Factories\ISimulationControlBoxFactory.cs" />
     <Compile Include="View\WindowComponent\ColorArea.cs" />
+    <Compile Include="View\WindowComponent\SimulationAdaptionPhaseControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationStepNumberOfTimesComponent.cs" />
     <Compile Include="View\Windows\ApplicationStartWindow.cs" />

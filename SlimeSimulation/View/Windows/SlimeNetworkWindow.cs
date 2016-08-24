@@ -7,6 +7,7 @@ using System;
 using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.WindowsComponentController;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows.Templates;
 
@@ -17,14 +18,16 @@ namespace SlimeSimulation.View.Windows
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly List<SlimeEdge> _edges;
         private readonly SlimeNetworkWindowController _controller;
+        private readonly ISimulationControlBoxFactory _simulationControlBoxFactory;
 
         private CheckButton _shouldSimulationStepsBeDisplayedButton;
         
-        public SlimeNetworkWindow(List<SlimeEdge> edges, SlimeNetworkWindowController controller)
+        public SlimeNetworkWindow(List<SlimeEdge> edges, SlimeNetworkWindowController controller, ISimulationControlBoxFactory simulationControlBoxFactory)
           : base("SlimeNetworkWindow", controller)
         {
             this._edges = edges;
             this._controller = controller;
+            _simulationControlBoxFactory = simulationControlBoxFactory;
         }
 
         protected override void AddToWindow(Window window)
@@ -50,7 +53,7 @@ namespace SlimeSimulation.View.Windows
 
         private Widget SimulationStateInterface()
         {
-            return new VBox {StepNumberLabel(), new SimulationControlBox(_controller, Window)};
+            return new VBox {StepNumberLabel(), _simulationControlBoxFactory.MakeControlBox(_controller, Window)};
         }
 
         private Widget ShouldSimulationStepResultsBeDisplayedInput()
