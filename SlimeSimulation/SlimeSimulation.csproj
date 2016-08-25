@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Configuration\LatticeGraphWithFoodSourcesGenerationConfig.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />
+    <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\GrowthPhaseControlBox.cs" />
     <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />
