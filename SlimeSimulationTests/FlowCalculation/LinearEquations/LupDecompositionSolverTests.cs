@@ -1,11 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NLog;
 using SlimeSimulation.LinearEquations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
 {

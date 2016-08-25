@@ -1,5 +1,4 @@
 using System;
-using GLib;
 using Gtk;
 using NLog;
 using SlimeSimulation.Controller.WindowController.Templates;

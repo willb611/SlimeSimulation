@@ -1,18 +1,11 @@
 using NLog;
 using SlimeSimulation.Model;
-using SlimeSimulation.Controller;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.Controller.WindowController.Templates;
-using SlimeSimulation.View;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows;
-using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller.WindowController
 {

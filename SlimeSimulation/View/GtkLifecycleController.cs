@@ -1,9 +1,6 @@
 using System;
-using SlimeSimulation.FlowCalculation;
 using Gtk;
 using NLog;
-using SlimeSimulation.Model;
-using System.Collections.Generic;
 using System.Threading;
 using SlimeSimulation.View.Windows.Templates;
 

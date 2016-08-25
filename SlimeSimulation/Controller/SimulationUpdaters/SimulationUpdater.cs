@@ -3,7 +3,6 @@ using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
 using System.Threading.Tasks;
-using System.Linq;
 using NLog;
 using SlimeSimulation.StdLibHelpers;
 using SlimeSimulation.LinearEquations;

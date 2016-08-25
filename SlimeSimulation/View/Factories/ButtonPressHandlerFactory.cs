@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SlimeSimulation.Controller;
 using NLog;
 using SlimeSimulation.View.Windows.Templates;
 

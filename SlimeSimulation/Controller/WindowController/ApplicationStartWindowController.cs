@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using SlimeSimulation.View;
 using SlimeSimulation.View.Windows;

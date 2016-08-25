@@ -1,4 +1,3 @@
-using System;
 using NLog;
 
 namespace SlimeSimulation.Controller.WindowController.Templates

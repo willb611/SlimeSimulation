@@ -1,14 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gdk;
 using Gtk;
-using Cairo;
-using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.WindowComponentController;
-using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.WindowComponent
 {

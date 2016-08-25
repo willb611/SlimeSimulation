@@ -1,5 +1,3 @@
-using System;
-
 namespace SlimeSimulation.Model
 {
     public class SlimeEdge : Edge

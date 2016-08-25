@@ -1,10 +1,7 @@
-using SlimeSimulation.FlowCalculation;
 using Gtk;
 using NLog;
 using System.Collections.Generic;
 using SlimeSimulation.Model;
-using System;
-using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.WindowComponentController;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Factories;

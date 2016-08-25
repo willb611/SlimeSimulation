@@ -1,8 +1,5 @@
-using SlimeSimulation.Model;
 using System.Collections.Generic;
 using System;
-using NLog;
-using NLog.Targets.Wrappers;
 using System.Linq;
 
 namespace SlimeSimulation.Model

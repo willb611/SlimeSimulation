@@ -4,7 +4,6 @@ using SlimeSimulation.Model;
 using NLog;
 using Cairo;
 using Gdk;
-using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.WindowComponentController;
 
 namespace SlimeSimulation.View.WindowComponent

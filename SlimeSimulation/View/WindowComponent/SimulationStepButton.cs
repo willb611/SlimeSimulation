@@ -1,6 +1,5 @@
 using System;
 using Gtk;
-using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.Controller.WindowController.Templates;
 
 namespace SlimeSimulation.View.WindowComponent

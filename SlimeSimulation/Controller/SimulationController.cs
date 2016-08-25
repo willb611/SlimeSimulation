@@ -1,10 +1,7 @@
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 using System;
-using System.Collections.Generic;
 using NLog;
-using SlimeSimulation.LinearEquations;
-using System.Linq;
 using System.Threading.Tasks;
 using SlimeSimulation.Model.Simulation;
 using SlimeSimulation.Controller.SimulationUpdaters;
