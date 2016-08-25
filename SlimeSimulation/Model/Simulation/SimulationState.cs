@@ -12,8 +12,9 @@ namespace SlimeSimulation.Model.Simulation
         public SlimeNetwork SlimeNetwork { get; private set; }
         public FlowResult FlowResult { get; private set; }
         public bool HasFinishedExpanding { get; private set; }
+        public GraphWithFoodSources PossibleNetwork { get; internal set; }
 
-        public SimulationState(SlimeNetwork network, bool hasFinishedExpanding)
+        public SimulationState(SlimeNetwork network, bool hasFinishedExpanding, GraphWithFoodSources graphWithFoodSources)
         {
             if (network == null)
             {
@@ -21,9 +22,10 @@ namespace SlimeSimulation.Model.Simulation
             }
             this.SlimeNetwork = network;
             HasFinishedExpanding = hasFinishedExpanding;
+            PossibleNetwork = graphWithFoodSources;
         }
 
-        public SimulationState(SlimeNetwork network, FlowResult flowResult) : this(network, true)
+        public SimulationState(SlimeNetwork network, FlowResult flowResult, GraphWithFoodSources graphWithFoodSources) : this(network, true, graphWithFoodSources)
         {
             this.FlowResult = flowResult;
         }

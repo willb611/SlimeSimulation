@@ -6,9 +6,13 @@ namespace SlimeSimulation.Model
     {
         private readonly double _connectivity;
 
-        public SlimeEdge(Node a, Node b, double connectivity) : base(a, b)
+        public SlimeEdge(Edge edge, double connectivity) : base(edge.A, edge.B)
         {
             this._connectivity = connectivity;
+        }
+
+        public SlimeEdge(Node a, Node b, double connectivity) : this(new Edge(a, b), connectivity)
+        {
         }
 
         public double Connectivity => _connectivity;

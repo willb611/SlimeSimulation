@@ -26,8 +26,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
             return Task<SimulationState>.Run(() =>
             {
-                var stateWithFlow = GetStateWithFlow(state.SlimeNetwork, flowAmount);
-                return GetNextStateWithUpdatedConductivites(stateWithFlow.SlimeNetwork, stateWithFlow.FlowResult);
+                var stateWithFlow = GetStateWithFlow(state.SlimeNetwork, flowAmount, state.PossibleNetwork);
+                return GetNextStateWithUpdatedConductivites(stateWithFlow.SlimeNetwork, stateWithFlow.FlowResult, state.PossibleNetwork);
             });
         }
 
@@ -39,29 +39,29 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 if (state.FlowResult == null)
                 {
                     Logger.Info("[CalculateFlowResultOrUpdateNetworkUsingFlowInState] Calculating flowResult");
-                    return GetStateWithFlow(state.SlimeNetwork, flowAmount);
+                    return GetStateWithFlow(state.SlimeNetwork, flowAmount, state.PossibleNetwork);
                 }
                 else
                 {
                     Logger.Info(
                         "[CalculateFlowResultOrUpdateNetworkUsingFlowInState] Updating simulation based on flow result pre-existing");
-                    return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult);
+                    return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult, state.PossibleNetwork);
                 }
             });
         }
 
-        private SimulationState GetNextStateWithUpdatedConductivites(SlimeNetwork slimeNetwork, FlowResult flowResult)
+        private SimulationState GetNextStateWithUpdatedConductivites(SlimeNetwork slimeNetwork, FlowResult flowResult, GraphWithFoodSources graphWithFoodSources)
         {
             var nextNetwork = _slimeNetworkAdapterCalculator.CalculateNextStep(slimeNetwork, flowResult);
-            return new SimulationState(nextNetwork, true);
+            return new SimulationState(nextNetwork, true, graphWithFoodSources);
         }
 
-        private SimulationState GetStateWithFlow(SlimeNetwork slimeNetwork, int flowAmount)
+        private SimulationState GetStateWithFlow(SlimeNetwork slimeNetwork, int flowAmount, GraphWithFoodSources graphWithFoodSources)
         {
             try
             {
                 var flowResult = GetFlow(slimeNetwork, flowAmount);
-                return new SimulationState(slimeNetwork, flowResult);
+                return new SimulationState(slimeNetwork, flowResult, graphWithFoodSources);
             }
             catch (SingularMatrixException e)
             {

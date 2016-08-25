@@ -35,7 +35,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
         [TestMethod()]
         public void CalculateFlowTest()
         {
-            var generator = new LatticeSlimeNetworkGenerator(new LatticeSlimeNetworkGenerationConfig(7));
+            var generator = new LatticeGraphWithFoodSourcesGenerator(new LatticeGraphWithFoodSourcesGenerationConfig(7));
             var network = generator.Generate();
             var calculator = new FlowCalculator(new LupDecompositionSolver());
 
@@ -43,7 +43,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
             Node sink = network.FoodSources.Last();
             var flowAmount = 10;
             var dflow = 10.0;
-            var result = calculator.CalculateFlow(network, source, sink, flowAmount);
+            var result = calculator.CalculateFlow(new SlimeNetworkGenerator().Generate(network), source, sink, flowAmount);
 
             Assert.AreEqual(dflow, Math.Abs(result.GetFlowOnNode(source)), 0.000001);
             Assert.AreEqual(dflow, Math.Abs(result.GetFlowOnNode(sink)), 0.000001);

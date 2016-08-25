@@ -5,11 +5,11 @@ namespace SlimeSimulation.Model
 {
     public class GraphWithFoodSources : Graph
     {
-        private readonly ISet<FoodSourceNode> _foodSourcesNodes;
+        public ISet<FoodSourceNode> FoodSources { get; }
 
-        public GraphWithFoodSources(ISet<Edge> edges, ISet<Node> nodes, ISet<FoodSourceNode> foodSourceNodes) : base(edges, nodes)
+        public GraphWithFoodSources(ISet<Edge> edges, ISet<Node> nodes, ISet<FoodSourceNode> foodSourcesNodes) : base(edges, nodes)
         {
-            _foodSourcesNodes = foodSourceNodes;
+            FoodSources = foodSourcesNodes;
         }
 
         public override bool Equals(object obj)
@@ -33,13 +33,13 @@ namespace SlimeSimulation.Model
                 return false;
             }
             
-            return _foodSourcesNodes.Equals(other._foodSourcesNodes)
+            return FoodSources.Equals(other.FoodSources)
                    && base.Equals(other);
         }
 
         public override int GetHashCode()
         {
-            return _foodSourcesNodes.GetHashCode() * 17 + base.GetHashCode();
+            return FoodSources.GetHashCode() * 17 + base.GetHashCode();
         }
     }
 }

@@ -7,7 +7,7 @@ using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.Model.Generation
 {
-    public class LatticeSlimeNetworkGenerator : ISlimeNetworkGenerator
+    public class LatticeGraphWithFoodSourcesGenerator : IGraphWithFoodSourcesGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -15,17 +15,16 @@ namespace SlimeSimulation.Model.Generation
 
         private bool _columnOffset = true;
         private HashSet<Node> _nodes = new HashSet<Node>();
-        private HashSet<SlimeEdge> _edges = new HashSet<SlimeEdge>();
-        private List<List<Node>> _nodeArray = new List<List<Node>>();
+        private HashSet<Edge> _edges = new HashSet<Edge>();
         private HashSet<FoodSourceNode> _foodSources = new HashSet<FoodSourceNode>();
         
-        private readonly LatticeSlimeNetworkGenerationConfig _config;
+        private readonly LatticeGraphWithFoodSourcesGenerationConfig _config;
         private readonly int _rows;
         private readonly int _columns;
 
         private bool _used = false;
 
-        public LatticeSlimeNetworkGenerator(LatticeSlimeNetworkGenerationConfig config)
+        public LatticeGraphWithFoodSourcesGenerator(LatticeGraphWithFoodSourcesGenerationConfig config)
         {
             this._config = config;
             this._rows = config.Size;
@@ -34,14 +33,13 @@ namespace SlimeSimulation.Model.Generation
 
         private void Reset()
         {
-            _nodeArray = new List<List<Node>>();
             _columnOffset = true;
             _nodes = new HashSet<Node>();
-            _edges = new HashSet<SlimeEdge>();
+            _edges = new HashSet<Edge>();
             _foodSources = new HashSet<FoodSourceNode>();
         }
 
-        public SlimeNetwork Generate()
+        public GraphWithFoodSources Generate()
         {
             if (_used)
             {
@@ -51,8 +49,8 @@ namespace SlimeSimulation.Model.Generation
             Logger.Info("[generate] Generating lattice with rows: {0}, columns: {1}",
                 _rows, _columns);
             Reset();
-            int id = 1;
-            List<Node> previousRowNodes = new List<Node>();
+            var id = 1;
+            var previousRowNodes = new List<Node>();
             /*Construct like:
              *   o    o    o   o
              *  / \  /  \ / \ /
@@ -65,26 +63,25 @@ namespace SlimeSimulation.Model.Generation
              * etc
              *
              * */
-            for (int row = 1; row <= _rows; row++)
+            for (var row = 1; row <= _rows; row++)
             {
-                List<Node> rowNodes = new List<Node>();
-                for (int col = 1; col <= _columns; col++)
+                var rowNodes = new List<Node>();
+                for (var col = 1; col <= _columns; col++)
                 {
                     if (PointIsSkipped(row, col, _rows))
                     {
                         continue;
                     }
-                    Node node = MakeNextNode(ref id, row, col, _foodSources, _columnOffset);
+                    var node = MakeNextNode(ref id, row, col, _foodSources, _columnOffset);
                     rowNodes.Add(node);
                     _nodes.Add(node);
                     MakeEdgesForNode(row, col, node, previousRowNodes);
                 }
                 previousRowNodes = rowNodes;
-                _nodeArray.Add(rowNodes);
                 _columnOffset = !_columnOffset;
             }
             EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes();
-            return new SlimeNetwork(_nodes, _foodSources, _edges);
+            return new GraphWithFoodSources(_edges, _nodes, _foodSources);
         }
 
 
@@ -107,8 +104,8 @@ namespace SlimeSimulation.Model.Generation
 
         private void MakeEdgesForNode(int row, int col, Node node, List<Node> previousRowNodes)
         {
-            int rowIndex = row - 1;
-            int colIndex = col - 1;
+            var rowIndex = row - 1;
+            var colIndex = col - 1;
             if (rowIndex > 0)
             {
                 if (Even(rowIndex))
@@ -130,15 +127,15 @@ namespace SlimeSimulation.Model.Generation
             }
             if (colIndex > 0)
             {
-                Node left = previousRowNodes[colIndex - 1];
-                SlimeEdge leftSlimeEdge = new SlimeEdge(node, left, _config.StartingConnectivity);
+                var left = previousRowNodes[colIndex - 1];
+                var leftSlimeEdge = new Edge(node, left);
                 _edges.Add(leftSlimeEdge);
             }
 
             if (!PointIsSkipped(rowIndex, colIndex + 1, _rows))
             {
-                Node right = previousRowNodes[colIndex];
-                SlimeEdge rightSlimeEdge = new SlimeEdge(node, right, _config.StartingConnectivity);
+                var right = previousRowNodes[colIndex];
+                var rightSlimeEdge = new Edge(node, right);
                 _edges.Add(rightSlimeEdge);
             }
         }
@@ -149,30 +146,30 @@ namespace SlimeSimulation.Model.Generation
             {
                 return;
             }
-            Node left = previousRowNodes[colIndex];
-            SlimeEdge leftSlimeEdge = new SlimeEdge(node, left, _config.StartingConnectivity);
+            var left = previousRowNodes[colIndex];
+            var leftSlimeEdge = new Edge(node, left);
             _edges.Add(leftSlimeEdge);
 
             if (colIndex + 1 < _columns)
             {
-                Node right = previousRowNodes[colIndex + 1];
-                SlimeEdge rightSlimeEdge = new SlimeEdge(node, right, _config.StartingConnectivity);
+                var right = previousRowNodes[colIndex + 1];
+                var rightSlimeEdge = new Edge(node, right);
                 _edges.Add(rightSlimeEdge);
             }
         }
 
         private void EnsureFoodSourcesByReplacingNodesWithFoodSourceNodes()
         {
-            List<Node> nodesList = new List<Node>(_nodes);
+            var nodesList = new List<Node>(_nodes);
             while (_foodSources.Count < _config.MinimumFoodSources)
             {
-                int index = _random.Next(_nodes.Count - 1);
+                var index = _random.Next(_nodes.Count - 1);
                 while (nodesList[index].IsFoodSource())
                 {
                     index = _random.Next(_nodes.Count - 1);
                 }
-                Node nodeToReplace = nodesList[index];
-                FoodSourceNode replacement = new FoodSourceNode(nodeToReplace.Id, nodeToReplace.X, nodeToReplace.Y);
+                var nodeToReplace = nodesList[index];
+                var replacement = new FoodSourceNode(nodeToReplace.Id, nodeToReplace.X, nodeToReplace.Y);
                 _foodSources.Add(replacement);
                 _nodes.Remove(nodeToReplace);
                 _nodes.Add(replacement);
@@ -193,12 +190,12 @@ namespace SlimeSimulation.Model.Generation
 
         private Node MakeNextNode(ref int id, int row, int col, HashSet<FoodSourceNode> foodSources, bool columnOffset)
         {
-            int x = 2 * col;
+            var x = 2 * col;
             if (columnOffset)
             {
                 x++;
             }
-            int y = row * 2;
+            var y = row * 2;
             Node node;
             if (IsFoodSource())
             {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using SlimeSimulation.View;
 using SlimeSimulation.View.Windows;
 using NLog;
@@ -7,6 +8,8 @@ using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.Model.Generation;
+using SlimeSimulation.Model;
+using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Controller.WindowController
 {
@@ -40,10 +43,11 @@ namespace SlimeSimulation.Controller.WindowController
         internal void StartSimulation(SimulationConfiguration config)
         {
             var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
-            ISlimeNetworkGenerator slimeNetworkGenerator = new LatticeSlimeNetworkGenerator(config.GenerationConfig);
+            IGraphWithFoodSourcesGenerator slimeNetworkGenerator = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig);
             var simulationUpdater = new SimulationUpdater(flowCalculator, new SlimeNetworkAdaptionCalculator(config.FeedbackParam));
-            var initial = slimeNetworkGenerator.Generate();
-            var controller = new SimulationController(this, config.FlowAmount, simulationUpdater, initial, initial);
+            var possible = slimeNetworkGenerator.Generate();
+            var initial = MakeSlimeNetworkOfOneFoodSource(possible);
+            var controller = new SimulationController(this, config.FlowAmount, simulationUpdater, initial, possible);
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Gtk.Application.Invoke(delegate
             {
@@ -51,6 +55,13 @@ namespace SlimeSimulation.Controller.WindowController
                 _startingWindow.Hide();
                 controller.RunSimulation();
             });
+        }
+
+        private SlimeNetwork MakeSlimeNetworkOfOneFoodSource(GraphWithFoodSources possible)
+        {
+            var nodeSlimeStartsAt = possible.FoodSources.PickRandom();
+            var slimeNodes = new HashSet<FoodSourceNode>() { nodeSlimeStartsAt };
+            return new SlimeNetwork(slimeNodes, slimeNodes, new HashSet<SlimeEdge>());
         }
 
         public void FinishSimulation(SimulationController controller)

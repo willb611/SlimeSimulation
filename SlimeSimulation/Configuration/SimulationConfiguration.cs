@@ -11,11 +11,11 @@ namespace SlimeSimulation.Configuration
         private static readonly int DefaultFlowAmount = 2;
         private static readonly double DefaultFeedbackParam = 1;
 
-        public SimulationConfiguration() : this(new LatticeSlimeNetworkGenerationConfig(), DefaultFlowAmount, DefaultFeedbackParam)
+        public SimulationConfiguration() : this(new LatticeGraphWithFoodSourcesGenerationConfig(), DefaultFlowAmount, DefaultFeedbackParam)
         {
         }
 
-        public SimulationConfiguration(LatticeSlimeNetworkGenerationConfig generationConfig,
+        public SimulationConfiguration(LatticeGraphWithFoodSourcesGenerationConfig generationConfig,
             int flowAmount, double feedbackParam)
         {
             this.GenerationConfig = generationConfig;
@@ -25,6 +25,6 @@ namespace SlimeSimulation.Configuration
 
         public double FeedbackParam { get; private set; }
         public int FlowAmount { get; private set; }
-        public LatticeSlimeNetworkGenerationConfig GenerationConfig { get; private set; }
+        public LatticeGraphWithFoodSourcesGenerationConfig GenerationConfig { get; private set; }
     }
 }

@@ -89,7 +89,7 @@ namespace SlimeSimulation.View.Windows
             {
                 try
                 {
-                    var generationConfig = new LatticeSlimeNetworkGenerationConfig(rowSize.Value, 
+                    var generationConfig = new LatticeGraphWithFoodSourcesGenerationConfig(rowSize.Value, 
                         probabilityNewNodeIsFood.Value, minFoodSources.Value);
                     return new SimulationConfiguration(generationConfig, flowAmount.Value, feedbackParam.Value);
                 } catch (ArgumentException e)

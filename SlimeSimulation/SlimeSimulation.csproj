@@ -84,8 +84,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\LatticeSlimeNetworkGenerationConfig.cs" />
+    <Compile Include="Configuration\LatticeGraphWithFoodSourcesGenerationConfig.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />
+    <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />
     <Compile Include="Model\GraphWithFoodSources.cs" />
     <Compile Include="Controller\SimulationUpdaters\SimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkAdaptionCalculator.cs" />
@@ -109,7 +110,7 @@
     <Compile Include="Model\Node.cs" />
     <Compile Include="Model\Simulation\SimulationState.cs" />
     <Compile Include="Model\SlimeNetwork.cs" />
-    <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />
+    <Compile Include="Model\Generation\IGraphWithFoodSourcesGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLibHelpers\EnumerableExtension.cs" />
@@ -127,7 +128,7 @@
     <Compile Include="View\WindowComponent\GraphDrawingArea.cs" />
     <Compile Include="Controller\WindowComponentController\LineViewController.cs" />
     <Compile Include="View\GtkLifecycleController.cs" />
-    <Compile Include="Model\Generation\LatticeSlimeNetworkGenerator.cs" />
+    <Compile Include="Model\Generation\LatticeGraphWithFoodSourcesGenerator.cs" />
     <Compile Include="Controller\WindowComponentController\NodeViewController.cs" />
     <Compile Include="View\WindowComponent\NodeHighlightKey.cs" />
     <Compile Include="View\RGB.cs" />

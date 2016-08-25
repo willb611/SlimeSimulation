@@ -18,15 +18,13 @@ namespace SlimeSimulation.Controller.WindowController
     class SlimeNetworkWindowController : SimulationStepWindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly GtkLifecycleController _gtkLifecycleController;
         private readonly ISet<SlimeEdge> _edges;
         private readonly ISimulationControlBoxFactory _simulationControlBoxFactory;
 
-        public SlimeNetworkWindowController(SimulationController mainController, GtkLifecycleController gtkLifecycleController, ISet<SlimeEdge> edges,
+        public SlimeNetworkWindowController(SimulationController mainController, ISet<SlimeEdge> edges,
             ISimulationControlBoxFactory simulationControlBoxFactory)
           : base(mainController)
         {
-            this._gtkLifecycleController = gtkLifecycleController;
             this._edges = edges;
             _simulationControlBoxFactory = simulationControlBoxFactory;
         }
@@ -36,7 +34,7 @@ namespace SlimeSimulation.Controller.WindowController
             Logger.Debug("[RenderConnectivity] Making new window");
             using (Window = new SlimeNetworkWindow(new List<SlimeEdge>(_edges), this, _simulationControlBoxFactory))
             {
-                _gtkLifecycleController.Display(Window);
+                SimulationController.Display(Window);
             }
         }
         

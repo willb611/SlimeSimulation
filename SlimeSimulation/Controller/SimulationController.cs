@@ -11,6 +11,7 @@ using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.View;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Factories;
+using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller
 {
@@ -28,7 +29,6 @@ namespace SlimeSimulation.Controller
         private readonly ApplicationStartWindowController _applicationStartWindowController;
 
         public int SimulationStepsCompleted { get; internal set; }
-        public bool ShouldFlowResultsBeDisplayed { get; private set; }
 
         public SimulationController(ApplicationStartWindowController startingWindowController,
             int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial,
@@ -37,9 +37,17 @@ namespace SlimeSimulation.Controller
             this._applicationStartWindowController = startingWindowController;
             this._flowAmount = flowAmount;
             this._simulationUpdater = simulationUpdater;
-            _state = new SimulationState(initial, graphWithFoodSources.Equals(initial));
+            _state = new SimulationState(initial, graphWithFoodSources.Equals(initial), graphWithFoodSources);
             ShouldFlowResultsBeDisplayed = true;
         }
+
+        internal void Display(WindowTemplate window)
+        {
+            _gtkLifecycleController.Display(window);
+        }
+
+        public bool ShouldFlowResultsBeDisplayed { get; private set; }
+
 
         public void RunSimulation()
         {
@@ -129,7 +137,7 @@ namespace SlimeSimulation.Controller
         {
             if (!state.HasFinishedExpanding)
             {
-                DisplayNotFullyExpandedSlime(state.SlimeNetwork);
+                DisplayNotFullyExpandedSlime(state.PossibleNetwork, state.SlimeNetwork);
             } else if (state.FlowResult == null || !ShouldFlowResultsBeDisplayed)
             {
                 DisplayConnectivityInNetwork(state.SlimeNetwork);
@@ -140,19 +148,19 @@ namespace SlimeSimulation.Controller
             }
         }
 
-        private void DisplayNotFullyExpandedSlime(SlimeNetwork slimeNetwork)
+        private void DisplayNotFullyExpandedSlime(GraphWithFoodSources graphWithFoodSources, SlimeNetwork slimeNetwork)
         {
             throw new NotImplementedException();
         }
 
         private void DisplayFlowResult(FlowResult flowResult)
         {
-            new FlowResultWindowController(this, _gtkLifecycleController, flowResult).Render();
+            new FlowResultWindowController(this, flowResult).Render();
         }
 
         private void DisplayConnectivityInNetwork(SlimeNetwork network)
         {
-            new SlimeNetworkWindowController(this, _gtkLifecycleController, network.Edges, new SimulationAdaptionPhaseControlBoxFactory()).Render();
+            new SlimeNetworkWindowController(this, network.Edges, new SimulationAdaptionPhaseControlBoxFactory()).Render();
         }
     }
 }

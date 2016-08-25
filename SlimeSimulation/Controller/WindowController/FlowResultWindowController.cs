@@ -16,12 +16,10 @@ namespace SlimeSimulation.Controller.WindowController
     class FlowResultWindowController : SimulationStepWindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly GtkLifecycleController _gtkLifecycleController;
         private readonly FlowResult _flowResult;
 
-        public FlowResultWindowController(SimulationController main, GtkLifecycleController gtkLifecycleController, FlowResult flowResult) : base(main)
+        public FlowResultWindowController(SimulationController mainController, FlowResult flowResult) : base(mainController)
         {
-            this._gtkLifecycleController = gtkLifecycleController;
             this._flowResult = flowResult;
         }
 
@@ -30,7 +28,7 @@ namespace SlimeSimulation.Controller.WindowController
             Logger.Debug("[Render] Entered");
             using (Window = new FlowResultWindow(_flowResult, this))
             {
-                _gtkLifecycleController.Display(Window);
+                SimulationController.Display(Window);
                 Logger.Debug("[Render]  _gtkLifecycleController.Display(Window); has finished running");
             }
         }

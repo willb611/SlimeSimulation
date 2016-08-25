@@ -6,30 +6,22 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Configuration
 {
-    public class LatticeSlimeNetworkGenerationConfig
+    public class LatticeGraphWithFoodSourcesGenerationConfig
     {
         private static readonly double DefaultProbabilityNewNodeIsFood = 0.05;
         private static readonly int DefaultMinimumFoodSources = 2;
-        private static readonly int DefaultStartingConnectivity = 1;
         private static readonly int DefaultSize = 5;
 
-        public LatticeSlimeNetworkGenerationConfig() : this(DefaultSize)
+        public LatticeGraphWithFoodSourcesGenerationConfig() : this(DefaultSize)
         {
         }
 
-        public LatticeSlimeNetworkGenerationConfig(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources)
+        public LatticeGraphWithFoodSourcesGenerationConfig(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources)
         {
         }
-
-        public LatticeSlimeNetworkGenerationConfig(int size,
-            double probabilityNewNodeIsFoodSource, int minimumFoodSources) : this(size, probabilityNewNodeIsFoodSource,
-                minimumFoodSources, DefaultStartingConnectivity)
-        {
-        }
-
-
-        public LatticeSlimeNetworkGenerationConfig(int size, double probabilityNewNodeIsFoodSource,
-            int minimumFoodSources, int startingConnectivity)
+        
+        public LatticeGraphWithFoodSourcesGenerationConfig(int size, double probabilityNewNodeIsFoodSource,
+            int minimumFoodSources)
         {
             if (size < 3)
             {
@@ -50,13 +42,11 @@ namespace SlimeSimulation.Configuration
             this.Size = size;
             this.ProbabilityNewNodeIsFoodSource = probabilityNewNodeIsFoodSource;
             this.MinimumFoodSources = minimumFoodSources;
-            this.StartingConnectivity = startingConnectivity;
         }
 
 
         public int MinimumFoodSources { get; private set; }
         public double ProbabilityNewNodeIsFoodSource { get; private set; }
         public int Size { get; private set; }
-        public int StartingConnectivity { get; private set; }
     }
 }
