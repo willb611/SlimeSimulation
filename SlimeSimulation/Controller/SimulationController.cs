@@ -18,8 +18,7 @@ namespace SlimeSimulation.Controller
     public class SimulationController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private readonly int _flowAmount;
+        
         private readonly SimulationUpdater _simulationUpdater;
         private readonly GtkLifecycleController _gtkLifecycleController = GtkLifecycleController.Instance;
         
@@ -31,11 +30,10 @@ namespace SlimeSimulation.Controller
         public int SimulationStepsCompleted { get; internal set; }
 
         public SimulationController(ApplicationStartWindowController startingWindowController,
-            int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial,
+            SimulationUpdater simulationUpdater, SlimeNetwork initial,
             GraphWithFoodSources graphWithFoodSources)
         {
             _applicationStartWindowController = startingWindowController;
-            _flowAmount = flowAmount;
             _simulationUpdater = simulationUpdater;
             _state = new SimulationState(initial, graphWithFoodSources.Equals(initial), graphWithFoodSources);
             ShouldFlowResultsBeDisplayed = true;
@@ -100,11 +98,11 @@ namespace SlimeSimulation.Controller
                     {
                         SimulationStepsCompleted++;
                     }
-                    nextState = _simulationUpdater.CalculateFlowResultOrUpdateNetworkUsingFlowInState(_state, _flowAmount);
+                    nextState = _simulationUpdater.CalculateFlowResultOrUpdateNetworkUsingFlowInState(_state);
                 }
                 else
                 {
-                    nextState = _simulationUpdater.CalculateFlowAndUpdateNetwork(_state, _flowAmount);
+                    nextState = _simulationUpdater.CalculateFlowAndUpdateNetwork(_state);
                     SimulationStepsCompleted++;
                 }
                 UpdateControllerState(nextState);

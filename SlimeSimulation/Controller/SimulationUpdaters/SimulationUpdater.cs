@@ -15,31 +15,33 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly FlowCalculator _flowCalculator;
         private readonly SlimeNetworkAdaptionCalculator _slimeNetworkAdapterCalculator;
+        private readonly int _flowAmount;
 
-        public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator)
+        public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator,
+            int flowAmount)
         {
             _flowCalculator = flowCalculator;
             _slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
+            _flowAmount = flowAmount;
         }
 
-        internal Task<SimulationState> CalculateFlowAndUpdateNetwork(SimulationState state, int flowAmount)
+        internal Task<SimulationState> CalculateFlowAndUpdateNetwork(SimulationState state)
         {
             return Task.Run(() =>
             {
-                var stateWithFlow = GetStateWithFlow(state.SlimeNetwork, flowAmount, state.PossibleNetwork);
+                var stateWithFlow = GetStateWithFlow(state.SlimeNetwork, _flowAmount, state.PossibleNetwork);
                 return GetNextStateWithUpdatedConductivites(stateWithFlow.SlimeNetwork, stateWithFlow.FlowResult, state.PossibleNetwork);
             });
         }
 
-        internal Task<SimulationState> CalculateFlowResultOrUpdateNetworkUsingFlowInState(SimulationState state,
-            int flowAmount)
+        internal Task<SimulationState> CalculateFlowResultOrUpdateNetworkUsingFlowInState(SimulationState state)
         {
             return Task.Run(() =>
             {
                 if (state.FlowResult == null)
                 {
                     Logger.Info("[CalculateFlowResultOrUpdateNetworkUsingFlowInState] Calculating flowResult");
-                    return GetStateWithFlow(state.SlimeNetwork, flowAmount, state.PossibleNetwork);
+                    return GetStateWithFlow(state.SlimeNetwork, _flowAmount, state.PossibleNetwork);
                 }
                 else
                 {
@@ -81,16 +83,17 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return GetFlow(network, flow, source, sink);
         }
 
-        internal Task<SimulationState> ExpandSlime(SimulationState state)
-        {
-            throw new NotImplementedException();
-        }
-
         private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink)
         {
             var flowResult = _flowCalculator.CalculateFlow(network,
               source, sink, flow);
             return flowResult;
         }
+
+        internal Task<SimulationState> ExpandSlime(SimulationState state)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

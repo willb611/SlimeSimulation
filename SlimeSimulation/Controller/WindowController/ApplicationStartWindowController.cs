@@ -43,11 +43,12 @@ namespace SlimeSimulation.Controller.WindowController
         internal void StartSimulation(SimulationConfiguration config)
         {
             var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
-            IGraphWithFoodSourcesGenerator slimeNetworkGenerator = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig);
-            var simulationUpdater = new SimulationUpdater(flowCalculator, new SlimeNetworkAdaptionCalculator(config.FeedbackParam));
+            var slimeNetworkGenerator = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig);
+            var slimeNetworkAdapter = new SlimeNetworkAdaptionCalculator(config.FeedbackParam);
+            var simulationUpdater = new SimulationUpdater(flowCalculator, slimeNetworkAdapter, config.FlowAmount);
             var possible = slimeNetworkGenerator.Generate();
             var initial = MakeSlimeNetworkOfOneFoodSource(possible);
-            var controller = new SimulationController(this, config.FlowAmount, simulationUpdater, initial, possible);
+            var controller = new SimulationController(this, simulationUpdater, initial, possible);
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Gtk.Application.Invoke(delegate
             {
