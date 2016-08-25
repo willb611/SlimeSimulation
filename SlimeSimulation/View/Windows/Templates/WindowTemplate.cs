@@ -38,13 +38,13 @@ namespace SlimeSimulation.View.Windows.Templates
         protected void ListenToClicksOn(Widget widget)
         {
             var factory = new ButtonPressHandlerFactory(widget, _windowController.OnClickCallback);
-            Logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using controllers OnClickCallback: {1}",
+            Logger.Trace("[ListenToClicksOn] Attaching to widget: {0}, using controllers OnClickCallback: {1}",
                 widget, _windowController);
             ListenToClicksOn(widget, factory);
         }
         protected void ListenToClicksOn(Widget widget, ButtonPressHandlerFactory factory)
         {
-            Logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using factory: {1}", widget, factory);
+            Logger.Trace("[ListenToClicksOn] Attaching to widget: {0}, using factory: {1}", widget, factory);
             widget.Events |= EventMask.ButtonPressMask | EventMask.ButtonReleaseMask;
             widget.ButtonPressEvent += factory.ButtonPressHandler;
         }

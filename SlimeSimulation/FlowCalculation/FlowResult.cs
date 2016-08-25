@@ -22,7 +22,7 @@ namespace SlimeSimulation.FlowCalculation
             _flowAmount = flowAmount;
             _network = network;
             _flowOnEdges = flowOnEdges;
-            Logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + network.Edges.Count);
+            Logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + network.SlimeEdges.Count);
             Logger.Info("[constructor] And source {0}, and Sink {1}", source, sink);
         }
 

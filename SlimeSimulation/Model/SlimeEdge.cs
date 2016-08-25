@@ -18,7 +18,7 @@ namespace SlimeSimulation.Model
         public double Resistance {
             get
             {
-                if (Connectivity == 0)
+                if (IsDisconnected())
                 {
                     return double.MaxValue;
                 }
@@ -62,6 +62,11 @@ namespace SlimeSimulation.Model
         public override string ToString()
         {
             return "SlimeEdge{connectivity=" + Connectivity + ", Edge=" + base.ToString() + "}";
+        }
+
+        public bool IsDisconnected()
+        {
+            return Connectivity == 0;
         }
     }
 }

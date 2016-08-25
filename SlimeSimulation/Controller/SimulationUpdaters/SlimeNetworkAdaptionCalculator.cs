@@ -21,7 +21,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         internal SlimeNetwork CalculateNextStep(SlimeNetwork slimeNetwork, FlowResult flowResult)
         {
             ISet<SlimeEdge> edges = new HashSet<SlimeEdge>();
-            foreach (SlimeEdge edge in slimeNetwork.Edges)
+            foreach (SlimeEdge edge in slimeNetwork.SlimeEdges)
             {
                 double connectivityInNextStepForEdge = NextConnectivityForEdge(edge, flowResult.FlowOnEdge(edge));
                 SlimeEdge updatedSlimeEdge = new SlimeEdge(edge.A, edge.B, connectivityInNextStepForEdge);

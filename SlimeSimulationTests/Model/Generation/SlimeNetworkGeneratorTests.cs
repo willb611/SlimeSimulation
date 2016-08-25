@@ -15,7 +15,7 @@ namespace SlimeSimulation.Model.Generation.Tests
             Assert.IsTrue(graph.FoodSources.Count > 1);
 
             SlimeNetwork slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(graph);
-            Assert.AreEqual(graph.Edges.Count, slime.Edges.Count);
+            Assert.AreEqual(graph.Edges.Count, slime.SlimeEdges.Count);
             Assert.IsTrue(graph.FoodSources.SequenceEqual(slime.FoodSources));
             Assert.IsTrue(graph.Nodes.SequenceEqual(slime.Nodes));
         }

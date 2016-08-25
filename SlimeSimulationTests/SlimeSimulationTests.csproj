@@ -66,6 +66,7 @@
     <Compile Include="Model\Generation\LatticeSlimeNetworkGeneratorTests.cs" />
     <Compile Include="Model\GraphWithFoodSourcesTests.cs" />
     <Compile Include="Model\NodeTests.cs" />
+    <Compile Include="Model\SlimeEdgeTests.cs" />
     <Compile Include="Model\SlimeNetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

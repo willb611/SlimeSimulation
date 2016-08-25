@@ -23,7 +23,7 @@ namespace SlimeSimulation.FlowCalculation
 
         public FlowResult CalculateFlow(SlimeNetwork network, Node source, Node sink, int flowAmount)
         {
-            List<Node> nodeList = new List<Node>(network.Nodes);
+            List<Node> nodeList = new List<Node>(network.AllNodesConnectedTo(source));
             EnsureSourceSinkInCorrectPositions(nodeList, source, sink);
             double[][] a = GetSystemOfEquations(network, nodeList);
             double[] b = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, network.Nodes.Count() - 1);
@@ -56,7 +56,7 @@ namespace SlimeSimulation.FlowCalculation
         private FlowOnEdges GetFlowOnEdges(SlimeNetwork network, Pressures pressures, List<Node> nodes)
         {
             FlowOnEdges result = new FlowOnEdges((network as Graph).Edges);
-            foreach (SlimeEdge edge in network.Edges)
+            foreach (SlimeEdge edge in network.SlimeEdges)
             {
                 double pi = pressures.PressureAt(edge.A);
                 double pj = pressures.PressureAt(edge.B);
@@ -81,7 +81,7 @@ namespace SlimeSimulation.FlowCalculation
 
         private double[][] GetSystemOfEquations(SlimeNetwork network, List<Node> nodes)
         {
-            int upperlimit = network.Nodes.Count() - 1;
+            int upperlimit = nodes.Count() - 1;
             double[][] equations = new double[upperlimit][];
             for (int row = 0; row < upperlimit; row++)
             {

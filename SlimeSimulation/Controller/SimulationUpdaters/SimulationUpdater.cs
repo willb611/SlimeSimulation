@@ -86,11 +86,23 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
             Node source = network.FoodSources.PickRandom();
             Node sink = network.FoodSources.PickRandom();
-            while (sink == source)
+            while (InvalidSourceSink(source, sink, network))
             {
                 sink = network.FoodSources.PickRandom();
             }
             return GetFlow(network, flow, source, sink);
+        }
+
+        private bool InvalidSourceSink(Node source, Node sink, SlimeNetwork network)
+        {
+            if (source == sink)
+            {
+                return true;
+            }
+            else
+            {
+                return !network.RouteExistsBetween(source, sink);
+            }
         }
 
         private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink)
@@ -105,7 +117,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return Task.Run(() =>
             {
                 var expandedNetwork = _slimeNetworkExplorer.ExpandSlimeInNetwork(state.SlimeNetwork, state.PossibleNetwork);
-                var hasFinishedExpanding = expandedNetwork.CoversGraph(state.PossibleNetwork);
+                var hasFinishedExpanding = state.HasFinishedExpanding || state.SlimeNetwork.CoversGraph(state.PossibleNetwork);
                 return new SimulationState(expandedNetwork, hasFinishedExpanding, state.PossibleNetwork);
             });
         }

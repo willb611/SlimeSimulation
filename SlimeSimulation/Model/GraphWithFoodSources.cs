@@ -1,25 +1,49 @@
+using System;
 using System.Collections.Generic;
 
 namespace SlimeSimulation.Model
 {
     public class GraphWithFoodSources : Graph
     {
-        public ISet<FoodSourceNode> FoodSources { get; }
+        private ISet<FoodSourceNode> _foodSources;
+        public ISet<FoodSourceNode> FoodSources {
+            get
+            {
+                return _foodSources;
+            }
+            protected set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("FoodSources");
+                }
+                else
+                {
+                    _foodSources = value;
+                }
+            }
+        }
 
         public GraphWithFoodSources(ISet<Edge> edges) : base(edges)
         {
-            FoodSources = new HashSet<FoodSourceNode>();
-            foreach (var node in Nodes)
-            {
-                if (node.IsFoodSource())
-                {
-                    FoodSources.Add((FoodSourceNode)node);
-                }
-            }
+            FoodSources = GetFoodSourceNodes(Nodes);
         }
         public GraphWithFoodSources(ISet<Edge> edges, ISet<Node> nodes, ISet<FoodSourceNode> foodSourcesNodes) : base(edges, nodes)
         {
             FoodSources = foodSourcesNodes;
+        }
+
+        protected ISet<FoodSourceNode> GetFoodSourceNodes(ISet<Node> nodes)
+        {
+            var foodSources = new HashSet<FoodSourceNode>();
+            foreach (var node in nodes)
+            {
+                if (node.IsFoodSource())
+                {
+                    foodSources.Add((FoodSourceNode)node);
+                }
+            }
+            return foodSources;
         }
 
         public override bool Equals(object obj)

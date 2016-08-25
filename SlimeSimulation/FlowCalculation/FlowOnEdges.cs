@@ -22,7 +22,7 @@ namespace SlimeSimulation.FlowCalculation
             _flowOnEdgeMapping = new Dictionary<Edge, double>();
             foreach (var edge in edges)
             {
-                _flowOnEdgeMapping.Add(edge, SmallAmountToPreventNodesFromGettingDisconnected);
+                _flowOnEdgeMapping.Add(edge, 0);
             }
         }
 

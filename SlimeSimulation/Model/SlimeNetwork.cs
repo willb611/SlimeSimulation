@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using SlimeSimulation.Model.Bfs;
 
 namespace SlimeSimulation.Model
 {
@@ -8,17 +10,35 @@ namespace SlimeSimulation.Model
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public new ISet<SlimeEdge> Edges { get; }
+        public ISet<SlimeEdge> SlimeEdges { get; }
 
-        public SlimeNetwork(ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges))
+        public SlimeNetwork(ISet<SlimeEdge> edges) : base(new HashSet<Edge>(RemoveDisconnectedEdges(edges)))
         {
-            Edges = edges;
+            SlimeEdges = Cast(base.Edges);
+        }
+        public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
+            ISet<SlimeEdge> edges) : base(new HashSet<Edge>(RemoveDisconnectedEdges(edges)), nodes, foodSources)
+        {
+            if (nodes.Count > 1) // If it's not the case that the slime only consists of a single node.
+            {
+                Nodes = GetNodesContainedIn(base.Edges);
+                FoodSources = GetFoodSourceNodes(Nodes);
+            }
+            SlimeEdges = Cast(base.Edges);
         }
 
-        public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
-            ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges), nodes, foodSources)
+        private ISet<SlimeEdge> Cast(ISet<Edge> edges)
         {
-            Edges = edges;
+            var result = new HashSet<SlimeEdge>();
+            foreach (var edge in edges)
+            {
+                var slimeEdge = edge as SlimeEdge;
+                if (slimeEdge != null)
+                {
+                    result.Add(slimeEdge);
+                }
+            }
+            return result;
         }
 
         internal double GetEdgeConnectivityOrZero(Node a, Node b)
@@ -49,17 +69,17 @@ namespace SlimeSimulation.Model
             {
                 return false;
             }
-            if (Edges.Count != graphWithFoodSources.Edges.Count)
+            if (SlimeEdges.Count != graphWithFoodSources.Edges.Count)
             {
                 return false;
             }
-            return Edges.All(slimEdge => graphWithFoodSources.Edges.Contains(slimEdge.Edge));
+            return SlimeEdges.All(slimEdge => graphWithFoodSources.Edges.Contains(slimEdge.Edge));
         }
 
         public ISet<Edge> GetAllEdgesInGraphReplacingThoseWhichAreSlimed(GraphWithFoodSources graph)
         {
             var edges = new HashSet<Edge>(graph.Edges);
-            foreach (var slimeEdge in Edges)
+            foreach (var slimeEdge in SlimeEdges)
             {
                 edges.Remove(slimeEdge.Edge);
                 edges.Add(slimeEdge);
@@ -69,6 +89,19 @@ namespace SlimeSimulation.Model
                 Logger.Trace($"[GetAllEdgesInGraphReplacingThoseWhichAreSlimed] Returning number {edges.Count}");
             }
             return edges;
+        }
+
+        internal static HashSet<SlimeEdge> RemoveDisconnectedEdges(IEnumerable<SlimeEdge> edges)
+        {
+            HashSet<SlimeEdge> connected = new HashSet<SlimeEdge>();
+            foreach (var slimeEdge in edges)
+            {
+                if (!slimeEdge.IsDisconnected())
+                {
+                    connected.Add(slimeEdge);
+                }
+            }
+            return connected;
         }
     }
 }

@@ -1,32 +1,40 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SlimeSimulation.Model.Bfs;
 
 namespace SlimeSimulation.Model
 {
     public class Graph
     {
-        private readonly ISet<Edge> _edges;
-        private readonly ISet<Node> _nodes;
+        public ISet<Node> Nodes { get; protected set; }
+        public ISet<Edge> Edges { get; }
         private readonly Dictionary<Node, ISet<Edge>> _edgesConnectedToNodeMapping;
+        private static readonly BfsSolver BfsSolver = new BfsSolver();
 
         public Graph(ISet<Edge> edges)
         {
-            _edges = edges;
+            Edges = edges;
+            Nodes = GetNodesContainedIn(edges);
+            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, Nodes);
+        }
+
+
+        public Graph(ISet<Edge> edges, ISet<Node> nodes)
+        {
+            Nodes = nodes;
+            Edges = edges;
+            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
+        }
+
+        protected ISet<Node> GetNodesContainedIn(ISet<Edge> edges)
+        {
             ISet<Node> nodes = new HashSet<Node>();
             foreach (var edge in Edges)
             {
                 AddNodesInEdgeNotContained(edge, ref nodes);
             }
-            _nodes = nodes;
-            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
-        }
-
-        public Graph(ISet<Edge> edges, ISet<Node> nodes)
-        {
-            _nodes = nodes;
-            _edges = edges;
-            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
+            return nodes;
         }
 
         private void AddNodesInEdgeNotContained(Edge slimeEdge, ref ISet<Node> nodes)
@@ -35,13 +43,6 @@ namespace SlimeSimulation.Model
             nodes.Add(slimeEdge.B);
         }
 
-        public ISet<Node> Nodes {
-            get { return _nodes; }
-        }
-
-        public ISet<Edge> Edges {
-            get { return _edges; }
-        }
 
         private Dictionary<Node, ISet<Edge>> MakeEdgesConnectedToNodeMapping(ISet<Edge> edges, ISet<Node> nodes)
         {
@@ -88,6 +89,18 @@ namespace SlimeSimulation.Model
         internal bool EdgeExistsBetween(Node a, Node b)
         {
             return EdgesConnectedToNode(a).Any(edge => edge.GetOtherNode(a).Equals(b));
+        }
+
+        public bool RouteExistsBetween(Node a, Node b)
+        {
+            var bfsResult = BfsSolver.From(a, this);
+            return bfsResult.Connected(b);
+        }
+
+        public ISet<Node> AllNodesConnectedTo(Node source)
+        {
+            var bfsResult = BfsSolver.From(source, this);
+            return bfsResult.ConnectedNodes();
         }
 
         public override bool Equals(object obj)
