@@ -3,10 +3,9 @@ using SlimeSimulation.Controller.WindowController.Templates;
 
 namespace SlimeSimulation.View.WindowComponent
 {
-    class SimulationAdaptionPhaseControlBox : SimulationControlBox
+    internal class SimulationGrowthPhaseControlBox : SimulationControlBox
     {
-
-        public SimulationAdaptionPhaseControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
+        public SimulationGrowthPhaseControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
         {
             AddControls(simulationStepWindowController, parentWindow);
         }
@@ -14,7 +13,7 @@ namespace SlimeSimulation.View.WindowComponent
         private void AddControls(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
         {
             Add(new SimulationStepButton(simulationStepWindowController));
-            Add(new SimulationStepNumberOfTimesComponent(simulationStepWindowController, parentWindow));
+            Add(new SimulationStepUntilFullyGrownComponent(simulationStepWindowController, parentWindow));
         }
     }
 }

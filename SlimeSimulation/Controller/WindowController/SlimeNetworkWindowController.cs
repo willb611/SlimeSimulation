@@ -10,24 +10,28 @@ using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    public class SlimeNetworkWindowController : SimulationStepWindowController
+    public class SlimeNetworkWindowController : SimulationStepWindowControllerTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly ISet<SlimeEdge> _edges;
+        private readonly SlimeNetwork _slimeNetwork;
+        private readonly GraphWithFoodSources _graphWithFoodSources;
         private readonly ISimulationControlBoxFactory _simulationControlBoxFactory;
 
-        public SlimeNetworkWindowController(SimulationController mainController, ISet<SlimeEdge> edges,
+        internal bool WillFlowResultsBeDisplayed => SimulationController.ShouldFlowResultsBeDisplayed;
+
+        public SlimeNetworkWindowController(SimulationController mainController, SlimeNetwork slimeNetwork, GraphWithFoodSources graphWithFoodSources,
             ISimulationControlBoxFactory simulationControlBoxFactory)
           : base(mainController)
         {
-            _edges = edges;
+            _slimeNetwork = slimeNetwork;
+            _graphWithFoodSources = graphWithFoodSources;
             _simulationControlBoxFactory = simulationControlBoxFactory;
         }
 
         public override void Render()
         {
-            Logger.Debug("[RenderConnectivity] Making new window");
-            using (Window = new SlimeNetworkWindow(new List<SlimeEdge>(_edges), this, _simulationControlBoxFactory))
+            Logger.Debug("[Render] Making new window");
+            using (Window = new SlimeNetworkWindow(_slimeNetwork, _graphWithFoodSources, this, _simulationControlBoxFactory))
             {
                 SimulationController.Display(Window);
             }
@@ -35,7 +39,7 @@ namespace SlimeSimulation.Controller.WindowController
         
         public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
         {
-            Logger.Debug("[OnClick] Clicked!");
+            Logger.Debug("[OnClickCallback] Clicked!");
             var area = widget as GraphDrawingArea;
             area?.InvertEdgeDrawing();
         }
@@ -49,12 +53,7 @@ namespace SlimeSimulation.Controller.WindowController
         {
             SimulationController.ShouldFlowResultsBeDisplayed = shouldResultsBeDisplayed;
         }
-
-        internal bool WillFlowResultsBeDisplayed
-        {
-            get { return SimulationController.ShouldFlowResultsBeDisplayed; }
-        }
-
+        
         public void ReDraw()
         {
             Window.Display();

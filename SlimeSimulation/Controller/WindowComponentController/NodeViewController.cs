@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 using SlimeSimulation.View;
@@ -22,17 +23,9 @@ namespace SlimeSimulation.Controller.WindowComponentController
             _flowResult = result;
         }
 
-        public static Rgb SourceColour {
-            get { return Rgb.Blue; }
-        }
-
-        public static Rgb SinkColour {
-            get { return Rgb.Red; }
-        }
-
-        public static Rgb NormalNodeColour {
-            get { return Rgb.Black; }
-        }
+        public static Rgb SourceColour => Rgb.Blue;
+        public static Rgb SinkColour => Rgb.Red;
+        public static Rgb NormalNodeColour => Rgb.Black;
 
         public override Rgb GetColourForNode(Node node)
         {
@@ -57,21 +50,23 @@ namespace SlimeSimulation.Controller.WindowComponentController
         }
     }
 
-    public class ConnectivityNodeViewController : NodeViewController
+    public class SlimeNodeViewController : NodeViewController
     {
-        public static Rgb FoodColour {
-            get { return Rgb.Blue; }
+        private readonly ICollection<Node> _slimeCoveredNodes;
+
+        public SlimeNodeViewController(ICollection<Node> slimeCoveredNodes)
+        {
+            _slimeCoveredNodes = slimeCoveredNodes;
         }
 
-        public static Rgb NormalNodeColour {
-            get { return Rgb.Black; }
-        }
+        public static Rgb SlimeNodeColour => Rgb.Yellow;
+        public static Rgb NormalNodeColour => Rgb.Black;
 
         public override Rgb GetColourForNode(Node node)
         {
-            if (node.IsFoodSource())
+            if (_slimeCoveredNodes.Contains(node))
             {
-                return FoodColour;
+                return SlimeNodeColour;
             }
             return NormalNodeColour;
         }

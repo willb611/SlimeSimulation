@@ -40,20 +40,20 @@ namespace SlimeSimulation.Controller.WindowComponentController
         }
     }
 
-    internal class ConnectivityLineViewController : LineViewController
+    internal class SlimeLineViewController : LineViewController
     {
-        private List<SlimeEdge> _edges;
-        private readonly double _max;
+        private readonly double _maxSlimeEdgeConnectivity;
         private readonly double _weightForNonSlimeEdge;
 
-        public ConnectivityLineViewController(List<SlimeEdge> edges)
+        public SlimeLineViewController(IEnumerable<Edge> edges)
         {
-            _edges = edges;
             foreach (var edge in edges)
             {
-                _max = Math.Max(edge.Connectivity, _max);
+                var slimeEdge = edge as SlimeEdge;
+                var slimeEdgeConnectivity = slimeEdge?.Connectivity ?? 0.0;
+                _maxSlimeEdgeConnectivity = Math.Max(slimeEdgeConnectivity, _maxSlimeEdgeConnectivity);
             }
-            _weightForNonSlimeEdge = _max/4;
+            _weightForNonSlimeEdge = _maxSlimeEdgeConnectivity/4;
         }
 
         public Rgb SlimeColour => Rgb.Yellow;
@@ -73,7 +73,7 @@ namespace SlimeSimulation.Controller.WindowComponentController
 
         public override double GetMaximumLineWeight()
         {
-            return _max;
+            return _maxSlimeEdgeConnectivity;
         }
     }
 }

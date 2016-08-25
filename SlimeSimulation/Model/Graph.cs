@@ -35,7 +35,7 @@ namespace SlimeSimulation.Model
             nodes.Add(slimeEdge.B);
         }
 
-        public IEnumerable<Node> Nodes {
+        public ISet<Node> Nodes {
             get { return _nodes; }
         }
 

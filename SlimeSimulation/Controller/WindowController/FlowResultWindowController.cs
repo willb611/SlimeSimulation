@@ -7,7 +7,7 @@ using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    class FlowResultWindowController : SimulationStepWindowController
+    class FlowResultWindowController : SimulationStepWindowControllerTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly FlowResult _flowResult;

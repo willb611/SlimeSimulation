@@ -159,7 +159,7 @@ namespace SlimeSimulation.Controller
                 nextWindowController = DisplayNotFullyExpandedSlime(state.PossibleNetwork, state.SlimeNetwork);
             } else if (state.FlowResult == null || !ShouldFlowResultsBeDisplayed)
             {
-                nextWindowController = DisplayConnectivityInNetwork(state.SlimeNetwork);
+                nextWindowController = DisplayConnectivityInNetwork(state.SlimeNetwork, state.PossibleNetwork);
             }
             else
             {
@@ -171,7 +171,8 @@ namespace SlimeSimulation.Controller
 
         private WindowControllerTemplate DisplayNotFullyExpandedSlime(GraphWithFoodSources graphWithFoodSources, SlimeNetwork slimeNetwork)
         {
-            throw new NotImplementedException();
+            return new SlimeNetworkWindowController(this, slimeNetwork, graphWithFoodSources,
+                new SimulationGrowthPhaseControlBoxFactory());
         }
 
         private WindowControllerTemplate DisplayFlowResult(FlowResult flowResult)
@@ -179,9 +180,9 @@ namespace SlimeSimulation.Controller
             return new FlowResultWindowController(this, flowResult);
         }
 
-        private WindowControllerTemplate DisplayConnectivityInNetwork(SlimeNetwork network)
+        private WindowControllerTemplate DisplayConnectivityInNetwork(SlimeNetwork network, GraphWithFoodSources graphWithFoodSources)
         {
-            return new SlimeNetworkWindowController(this, network.Edges, new SimulationAdaptionPhaseControlBoxFactory());
+            return new SlimeNetworkWindowController(this, network, graphWithFoodSources, new SimulationAdaptionPhaseControlBoxFactory());
         }
     }
 }

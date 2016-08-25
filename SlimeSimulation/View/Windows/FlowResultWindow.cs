@@ -15,7 +15,7 @@ namespace SlimeSimulation.View.Windows
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly FlowResult _flowResult;
-        private FlowResultWindowController _windowController;
+        private readonly FlowResultWindowController _windowController;
 
         public FlowResultWindow(FlowResult flowResult, FlowResultWindowController windowController) : base("Flow result", windowController)
         {

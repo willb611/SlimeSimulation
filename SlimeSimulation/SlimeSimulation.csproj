@@ -86,6 +86,8 @@
   <ItemGroup>
     <Compile Include="Configuration\LatticeGraphWithFoodSourcesGenerationConfig.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />
+    <Compile Include="View\WindowComponent\SimulationGrowthPhaseControlBox.cs" />
+    <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />
     <Compile Include="Model\GraphWithFoodSources.cs" />
     <Compile Include="Controller\SimulationUpdaters\SimulationUpdater.cs" />
@@ -93,7 +95,7 @@
     <Compile Include="Controller\WindowController\SlimeNetworkWindowController.cs" />
     <Compile Include="Controller\WindowController\FlowResultWindowController.cs" />
     <Compile Include="Controller\SimulationController.cs" />
-    <Compile Include="Controller\WindowController\Templates\SimulationStepWindowController.cs" />
+    <Compile Include="Controller\WindowController\Templates\SimulationStepWindowControllerTemplate.cs" />
     <Compile Include="Controller\WindowController\Templates\WindowControllerTemplate.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
     <Compile Include="LinearEquations\LupDecompositionSolver.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="View\WindowComponent\SimulationAdaptionPhaseControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationStepNumberOfTimesComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationStepUntilFullyGrownComponent.cs" />
     <Compile Include="View\Windows\ApplicationStartWindow.cs" />
     <Compile Include="View\Windows\SlimeNetworkWindow.cs" />
     <Compile Include="View\Windows\FlowResultWindow.cs" />

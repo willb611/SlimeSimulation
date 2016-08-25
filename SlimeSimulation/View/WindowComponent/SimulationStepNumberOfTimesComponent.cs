@@ -8,11 +8,11 @@ namespace SlimeSimulation.View.WindowComponent
     internal class SimulationStepNumberOfTimesComponent : HBox
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly SimulationStepWindowController _simulationStepWindowController;
+        private readonly SimulationStepWindowControllerTemplate _simulationStepWindowController;
         private readonly TextView _numberOfTimesToStepTextView;
         private readonly Window _parentWindow;
 
-        public SimulationStepNumberOfTimesComponent(SimulationStepWindowController simulationStepWindowController, Window enclosingWindow) : base(true, 10)
+        public SimulationStepNumberOfTimesComponent(SimulationStepWindowControllerTemplate simulationStepWindowController, Window enclosingWindow) : base(true, 10)
         {
             _parentWindow = enclosingWindow;
             _simulationStepWindowController = simulationStepWindowController;
@@ -27,7 +27,7 @@ namespace SlimeSimulation.View.WindowComponent
 
         private void DoStepsButtonOnClicked(object sender, EventArgs eventArgs)
         {
-            if (!StepWithoutShowingFlowResultIsTicked())
+            if (!IsStepWithoutShowingFlowResultTicked())
             {
                 MessageDialog confirmSkipFlowResultsDialog = new MessageDialog(_parentWindow, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.OkCancel,
                     "Flow results are set to be displayed, running this will disable show flow results. Continue?");
@@ -66,7 +66,7 @@ namespace SlimeSimulation.View.WindowComponent
             }
         }
 
-        private bool StepWithoutShowingFlowResultIsTicked()
+        private bool IsStepWithoutShowingFlowResultTicked()
         {
             return _simulationStepWindowController.StepWithoutShowingFlowResult();
         }

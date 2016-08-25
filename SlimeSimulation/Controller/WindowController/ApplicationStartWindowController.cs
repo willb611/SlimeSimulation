@@ -63,8 +63,8 @@ namespace SlimeSimulation.Controller.WindowController
         {
             var nodeSlimeStartsAt = possible.FoodSources.PickRandom();
             var slimeNodes = new HashSet<FoodSourceNode> { nodeSlimeStartsAt };
-            //return new SlimeNetwork(slimeNodes, slimeNodes, new HashSet<SlimeEdge>());
-            return new SlimeNetworkGenerator().FromGraphWithFoodSources(possible);
+            return new SlimeNetwork(new HashSet<Node>(slimeNodes), slimeNodes, new HashSet<SlimeEdge>());
+            //return new SlimeNetworkGenerator().FromGraphWithFoodSources(possible);
         }
 
         public void FinishSimulation(SimulationController controller)

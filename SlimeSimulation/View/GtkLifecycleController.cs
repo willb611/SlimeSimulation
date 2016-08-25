@@ -12,13 +12,9 @@ namespace SlimeSimulation.View
         protected bool Disposed;
         private int _runningCount;
 
-        public static GtkLifecycleController instance;
+        public static GtkLifecycleController _instance;
 
-        public static GtkLifecycleController Instance {
-            get {
-                return instance;
-            }
-        }
+        public static GtkLifecycleController Instance => _instance;
 
         internal void ApplicationRun()
         {
@@ -36,11 +32,11 @@ namespace SlimeSimulation.View
 
         public GtkLifecycleController()
         {
-            if (instance != null)
+            if (_instance != null)
             {
                 throw new ApplicationException("Attempting to make multiple views");
             }
-            instance = this;
+            _instance = this;
             Logger.Info("Entered constructor");
             Application.Init();
         }
@@ -79,7 +75,7 @@ namespace SlimeSimulation.View
             }
             catch (Exception e)
             {
-                Logger.Error(e, "Error: ");
+                Logger.Error(e, "Error: " + e);
             }
             finally
             {

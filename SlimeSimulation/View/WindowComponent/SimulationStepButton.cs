@@ -6,9 +6,9 @@ namespace SlimeSimulation.View.WindowComponent
 {
     internal class SimulationStepButton : Button
     {
-        private readonly SimulationStepWindowController _controller;
+        private readonly SimulationStepWindowControllerTemplate _controller;
 
-        public SimulationStepButton(SimulationStepWindowController controller) : base(new Label("Next Simulation Step"))
+        public SimulationStepButton(SimulationStepWindowControllerTemplate controller) : base(new Label("Next Simulation Step"))
         {
             _controller = controller;
             Clicked += OnClicked;

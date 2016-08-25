@@ -6,6 +6,6 @@ namespace SlimeSimulation.View.Factories
 {
     public interface ISimulationControlBoxFactory
     {
-        SimulationControlBox MakeControlBox(SimulationStepWindowController simulationStepWindowController, Window parentWindow);
+        SimulationControlBox MakeControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow);
     }
 }

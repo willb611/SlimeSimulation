@@ -7,9 +7,9 @@ namespace SlimeSimulation.Model
     {
         public new ISet<SlimeEdge> Edges { get; }
 
-        public SlimeNetwork(IEnumerable<Node> nodes, ISet<FoodSourceNode> foodSources, ISet<SlimeEdge> edges) : this(new HashSet<Node>(nodes), foodSources, edges)
-        {
-        }
+        //public SlimeNetwork(IEnumerable<Node> nodes, ISet<FoodSourceNode> foodSources, ISet<SlimeEdge> edges) : this(new HashSet<Node>(nodes), foodSources, edges)
+        //{
+        //}
 
         public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
             ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges), nodes, foodSources)
