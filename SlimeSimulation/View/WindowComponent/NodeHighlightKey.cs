@@ -9,7 +9,9 @@ namespace SlimeSimulation.View.WindowComponent
         {
             VBox key = new VBox(true, 10);
 
-            HBox sourcePart = new HBox(true, 10);
+            key.Add(new Label("Node colour key"));
+
+            var sourcePart = new HBox(true, 10);
             sourcePart.Add(new Label("Source"));
             sourcePart.Add(GetBoxColour(FlowResultNodeViewController.SourceColour));
 
