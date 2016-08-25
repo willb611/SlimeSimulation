@@ -3,7 +3,7 @@ using Gtk;
 using NLog;
 using SlimeSimulation.Controller.WindowController.Templates;
 
-namespace SlimeSimulation.View.WindowComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
     internal class SimulationStepUntilFullyGrownComponent : HBox
     {
