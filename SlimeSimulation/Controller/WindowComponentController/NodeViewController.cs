@@ -60,13 +60,23 @@ namespace SlimeSimulation.Controller.WindowComponentController
         }
 
         public static Rgb SlimeNodeColour => Rgb.Yellow;
+        public static Rgb SlimeFoodSourceColour => Rgb.Blue;
+
         public static Rgb NormalNodeColour => Rgb.Black;
+        public static Rgb FoodSourceColour => Rgb.Red;
 
         public override Rgb GetColourForNode(Node node)
         {
             if (_slimeCoveredNodes.Contains(node))
             {
+                if (node.IsFoodSource())
+                {
+                    return SlimeFoodSourceColour;
+                }
                 return SlimeNodeColour;
+            } else if (node.IsFoodSource())
+            {
+                return FoodSourceColour;
             }
             return NormalNodeColour;
         }

@@ -37,7 +37,7 @@ namespace SlimeSimulation.View.Windows
             ListenToClicksOn(GraphDrawingArea);
 
             hbox.PackStart(GraphDrawingArea, true, true, 0);
-            hbox.PackStart(new NodeHighlightKey().GetVisualKey(), false, true, 0);
+            hbox.PackStart(new FlowResultNodeHighlightKey().GetVisualKey(), false, true, 0);
 
             VBox vbox = new VBox(false, 10);
             vbox.PackStart(new Label("Network with amount of flow: " + _flowResult.FlowAmount), false, true, 10);

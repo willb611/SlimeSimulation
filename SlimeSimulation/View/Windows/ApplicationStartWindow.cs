@@ -9,7 +9,7 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.View.Windows
 {
-    class ApplicationStartWindow : WindowTemplate
+    public class ApplicationStartWindow : WindowTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

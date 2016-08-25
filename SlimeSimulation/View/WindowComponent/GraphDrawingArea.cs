@@ -13,7 +13,7 @@ namespace SlimeSimulation.View.WindowComponent
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private const double MaxLineWidth = 15;
+        private const double MaxLineWidth = 8;
 
         private const double WindowSpacePercentToDrawIn = 0.9;
         private const double LinePaddingPercent = 0.05;

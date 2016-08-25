@@ -3,7 +3,7 @@ using SlimeSimulation.Controller.WindowComponentController;
 
 namespace SlimeSimulation.View.WindowComponent
 {
-    public class NodeHighlightKey
+    public class FlowResultNodeHighlightKey
     {
         public Widget GetVisualKey()
         {

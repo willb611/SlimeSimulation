@@ -8,7 +8,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected WindowTemplate Window;
+        public WindowTemplate Window;
 
         public virtual void OnWindowClose()
         {

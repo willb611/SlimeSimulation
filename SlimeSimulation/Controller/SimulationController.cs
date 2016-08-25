@@ -24,7 +24,7 @@ namespace SlimeSimulation.Controller
         
         private bool _simulationDoingStep;
         private SimulationState _state;
-        private bool _shouldFlowResultsBeDisplayed = true;
+        private bool _shouldFlowResultsBeDisplayed = false;
         private WindowControllerTemplate _activeWindowController;
 
         private readonly ApplicationStartWindowController _applicationStartWindowController;
@@ -38,7 +38,6 @@ namespace SlimeSimulation.Controller
             _applicationStartWindowController = startingWindowController;
             _simulationUpdater = simulationUpdater;
             _state = new SimulationState(initial, initial.CoversGraph(graphWithFoodSources), graphWithFoodSources);
-            ShouldFlowResultsBeDisplayed = true;
         }
 
         public SimulationState SimulationState
@@ -58,20 +57,15 @@ namespace SlimeSimulation.Controller
             _gtkLifecycleController.Display(window);
         }
 
-
         public bool ShouldFlowResultsBeDisplayed
         {
             get { return _shouldFlowResultsBeDisplayed; }
             set {
                 _shouldFlowResultsBeDisplayed = value;
                 var slimeNetworkWindowController = _activeWindowController as SlimeNetworkWindowController;
-                if (slimeNetworkWindowController != null)
-                {
-                    slimeNetworkWindowController.ReDraw();
-                }
+                slimeNetworkWindowController?.ReDraw();
             }
         }
-
 
         public void RunSimulation()
         {
@@ -81,7 +75,9 @@ namespace SlimeSimulation.Controller
             }
             catch (Exception e)
             {
-				Logger.Fatal(e, "[RunSimulation] Unexpected exception: " + e, e.Data);
+                var error = "[RunSimulation] Unexpected exception: " + e + e.Data;
+                Logger.Fatal(error);
+                _applicationStartWindowController.DisplayError(error);
             }
         }
 
@@ -94,15 +90,29 @@ namespace SlimeSimulation.Controller
         {
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
-                DoNextSimulationStep();
+                Logger.Debug($"[DoNextSimulationSteps] Now completed {++stepsRunSoFar} steps");
+                DoNextSimulationStep()?.Wait();
             }
         }
+        public void RunStepsUntilSlimeHasFullyExplored()
+        {
+            var stepNumber = 0;
+            while (!SimulationState.HasFinishedExpanding)
+            {
+                DoNextSimulationStep()?.Wait();
+                Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Now completed {++stepNumber} steps");
+            }
+            Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Finished in {stepNumber} steps");
+        }
 
-        public void DoNextSimulationStep()
+        public Task<SimulationState> DoNextSimulationStep()
         {
             if (_simulationDoingStep)
             {
-                Logger.Debug("[DoNextSimulationStep] Not starting next step as it's already in progress");
+                var error = "[DoNextSimulationStep] Not starting next step as it's already in progress";
+                Logger.Warn(error);
+                _applicationStartWindowController.DisplayError(error);
+                return null;
             }
             else
             {
@@ -114,6 +124,11 @@ namespace SlimeSimulation.Controller
                     nextState = _simulationUpdater.ExpandSlime(_state);
                 } else if (ShouldFlowResultsBeDisplayed)
                 {
+                    if (_state.FlowResult == null)
+                    {
+                        // This step is just calculating the flow through the network, it doesn't count as a step.
+                        SimulationStepsCompleted--;
+                    }
                     nextState = _simulationUpdater.CalculateFlowResultOrUpdateNetworkUsingFlowInState(_state);
                 }
                 else
@@ -122,6 +137,7 @@ namespace SlimeSimulation.Controller
                 }
                 SimulationStepsCompleted++;
                 UpdateControllerState(nextState);
+                return nextState;
             }
         }
 

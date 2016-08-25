@@ -134,7 +134,7 @@
     <Compile Include="View\GtkLifecycleController.cs" />
     <Compile Include="Model\Generation\LatticeGraphWithFoodSourcesGenerator.cs" />
     <Compile Include="Controller\WindowComponentController\NodeViewController.cs" />
-    <Compile Include="View\WindowComponent\NodeHighlightKey.cs" />
+    <Compile Include="View\WindowComponent\FlowResultNodeHighlightKey.cs" />
     <Compile Include="View\Rgb.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepButton.cs" />
     <Compile Include="View\Windows\Templates\GraphDrawingWindowTemplate.cs" />

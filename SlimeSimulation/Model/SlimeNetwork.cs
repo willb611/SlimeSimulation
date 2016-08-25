@@ -41,7 +41,7 @@ namespace SlimeSimulation.Model
             {
                 return false;
             }
-            if (!Nodes.SequenceEqual(graphWithFoodSources.Nodes))
+            if (!Nodes.SetEquals(graphWithFoodSources.Nodes))
             {
                 return false;
             }

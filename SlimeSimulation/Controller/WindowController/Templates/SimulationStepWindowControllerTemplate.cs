@@ -15,11 +15,11 @@ namespace SlimeSimulation.Controller.WindowController.Templates
 
         public void OnStepCompleted()
         {
+            Window.Dispose();
             Logger.Debug("[OnStepCompleted] Entered");
-            SimulationController.DoNextSimulationStep();
+            SimulationController.DoNextSimulationStep()?.Wait();
             SimulationController.UpdateDisplay();
             Logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
-            base.OnWindowClose();
             Logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");
         }
 
@@ -50,13 +50,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         {
             Window.Dispose();
             Logger.Debug("[RunStepsUntilSlimeHasFullyExplored] Starting");
-            var stepNumber = 0;
-            while (!SimulationController.SimulationState.HasFinishedExpanding)
-            {
-                SimulationController.DoNextSimulationStep();
-                Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Now completed {++stepNumber} steps");
-            }
-            Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Finished in {stepNumber} steps, updating display");
+            SimulationController.RunStepsUntilSlimeHasFullyExplored();
             SimulationController.UpdateDisplay();
         }
     }

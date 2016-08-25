@@ -24,7 +24,7 @@ namespace SlimeSimulation.Controller.WindowController
         {
             Logger.Info("[OnClickCallback] Entered. Doing nothing");
         }
-
+        
         public override void Render()
         {
             using (var gtkLifecycleController = new GtkLifecycleController())
@@ -84,6 +84,18 @@ namespace SlimeSimulation.Controller.WindowController
         {
             Logger.Debug("[DisposeOfView] Disposing of view..");
             _startingWindow.Dispose();
+        }
+
+        public void DisplayError(string error)
+        {
+            MessageDialog errorDialog = new MessageDialog(_startingWindow.Window, DialogFlags.DestroyWithParent,
+                MessageType.Error, ButtonsType.Ok,
+                "Unexpected error. Simulation tried to do a step when an step was in progress.")
+            {
+                Title = "Unexpected error"
+            };
+            errorDialog.Run();
+            errorDialog.Destroy();
         }
     }
 }
