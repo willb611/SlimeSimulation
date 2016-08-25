@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using SlimeSimulation.Model;
 using NLog;
+using SlimeSimulation.Model;
 
 namespace SlimeSimulation.FlowCalculation
 {
@@ -27,7 +27,7 @@ namespace SlimeSimulation.FlowCalculation
             {
                 throw new ArgumentOutOfRangeException("Index must be positive. Given: " + index);
             }
-            else if (index < _pressures.Length)
+            if (index < _pressures.Length)
             {
                 result = _pressures[index];
             }
@@ -50,10 +50,7 @@ namespace SlimeSimulation.FlowCalculation
             {
                 return PressureAt(_nodes.IndexOf(node));
             }
-            else
-            {
-                throw new ArgumentException("Pressure unkown for node: " + node);
-            }
+            throw new ArgumentException("Pressure unkown for node: " + node);
         }
 
         public double this[int i] {

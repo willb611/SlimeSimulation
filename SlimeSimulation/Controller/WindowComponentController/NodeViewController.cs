@@ -40,14 +40,11 @@ namespace SlimeSimulation.Controller.WindowComponentController
             {
                 return SourceColour;
             }
-            else if (_flowResult.Sink.Equals(node))
+            if (_flowResult.Sink.Equals(node))
             {
                 return SinkColour;
             }
-            else
-            {
-                return NormalNodeColour;
-            }
+            return NormalNodeColour;
         }
 
         public override int GetSizeForNode(Node node)
@@ -56,10 +53,7 @@ namespace SlimeSimulation.Controller.WindowComponentController
             {
                 return FoodSourcePointSize;
             }
-            else
-            {
-                return NonFoodSourcePointSize;
-            }
+            return NonFoodSourcePointSize;
         }
     }
 
@@ -79,10 +73,7 @@ namespace SlimeSimulation.Controller.WindowComponentController
             {
                 return FoodColour;
             }
-            else
-            {
-                return NormalNodeColour;
-            }
+            return NormalNodeColour;
         }
 
         public override int GetSizeForNode(Node node)
@@ -91,10 +82,7 @@ namespace SlimeSimulation.Controller.WindowComponentController
             {
                 return FoodSourcePointSize;
             }
-            else
-            {
-                return NonFoodSourcePointSize;
-            }
+            return NonFoodSourcePointSize;
         }
     }
 }

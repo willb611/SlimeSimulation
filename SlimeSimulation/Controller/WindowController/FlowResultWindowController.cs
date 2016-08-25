@@ -1,8 +1,9 @@
+using Gtk;
 using NLog;
-using SlimeSimulation.View.Windows;
-using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Controller.WindowController.Templates;
+using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.View.WindowComponent;
+using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller.WindowController
 {
@@ -26,7 +27,7 @@ namespace SlimeSimulation.Controller.WindowController
             }
         }
         
-        public override void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args)
+        public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
         {
             Logger.Debug("[OnClick] Clicked!");
             _flowResult.Validate();

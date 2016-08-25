@@ -1,9 +1,11 @@
 using Cairo;
 using Gdk;
+using Gtk;
+using Rectangle = Gdk.Rectangle;
 
 namespace SlimeSimulation.View.WindowComponent
 {
-    public class ColorArea : Gtk.DrawingArea
+    public class ColorArea : DrawingArea
     {
         private readonly Rgb _color;
 
@@ -16,7 +18,7 @@ namespace SlimeSimulation.View.WindowComponent
         {
             using (Context context = CairoHelper.Create(args.Window))
             {
-                Gdk.Rectangle allocation = Allocation;
+                Rectangle allocation = Allocation;
                 DrawRectangle(context, allocation.Width, allocation.Height);
             }
             return true;

@@ -1,10 +1,12 @@
-using SlimeSimulation.FlowCalculation;
+using Gdk;
 using Gtk;
 using NLog;
 using SlimeSimulation.Controller.WindowComponentController;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows.Templates;
+using Window = Gtk.Window;
 
 namespace SlimeSimulation.View.Windows
 {
@@ -24,7 +26,7 @@ namespace SlimeSimulation.View.Windows
 
         protected override void AddToWindow(Window window)
         {
-            Gdk.Color bgColor = new Gdk.Color(255, 255, 255);
+            Color bgColor = new Color(255, 255, 255);
             window.ModifyBg(StateType.Normal, bgColor);
 
             HBox hbox = new HBox();

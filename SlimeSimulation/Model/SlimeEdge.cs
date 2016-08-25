@@ -16,15 +16,13 @@ namespace SlimeSimulation.Model
         }
 
         public double Resistance {
-            get {
+            get
+            {
                 if (Connectivity == 0)
                 {
                     return double.MaxValue;
                 }
-                else
-                {
-                    return 1 / Connectivity;
-                }
+                return 1 / Connectivity;
             }
         }
         
@@ -39,7 +37,7 @@ namespace SlimeSimulation.Model
             {
                 return false;
             }
-            else if (ReferenceEquals(other, this))
+            if (ReferenceEquals(other, this))
             {
                 return true;
             }
@@ -53,10 +51,7 @@ namespace SlimeSimulation.Model
             {
                 return false;
             }
-            else
-            {
-                return base.Equals(other);
-            }
+            return base.Equals(other);
         }
 
         public override int GetHashCode()

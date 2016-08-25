@@ -1,3 +1,4 @@
+using Gdk;
 using NLog;
 
 namespace SlimeSimulation.View
@@ -21,9 +22,9 @@ namespace SlimeSimulation.View
             B = (ushort)b;
         }
 
-        public Gdk.Color AsGdkColor()
+        public Color AsGdkColor()
         {
-            Gdk.Color color = new Gdk.Color((byte)R, (byte)G, (byte)B);
+            Color color = new Color((byte)R, (byte)G, (byte)B);
             Logger.Debug("Got gdk color: {0}, {1}, {2}", color.Blue, color.Green, color.Red);
             return color;
         }

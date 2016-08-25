@@ -22,7 +22,7 @@ namespace SlimeSimulation.Model
             {
                 return false;
             }
-            else if (ReferenceEquals(other, this))
+            if (ReferenceEquals(other, this))
             {
                 return true;
             }
@@ -36,10 +36,7 @@ namespace SlimeSimulation.Model
             {
                 return false;
             }
-            else
-            {
-                return X == other.X && Y == other.Y;
-            }
+            return X == other.X && Y == other.Y;
         }
 
         public override int GetHashCode()

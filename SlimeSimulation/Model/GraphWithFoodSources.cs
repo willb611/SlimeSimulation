@@ -22,7 +22,7 @@ namespace SlimeSimulation.Model
             {
                 return false;
             }
-            else if (ReferenceEquals(other, this))
+            if (ReferenceEquals(other, this))
             {
                 return true;
             }

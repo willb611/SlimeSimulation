@@ -23,10 +23,7 @@ namespace SlimeSimulation.Model
             {
                 return GetEdgeBetween(a, b).Connectivity;
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
 
         internal new SlimeEdge GetEdgeBetween(Node a, Node b)
@@ -39,24 +36,20 @@ namespace SlimeSimulation.Model
             if (graphWithFoodSources == null)
             {
                 return false;
-            } else if (!Nodes.SequenceEqual(graphWithFoodSources.Nodes))
-            {
-                return false;
-            } else if (!FoodSources.SetEquals(graphWithFoodSources.FoodSources))
+            }
+            if (!Nodes.SequenceEqual(graphWithFoodSources.Nodes))
             {
                 return false;
             }
-            else
+            if (!FoodSources.SetEquals(graphWithFoodSources.FoodSources))
             {
-                if (Edges.Count != graphWithFoodSources.Edges.Count)
-                {
-                    return false;
-                }
-                else
-                {
-                    return Edges.All(slimEdge => graphWithFoodSources.Edges.Contains(slimEdge.Edge));
-                }
+                return false;
             }
+            if (Edges.Count != graphWithFoodSources.Edges.Count)
+            {
+                return false;
+            }
+            return Edges.All(slimEdge => graphWithFoodSources.Edges.Contains(slimEdge.Edge));
         }
     }
 }

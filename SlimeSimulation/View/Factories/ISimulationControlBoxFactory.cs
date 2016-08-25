@@ -4,7 +4,7 @@ using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.Factories
 {
-    interface ISimulationControlBoxFactory
+    public interface ISimulationControlBoxFactory
     {
         SimulationControlBox MakeControlBox(SimulationStepWindowController simulationStepWindowController, Window parentWindow);
     }

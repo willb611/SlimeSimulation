@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using NLog;
 using SlimeSimulation.Configuration;
 
@@ -20,7 +20,7 @@ namespace SlimeSimulation.Model.Generation
         private readonly int _rows;
         private readonly int _columns;
 
-        private bool _used = false;
+        private bool _used;
 
         public LatticeGraphWithFoodSourcesGenerator() : this(new LatticeGraphWithFoodSourcesGenerationConfig())
         {
@@ -92,7 +92,7 @@ namespace SlimeSimulation.Model.Generation
             {
                 return true;
             }
-            else if (row == maxRows)
+            if (row == maxRows)
             {
                 if ((Even(maxRows) && col == 1)
                     || (!Even(row) && col == maxRows))

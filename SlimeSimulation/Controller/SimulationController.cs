@@ -1,15 +1,17 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Gtk;
+using NLog;
+using SlimeSimulation.Controller.SimulationUpdaters;
+using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
-using System;
-using NLog;
-using System.Threading.Tasks;
 using SlimeSimulation.Model.Simulation;
-using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.View;
-using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.Windows.Templates;
-using System.Threading;
 
 namespace SlimeSimulation.Controller
 {
@@ -20,10 +22,10 @@ namespace SlimeSimulation.Controller
         private readonly SimulationUpdater _simulationUpdater;
         private readonly GtkLifecycleController _gtkLifecycleController = GtkLifecycleController.Instance;
         
-        private bool _simulationDoingStep = false;
+        private bool _simulationDoingStep;
         private SimulationState _state;
         private bool _shouldFlowResultsBeDisplayed = true;
-        private WindowController.Templates.WindowController _currentWindowDisplayed;
+        private WindowControllerTemplate _activeWindowController;
 
         private readonly ApplicationStartWindowController _applicationStartWindowController;
 
@@ -62,10 +64,10 @@ namespace SlimeSimulation.Controller
             get { return _shouldFlowResultsBeDisplayed; }
             set {
                 _shouldFlowResultsBeDisplayed = value;
-                var slimeNetworkWindowController = _currentWindowDisplayed as SlimeNetworkWindowController;
+                var slimeNetworkWindowController = _activeWindowController as SlimeNetworkWindowController;
                 if (slimeNetworkWindowController != null)
                 {
-                    slimeNetworkWindowController.WillFlowResultsBeDisplayed = false;
+                    slimeNetworkWindowController.ReDraw();
                 }
             }
         }
@@ -142,7 +144,7 @@ namespace SlimeSimulation.Controller
 
         public void UpdateDisplay()
         {
-            Gtk.Application.Invoke(delegate
+            Application.Invoke(delegate
             {
                 Logger.Debug("[UpdateControllerState] Invoking from main thread ");
                 UpdateDisplayFromState(_state);
@@ -151,32 +153,35 @@ namespace SlimeSimulation.Controller
 
         private void UpdateDisplayFromState(SimulationState state)
         {
+            WindowControllerTemplate nextWindowController;
             if (!state.HasFinishedExpanding)
             {
-                DisplayNotFullyExpandedSlime(state.PossibleNetwork, state.SlimeNetwork);
+                nextWindowController = DisplayNotFullyExpandedSlime(state.PossibleNetwork, state.SlimeNetwork);
             } else if (state.FlowResult == null || !ShouldFlowResultsBeDisplayed)
             {
-                DisplayConnectivityInNetwork(state.SlimeNetwork);
+                nextWindowController = DisplayConnectivityInNetwork(state.SlimeNetwork);
             }
             else
             {
-                DisplayFlowResult(state.FlowResult);
+                nextWindowController = DisplayFlowResult(state.FlowResult);
             }
+            _activeWindowController = nextWindowController;
+            nextWindowController.Render();
         }
 
-        private void DisplayNotFullyExpandedSlime(GraphWithFoodSources graphWithFoodSources, SlimeNetwork slimeNetwork)
+        private WindowControllerTemplate DisplayNotFullyExpandedSlime(GraphWithFoodSources graphWithFoodSources, SlimeNetwork slimeNetwork)
         {
             throw new NotImplementedException();
         }
 
-        private void DisplayFlowResult(FlowResult flowResult)
+        private WindowControllerTemplate DisplayFlowResult(FlowResult flowResult)
         {
-            new FlowResultWindowController(this, flowResult).Render();
+            return new FlowResultWindowController(this, flowResult);
         }
 
-        private void DisplayConnectivityInNetwork(SlimeNetwork network)
+        private WindowControllerTemplate DisplayConnectivityInNetwork(SlimeNetwork network)
         {
-            new SlimeNetworkWindowController(this, network.Edges, new SimulationAdaptionPhaseControlBoxFactory()).Render();
+            return new SlimeNetworkWindowController(this, network.Edges, new SimulationAdaptionPhaseControlBoxFactory());
         }
     }
 }

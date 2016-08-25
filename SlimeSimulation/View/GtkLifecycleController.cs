@@ -1,7 +1,7 @@
 using System;
+using System.Threading;
 using Gtk;
 using NLog;
-using System.Threading;
 using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.View
@@ -9,8 +9,8 @@ namespace SlimeSimulation.View
     public class GtkLifecycleController : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        protected bool Disposed = false;
-        private int _runningCount = 0;
+        protected bool Disposed;
+        private int _runningCount;
 
         public static GtkLifecycleController instance;
 
@@ -39,10 +39,8 @@ namespace SlimeSimulation.View
             if (instance != null)
             {
                 throw new ApplicationException("Attempting to make multiple views");
-            } else
-            {
-                instance = this;
             }
+            instance = this;
             Logger.Info("Entered constructor");
             Application.Init();
         }
@@ -59,7 +57,7 @@ namespace SlimeSimulation.View
             {
                 return;
             }
-            else if (disposing)
+            if (disposing)
             {
                 Logger.Info("[Dispose] Quitting application");
                 ApplicationQuit();

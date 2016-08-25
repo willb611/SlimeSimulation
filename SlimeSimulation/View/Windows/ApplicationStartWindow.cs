@@ -178,31 +178,25 @@ namespace SlimeSimulation.View.Windows
         public double? ExtractDoubleFromView(TextView view)
         {
             double result;
-            var success = double.TryParse(view.Buffer.Text.ToString(), out result);
+            var success = double.TryParse(view.Buffer.Text, out result);
             if (success)
             {
                 return result;
             }
-            else
-            {
-                HighlightErrorOn(view);
-                return null;
-            }
+            HighlightErrorOn(view);
+            return null;
         }
 
         private int? ExtractIntFromView(TextView view)
         {
             int result;
-            var success = int.TryParse(view.Buffer.Text.ToString(), out result);
+            var success = int.TryParse(view.Buffer.Text, out result);
             if (success)
             {
                 return result;
             }
-            else
-            {
-                HighlightErrorOn(view);
-                return null;
-            }
+            HighlightErrorOn(view);
+            return null;
         }
 
         private void HighlightErrorOn(TextView view)
@@ -235,7 +229,7 @@ namespace SlimeSimulation.View.Windows
             {
                 return;
             }
-            else if (disposing)
+            if (disposing)
             {
                 base.Dispose(true);
                 _beginSimulationButton.Dispose();

@@ -2,7 +2,7 @@ using NLog;
 
 namespace SlimeSimulation.Controller.WindowController.Templates
 {
-    abstract class SimulationStepWindowController : WindowController
+    public abstract class SimulationStepWindowController : WindowControllerTemplate
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -11,12 +11,6 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         public SimulationStepWindowController(SimulationController simulationController)
         {
             SimulationController = simulationController;
-        }
-
-        public override void OnWindowClose()
-        {
-            base.OnWindowClose();
-            SimulationController.FinishSimulation();
         }
 
         public void OnStepCompleted()
@@ -29,9 +23,15 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             _logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");
         }
 
-        internal void RunNumberOfSteps(int numberOfSteps)
+        public override void OnWindowClose()
         {
             base.OnWindowClose();
+            SimulationController.FinishSimulation();
+        }
+
+        internal void RunNumberOfSteps(int numberOfSteps)
+        {
+            Window.Dispose();
             SimulationController.DoNextSimulationSteps(numberOfSteps);
             SimulationController.UpdateDisplay();
         }

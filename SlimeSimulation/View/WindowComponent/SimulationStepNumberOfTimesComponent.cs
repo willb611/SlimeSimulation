@@ -39,11 +39,8 @@ namespace SlimeSimulation.View.WindowComponent
                     Logger.Debug("[DoStepsButtonOnClicked] Returning as user was not ok with skipping flow result windows");
                     return;
                 }
-                else
-                {
-                    Logger.Debug("[DoStepsButtonOnClicked] Skip flow results was not enabled, but user confirmed ok to disable flow results");
-                    _simulationStepWindowController.DisableShowingFlowResults();
-                }
+                Logger.Debug("[DoStepsButtonOnClicked] Skip flow results was not enabled, but user confirmed ok to disable flow results");
+                _simulationStepWindowController.DisableShowingFlowResults();
             }
             TryToRunSteps();
         }

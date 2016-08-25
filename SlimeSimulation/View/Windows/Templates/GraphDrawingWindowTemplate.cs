@@ -9,7 +9,7 @@ namespace SlimeSimulation.View.Windows.Templates
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected GraphDrawingArea GraphDrawingArea;
-        public GraphDrawingWindowTemplate(string windowTitle, WindowController windowController) : base(windowTitle, windowController)
+        public GraphDrawingWindowTemplate(string windowTitle, WindowControllerTemplate windowController) : base(windowTitle, windowController)
         {
         }
         
@@ -19,7 +19,7 @@ namespace SlimeSimulation.View.Windows.Templates
             {
                 return;
             }
-            else if (disposing)
+            if (disposing)
             {
                 base.Dispose(disposing);
                 GraphDrawingArea.Dispose();

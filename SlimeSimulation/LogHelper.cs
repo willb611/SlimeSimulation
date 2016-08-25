@@ -1,7 +1,7 @@
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using NLog;
 
 namespace SlimeSimulation
 {
@@ -16,7 +16,7 @@ namespace SlimeSimulation
             sb.Append("{Count=").Append(collection.Count).Append(",Elements=[");
             foreach (T element in collection)
             {
-                sb.Append(element.ToString());
+                sb.Append(element);
             }
             sb.Append("]").Append("}");
             return sb.ToString();

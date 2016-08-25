@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
-using SlimeSimulation.Model;
-using NLog;
 using Cairo;
 using Gdk;
+using Gtk;
+using NLog;
 using SlimeSimulation.Controller.WindowComponentController;
+using SlimeSimulation.Model;
 
 namespace SlimeSimulation.View.WindowComponent
 {
-    public class GraphDrawingArea : Gtk.DrawingArea
+    public class GraphDrawingArea : DrawingArea
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -24,8 +25,8 @@ namespace SlimeSimulation.View.WindowComponent
         private readonly ICollection<Edge> _edges = new List<Edge>();
         private readonly ISet<Node> _nodes = new HashSet<Node>();
         private EdgeDrawing _edgeDrawingOption = EdgeDrawing.WithoutWeight;
-        private readonly double _maxNodeX = 0;
-        private readonly double _maxNodeY = 0;
+        private readonly double _maxNodeX;
+        private readonly double _maxNodeY;
 
         private readonly double _minNodeY = double.MaxValue;
         private readonly double _minNodeX = double.MaxValue;

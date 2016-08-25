@@ -94,7 +94,7 @@
     <Compile Include="Controller\WindowController\FlowResultWindowController.cs" />
     <Compile Include="Controller\SimulationController.cs" />
     <Compile Include="Controller\WindowController\Templates\SimulationStepWindowController.cs" />
-    <Compile Include="Controller\WindowController\Templates\WindowController.cs" />
+    <Compile Include="Controller\WindowController\Templates\WindowControllerTemplate.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
     <Compile Include="LinearEquations\LupDecompositionSolver.cs" />
     <Compile Include="LinearEquations\LinearEquationSolver.cs" />

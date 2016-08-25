@@ -27,14 +27,11 @@ namespace SlimeSimulation.Model
             {
                 return B;
             }
-            else if (Equals(node, B))
+            if (Equals(node, B))
             {
                 return A;
             }
-            else
-            {
-                throw new ApplicationException("Node is not contained in this edge");
-            }
+            throw new ApplicationException("Node is not contained in this edge");
         }
 
         public override bool Equals(object obj)
@@ -48,7 +45,7 @@ namespace SlimeSimulation.Model
             {
                 return false;
             }
-            else if (ReferenceEquals(other, this))
+            if (ReferenceEquals(other, this))
             {
                 return true;
             }
@@ -58,10 +55,7 @@ namespace SlimeSimulation.Model
                 return false;
             }
 
-            else
-            {
-                return A.Equals(other.A) && B.Equals(other.B);
-            }
+            return A.Equals(other.A) && B.Equals(other.B);
         }
 
         public override int GetHashCode()

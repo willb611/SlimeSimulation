@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using SlimeSimulation.Model;
-using NLog;
 using System;
+using System.Collections.Generic;
+using NLog;
+using SlimeSimulation.Model;
 
 namespace SlimeSimulation.FlowCalculation
 {

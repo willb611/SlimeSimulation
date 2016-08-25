@@ -1,12 +1,14 @@
+using System.Collections.Generic;
+using Gdk;
 using Gtk;
 using NLog;
-using System.Collections.Generic;
-using SlimeSimulation.Model;
 using SlimeSimulation.Controller.WindowComponentController;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.Model;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows.Templates;
+using Window = Gtk.Window;
 
 namespace SlimeSimulation.View.Windows
 {
@@ -27,9 +29,15 @@ namespace SlimeSimulation.View.Windows
             _simulationControlBoxFactory = simulationControlBoxFactory;
         }
 
+        public override void Display()
+        {
+            _shouldSimulationStepsBeDisplayedButton.Active = _controller.WillFlowResultsBeDisplayed;
+            base.Display();
+        }
+
         protected override void AddToWindow(Window window)
         {
-            var bgColor = new Gdk.Color(255, 255, 255);
+            var bgColor = new Color(255, 255, 255);
             window.ModifyBg(StateType.Normal, bgColor);
 
             var hbox = new HBox();
@@ -58,10 +66,7 @@ namespace SlimeSimulation.View.Windows
             _shouldSimulationStepsBeDisplayedButton = new CheckButton("Should simulation step result (flow graph) be displayed?");
             _logger.Debug("[ShouldSimulationStepResultsBeDisplayedInput] Setting initial value to: " + _controller.WillFlowResultsBeDisplayed);
 
-            if (_controller.WillFlowResultsBeDisplayed)
-            {
-                _shouldSimulationStepsBeDisplayedButton.Active = true;
-            }
+            _shouldSimulationStepsBeDisplayedButton.Active = _controller.WillFlowResultsBeDisplayed;
 
             _shouldSimulationStepsBeDisplayedButton.Toggled += delegate
             {

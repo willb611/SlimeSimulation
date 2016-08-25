@@ -1,24 +1,26 @@
 using System.Collections.Generic;
-using SlimeSimulation.View;
-using SlimeSimulation.View.Windows;
+using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
+using SlimeSimulation.Controller.SimulationUpdaters;
+using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
-using SlimeSimulation.Controller.SimulationUpdaters;
-using SlimeSimulation.Model.Generation;
 using SlimeSimulation.Model;
+using SlimeSimulation.Model.Generation;
 using SlimeSimulation.StdLibHelpers;
+using SlimeSimulation.View;
+using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    public class ApplicationStartWindowController : Templates.WindowController
+    public class ApplicationStartWindowController : WindowControllerTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         private ApplicationStartWindow _startingWindow;
         
-        public override void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args)
+        public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
         {
             Logger.Info("[OnClickCallback] Entered. Doing nothing");
         }
@@ -49,7 +51,7 @@ namespace SlimeSimulation.Controller.WindowController
             var initial = MakeSlimeNetworkOfOneFoodSource(possible);
             var controller = new SimulationController(this, simulationUpdater, initial, possible);
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
-            Gtk.Application.Invoke(delegate
+            Application.Invoke(delegate
             {
                 Logger.Debug("[StartSimulation] Invoking from main thread ");
                 _startingWindow.Hide();
@@ -60,7 +62,7 @@ namespace SlimeSimulation.Controller.WindowController
         private SlimeNetwork MakeSlimeNetworkOfOneFoodSource(GraphWithFoodSources possible)
         {
             var nodeSlimeStartsAt = possible.FoodSources.PickRandom();
-            var slimeNodes = new HashSet<FoodSourceNode>() { nodeSlimeStartsAt };
+            var slimeNodes = new HashSet<FoodSourceNode> { nodeSlimeStartsAt };
             //return new SlimeNetwork(slimeNodes, slimeNodes, new HashSet<SlimeEdge>());
             return new SlimeNetworkGenerator().FromGraphWithFoodSources(possible);
         }

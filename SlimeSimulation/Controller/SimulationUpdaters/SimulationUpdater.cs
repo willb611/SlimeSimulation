@@ -1,11 +1,11 @@
 using System;
-using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.Model;
-using SlimeSimulation.Model.Simulation;
 using System.Threading.Tasks;
 using NLog;
-using SlimeSimulation.StdLibHelpers;
+using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
+using SlimeSimulation.Model;
+using SlimeSimulation.Model.Simulation;
+using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {
@@ -46,12 +46,9 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                     Logger.Info("[CalculateFlowResultOrUpdateNetworkUsingFlowInState] Calculating flowResult");
                     return GetStateWithFlow(state.SlimeNetwork, _flowAmount, state.PossibleNetwork);
                 }
-                else
-                {
-                    Logger.Info(
-                        "[CalculateFlowResultOrUpdateNetworkUsingFlowInState] Updating simulation based on flow result pre-existing");
-                    return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult, state.PossibleNetwork);
-                }
+                Logger.Info(
+                    "[CalculateFlowResultOrUpdateNetworkUsingFlowInState] Updating simulation based on flow result pre-existing");
+                return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult, state.PossibleNetwork);
             });
         }
 

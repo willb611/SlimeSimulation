@@ -1,5 +1,5 @@
-using SlimeSimulation.FlowCalculation;
 using System;
+using SlimeSimulation.FlowCalculation;
 
 namespace SlimeSimulation.Model.Simulation
 {

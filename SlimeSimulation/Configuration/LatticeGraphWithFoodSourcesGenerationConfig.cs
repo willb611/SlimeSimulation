@@ -22,19 +22,18 @@ namespace SlimeSimulation.Configuration
             if (size < 3)
             {
                 throw new ArgumentException("SIze must be > 3. Given: " + size);
-            } else if (minimumFoodSources < 2)
+            }
+            if (minimumFoodSources < 2)
             {
                 throw new ArgumentException("Must have at least 2 food sources in network");
-            } else
+            }
+            int predictedNodesInGraph = size * size - 3;
+            if (minimumFoodSources > predictedNodesInGraph)
             {
-                int predictedNodesInGraph = size * size - 3;
-                if (minimumFoodSources > predictedNodesInGraph)
-                {
-                    throw new ArgumentException(
-                        String.Format("Wont be enough nodes in the graph {0} for minimum number of food nodes {1}",
+                throw new ArgumentException(
+                    String.Format("Wont be enough nodes in the graph {0} for minimum number of food nodes {1}",
                         predictedNodesInGraph, minimumFoodSources));
-                }
-            } 
+            }
             Size = size;
             ProbabilityNewNodeIsFoodSource = probabilityNewNodeIsFoodSource;
             MinimumFoodSources = minimumFoodSources;

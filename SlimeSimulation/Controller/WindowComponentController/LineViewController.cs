@@ -43,7 +43,7 @@ namespace SlimeSimulation.Controller.WindowComponentController
     internal class ConnectivityLineViewController : LineViewController
     {
         private List<SlimeEdge> _edges;
-        private readonly double _max = 0.0;
+        private readonly double _max;
         private readonly double _weightForNonSlimeEdge;
 
         public ConnectivityLineViewController(List<SlimeEdge> edges)

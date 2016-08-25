@@ -1,5 +1,5 @@
-using NLog;
 using System;
+using NLog;
 
 namespace SlimeSimulation.LinearEquations
 {
@@ -137,10 +137,7 @@ namespace SlimeSimulation.LinearEquations
                 Logger.Fatal(logstr);
                 throw new SingularMatrixException(logstr);
             }
-            else
-            {
-                return kdash;
-            }
+            return kdash;
         }
 
         private void Exchange(ref double v1, ref double v2)
@@ -199,10 +196,7 @@ namespace SlimeSimulation.LinearEquations
             {
                 return 0;
             }
-            else
-            {
-                return _original[i][j];
-            }
+            return _original[i][j];
         }
 
         internal double Lower(int i, int j)
@@ -232,7 +226,7 @@ namespace SlimeSimulation.LinearEquations
             {
                 throw new ArgumentOutOfRangeException("Must be positive. Given: " + i);
             }
-            else if (i >= _original.Length)
+            if (i >= _original.Length)
             {
                 throw new ArgumentOutOfRangeException("Must be 0 indexed index. Max: " + _original.Length + ", Given: " + i);
             }

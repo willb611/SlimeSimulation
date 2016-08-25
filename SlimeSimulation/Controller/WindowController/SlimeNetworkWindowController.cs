@@ -1,15 +1,16 @@
-using NLog;
-using SlimeSimulation.Model;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Gtk;
+using NLog;
 using SlimeSimulation.Controller.WindowController.Templates;
+using SlimeSimulation.Model;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    class SlimeNetworkWindowController : SimulationStepWindowController
+    public class SlimeNetworkWindowController : SimulationStepWindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly ISet<SlimeEdge> _edges;
@@ -32,7 +33,7 @@ namespace SlimeSimulation.Controller.WindowController
             }
         }
         
-        public override void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args)
+        public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
         {
             Logger.Debug("[OnClick] Clicked!");
             var area = widget as GraphDrawingArea;
@@ -52,12 +53,11 @@ namespace SlimeSimulation.Controller.WindowController
         internal bool WillFlowResultsBeDisplayed
         {
             get { return SimulationController.ShouldFlowResultsBeDisplayed; }
-            set
-            {
-                var slimeNetworkWindow = Window as SlimeNetworkWindow;
-                Debug.Assert(slimeNetworkWindow != null, nameof(slimeNetworkWindow) + " != null");
-                slimeNetworkWindow?.UpdateWillFlowResultsBeDisplayed(value);
-            }
+        }
+
+        public void ReDraw()
+        {
+            Window.Display();
         }
     }
 }

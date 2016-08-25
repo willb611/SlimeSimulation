@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using SlimeSimulation.Model;
 using SlimeSimulation.FlowCalculation;
+using SlimeSimulation.Model;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {

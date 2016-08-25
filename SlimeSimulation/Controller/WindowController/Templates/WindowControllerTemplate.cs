@@ -1,9 +1,10 @@
+using Gtk;
 using NLog;
 using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller.WindowController.Templates
 {
-    public abstract class WindowController
+    public abstract class WindowControllerTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -15,8 +16,8 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             Window.Dispose();
             Logger.Debug("[OnWindowClose] Disposed of window.");
         }
-
-        public abstract void OnClickCallback(Gtk.Widget widget, Gtk.ButtonPressEventArgs args);
+        
+        public abstract void OnClickCallback(Widget widget, ButtonPressEventArgs args);
         public abstract void Render();
     }
 }
