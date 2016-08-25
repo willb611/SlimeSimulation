@@ -2,7 +2,7 @@ using System;
 using Gtk;
 using SlimeSimulation.Controller.WindowController.Templates;
 
-namespace SlimeSimulation.View.WindowComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
     internal class SimulationStepButton : Button
     {

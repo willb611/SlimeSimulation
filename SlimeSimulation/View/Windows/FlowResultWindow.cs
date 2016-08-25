@@ -5,6 +5,7 @@ using SlimeSimulation.Controller.WindowComponentController;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.View.WindowComponent;
+using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
 using SlimeSimulation.View.Windows.Templates;
 using Window = Gtk.Window;
 

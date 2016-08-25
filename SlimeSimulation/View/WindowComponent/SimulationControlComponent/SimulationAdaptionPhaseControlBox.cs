@@ -1,9 +1,9 @@
 using Gtk;
 using SlimeSimulation.Controller.WindowController.Templates;
 
-namespace SlimeSimulation.View.WindowComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
-    class SimulationAdaptionPhaseControlBox : SimulationControlBox
+    class SimulationAdaptionPhaseControlBox : AbstractSimulationControlBox
     {
 
         public SimulationAdaptionPhaseControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
