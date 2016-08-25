@@ -12,6 +12,7 @@ using SlimeSimulation.View;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.Windows.Templates;
+using System.Threading;
 
 namespace SlimeSimulation.Controller
 {
@@ -24,6 +25,8 @@ namespace SlimeSimulation.Controller
         
         private bool _simulationDoingStep = false;
         private SimulationState _state;
+        private bool _shouldFlowResultsBeDisplayed = true;
+        private WindowController.Templates.WindowController _currentWindowDisplayed;
 
         private readonly ApplicationStartWindowController _applicationStartWindowController;
 
@@ -35,8 +38,20 @@ namespace SlimeSimulation.Controller
         {
             _applicationStartWindowController = startingWindowController;
             _simulationUpdater = simulationUpdater;
-            _state = new SimulationState(initial, graphWithFoodSources.Equals(initial), graphWithFoodSources);
+            _state = new SimulationState(initial, initial.CoversGraph(graphWithFoodSources), graphWithFoodSources);
             ShouldFlowResultsBeDisplayed = true;
+        }
+
+        public SimulationState SimulationState
+        {
+            get
+            {
+                while (_simulationDoingStep)
+                {
+                    Thread.Sleep(50);
+                }
+                return _state;
+            }
         }
 
         internal void Display(WindowTemplate window)
@@ -44,7 +59,19 @@ namespace SlimeSimulation.Controller
             _gtkLifecycleController.Display(window);
         }
 
-        public bool ShouldFlowResultsBeDisplayed { get; private set; }
+
+        public bool ShouldFlowResultsBeDisplayed
+        {
+            get { return _shouldFlowResultsBeDisplayed; }
+            set {
+                _shouldFlowResultsBeDisplayed = value;
+                var slimeNetworkWindowController = _currentWindowDisplayed as SlimeNetworkWindowController;
+                if (slimeNetworkWindowController != null)
+                {
+                    slimeNetworkWindowController.WillFlowResultsBeDisplayed = false;
+                }
+            }
+        }
 
 
         public void RunSimulation()
@@ -62,12 +89,6 @@ namespace SlimeSimulation.Controller
         internal void FinishSimulation()
         {
             _applicationStartWindowController.FinishSimulation(this);
-        }
-
-
-        internal void ToggleAreFlowResultsDisplayed(bool shouldResultsBeDisplayed)
-        {
-            ShouldFlowResultsBeDisplayed = shouldResultsBeDisplayed;
         }
 
         internal void DoNextSimulationSteps(int numberOfSteps)

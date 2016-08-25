@@ -12,6 +12,11 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
     {
         private readonly double _feedbackParameter;
 
+        public SlimeNetworkAdaptionCalculator() : this(0.8)
+        {
+            
+        }
+
         public SlimeNetworkAdaptionCalculator(double feedbackParameter) {
             _feedbackParameter = feedbackParameter;
         }

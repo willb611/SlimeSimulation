@@ -24,6 +24,9 @@ namespace SlimeSimulation.Model.Generation
 
         private bool _used = false;
 
+        public LatticeGraphWithFoodSourcesGenerator() : this(new LatticeGraphWithFoodSourcesGenerationConfig())
+        {
+        }
         public LatticeGraphWithFoodSourcesGenerator(LatticeGraphWithFoodSourcesGenerationConfig config)
         {
             _config = config;

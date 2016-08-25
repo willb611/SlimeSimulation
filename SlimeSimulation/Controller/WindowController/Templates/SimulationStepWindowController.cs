@@ -41,5 +41,10 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         {
             return !SimulationController.ShouldFlowResultsBeDisplayed;
         }
+
+        public void DisableShowingFlowResults()
+        {
+            SimulationController.ShouldFlowResultsBeDisplayed = false;
+        }
     }
 }

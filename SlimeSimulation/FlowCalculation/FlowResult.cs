@@ -31,8 +31,8 @@ namespace SlimeSimulation.FlowCalculation
             return _flowOnEdges.GetMaximumFlowOnAnyEdge();
         }
 
-        internal ISet<SlimeEdge> Edges {
-            get { return _network.Edges; }
+        internal ISet<Edge> Edges {
+            get { return (_network as Graph).Edges; }
         }
 
         internal Node Source {
@@ -65,7 +65,7 @@ namespace SlimeSimulation.FlowCalculation
             get { return _flowAmount; }
         }
 
-        public double FlowOnEdge(SlimeEdge slimeEdge)
+        public double FlowOnEdge(Edge slimeEdge)
         {
             return _flowOnEdges.GetFlowOnEdge(slimeEdge);
         }

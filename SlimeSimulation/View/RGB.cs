@@ -14,6 +14,7 @@ namespace SlimeSimulation.View
         public static readonly Rgb Blue = new Rgb(0, 0, 255);
         public static readonly Rgb Red = new Rgb(255, 0, 0);
         public static readonly Rgb Black = new Rgb(0, 0, 0);
+        public static readonly Rgb Yellow = new Rgb(255, 255, 0);
         public ushort R { get; private set; }
         public ushort G { get; private set; }
         public ushort B { get; private set; }

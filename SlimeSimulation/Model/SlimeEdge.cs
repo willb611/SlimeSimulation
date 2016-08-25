@@ -4,28 +4,28 @@ namespace SlimeSimulation.Model
 {
     public class SlimeEdge : Edge
     {
-        private readonly double _connectivity;
+        public Edge Edge { get; }
+        public double Connectivity { get; }
 
         public SlimeEdge(Edge edge, double connectivity) : base(edge.A, edge.B)
         {
-            _connectivity = connectivity;
+            Edge = edge;
+            Connectivity = connectivity;
         }
 
         public SlimeEdge(Node a, Node b, double connectivity) : this(new Edge(a, b), connectivity)
         {
         }
 
-        public double Connectivity => _connectivity;
-
         public double Resistance {
             get {
-                if (_connectivity == 0)
+                if (Connectivity == 0)
                 {
                     return double.MaxValue;
                 }
                 else
                 {
-                    return 1 / _connectivity;
+                    return 1 / Connectivity;
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace SlimeSimulation.Model
                 return false;
             }
 
-            if (_connectivity != other.Connectivity)
+            if (Connectivity != other.Connectivity)
             {
                 return false;
             }
@@ -63,12 +63,12 @@ namespace SlimeSimulation.Model
 
         public override int GetHashCode()
         {
-            return _connectivity.GetHashCode() * 17 + base.GetHashCode();
+            return Connectivity.GetHashCode() * 17 + base.GetHashCode();
         }
 
         public override string ToString()
         {
-            return "SlimeEdge{connectivity=" + _connectivity + ", Edge=" + base.ToString() + "}";
+            return "SlimeEdge{connectivity=" + Connectivity + ", Edge=" + base.ToString() + "}";
         }
     }
 }

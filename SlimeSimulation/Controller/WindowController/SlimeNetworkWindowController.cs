@@ -3,6 +3,7 @@ using SlimeSimulation.Model;
 using SlimeSimulation.Controller;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,12 +53,18 @@ namespace SlimeSimulation.Controller.WindowController
 
         internal void ToggleAreFlowResultsDisplayed(bool shouldResultsBeDisplayed)
         {
-            SimulationController.ToggleAreFlowResultsDisplayed(shouldResultsBeDisplayed);
+            SimulationController.ShouldFlowResultsBeDisplayed = shouldResultsBeDisplayed;
         }
 
-        internal bool WillFlowResultsBeDisplayed()
+        internal bool WillFlowResultsBeDisplayed
         {
-            return SimulationController.ShouldFlowResultsBeDisplayed;
+            get { return SimulationController.ShouldFlowResultsBeDisplayed; }
+            set
+            {
+                var slimeNetworkWindow = Window as SlimeNetworkWindow;
+                Debug.Assert(slimeNetworkWindow != null, nameof(slimeNetworkWindow) + " != null");
+                slimeNetworkWindow?.UpdateWillFlowResultsBeDisplayed(value);
+            }
         }
     }
 }

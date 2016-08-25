@@ -1,14 +1,16 @@
-using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.Model;
 using System;
 using System.Collections.Generic;
+using SlimeSimulation.FlowCalculation;
+using SlimeSimulation.Model;
+using SlimeSimulation.View;
 
-namespace SlimeSimulation.Controller.WindowsComponentController
+namespace SlimeSimulation.Controller.WindowComponentController
 {
     public abstract class LineViewController
     {
-        public abstract double GetLineWeightForEdge(SlimeEdge edge);
+        public abstract double GetLineWeightForEdge(Edge edge);
         public abstract double GetMaximumLineWeight();
+        public abstract Rgb GetColourForEdge(Edge edge);
     }
 
     internal class FlowResultLineViewController : LineViewController
@@ -22,7 +24,12 @@ namespace SlimeSimulation.Controller.WindowsComponentController
             _maxLineWidth = flowResult.GetMaximumFlowOnEdge();
         }
 
-        public override double GetLineWeightForEdge(SlimeEdge edge)
+        public override Rgb GetColourForEdge(Edge edge)
+        {
+            return Rgb.Black;
+        }
+
+        public override double GetLineWeightForEdge(Edge edge)
         {
             return Math.Abs(_flowResult.FlowOnEdge(edge));
         }
@@ -36,22 +43,32 @@ namespace SlimeSimulation.Controller.WindowsComponentController
     internal class ConnectivityLineViewController : LineViewController
     {
         private List<SlimeEdge> _edges;
-        private readonly double _max;
+        private readonly double _max = 0.0;
+        private readonly double _weightForNonSlimeEdge;
 
         public ConnectivityLineViewController(List<SlimeEdge> edges)
         {
             _edges = edges;
-            var max = 0.0;
-            foreach (SlimeEdge edge in edges)
+            foreach (var edge in edges)
             {
-                max = Math.Max(edge.Connectivity, max);
+                _max = Math.Max(edge.Connectivity, _max);
             }
-            _max = max;
+            _weightForNonSlimeEdge = _max/4;
         }
 
-        public override double GetLineWeightForEdge(SlimeEdge edge)
+        public Rgb SlimeColour => Rgb.Yellow;
+        public Rgb NonSlimeColour => Rgb.Black;
+
+        public override Rgb GetColourForEdge(Edge edge)
         {
-            return edge.Connectivity;
+            var slimeEdge = edge as SlimeEdge;
+            return slimeEdge == null ? NonSlimeColour : SlimeColour;
+        }
+
+        public override double GetLineWeightForEdge(Edge edge)
+        {
+            var slimeEdge = edge as SlimeEdge;
+            return slimeEdge?.Connectivity ?? _weightForNonSlimeEdge;
         }
 
         public override double GetMaximumLineWeight()

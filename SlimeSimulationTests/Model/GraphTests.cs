@@ -7,11 +7,29 @@ using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.Model;
 
-namespace SlimeSimulation.FlowCalculation.Tests
+namespace SlimeSimulation.Model.Tests
 {
     [TestClass()]
     public class GraphTests
     {
+        [TestMethod()]
+        public void EqualsTest()
+        {
+            var a = new Node(1, 1, 1);
+            var b = new Node(2, 2, 2);
+            var c = new Node(3, 3, 3);
+            var nodes = new HashSet<Node>() {a, b, c};
+
+            var ab = new Edge(a, b);
+            var bc = new Edge(b, c);
+            var ac = new Edge(a, c);
+            var edges = new HashSet<Edge>() {ab, bc, ac};
+
+            var graph = new Graph(edges, nodes);
+            var other = new Graph(edges, nodes);
+            Assert.AreEqual(graph, other);
+        }
+
         [TestMethod()]
         public void GetEdgeBetween_WhenMultipleEdges_ShouldWork()
         {

@@ -17,6 +17,10 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private readonly SlimeNetworkAdaptionCalculator _slimeNetworkAdapterCalculator;
         private readonly int _flowAmount;
 
+        public SimulationUpdater() : this(new FlowCalculator(), new SlimeNetworkAdaptionCalculator(), 1)
+        {
+            
+        }
         public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator,
             int flowAmount)
         {

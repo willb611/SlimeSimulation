@@ -14,6 +14,10 @@ namespace SlimeSimulation.FlowCalculation
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly ILinearEquationSolver _linearEquationSolver;
 
+        public FlowCalculator() : this(new LupDecompositionSolver())
+        {
+            
+        }
         public FlowCalculator(ILinearEquationSolver solver)
         {
             _linearEquationSolver = solver;
@@ -53,7 +57,7 @@ namespace SlimeSimulation.FlowCalculation
 
         private FlowOnEdges GetFlowOnEdges(SlimeNetwork network, Pressures pressures, List<Node> nodes)
         {
-            FlowOnEdges result = new FlowOnEdges(network.Edges);
+            FlowOnEdges result = new FlowOnEdges((network as Graph).Edges);
             foreach (SlimeEdge edge in network.Edges)
             {
                 double pi = pressures.PressureAt(edge.A);

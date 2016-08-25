@@ -7,7 +7,7 @@ using Gdk;
 using Gtk;
 using Cairo;
 using SlimeSimulation.Controller;
-using SlimeSimulation.Controller.WindowsComponentController;
+using SlimeSimulation.Controller.WindowComponentController;
 using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.WindowComponent

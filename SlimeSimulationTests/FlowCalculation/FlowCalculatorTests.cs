@@ -3,8 +3,6 @@ using SlimeSimulation.LinearEquations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.Model;
 using NLog;
 using SlimeSimulation.Configuration;
@@ -43,7 +41,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
             Node sink = network.FoodSources.Last();
             var flowAmount = 10;
             var dflow = 10.0;
-            var result = calculator.CalculateFlow(new SlimeNetworkGenerator().Generate(network), source, sink, flowAmount);
+            var result = calculator.CalculateFlow(new SlimeNetworkGenerator().FromGraphWithFoodSources(network), source, sink, flowAmount);
 
             Assert.AreEqual(dflow, Math.Abs(result.GetFlowOnNode(source)), 0.000001);
             Assert.AreEqual(dflow, Math.Abs(result.GetFlowOnNode(sink)), 0.000001);

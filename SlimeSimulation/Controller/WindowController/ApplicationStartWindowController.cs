@@ -31,7 +31,7 @@ namespace SlimeSimulation.Controller.WindowController
                 using (Window = new ApplicationStartWindow("Slime simulation parameter selection", this))
                 {
                     Logger.Debug("[Render] Made window");
-                    _startingWindow = Window as ApplicationStartWindow;
+                    _startingWindow = (ApplicationStartWindow) Window;
                     Logger.Debug("[Render] Display with main view");
                     gtkLifecycleController.Display(Window);
                     Logger.Debug("[Render] Left main GTK loop ? ");
@@ -62,7 +62,8 @@ namespace SlimeSimulation.Controller.WindowController
         {
             var nodeSlimeStartsAt = possible.FoodSources.PickRandom();
             var slimeNodes = new HashSet<FoodSourceNode>() { nodeSlimeStartsAt };
-            return new SlimeNetwork(slimeNodes, slimeNodes, new HashSet<SlimeEdge>());
+            //return new SlimeNetwork(slimeNodes, slimeNodes, new HashSet<SlimeEdge>());
+            return new SlimeNetworkGenerator().FromGraphWithFoodSources(possible);
         }
 
         public void FinishSimulation(SimulationController controller)

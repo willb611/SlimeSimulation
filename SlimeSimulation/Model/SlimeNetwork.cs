@@ -33,5 +33,30 @@ namespace SlimeSimulation.Model
         {
             return (SlimeEdge) base.GetEdgeBetween(a, b);
         }
+
+        public bool CoversGraph(GraphWithFoodSources graphWithFoodSources)
+        {
+            if (graphWithFoodSources == null)
+            {
+                return false;
+            } else if (!Nodes.SequenceEqual(graphWithFoodSources.Nodes))
+            {
+                return false;
+            } else if (!FoodSources.SetEquals(graphWithFoodSources.FoodSources))
+            {
+                return false;
+            }
+            else
+            {
+                if (Edges.Count != graphWithFoodSources.Edges.Count)
+                {
+                    return false;
+                }
+                else
+                {
+                    return Edges.All(slimEdge => graphWithFoodSources.Edges.Contains(slimEdge.Edge));
+                }
+            }
+        }
     }
 }

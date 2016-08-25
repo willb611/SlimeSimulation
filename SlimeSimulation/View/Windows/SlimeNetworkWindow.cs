@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using SlimeSimulation.Model;
 using System;
 using SlimeSimulation.Controller;
-using SlimeSimulation.Controller.WindowsComponentController;
+using SlimeSimulation.Controller.WindowComponentController;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
@@ -37,7 +37,7 @@ namespace SlimeSimulation.View.Windows
 
             var hbox = new HBox();
             hbox.ModifyBg(StateType.Normal, bgColor);
-            GraphDrawingArea = new GraphDrawingArea(_edges, new ConnectivityLineViewController(_edges),
+            GraphDrawingArea = new GraphDrawingArea(new List<Edge>(_edges), new ConnectivityLineViewController(_edges),
               new ConnectivityNodeViewController());
             ListenToClicksOn(GraphDrawingArea);
 
@@ -59,9 +59,9 @@ namespace SlimeSimulation.View.Windows
         private Widget ShouldSimulationStepResultsBeDisplayedInput()
         {
             _shouldSimulationStepsBeDisplayedButton = new CheckButton("Should simulation step result (flow graph) be displayed?");
-            _logger.Debug("[ShouldSimulationStepResultsBeDisplayedInput] Setting initial value to: " + _controller.WillFlowResultsBeDisplayed());
+            _logger.Debug("[ShouldSimulationStepResultsBeDisplayedInput] Setting initial value to: " + _controller.WillFlowResultsBeDisplayed);
 
-            if (_controller.WillFlowResultsBeDisplayed())
+            if (_controller.WillFlowResultsBeDisplayed)
             {
                 _shouldSimulationStepsBeDisplayedButton.Active = true;
             }
@@ -71,6 +71,11 @@ namespace SlimeSimulation.View.Windows
                 _controller.ToggleAreFlowResultsDisplayed(_shouldSimulationStepsBeDisplayedButton.Active);
             };
             return _shouldSimulationStepsBeDisplayedButton;
+        }
+
+        public void UpdateWillFlowResultsBeDisplayed(bool willFlowResultsBeDisplayed)
+        {
+            _shouldSimulationStepsBeDisplayedButton.Active = willFlowResultsBeDisplayed;
         }
 
         private Label StepNumberLabel()
