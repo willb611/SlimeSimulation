@@ -18,13 +18,13 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator)
         {
-            this._flowCalculator = flowCalculator;
-            this._slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
+            _flowCalculator = flowCalculator;
+            _slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
         }
 
         internal Task<SimulationState> CalculateFlowAndUpdateNetwork(SimulationState state, int flowAmount)
         {
-            return Task<SimulationState>.Run(() =>
+            return Task.Run(() =>
             {
                 var stateWithFlow = GetStateWithFlow(state.SlimeNetwork, flowAmount, state.PossibleNetwork);
                 return GetNextStateWithUpdatedConductivites(stateWithFlow.SlimeNetwork, stateWithFlow.FlowResult, state.PossibleNetwork);
@@ -34,7 +34,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         internal Task<SimulationState> CalculateFlowResultOrUpdateNetworkUsingFlowInState(SimulationState state,
             int flowAmount)
         {
-            return Task<SimulationState>.Run(() =>
+            return Task.Run(() =>
             {
                 if (state.FlowResult == null)
                 {

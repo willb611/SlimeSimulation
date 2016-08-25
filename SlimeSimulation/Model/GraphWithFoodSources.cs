@@ -14,21 +14,21 @@ namespace SlimeSimulation.Model
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as GraphWithFoodSources);
+            return Equals(obj as GraphWithFoodSources);
         }
 
         public bool Equals(GraphWithFoodSources other)
         {
-            if (Object.ReferenceEquals(other, null))
+            if (ReferenceEquals(other, null))
             {
                 return false;
             }
-            else if (Object.ReferenceEquals(other, this))
+            else if (ReferenceEquals(other, this))
             {
                 return true;
             }
 
-            if (this.GetType() != other.GetType())
+            if (GetType() != other.GetType())
             {
                 return false;
             }

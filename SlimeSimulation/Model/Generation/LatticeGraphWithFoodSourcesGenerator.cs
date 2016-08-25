@@ -26,9 +26,9 @@ namespace SlimeSimulation.Model.Generation
 
         public LatticeGraphWithFoodSourcesGenerator(LatticeGraphWithFoodSourcesGenerationConfig config)
         {
-            this._config = config;
-            this._rows = config.Size;
-            this._columns = config.Size;
+            _config = config;
+            _rows = config.Size;
+            _columns = config.Size;
         }
 
         private void Reset()

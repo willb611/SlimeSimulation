@@ -14,7 +14,7 @@ namespace SlimeSimulation.Model
         public SlimeNetwork(ISet<Node> nodes, ISet<FoodSourceNode> foodSources,
             ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges), nodes, foodSources)
         {
-            this.Edges = edges;
+            Edges = edges;
         }
 
         internal double GetEdgeConnectivityOrZero(Node a, Node b)

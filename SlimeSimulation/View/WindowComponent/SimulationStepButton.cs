@@ -11,8 +11,8 @@ namespace SlimeSimulation.View.WindowComponent
 
         public SimulationStepButton(SimulationStepWindowController controller) : base(new Label("Next Simulation Step"))
         {
-            this._controller = controller;
-            this.Clicked += OnClicked;
+            _controller = controller;
+            Clicked += OnClicked;
         }
 
         private void OnClicked(object sender, EventArgs eventArgs)

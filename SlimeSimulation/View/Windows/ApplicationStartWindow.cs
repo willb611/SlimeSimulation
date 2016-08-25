@@ -34,7 +34,7 @@ namespace SlimeSimulation.View.Windows
 
         public ApplicationStartWindow(string windowTitle, ApplicationStartWindowController windowController) : base(windowTitle, windowController)
         {
-            this._windowController = windowController;
+            _windowController = windowController;
             Window.Resize(600, 600);
         }
 

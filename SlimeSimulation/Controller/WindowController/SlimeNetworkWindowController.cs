@@ -25,7 +25,7 @@ namespace SlimeSimulation.Controller.WindowController
             ISimulationControlBoxFactory simulationControlBoxFactory)
           : base(mainController)
         {
-            this._edges = edges;
+            _edges = edges;
             _simulationControlBoxFactory = simulationControlBoxFactory;
         }
 

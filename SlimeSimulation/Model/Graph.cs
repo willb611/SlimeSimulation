@@ -15,20 +15,20 @@ namespace SlimeSimulation.Model
 
         public Graph(ISet<Edge> edges)
         {
-            this._edges = edges;
+            _edges = edges;
             ISet<Node> nodes = new HashSet<Node>();
             foreach (var edge in Edges)
             {
                 AddNodesInEdgeNotContained(edge, ref nodes);
             }
-            this._nodes = nodes;
+            _nodes = nodes;
             _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
         }
 
         public Graph(ISet<Edge> edges, ISet<Node> nodes)
         {
-            this._nodes = nodes;
-            this._edges = edges;
+            _nodes = nodes;
+            _edges = edges;
             _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
         }
 
@@ -95,21 +95,21 @@ namespace SlimeSimulation.Model
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Graph);
+            return Equals(obj as Graph);
         }
 
         public bool Equals(Graph other)
         {
-            if (Object.ReferenceEquals(other, null))
+            if (ReferenceEquals(other, null))
             {
                 return false;
             }
-            else if (Object.ReferenceEquals(other, this))
+            else if (ReferenceEquals(other, this))
             {
                 return true;
             }
 
-            if (this.GetType() != other.GetType())
+            if (GetType() != other.GetType())
             {
                 return false;
             }

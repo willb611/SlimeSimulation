@@ -14,7 +14,7 @@ namespace SlimeSimulation.View.WindowComponent
 {
     public class NodeHighlightKey
     {
-        public Gtk.Widget GetVisualKey()
+        public Widget GetVisualKey()
         {
             VBox key = new VBox(true, 10);
 

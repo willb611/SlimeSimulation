@@ -34,9 +34,9 @@ namespace SlimeSimulation.Controller
             int flowAmount, SimulationUpdater simulationUpdater, SlimeNetwork initial,
             GraphWithFoodSources graphWithFoodSources)
         {
-            this._applicationStartWindowController = startingWindowController;
-            this._flowAmount = flowAmount;
-            this._simulationUpdater = simulationUpdater;
+            _applicationStartWindowController = startingWindowController;
+            _flowAmount = flowAmount;
+            _simulationUpdater = simulationUpdater;
             _state = new SimulationState(initial, graphWithFoodSources.Equals(initial), graphWithFoodSources);
             ShouldFlowResultsBeDisplayed = true;
         }

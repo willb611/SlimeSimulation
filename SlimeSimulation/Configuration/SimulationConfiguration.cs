@@ -18,9 +18,9 @@ namespace SlimeSimulation.Configuration
         public SimulationConfiguration(LatticeGraphWithFoodSourcesGenerationConfig generationConfig,
             int flowAmount, double feedbackParam)
         {
-            this.GenerationConfig = generationConfig;
-            this.FlowAmount = flowAmount;
-            this.FeedbackParam = feedbackParam;
+            GenerationConfig = generationConfig;
+            FlowAmount = flowAmount;
+            FeedbackParam = feedbackParam;
         }
 
         public double FeedbackParam { get; private set; }

@@ -17,8 +17,8 @@ namespace SlimeSimulation.View.Factories
         private readonly OnClickCallback _callback;
         public ButtonPressHandlerFactory(Gtk.Widget widget, OnClickCallback callback)
         {
-            this._widget = widget;
-            this._callback = callback;
+            _widget = widget;
+            _callback = callback;
         }
         public void ButtonPressHandler(object obj, Gtk.ButtonPressEventArgs args)
         {

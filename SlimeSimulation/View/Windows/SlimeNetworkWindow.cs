@@ -25,8 +25,8 @@ namespace SlimeSimulation.View.Windows
         public SlimeNetworkWindow(List<SlimeEdge> edges, SlimeNetworkWindowController controller, ISimulationControlBoxFactory simulationControlBoxFactory)
           : base("SlimeNetworkWindow", controller)
         {
-            this._edges = edges;
-            this._controller = controller;
+            _edges = edges;
+            _controller = controller;
             _simulationControlBoxFactory = simulationControlBoxFactory;
         }
 
@@ -39,7 +39,7 @@ namespace SlimeSimulation.View.Windows
             hbox.ModifyBg(StateType.Normal, bgColor);
             GraphDrawingArea = new GraphDrawingArea(_edges, new ConnectivityLineViewController(_edges),
               new ConnectivityNodeViewController());
-            base.ListenToClicksOn(GraphDrawingArea);
+            ListenToClicksOn(GraphDrawingArea);
 
             hbox.Add(GraphDrawingArea);
 

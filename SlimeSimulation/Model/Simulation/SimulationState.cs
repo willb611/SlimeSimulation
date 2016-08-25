@@ -20,19 +20,19 @@ namespace SlimeSimulation.Model.Simulation
             {
                 throw new ArgumentNullException(nameof(network));
             }
-            this.SlimeNetwork = network;
+            SlimeNetwork = network;
             HasFinishedExpanding = hasFinishedExpanding;
             PossibleNetwork = graphWithFoodSources;
         }
 
         public SimulationState(SlimeNetwork network, FlowResult flowResult, GraphWithFoodSources graphWithFoodSources) : this(network, true, graphWithFoodSources)
         {
-            this.FlowResult = flowResult;
+            FlowResult = flowResult;
         }
 
         public override string ToString()
         {
-            return base.ToString() + ", hash: " + base.GetHashCode();
+            return base.ToString() + ", hash: " + GetHashCode();
         }
     }
 }

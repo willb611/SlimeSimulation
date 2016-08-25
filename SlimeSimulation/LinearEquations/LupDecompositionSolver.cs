@@ -170,7 +170,7 @@ namespace SlimeSimulation.LinearEquations
 
         public UpperLowerMatrix(double[][] a)
         {
-            this._original = a;
+            _original = a;
             _upper = MakeUpper(a);
         }
 

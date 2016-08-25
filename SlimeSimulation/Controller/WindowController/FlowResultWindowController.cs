@@ -20,7 +20,7 @@ namespace SlimeSimulation.Controller.WindowController
 
         public FlowResultWindowController(SimulationController mainController, FlowResult flowResult) : base(mainController)
         {
-            this._flowResult = flowResult;
+            _flowResult = flowResult;
         }
 
         public override void Render()

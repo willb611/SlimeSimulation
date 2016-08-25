@@ -39,9 +39,9 @@ namespace SlimeSimulation.Configuration
                         predictedNodesInGraph, minimumFoodSources));
                 }
             } 
-            this.Size = size;
-            this.ProbabilityNewNodeIsFoodSource = probabilityNewNodeIsFoodSource;
-            this.MinimumFoodSources = minimumFoodSources;
+            Size = size;
+            ProbabilityNewNodeIsFoodSource = probabilityNewNodeIsFoodSource;
+            MinimumFoodSources = minimumFoodSources;
         }
 
 

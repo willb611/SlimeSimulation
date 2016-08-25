@@ -17,8 +17,8 @@ namespace SlimeSimulation.FlowCalculation
 
         public Pressures(double[] pressures, List<Node> nodes)
         {
-            this._pressures = pressures;
-            this._nodes = nodes;
+            _pressures = pressures;
+            _nodes = nodes;
             Logger.Debug("[constructor] Given pressures array size: {0}, so total number of nodes: {1}",
               pressures.Length, pressures.Length + 1);
         }

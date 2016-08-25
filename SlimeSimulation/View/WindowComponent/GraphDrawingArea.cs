@@ -39,7 +39,7 @@ namespace SlimeSimulation.View.WindowComponent
         public GraphDrawingArea(ICollection<SlimeEdge> edges, LineViewController lineWidthController,
           NodeViewController nodeHighlightController)
         {
-            this._nodeHighlightController = nodeHighlightController;
+            _nodeHighlightController = nodeHighlightController;
             foreach (SlimeEdge edge in edges)
             {
                 AddEdge(edge);
@@ -53,7 +53,7 @@ namespace SlimeSimulation.View.WindowComponent
                 _minNodeX = Math.Min(node.X, _minNodeX);
                 _minNodeY = Math.Min(node.Y, _minNodeY);
             }
-            this._lineWeightController = lineWidthController;
+            _lineWeightController = lineWidthController;
             Logger.Debug("[Constructor] Given number of edges: {0}", edges.Count);
         }
 
@@ -64,7 +64,7 @@ namespace SlimeSimulation.View.WindowComponent
             _nodes.Add(slimeEdge.B);
         }
 
-        private void DrawPoint(Cairo.Context graphic, Node node)
+        private void DrawPoint(Context graphic, Node node)
         {
             graphic.Save();
 
@@ -82,7 +82,7 @@ namespace SlimeSimulation.View.WindowComponent
             graphic.Restore();
         }
 
-        protected virtual void DrawEdge(Cairo.Context graphic, SlimeEdge slimeEdge)
+        protected virtual void DrawEdge(Context graphic, SlimeEdge slimeEdge)
         {
             if (Math.Abs(_lineWeightController.GetLineWeightForEdge(slimeEdge)) < MinEdgeWeightToDraw)
             {
@@ -107,7 +107,7 @@ namespace SlimeSimulation.View.WindowComponent
             }
         }
 
-        private void DrawTextNearCoord(Cairo.Context graphic, String s, double x, double y)
+        private void DrawTextNearCoord(Context graphic, String s, double x, double y)
         {
             graphic.Save();
 
@@ -142,13 +142,13 @@ namespace SlimeSimulation.View.WindowComponent
             return percent * (MaxLineWidth - 2 * padding) + padding;
         }
 
-        protected override bool OnExposeEvent(Gdk.EventExpose args)
+        protected override bool OnExposeEvent(EventExpose args)
         {
             Logger.Debug("[OnExposeEvent] Redrawing");
-            Gdk.Rectangle allocation = this.Allocation;
+            Gdk.Rectangle allocation = Allocation;
             _maxWindowX = allocation.Width;
             _maxWindowY = allocation.Height;
-            using (Context g = Gdk.CairoHelper.Create(args.Window))
+            using (Context g = CairoHelper.Create(args.Window))
             {
                 Logger.Trace("[OnExposeEvent] Drawing all edges, total #: {0}", _edges.Count);
                 foreach (SlimeEdge edge in _edges)

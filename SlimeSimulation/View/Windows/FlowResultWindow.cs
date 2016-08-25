@@ -17,8 +17,8 @@ namespace SlimeSimulation.View.Windows
 
         public FlowResultWindow(FlowResult flowResult, FlowResultWindowController windowController) : base("Flow result", windowController)
         {
-            this._flowResult = flowResult;
-            this._windowController = windowController;
+            _flowResult = flowResult;
+            _windowController = windowController;
             Logger.Debug("[constructor] Finished");
         }
 
@@ -31,7 +31,7 @@ namespace SlimeSimulation.View.Windows
             hbox.ModifyBg(StateType.Normal, bgColor);
             GraphDrawingArea = new GraphDrawingArea(_flowResult.Edges, new FlowResultLineViewController(_flowResult),
               new FlowResultNodeViewController(_flowResult));
-            base.ListenToClicksOn(GraphDrawingArea);
+            ListenToClicksOn(GraphDrawingArea);
 
             hbox.PackStart(GraphDrawingArea, true, true, 0);
             hbox.PackStart(new NodeHighlightKey().GetVisualKey(), false, true, 0);

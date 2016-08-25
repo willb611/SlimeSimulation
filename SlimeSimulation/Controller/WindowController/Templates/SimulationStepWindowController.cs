@@ -11,7 +11,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
 
         public SimulationStepWindowController(SimulationController simulationController)
         {
-            this.SimulationController = simulationController;
+            SimulationController = simulationController;
         }
 
         public override void OnWindowClose()

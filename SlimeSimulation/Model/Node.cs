@@ -13,9 +13,9 @@ namespace SlimeSimulation.Model
 
         public Node(int id, double x, double y)
         {
-            this._id = id;
-            this._x = x;
-            this._y = y;
+            _id = id;
+            _x = x;
+            _y = y;
         }
 
         public int Id {
@@ -37,21 +37,21 @@ namespace SlimeSimulation.Model
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Node);
+            return Equals(obj as Node);
         }
 
         public bool Equals(Node other)
         {
-            if (Object.ReferenceEquals(other, null))
+            if (ReferenceEquals(other, null))
             {
                 return false;
             }
-            else if (Object.ReferenceEquals(other, this))
+            else if (ReferenceEquals(other, this))
             {
                 return true;
             }
 
-            if (this.GetType() != other.GetType())
+            if (GetType() != other.GetType())
             {
                 return false;
             }
@@ -87,7 +87,7 @@ namespace SlimeSimulation.Model
 
         public override string ToString()
         {
-            return this.GetType() + "{id=" + _id + ", x=" + _x + ", y=" + _y + "}";
+            return GetType() + "{id=" + _id + ", x=" + _x + ", y=" + _y + "}";
         }
 
         internal void ReplaceWithGivenNodeInEdges(Node replacement, HashSet<Edge> edges)

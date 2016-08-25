@@ -26,7 +26,7 @@ namespace SlimeSimulation.View.Windows.Templates
 
         public WindowTemplate(String windowTitle, WindowController windowController)
         {
-            this._windowController = windowController;
+            _windowController = windowController;
             _window = new Window(windowTitle);
             _window.Maximize();
             
@@ -38,14 +38,14 @@ namespace SlimeSimulation.View.Windows.Templates
             _windowController.OnWindowClose();
         }
 
-        protected void ListenToClicksOn(Gtk.Widget widget)
+        protected void ListenToClicksOn(Widget widget)
         {
             var factory = new ButtonPressHandlerFactory(widget, _windowController.OnClickCallback);
             Logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using controllers OnClickCallback: {1}",
                 widget, _windowController);
             ListenToClicksOn(widget, factory);
         }
-        protected void ListenToClicksOn(Gtk.Widget widget, ButtonPressHandlerFactory factory)
+        protected void ListenToClicksOn(Widget widget, ButtonPressHandlerFactory factory)
         {
             Logger.Debug("[ListenToClicksOn] Attaching to widget: {0}, using factory: {1}", widget, factory);
             widget.Events |= Gdk.EventMask.ButtonPressMask | Gdk.EventMask.ButtonReleaseMask;

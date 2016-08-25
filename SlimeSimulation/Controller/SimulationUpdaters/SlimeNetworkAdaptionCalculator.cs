@@ -13,7 +13,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private readonly double _feedbackParameter;
 
         public SlimeNetworkAdaptionCalculator(double feedbackParameter) {
-            this._feedbackParameter = feedbackParameter;
+            _feedbackParameter = feedbackParameter;
         }
 
         internal SlimeNetwork CalculateNextStep(SlimeNetwork slimeNetwork, FlowResult flowResult)

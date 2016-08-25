@@ -14,20 +14,20 @@ namespace SlimeSimulation.View.WindowComponent
 
         public ColorArea(Rgb color)
         {
-            this._color = color;
+            _color = color;
         }
 
         protected override bool OnExposeEvent(EventExpose args)
         {
-            using (Context context = Gdk.CairoHelper.Create(args.Window))
+            using (Context context = CairoHelper.Create(args.Window))
             {
-                Gdk.Rectangle allocation = this.Allocation;
+                Gdk.Rectangle allocation = Allocation;
                 DrawRectangle(context, allocation.Width, allocation.Height);
             }
             return true;
         }
 
-        private void DrawRectangle(Cairo.Context graphic, int width, int height)
+        private void DrawRectangle(Context graphic, int width, int height)
         {
             graphic.Save();
 
