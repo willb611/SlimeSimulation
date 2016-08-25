@@ -56,6 +56,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Configuration\LatticeSlimeNetworkGenerationConfigTests.cs" />
+    <Compile Include="Controller\SimulationUpdaters\SimulationUpdaterTests.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkAdaptionCalculatorTests.cs" />
     <Compile Include="FlowCalculation\FlowCalculatorTests.cs" />
     <Compile Include="FlowCalculation\LinearEquations\LupDecompositionSolverTests.cs" />

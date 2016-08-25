@@ -6,7 +6,7 @@ namespace SlimeSimulation.Configuration
     {
         private static readonly double DefaultProbabilityNewNodeIsFood = 0.05;
         private static readonly int DefaultMinimumFoodSources = 2;
-        private static readonly int DefaultSize = 5;
+        private static readonly int DefaultSize = 4;
 
         public LatticeGraphWithFoodSourcesGenerationConfig() : this(DefaultSize)
         {

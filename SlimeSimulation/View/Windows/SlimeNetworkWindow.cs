@@ -8,12 +8,13 @@ using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.Model;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
+using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
 using SlimeSimulation.View.Windows.Templates;
 using Window = Gtk.Window;
 
 namespace SlimeSimulation.View.Windows
 {
-    class SlimeNetworkWindow : GraphDrawingWindowTemplate
+    public class SlimeNetworkWindow : GraphDrawingWindowTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly SlimeNetworkWindowController _controller;
@@ -21,9 +22,9 @@ namespace SlimeSimulation.View.Windows
         private readonly SlimeNetwork _slimeNetwork;
         private readonly GraphWithFoodSources _graphWithFoodSources;
         private readonly ISet<Edge> _edgesInSlimeNetworkUnionEdgesFromGraphWithFoodSources;
-
-        private CheckButton _shouldSimulationStepsBeDisplayedButton;
         
+        private AbstractSimulationControlBox _simulationControlBox;
+
         public SlimeNetworkWindow(SlimeNetwork slimeNetwork, GraphWithFoodSources graphWithFoodSources,
             SlimeNetworkWindowController controller, ISimulationControlBoxFactory simulationControlBoxFactory)
           : base("SlimeNetworkWindow", controller)
@@ -32,23 +33,13 @@ namespace SlimeSimulation.View.Windows
             _graphWithFoodSources = graphWithFoodSources;
             _controller = controller;
             _simulationControlBoxFactory = simulationControlBoxFactory;
-            _edgesInSlimeNetworkUnionEdgesFromGraphWithFoodSources = MakeEdgesFromSlimeOrGraph(slimeNetwork, graphWithFoodSources);
-        }
-
-        private ISet<Edge> MakeEdgesFromSlimeOrGraph(SlimeNetwork slimeNetwork, GraphWithFoodSources graphWithFoodSources)
-        {
-            var edges = new HashSet<Edge>(graphWithFoodSources.Edges);
-            foreach (var slimeEdge in slimeNetwork.Edges)
-            {
-                edges.Remove(slimeEdge.Edge);
-                edges.Add(slimeEdge.Edge);
-            }
-            return edges;
+            _edgesInSlimeNetworkUnionEdgesFromGraphWithFoodSources =
+                slimeNetwork.GetAllEdgesInGraphReplacingThoseWhichAreSlimed(graphWithFoodSources);
         }
 
         public override void Display()
         {
-            _shouldSimulationStepsBeDisplayedButton.Active = _controller.WillFlowResultsBeDisplayed;
+            _simulationControlBox.ReDraw();
             base.Display();
         }
 
@@ -79,28 +70,9 @@ namespace SlimeSimulation.View.Windows
 
         private Widget SimulationStateInterface()
         {
+            _simulationControlBox = _simulationControlBoxFactory.MakeControlBox(_controller, Window);
             return new VBox {StepNumberLabel(),
-                _simulationControlBoxFactory.MakeControlBox(_controller, Window),
-                ShouldSimulationStepResultsBeDisplayedInput()};
-        }
-
-        private Widget ShouldSimulationStepResultsBeDisplayedInput()
-        {
-            _shouldSimulationStepsBeDisplayedButton = new CheckButton("Should simulation step result (flow graph) be displayed?");
-            Logger.Debug("[ShouldSimulationStepResultsBeDisplayedInput] Setting initial value to: " + _controller.WillFlowResultsBeDisplayed);
-
-            _shouldSimulationStepsBeDisplayedButton.Active = _controller.WillFlowResultsBeDisplayed;
-
-            _shouldSimulationStepsBeDisplayedButton.Toggled += delegate
-            {
-                _controller.ToggleAreFlowResultsDisplayed(_shouldSimulationStepsBeDisplayedButton.Active);
-            };
-            return _shouldSimulationStepsBeDisplayedButton;
-        }
-
-        public void UpdateWillFlowResultsBeDisplayed(bool willFlowResultsBeDisplayed)
-        {
-            _shouldSimulationStepsBeDisplayedButton.Active = willFlowResultsBeDisplayed;
+                _simulationControlBox};
         }
 
         private Label StepNumberLabel()

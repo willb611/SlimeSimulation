@@ -114,17 +114,13 @@ namespace SlimeSimulation.Controller
                     nextState = _simulationUpdater.ExpandSlime(_state);
                 } else if (ShouldFlowResultsBeDisplayed)
                 {
-                    if (_state.FlowResult != null)
-                    {
-                        SimulationStepsCompleted++;
-                    }
                     nextState = _simulationUpdater.CalculateFlowResultOrUpdateNetworkUsingFlowInState(_state);
                 }
                 else
                 {
                     nextState = _simulationUpdater.CalculateFlowAndUpdateNetwork(_state);
-                    SimulationStepsCompleted++;
                 }
+                SimulationStepsCompleted++;
                 UpdateControllerState(nextState);
             }
         }

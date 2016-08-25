@@ -13,7 +13,7 @@ namespace SlimeSimulation.View.Factories
         public AbstractSimulationControlBox MakeControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
         {
             Logger.Debug("[MakeControlBox] Making");
-            return new SimulationGrowthPhaseControlBox(simulationStepWindowController, parentWindow);
+            return new GrowthPhaseControlBox(simulationStepWindowController, parentWindow);
         }
     }
 }

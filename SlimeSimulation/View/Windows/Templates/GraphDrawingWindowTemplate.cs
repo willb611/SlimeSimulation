@@ -4,7 +4,7 @@ using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.Windows.Templates
 {
-    abstract class GraphDrawingWindowTemplate : WindowTemplate
+    public abstract class GraphDrawingWindowTemplate : WindowTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

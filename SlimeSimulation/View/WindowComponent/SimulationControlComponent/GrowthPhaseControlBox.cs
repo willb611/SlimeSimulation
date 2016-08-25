@@ -1,11 +1,16 @@
 using Gtk;
+using NLog;
+using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.Controller.WindowController.Templates;
+using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
-    internal class SimulationGrowthPhaseControlBox : AbstractSimulationControlBox
+    internal class GrowthPhaseControlBox : AbstractSimulationControlBox
     {
-        public SimulationGrowthPhaseControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public GrowthPhaseControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
         {
             AddControls(simulationStepWindowController, parentWindow);
         }
@@ -14,6 +19,11 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         {
             Add(new SimulationStepButton(simulationStepWindowController));
             Add(new SimulationStepUntilFullyGrownComponent(simulationStepWindowController, parentWindow));
+        }
+
+        public override void ReDraw()
+        {
+            // Do nothing
         }
     }
 }

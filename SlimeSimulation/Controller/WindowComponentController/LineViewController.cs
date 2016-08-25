@@ -54,6 +54,10 @@ namespace SlimeSimulation.Controller.WindowComponentController
                 _maxSlimeEdgeConnectivity = Math.Max(slimeEdgeConnectivity, _maxSlimeEdgeConnectivity);
             }
             _weightForNonSlimeEdge = _maxSlimeEdgeConnectivity/4;
+            if (_maxSlimeEdgeConnectivity == 0)
+            {
+                _weightForNonSlimeEdge = 1;
+            }
         }
 
         public Rgb SlimeColour => Rgb.Yellow;
@@ -73,7 +77,14 @@ namespace SlimeSimulation.Controller.WindowComponentController
 
         public override double GetMaximumLineWeight()
         {
-            return _maxSlimeEdgeConnectivity;
+            if (_maxSlimeEdgeConnectivity == 0)
+            {
+                return _weightForNonSlimeEdge;
+            }
+            else
+            {
+                return _maxSlimeEdgeConnectivity;
+            }
         }
     }
 }

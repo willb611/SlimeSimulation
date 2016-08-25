@@ -11,5 +11,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         public AbstractSimulationControlBox(bool homogeneous, int spacing) : base(homogeneous, spacing)
         {
         }
+
+        public abstract void ReDraw();
     }
 }

@@ -6,6 +6,17 @@ namespace SlimeSimulation.Model
     {
         public ISet<FoodSourceNode> FoodSources { get; }
 
+        public GraphWithFoodSources(ISet<Edge> edges) : base(edges)
+        {
+            FoodSources = new HashSet<FoodSourceNode>();
+            foreach (var node in Nodes)
+            {
+                if (node.IsFoodSource())
+                {
+                    FoodSources.Add((FoodSourceNode)node);
+                }
+            }
+        }
         public GraphWithFoodSources(ISet<Edge> edges, ISet<Node> nodes, ISet<FoodSourceNode> foodSourcesNodes) : base(edges, nodes)
         {
             FoodSources = foodSourcesNodes;

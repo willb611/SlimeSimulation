@@ -86,7 +86,7 @@
   <ItemGroup>
     <Compile Include="Configuration\LatticeGraphWithFoodSourcesGenerationConfig.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationGrowthPhaseControlBox.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\GrowthPhaseControlBox.cs" />
     <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />
     <Compile Include="Model\GraphWithFoodSources.cs" />
@@ -121,11 +121,12 @@
     <Compile Include="View\Factories\SimulationAdaptionPhaseControlBoxFactory.cs" />
     <Compile Include="View\Factories\ISimulationControlBoxFactory.cs" />
     <Compile Include="View\WindowComponent\ColorArea.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationAdaptionPhaseControlBox.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\AdaptionPhaseControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\AbstractSimulationControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepNumberOfTimesComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepUntilFullyGrownComponent.cs" />
     <Compile Include="View\Windows\ApplicationStartWindow.cs" />
+    <Compile Include="View\Windows\ShouldFlowResultsBeDisplayedControlComponent.cs" />
     <Compile Include="View\Windows\SlimeNetworkWindow.cs" />
     <Compile Include="View\Windows\FlowResultWindow.cs" />
     <Compile Include="View\WindowComponent\GraphDrawingArea.cs" />
