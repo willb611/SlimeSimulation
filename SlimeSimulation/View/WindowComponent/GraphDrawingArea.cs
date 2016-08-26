@@ -17,8 +17,8 @@ namespace SlimeSimulation.View.WindowComponent
 
         private const double WindowSpacePercentToDrawIn = 0.9;
         private const double LinePaddingPercent = 0.05;
-
-        public const double MinEdgeWeightToDraw = 0;
+        
+        private const double MinEdgeWeightToDraw = 0.000001;
 
         private readonly LineViewController _lineViewController;
         private readonly NodeViewController _nodeViewController;
