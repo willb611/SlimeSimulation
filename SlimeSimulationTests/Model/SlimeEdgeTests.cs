@@ -16,6 +16,7 @@ namespace SlimeSimulation.Model.Tests
         {
             var a = new Node(1, 1, 1);
             var b = new Node(2, 2, 2);
+            SlimeEdge.ShouldAllowDisconnection = true;
             var disconnectedAb = new SlimeEdge(a, b, 0);
 
             Assert.IsTrue(disconnectedAb.IsDisconnected());

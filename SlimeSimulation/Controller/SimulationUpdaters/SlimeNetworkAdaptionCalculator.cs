@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 
@@ -13,13 +14,11 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private readonly double _feedbackParameter;
 
-        public SlimeNetworkAdaptionCalculator() : this(0.8)
+        public SlimeNetworkAdaptionCalculator() : this(new SlimeNetworkAdaptionCalculatorConfig())
         {
-            
         }
-
-        public SlimeNetworkAdaptionCalculator(double feedbackParameter) {
-            _feedbackParameter = feedbackParameter;
+        public SlimeNetworkAdaptionCalculator(SlimeNetworkAdaptionCalculatorConfig config) {
+            _feedbackParameter = config.FeedbackParam;
         }
 
         internal SlimeNetwork CalculateNextStep(SlimeNetwork slimeNetwork, FlowResult flowResult)
@@ -34,8 +33,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             var connectedEdges = RemoveDisconnectedEdges(edges);
             var connectedNodes = Edges.GetNodesContainedIn(connectedEdges);
             connectedNodes.UnionWith(slimeNetwork.FoodSources); // Food sources never disconnect
-            SlimeNetwork networkInNextStep = new SlimeNetwork(connectedNodes, slimeNetwork.FoodSources, connectedEdges);
-            return networkInNextStep;
+            return new SlimeNetwork(connectedNodes, slimeNetwork.FoodSources,
+                connectedEdges);
         }
 
         public double FunctionOfFlow(double flow)

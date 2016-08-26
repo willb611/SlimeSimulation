@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Model;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
@@ -12,7 +13,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
         public void FunctionOfFlowTest()
         {
             double feedbackParameter = 2;
-            var calculator = new SlimeNetworkAdaptionCalculator(feedbackParameter);
+            var calculator = new SlimeNetworkAdaptionCalculator(new SlimeNetworkAdaptionCalculatorConfig(feedbackParameter));
             double expected = 4 / 5.0;
             double actual = calculator.FunctionOfFlow(2);
 
@@ -30,7 +31,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
 
             double flow = 2;
             double expected = 0.8;
-            var calculator = new SlimeNetworkAdaptionCalculator(feedbackParameter);
+            var calculator = new SlimeNetworkAdaptionCalculator(new SlimeNetworkAdaptionCalculatorConfig(feedbackParameter));
             double actual = calculator.NextConnectivityForEdge(edge, flow);
 
             Assert.AreEqual(expected, actual, 0.000001);

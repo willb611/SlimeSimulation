@@ -18,6 +18,7 @@ namespace SlimeSimulation.View.Windows
         private readonly Dictionary<TextView, Label> _textViewLabelMapping = new Dictionary<TextView, Label>();
 
         private Button _beginSimulationButton;
+        private CheckButton _shouldAllowDisconnectionCheckButton;
 
         private TextView _latticeGeneratorRowSizeTextView;
         private TextView _latticeGeneratorProbabiltyOfNewFoodTextView;
@@ -45,12 +46,26 @@ namespace SlimeSimulation.View.Windows
             container.Add(FeedbackParameterBox());
             container.Add(MatrixGenerationProperties());
             container.Add(BeginSimulationButton());
+            container.Add(ShouldDisconnectoinBeAllowedCheckButton());
             container.Add(ErrorLabel());
             window.Add(container);
             _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
             window.Unmaximize();
         }
-        
+
+        private CheckButton ShouldDisconnectoinBeAllowedCheckButton()
+        {
+            if (_shouldAllowDisconnectionCheckButton == null)
+            {
+                _shouldAllowDisconnectionCheckButton =
+                    new CheckButton("Should simulation step result (flow graph) be displayed?")
+                    {
+                        Active = _defaultConfig.ShouldAllowDisconnection
+                    };
+            }
+            return _shouldAllowDisconnectionCheckButton;
+        }
+
         private void BeginSimulationButton_Clicked(object obj, EventArgs args)
         {
             Logger.Debug("[BeginSimulationButton_Clicked] Entered");
@@ -85,6 +100,7 @@ namespace SlimeSimulation.View.Windows
             double? probabilityNewNodeIsFood = ExtractDoubleFromView(_latticeGeneratorProbabiltyOfNewFoodTextView);
             int? minFoodSources = ExtractIntFromView(_latticeGeneratorMinimumFoodSourcesTextView);
             int? rowSize = ExtractIntFromView(_latticeGeneratorRowSizeTextView);
+            bool shouldAllowDisconnection = _shouldAllowDisconnectionCheckButton.Active;
             if (feedbackParam.HasValue && flowAmount.HasValue && 
                 probabilityNewNodeIsFood.HasValue && minFoodSources.HasValue && rowSize.HasValue)
             {
@@ -92,7 +108,7 @@ namespace SlimeSimulation.View.Windows
                 {
                     var generationConfig = new LatticeGraphWithFoodSourcesGenerationConfig(rowSize.Value, 
                         probabilityNewNodeIsFood.Value, minFoodSources.Value);
-                    return new SimulationConfiguration(generationConfig, flowAmount.Value, feedbackParam.Value);
+                    return new SimulationConfiguration(generationConfig, flowAmount.Value, new SlimeNetworkAdaptionCalculatorConfig(feedbackParam.Value), shouldAllowDisconnection);
                 } catch (ArgumentException e)
                 {
                     string errorMsg = "Invalid parameter: " + e.Message;
@@ -153,7 +169,7 @@ namespace SlimeSimulation.View.Windows
         {
             Label description = new Label("Feedback parameter for updating slime simulation at each step");
             TextView textView = new TextView();
-            textView.Buffer.Text = _defaultConfig.FeedbackParam.ToString();
+            textView.Buffer.Text = _defaultConfig.SlimeNetworkAdaptionCalculatorConfig.FeedbackParam.ToString();
             _feedbackParamTextView = textView;
             return HBox(description, textView);
         }

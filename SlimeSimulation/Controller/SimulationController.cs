@@ -85,7 +85,7 @@ namespace SlimeSimulation.Controller
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
                 Logger.Debug($"[DoNextSimulationSteps] Now completed {++stepsRunSoFar} steps");
-                DoNextSimulationStepAsync();
+                DoNextSimulationStep();
             }
         }
 
@@ -94,13 +94,13 @@ namespace SlimeSimulation.Controller
             var stepNumber = 0;
             while (!GetSimulationState().HasFinishedExpanding)
             {
-                DoNextSimulationStepAsync();
+                DoNextSimulationStep();
                 Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Now completed {++stepNumber} steps");
             }
             Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Finished in {stepNumber} steps");
         }
 
-        public void DoNextSimulationStepAsync()
+        public void DoNextSimulationStep()
         {
             var state = _protectedState.Lock();
             Logger.Debug("[DoNextSimulationStep] Stepping");
