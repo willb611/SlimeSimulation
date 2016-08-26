@@ -9,6 +9,7 @@ using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
+using SlimeSimulation.StdLibHelpers;
 using SlimeSimulation.View;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.Windows.Templates;
@@ -21,9 +22,8 @@ namespace SlimeSimulation.Controller
         
         private readonly SimulationUpdater _simulationUpdater;
         private readonly GtkLifecycleController _gtkLifecycleController = GtkLifecycleController.Instance;
-        
-        private bool _simulationDoingStep;
-        private SimulationState _state;
+
+        private readonly ItemLock<SimulationState> _protectedState = new ItemLock<SimulationState>();
         private bool _shouldFlowResultsBeDisplayed = false;
         private WindowControllerTemplate _activeWindowController;
 
@@ -37,24 +37,18 @@ namespace SlimeSimulation.Controller
         {
             _applicationStartWindowController = startingWindowController;
             _simulationUpdater = simulationUpdater;
-            _state = new SimulationState(initial, initial.CoversGraph(graphWithFoodSources), graphWithFoodSources);
-        }
-
-        public SimulationState SimulationState
-        {
-            get
-            {
-                while (_simulationDoingStep)
-                {
-                    Thread.Sleep(50);
-                }
-                return _state;
-            }
+            _protectedState.Lock();
+            _protectedState.SetAndClearLock(new SimulationState(initial, initial.CoversGraph(graphWithFoodSources), graphWithFoodSources));
         }
 
         internal void Display(WindowTemplate window)
         {
             _gtkLifecycleController.Display(window);
+        }
+
+        private SimulationState GetSimulationState()
+        {
+            return _protectedState.Get();
         }
 
         public bool ShouldFlowResultsBeDisplayed
@@ -71,7 +65,7 @@ namespace SlimeSimulation.Controller
         {
             try
             {
-                UpdateDisplayFromState(_state);
+                UpdateDisplayFromState(_protectedState.Get());
             }
             catch (Exception e)
             {
@@ -91,67 +85,50 @@ namespace SlimeSimulation.Controller
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
                 Logger.Debug($"[DoNextSimulationSteps] Now completed {++stepsRunSoFar} steps");
-                DoNextSimulationStep()?.Wait();
+                DoNextSimulationStepAsync();
             }
         }
+
         public void RunStepsUntilSlimeHasFullyExplored()
         {
             var stepNumber = 0;
-            while (!SimulationState.HasFinishedExpanding)
+            while (!GetSimulationState().HasFinishedExpanding)
             {
-                DoNextSimulationStep()?.Wait();
+                DoNextSimulationStepAsync();
                 Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Now completed {++stepNumber} steps");
             }
             Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Finished in {stepNumber} steps");
         }
 
-        public Task<SimulationState> DoNextSimulationStep()
+        public void DoNextSimulationStepAsync()
         {
-            if (_simulationDoingStep)
+            var state = _protectedState.Lock();
+            Logger.Debug("[DoNextSimulationStep] Stepping");
+            Task<SimulationState> nextState;
+            if (!state.HasFinishedExpanding)
             {
-                var error = "[DoNextSimulationStep] Not starting next step as it's already in progress";
-                Logger.Warn(error);
-                _applicationStartWindowController.DisplayError(error);
-                return null;
+                nextState = _simulationUpdater.ExpandSlime(state);
+            }
+            else if (ShouldFlowResultsBeDisplayed)
+            {
+                if (state.FlowResult == null)
+                {
+                    // This step is just calculating the flow through the network, it doesn't count as a step.
+                    SimulationStepsCompleted--;
+                }
+                nextState = _simulationUpdater.CalculateFlowResultOrUpdateNetworkUsingFlowInState(state);
             }
             else
             {
-                Logger.Debug("[DoNextSimulationStep] Stepping");
-                _simulationDoingStep = true;
-                Task<SimulationState> nextState;
-                if (!_state.HasFinishedExpanding)
-                {
-                    nextState = _simulationUpdater.ExpandSlime(_state);
-                } else if (ShouldFlowResultsBeDisplayed)
-                {
-                    if (_state.FlowResult == null)
-                    {
-                        // This step is just calculating the flow through the network, it doesn't count as a step.
-                        SimulationStepsCompleted--;
-                    }
-                    nextState = _simulationUpdater.CalculateFlowResultOrUpdateNetworkUsingFlowInState(_state);
-                }
-                else
-                {
-                    nextState = _simulationUpdater.CalculateFlowAndUpdateNetwork(_state);
-                }
-                SimulationStepsCompleted++;
-                UpdateControllerState(nextState);
-                return nextState;
+                nextState = _simulationUpdater.CalculateFlowAndUpdateNetwork(state);
             }
+            SimulationStepsCompleted++;
+            UpdateControllerState(nextState);
         }
 
         private async void UpdateControllerState(Task<SimulationState> stateParam)
         {
-            try
-            {
-                _state = await stateParam;
-                _simulationDoingStep = false;
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, "[UpdateControllerState] Error: ");
-            }
+            _protectedState.SetAndClearLock(await stateParam);
         }
 
         public void UpdateDisplay()
@@ -159,7 +136,7 @@ namespace SlimeSimulation.Controller
             Application.Invoke(delegate
             {
                 Logger.Debug("[UpdateControllerState] Invoking from main thread ");
-                UpdateDisplayFromState(_state);
+                UpdateDisplayFromState(_protectedState.Get());
             });
         }
 

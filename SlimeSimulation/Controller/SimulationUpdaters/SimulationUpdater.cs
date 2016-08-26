@@ -97,6 +97,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             Node sink = network.FoodSources.PickRandom();
             while (InvalidSourceSink(source, sink, network))
             {
+                source = network.FoodSources.PickRandom();
                 sink = network.FoodSources.PickRandom();
             }
             return GetFlow(network, flow, source, sink);

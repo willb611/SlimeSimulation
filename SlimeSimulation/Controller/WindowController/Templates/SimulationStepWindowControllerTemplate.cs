@@ -17,7 +17,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         {
             Window.Dispose();
             Logger.Debug("[OnStepCompleted] Entered");
-            SimulationController.DoNextSimulationStep()?.Wait();
+            SimulationController.DoNextSimulationStepAsync();
             SimulationController.UpdateDisplay();
             Logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
             Logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");

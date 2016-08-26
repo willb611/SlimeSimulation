@@ -60,8 +60,8 @@ namespace SlimeSimulation.Controller.WindowComponentController
             }
         }
 
-        public Rgb SlimeColour => Rgb.Yellow;
-        public Rgb NonSlimeColour => Rgb.Black;
+        public Rgb SlimeColour => SlimeNodeViewController.SlimeNodeColour;
+        public Rgb NonSlimeColour => SlimeNodeViewController.NormalNodeColour;
 
         public override Rgb GetColourForEdge(Edge edge)
         {
