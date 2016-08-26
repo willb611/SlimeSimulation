@@ -9,12 +9,12 @@ namespace SlimeSimulation.Model.Generation
         public SlimeNetwork FromGraphWithFoodSources(GraphWithFoodSources graphWithFoodSources)
         {
             var edges = new HashSet<SlimeEdge>();
-            foreach (var edge in graphWithFoodSources.Edges)
+            foreach (var edge in graphWithFoodSources.EdgesInGraph)
             {
                 var slimeEdge = new SlimeEdge(edge, DefaultStartingConnectivity);
                 edges.Add(slimeEdge);
             }
-            return new SlimeNetwork(graphWithFoodSources.Nodes, graphWithFoodSources.FoodSources, edges);
+            return new SlimeNetwork(graphWithFoodSources.NodesInGraph, graphWithFoodSources.FoodSources, edges);
         }
     }
 }

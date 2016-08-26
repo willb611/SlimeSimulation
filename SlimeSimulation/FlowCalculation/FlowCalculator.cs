@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.LinearEquations;
 using SlimeSimulation.Model;
 
@@ -26,11 +27,23 @@ namespace SlimeSimulation.FlowCalculation
             List<Node> nodeList = new List<Node>(network.AllNodesConnectedTo(source));
             EnsureSourceSinkInCorrectPositions(nodeList, source, sink);
             double[][] a = GetSystemOfEquations(network, nodeList);
-            double[] b = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, network.Nodes.Count() - 1);
-            double[] solution = _linearEquationSolver.FindX(a, b);
-            Pressures pressures = new Pressures(solution, nodeList);
-            FlowOnEdges flowOnEdges = GetFlowOnEdges(network, pressures, nodeList);
-            return new FlowResult(network, source, sink, flowAmount, flowOnEdges);
+            double[] b = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, nodeList.Count() - 1);
+            try
+            {
+                double[] solution = _linearEquationSolver.FindX(a, b);
+                Pressures pressures = new Pressures(solution, nodeList);
+                FlowOnEdges flowOnEdges = GetFlowOnEdges(network, pressures, nodeList);
+                return new FlowResult(network, source, sink, flowAmount, flowOnEdges);
+            }
+            catch (SingularMatrixException e)
+            {
+                var errorNode = nodeList[LupDecompositionSolver.ErrorColumnNumber];
+                var edgesConnectedToBadNode = LogHelper.CollectionToString(new List<Edge>(network.EdgesConnectedToNode(errorNode)));;
+                var error =
+                    $"Error column was {LupDecompositionSolver.ErrorColumnNumber}, meaning error node was {errorNode}. Connected edges: {edgesConnectedToBadNode}";
+                Logger.Error(error);
+                return null;
+            }
         }
 
         public void EnsureSourceSinkInCorrectPositions(List<Node> nodeList, Node source, Node sink)
@@ -55,12 +68,13 @@ namespace SlimeSimulation.FlowCalculation
 
         private FlowOnEdges GetFlowOnEdges(SlimeNetwork network, Pressures pressures, List<Node> nodes)
         {
-            FlowOnEdges result = new FlowOnEdges((network as Graph).Edges);
+            FlowOnEdges result = new FlowOnEdges((network as Graph).EdgesInGraph);
             foreach (SlimeEdge edge in network.SlimeEdges)
             {
+                if (!nodes.Contains(edge.A) || !nodes.Contains(edge.B)) continue;
                 double pi = pressures.PressureAt(edge.A);
                 double pj = pressures.PressureAt(edge.B);
-                double flow = edge.Connectivity * (pi - pj);
+                double flow = edge.Connectivity*(pi - pj);
                 result.IncreaseFlowOnEdgeBy(edge, flow);
                 Logger.Trace("For edge {0}, got pi {1}, pj {2}, and flow {3}", edge, pi, pj, flow);
             }

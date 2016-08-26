@@ -18,7 +18,7 @@ namespace SlimeSimulation.View.WindowComponent
         private const double WindowSpacePercentToDrawIn = 0.9;
         private const double LinePaddingPercent = 0.05;
 
-        private const double MinEdgeWeightToDraw = 0.0001;
+        public const double MinEdgeWeightToDraw = 0;
 
         private readonly LineViewController _lineViewController;
         private readonly NodeViewController _nodeViewController;
@@ -70,7 +70,7 @@ namespace SlimeSimulation.View.WindowComponent
             var yscaled = ScaleY(node.Y);
             Logger.Trace("[DrawPoint] Drawing at: {0},{1}", xscaled, yscaled);
             var color = _nodeViewController.GetColourForNode(node);
-            Logger.Debug($"[DrawPoint] Using colour: {color} for node {node}");
+            Logger.Trace($"[DrawPoint] Using colour: {color} for node {node}");
             double size = _nodeViewController.GetSizeForNode(node);
 
             graphic.SetSourceRGB(color.R, color.G, color.B);
@@ -107,11 +107,24 @@ namespace SlimeSimulation.View.WindowComponent
             }
         }
 
+        private void DrawXyKey(Context graphic)
+        {
+            for (int x = Math.Min(0, (int)_minNodeX); x <= _maxNodeX; x++)
+            {
+                DrawTextNearCoord(graphic, x.ToString(), ScaleX(x), 50);
+            }
+            for (int y = Math.Min(0, (int)_minNodeY); y <= _maxNodeY; y++)
+            {
+                DrawTextNearCoord(graphic, y.ToString(), 50, ScaleY(y));
+            }
+        }
+
         private void DrawTextNearCoord(Context graphic, String s, double x, double y)
         {
+            Logger.Trace("[DrawTextNearCoord] Drawing {0} at {1}, {2}", s, x, y);
             graphic.Save();
 
-            graphic.MoveTo(x - 30, y - 30);
+            graphic.MoveTo(x - 5, y - 5);
             graphic.ShowText(s);
 
             graphic.Restore();
@@ -152,6 +165,10 @@ namespace SlimeSimulation.View.WindowComponent
             {
                 DrawEdges(g);
                 DrawNodes(g);
+                if (_edgeDrawingOption == EdgeDrawing.WithWeight)
+                {
+                    DrawXyKey(g);
+                }
             }
             return true;
         }

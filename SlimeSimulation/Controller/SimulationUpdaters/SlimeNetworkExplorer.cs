@@ -49,7 +49,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private HashSet<Edge> GetEdgesConnectedToSlimeInGraph(SlimeNetwork slimeNetwork, GraphWithFoodSources graph)
         {
             var edgesConnectedToSlime = new HashSet<Edge>();
-            foreach (var slimeNode in slimeNetwork.Nodes)
+            foreach (var slimeNode in slimeNetwork.NodesInGraph)
             {
                 foreach (var edge in graph.EdgesConnectedToNode(slimeNode))
                 {

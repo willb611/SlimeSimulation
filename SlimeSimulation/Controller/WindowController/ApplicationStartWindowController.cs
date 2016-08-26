@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gtk;
 using NLog;
@@ -17,7 +18,13 @@ namespace SlimeSimulation.Controller.WindowController
     public class ApplicationStartWindowController : WindowControllerTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+        public static ApplicationStartWindowController Instance { get; private set; }
+
+        public ApplicationStartWindowController()
+        {
+            Instance = this;
+        }
+
         private ApplicationStartWindow _startingWindow;
         
         public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
@@ -64,7 +71,6 @@ namespace SlimeSimulation.Controller.WindowController
             var nodeSlimeStartsAt = possible.FoodSources.PickRandom();
             var slimeNodes = new HashSet<FoodSourceNode> { nodeSlimeStartsAt };
             return new SlimeNetwork(new HashSet<Node>(slimeNodes), slimeNodes, new HashSet<SlimeEdge>());
-            //return new SlimeNetworkGenerator().FromGraphWithFoodSources(possible);
         }
 
         public void FinishSimulation(SimulationController controller)
@@ -88,14 +94,18 @@ namespace SlimeSimulation.Controller.WindowController
 
         public void DisplayError(string error)
         {
-            MessageDialog errorDialog = new MessageDialog(_startingWindow.Window, DialogFlags.DestroyWithParent,
-                MessageType.Error, ButtonsType.Ok,
-                "Unexpected error. Simulation tried to do a step when an step was in progress.")
+            Logger.Error(error);
+            Application.Invoke(delegate
             {
-                Title = "Unexpected error"
-            };
-            errorDialog.Run();
-            errorDialog.Destroy();
+                MessageDialog errorDialog = new MessageDialog(_startingWindow.Window, DialogFlags.DestroyWithParent,
+                    MessageType.Error, ButtonsType.Ok,
+                    "Unexpected error. Simulation tried to do a step when an step was in progress.")
+                {
+                    Title = "Unexpected error"
+                };
+                errorDialog.Run();
+                errorDialog.Destroy();
+            });
         }
     }
 }

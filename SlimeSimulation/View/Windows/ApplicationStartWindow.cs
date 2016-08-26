@@ -48,6 +48,7 @@ namespace SlimeSimulation.View.Windows
             container.Add(ErrorLabel());
             window.Add(container);
             _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
+            window.Unmaximize();
         }
         
         private void BeginSimulationButton_Clicked(object obj, EventArgs args)

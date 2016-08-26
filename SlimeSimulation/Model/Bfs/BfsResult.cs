@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using NLog;
 
 namespace SlimeSimulation.Model.Bfs
 {
     internal class BfsResult
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly Dictionary<Node, bool> _connected;
 
         protected internal BfsResult(Dictionary<Node, bool> connected)
@@ -26,6 +29,7 @@ namespace SlimeSimulation.Model.Bfs
                     nodes.Add(node);
                 }
             }
+            Logger.Debug("[ConnectedNodes] Out of {0} returning {1}", _connected.Count, nodes.Count);
             return nodes;
         }
     }

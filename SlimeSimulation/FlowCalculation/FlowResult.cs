@@ -32,7 +32,7 @@ namespace SlimeSimulation.FlowCalculation
         }
 
         internal ISet<Edge> Edges {
-            get { return (_network as Graph).Edges; }
+            get { return (_network as Graph).EdgesInGraph; }
         }
 
         internal Node Source {

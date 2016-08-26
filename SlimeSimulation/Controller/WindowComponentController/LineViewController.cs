@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 using SlimeSimulation.View;
+using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.Controller.WindowComponentController
 {
@@ -43,7 +44,7 @@ namespace SlimeSimulation.Controller.WindowComponentController
     internal class SlimeLineViewController : LineViewController
     {
         private readonly double _maxSlimeEdgeConnectivity;
-        private readonly double _weightForNonSlimeEdge;
+        private readonly double _weightForNonSlimeEdge = GraphDrawingArea.MinEdgeWeightToDraw;
 
         public SlimeLineViewController(IEnumerable<Edge> edges)
         {
@@ -53,7 +54,6 @@ namespace SlimeSimulation.Controller.WindowComponentController
                 var slimeEdgeConnectivity = slimeEdge?.Connectivity ?? 0.0;
                 _maxSlimeEdgeConnectivity = Math.Max(slimeEdgeConnectivity, _maxSlimeEdgeConnectivity);
             }
-            _weightForNonSlimeEdge = _maxSlimeEdgeConnectivity/4;
             if (_maxSlimeEdgeConnectivity == 0)
             {
                 _weightForNonSlimeEdge = 1;

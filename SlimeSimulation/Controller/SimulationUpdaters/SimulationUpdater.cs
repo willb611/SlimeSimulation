@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
+using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
 using SlimeSimulation.Model;
@@ -43,7 +44,15 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return Task.Run(() =>
             {
                 var stateWithFlow = GetStateWithFlow(state.SlimeNetwork, _flowAmount, state.PossibleNetwork);
-                return GetNextStateWithUpdatedConductivites(stateWithFlow.SlimeNetwork, stateWithFlow.FlowResult, state.PossibleNetwork);
+                if (stateWithFlow.FlowResult != null)
+                {
+                    return GetNextStateWithUpdatedConductivites(stateWithFlow.SlimeNetwork, stateWithFlow.FlowResult,
+                        state.PossibleNetwork);
+                }
+                else
+                {
+                    return stateWithFlow;
+                }
             });
         }
 
@@ -78,7 +87,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             catch (SingularMatrixException e)
             {
                 Logger.Error(e);
-                throw;
+                return new SimulationState(slimeNetwork, true, graphWithFoodSources);
             }
         }
 

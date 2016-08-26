@@ -23,7 +23,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
             var slimeNetworkExplorer = new SlimeNetworkExplorer();
             SlimeNetwork expandedSlimeNetwork = slimeNetworkExplorer.ExpandSlimeInNetwork(slimeNetwork, graph);
 
-            Assert.IsTrue(expandedSlimeNetwork.Nodes.Count > 1);
+            Assert.IsTrue(expandedSlimeNetwork.NodesInGraph.Count > 1);
             Assert.IsTrue(expandedSlimeNetwork.SlimeEdges.Count >= 1);
         }
     }

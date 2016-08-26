@@ -7,42 +7,24 @@ namespace SlimeSimulation.Model
 {
     public class Graph
     {
-        public ISet<Node> Nodes { get; protected set; }
-        public ISet<Edge> Edges { get; }
+        public ISet<Node> NodesInGraph { get; protected set; }
+        public ISet<Edge> EdgesInGraph { get; }
         private readonly Dictionary<Node, ISet<Edge>> _edgesConnectedToNodeMapping;
         private static readonly BfsSolver BfsSolver = new BfsSolver();
 
-        public Graph(ISet<Edge> edges)
+        public Graph(ISet<Edge> edgesInGraph)
         {
-            Edges = edges;
-            Nodes = GetNodesContainedIn(edges);
-            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, Nodes);
+            EdgesInGraph = edgesInGraph;
+            NodesInGraph = Edges.GetNodesContainedIn(EdgesInGraph);
+            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edgesInGraph, NodesInGraph);
         }
 
-
-        public Graph(ISet<Edge> edges, ISet<Node> nodes)
+        public Graph(ISet<Edge> edgesInGraph, ISet<Node> nodesInGraph)
         {
-            Nodes = nodes;
-            Edges = edges;
-            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edges, nodes);
+            NodesInGraph = nodesInGraph;
+            EdgesInGraph = edgesInGraph;
+            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edgesInGraph, nodesInGraph);
         }
-
-        protected ISet<Node> GetNodesContainedIn(ISet<Edge> edges)
-        {
-            ISet<Node> nodes = new HashSet<Node>();
-            foreach (var edge in Edges)
-            {
-                AddNodesInEdgeNotContained(edge, ref nodes);
-            }
-            return nodes;
-        }
-
-        private void AddNodesInEdgeNotContained(Edge slimeEdge, ref ISet<Node> nodes)
-        {
-            nodes.Add(slimeEdge.A);
-            nodes.Add(slimeEdge.B);
-        }
-
 
         private Dictionary<Node, ISet<Edge>> MakeEdgesConnectedToNodeMapping(ISet<Edge> edges, ISet<Node> nodes)
         {
@@ -124,12 +106,12 @@ namespace SlimeSimulation.Model
                 return false;
             }
 
-            return Edges.Equals(other.Edges) && Nodes.Equals(other.Nodes);
+            return EdgesInGraph.Equals(other.EdgesInGraph) && NodesInGraph.Equals(other.NodesInGraph);
         }
 
         public override int GetHashCode()
         {
-            return Edges.GetHashCode() * 17 + Nodes.GetHashCode();
+            return EdgesInGraph.GetHashCode() * 17 + NodesInGraph.GetHashCode();
         }
     }
 }

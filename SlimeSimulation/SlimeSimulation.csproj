@@ -89,6 +89,8 @@
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
     <Compile Include="Model\Bfs\BfsResult.cs" />
     <Compile Include="Model\Bfs\BfsSolver.cs" />
+    <Compile Include="Model\Edges.cs" />
+    <Compile Include="Model\Nodes.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\GrowthPhaseControlBox.cs" />
     <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />

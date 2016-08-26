@@ -61,7 +61,7 @@ namespace SlimeSimulation.View.Windows
             hbox.ModifyBg(StateType.Normal, bgColor);
             GraphDrawingArea = new GraphDrawingArea(_edgesInSlimeNetworkUnionEdgesFromGraphWithFoodSources,
                 new SlimeLineViewController(_edgesInSlimeNetworkUnionEdgesFromGraphWithFoodSources),
-                new SlimeNodeViewController(_slimeNetwork.Nodes));
+                new SlimeNodeViewController(_slimeNetwork.NodesInGraph));
             ListenToClicksOn(GraphDrawingArea);
 
             hbox.Add(GraphDrawingArea);

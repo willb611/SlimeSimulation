@@ -24,26 +24,13 @@ namespace SlimeSimulation.Model
             }
         }
 
-        public GraphWithFoodSources(ISet<Edge> edges) : base(edges)
+        public GraphWithFoodSources(ISet<Edge> edgesInGraph) : base(edgesInGraph)
         {
-            FoodSources = GetFoodSourceNodes(Nodes);
+            FoodSources = Nodes.GetFoodSourceNodes(NodesInGraph);
         }
-        public GraphWithFoodSources(ISet<Edge> edges, ISet<Node> nodes, ISet<FoodSourceNode> foodSourcesNodes) : base(edges, nodes)
+        public GraphWithFoodSources(ISet<Edge> edgesInGraph, ISet<Node> nodesInGraph, ISet<FoodSourceNode> foodSourcesNodes) : base(edgesInGraph, nodesInGraph)
         {
             FoodSources = foodSourcesNodes;
-        }
-
-        protected ISet<FoodSourceNode> GetFoodSourceNodes(ISet<Node> nodes)
-        {
-            var foodSources = new HashSet<FoodSourceNode>();
-            foreach (var node in nodes)
-            {
-                if (node.IsFoodSource())
-                {
-                    foodSources.Add((FoodSourceNode)node);
-                }
-            }
-            return foodSources;
         }
 
         public override bool Equals(object obj)

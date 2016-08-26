@@ -6,6 +6,7 @@ namespace SlimeSimulation.LinearEquations
     public class LupDecompositionSolver : ILinearEquationSolver
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        public static int ErrorColumnNumber { get; private set; }
 
         // Ax = b
         public double[] FindX(double[][] a, double[] b)
@@ -95,7 +96,7 @@ namespace SlimeSimulation.LinearEquations
             int[] pi = MakePi(a.Length);
             for (int k = 0; k < n; k++)
             {
-                int kdash = GetRowWithBiggestValueForColumn(a, k);
+                int kdash = GetRowWithBiggestValueForColumn(a, k, pi);
                 Exchange(ref pi[k], ref pi[kdash]);
                 ExchangeRows(a, k, kdash);
                 for (int i = k + 1; i < n; i++)
@@ -118,7 +119,7 @@ namespace SlimeSimulation.LinearEquations
             }
         }
 
-        private int GetRowWithBiggestValueForColumn(double[][] array, int columnNumber)
+        private int GetRowWithBiggestValueForColumn(double[][] array, int columnNumber, int[] pi)
         {
             double p = 0;
             int kdash = -1;
@@ -133,8 +134,9 @@ namespace SlimeSimulation.LinearEquations
             if (p == 0)
             {
                 var arrayString = LogHelper.PrintArr(array);
+                ErrorColumnNumber = pi[columnNumber];
                 var logstr = "No values found in column " + columnNumber + ". Meaning array A was singular: " + arrayString;
-                Logger.Fatal(logstr);
+                Logger.Error(logstr);
                 throw new SingularMatrixException(logstr);
             }
             return kdash;
