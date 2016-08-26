@@ -54,10 +54,6 @@ namespace SlimeSimulation.Controller.WindowComponentController
                 var slimeEdgeConnectivity = slimeEdge?.Connectivity ?? 0.0;
                 _maxSlimeEdgeConnectivity = Math.Max(slimeEdgeConnectivity, _maxSlimeEdgeConnectivity);
             }
-            if (_maxSlimeEdgeConnectivity == 0)
-            {
-                _weightForNonSlimeEdge = 1;
-            }
         }
 
         public Rgb SlimeColour => SlimeNodeViewController.SlimeNodeColour;

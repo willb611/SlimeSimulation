@@ -18,7 +18,7 @@ namespace SlimeSimulation.View.WindowComponent
         private const double WindowSpacePercentToDrawIn = 0.9;
         private const double LinePaddingPercent = 0.05;
         
-        public const double MinEdgeWeightToDraw = 0.000001;
+        public const double MinEdgeWeightToDraw = 0;
 
         private readonly LineViewController _lineViewController;
         private readonly NodeViewController _nodeViewController;
@@ -150,9 +150,13 @@ namespace SlimeSimulation.View.WindowComponent
         private double GetLineWidthForEdge(Edge slimeEdge)
         {
             var weight = _lineViewController.GetLineWeightForEdge(slimeEdge);
-            var percent = weight / _lineViewController.GetMaximumLineWeight();
+            var percentAsNumberBetweenOneAndZero = weight / _lineViewController.GetMaximumLineWeight();
+            if (_lineViewController.GetMaximumLineWeight() == 0)
+            {
+                percentAsNumberBetweenOneAndZero = 0;
+            }
             var padding = MaxLineWidth * LinePaddingPercent;
-            return percent * (MaxLineWidth - 2 * padding) + padding;
+            return percentAsNumberBetweenOneAndZero * (MaxLineWidth - 2 * padding) + padding;
         }
 
         protected override bool OnExposeEvent(EventExpose args)
