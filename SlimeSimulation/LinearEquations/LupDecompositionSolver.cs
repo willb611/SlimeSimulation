@@ -11,6 +11,7 @@ namespace SlimeSimulation.LinearEquations
         // Ax = b
         public double[] FindX(double[][] a, double[] b)
         {
+            CheckMatrix(a);
             if (Logger.IsTraceEnabled)
             {
                 Logger.Trace("A: " + LogHelper.PrintArrWithSpaces(a) + ", B: " + LogHelper.PrintArrWithNewLines(b));
@@ -20,6 +21,40 @@ namespace SlimeSimulation.LinearEquations
             var matrix = new UpperLowerMatrix(a);
             matrix.LogUpper();
             return LupSolve(matrix, pi, b);
+        }
+
+        private void CheckMatrix(double[][] doubles)
+        {
+            for (int row = 0; row < doubles.Length; row++)
+            {
+                bool zeros = true;
+                for (int col = 0; col < doubles[row].Length; col++)
+                {
+                    if (doubles[row][col] != 0)
+                    {
+                        zeros = false;
+                    }
+                }
+                if (zeros)
+                {
+                    throw new SingularMatrixException("Given matrix had zero row. rowNum: " + row);
+                }
+            }
+            for (int col = 0; col < doubles.Length; col++)
+            {
+                bool zeros = true;
+                for (int row = 0; row < doubles[col].Length; row++)
+                {
+                    if (doubles[row][col] != 0)
+                    {
+                        zeros = false;
+                    }
+                }
+                if (zeros)
+                {
+                    throw new SingularMatrixException("Given matrix had zero column. column: " + col);
+                }
+            }
         }
 
         private void LogDensity(double[][] a)
