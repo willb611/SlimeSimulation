@@ -59,7 +59,7 @@ namespace SlimeSimulation.Controller.WindowComponentController
             _slimeCoveredNodes = slimeCoveredNodes;
         }
 
-        public static Rgb SlimeNodeColour => Rgb.Yellow;
+        public static Rgb SlimeNodeColour => Rgb.Orange;
         public static Rgb SlimeFoodSourceColour => Rgb.Blue;
 
         public static Rgb NormalNodeColour => Rgb.Black;
@@ -69,16 +69,12 @@ namespace SlimeSimulation.Controller.WindowComponentController
         {
             if (_slimeCoveredNodes.Contains(node))
             {
-                if (node.IsFoodSource())
-                {
-                    return SlimeFoodSourceColour;
-                }
-                return SlimeNodeColour;
-            } else if (node.IsFoodSource())
-            {
-                return FoodSourceColour;
+                return node.IsFoodSource() ? SlimeFoodSourceColour : SlimeNodeColour;
             }
-            return NormalNodeColour;
+            else
+            {
+                return node.IsFoodSource() ? FoodSourceColour : NormalNodeColour;
+            }
         }
 
         public override int GetSizeForNode(Node node)
