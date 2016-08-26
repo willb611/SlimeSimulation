@@ -11,22 +11,34 @@ namespace SlimeSimulation.View
         public static readonly Rgb Red = new Rgb(255, 0, 0);
         public static readonly Rgb Black = new Rgb(0, 0, 0);
         public static readonly Rgb Yellow = new Rgb(255, 255, 0);
-        public ushort R { get; private set; }
-        public ushort G { get; private set; }
-        public ushort B { get; private set; }
+        public static readonly Rgb Orange = new Rgb(255, 130, 0);
+
+        public double R { get; private set; }
+        public double G { get; private set; }
+        public double B { get; private set; }
+
+        private readonly double _r;
+        private readonly double _g;
+        private readonly double _b;
 
         public Rgb(int r, int g, int b)
         {
-            R = (ushort)r;
-            G = (ushort)g;
-            B = (ushort)b;
+            _r = r;
+            _g = g;
+            _b = b;
+            R = Map(r);
+            G = Map(g);
+            B = Map(b);
         }
 
-        public Color AsGdkColor()
+        private double Map(double valueUpTo255)
         {
-            Color color = new Color((byte)R, (byte)G, (byte)B);
-            Logger.Debug("Got gdk color: {0}, {1}, {2}", color.Blue, color.Green, color.Red);
-            return color;
+            return valueUpTo255/255;
+        }
+        
+        public override string ToString()
+        {
+            return "Rgb{_r=" + _r + ", _g=" + _g + ", _b=" + _b + "}";
         }
     }
 }
