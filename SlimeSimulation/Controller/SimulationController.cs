@@ -168,31 +168,31 @@ namespace SlimeSimulation.Controller
             WindowControllerTemplate nextWindowController;
             if (!state.HasFinishedExpanding)
             {
-                nextWindowController = DisplayNotFullyExpandedSlime(state.PossibleNetwork, state.SlimeNetwork);
+                nextWindowController = DisplayControllerForNotFullyExpandedSlime(state.PossibleNetwork, state.SlimeNetwork);
             } else if (state.FlowResult == null || !ShouldFlowResultsBeDisplayed)
             {
-                nextWindowController = DisplayConnectivityInNetwork(state.SlimeNetwork, state.PossibleNetwork);
+                nextWindowController = DisplayControllerForNetworkConnectivity(state.SlimeNetwork, state.PossibleNetwork);
             }
             else
             {
-                nextWindowController = DisplayFlowResult(state.FlowResult);
+                nextWindowController = DisplayControllerForFlowResult(state.FlowResult);
             }
             _activeWindowController = nextWindowController;
             nextWindowController.Render();
         }
 
-        private WindowControllerTemplate DisplayNotFullyExpandedSlime(GraphWithFoodSources graphWithFoodSources, SlimeNetwork slimeNetwork)
+        private WindowControllerTemplate DisplayControllerForNotFullyExpandedSlime(GraphWithFoodSources graphWithFoodSources, SlimeNetwork slimeNetwork)
         {
             return new SlimeNetworkWindowController(this, slimeNetwork, graphWithFoodSources,
                 new SimulationGrowthPhaseControlBoxFactory());
         }
 
-        private WindowControllerTemplate DisplayFlowResult(FlowResult flowResult)
+        private WindowControllerTemplate DisplayControllerForFlowResult(FlowResult flowResult)
         {
             return new FlowResultWindowController(this, flowResult);
         }
 
-        private WindowControllerTemplate DisplayConnectivityInNetwork(SlimeNetwork network, GraphWithFoodSources graphWithFoodSources)
+        private WindowControllerTemplate DisplayControllerForNetworkConnectivity(SlimeNetwork network, GraphWithFoodSources graphWithFoodSources)
         {
             return new SlimeNetworkWindowController(this, network, graphWithFoodSources, new SimulationAdaptionPhaseControlBoxFactory());
         }

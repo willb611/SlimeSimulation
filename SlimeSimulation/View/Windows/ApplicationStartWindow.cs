@@ -81,7 +81,7 @@ namespace SlimeSimulation.View.Windows
         {
             _errors = new List<string>();
             double? feedbackParam = ExtractDoubleFromView(_feedbackParamTextView);
-            int? flowAmount = ExtractIntFromView(_flowAmountTextView);
+            double? flowAmount = ExtractDoubleFromView(_flowAmountTextView);
             double? probabilityNewNodeIsFood = ExtractDoubleFromView(_latticeGeneratorProbabiltyOfNewFoodTextView);
             int? minFoodSources = ExtractIntFromView(_latticeGeneratorMinimumFoodSourcesTextView);
             int? rowSize = ExtractIntFromView(_latticeGeneratorRowSizeTextView);

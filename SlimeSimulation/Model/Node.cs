@@ -74,7 +74,7 @@ namespace SlimeSimulation.Model
             ISet<Edge> result = new HashSet<Edge>();
             foreach (Edge edge in edges)
             {
-                if (this == edge.A || this == edge.B)
+                if (edge.Contains(this))
                 {
                     result.Add(edge);
                 }
