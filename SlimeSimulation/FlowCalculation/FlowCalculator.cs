@@ -21,7 +21,7 @@ namespace SlimeSimulation.FlowCalculation
             _linearEquationSolver = solver;
         }
 
-        public FlowResult CalculateFlow(SlimeNetwork network, Node source, Node sink, int flowAmount)
+        public FlowResult CalculateFlow(SlimeNetwork network, Node source, Node sink, double flowAmount)
         {
             List<Node> nodeList = new List<Node>(network.Nodes);
             EnsureSourceSinkInCorrectPositions(nodeList, source, sink);
@@ -67,7 +67,7 @@ namespace SlimeSimulation.FlowCalculation
             return result;
         }
 
-        private double[] GetMatrixOfFlowGainedAtNodeFromZeroToN(int flowAmount, int n)
+        private double[] GetMatrixOfFlowGainedAtNodeFromZeroToN(double flowAmount, int n)
         {
             double[] arr = new double[n];
             arr[0] = flowAmount;

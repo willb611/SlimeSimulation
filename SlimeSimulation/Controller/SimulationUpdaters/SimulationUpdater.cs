@@ -16,7 +16,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private readonly FlowCalculator _flowCalculator;
         private readonly SlimeNetworkAdaptionCalculator _slimeNetworkAdapterCalculator;
-        private readonly int _flowAmount;
+        private readonly double _flowAmount;
         private readonly SlimeNetworkExplorer _slimeNetworkExplorer;
 
         public SimulationUpdater() 
@@ -24,12 +24,12 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
         }
         public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator,
-            int flowAmount)
+            double flowAmount)
             : this(flowCalculator, slimeNetworkAdapterCalculator, flowAmount, new SlimeNetworkExplorer())
         {
         }
         public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator,
-            int flowAmount, SlimeNetworkExplorer slimeNetworkExplorer)
+            double flowAmount, SlimeNetworkExplorer slimeNetworkExplorer)
         {
             _flowCalculator = flowCalculator;
             _slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
@@ -68,7 +68,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return new SimulationState(nextNetwork, true, graphWithFoodSources);
         }
 
-        private SimulationState GetStateWithFlow(SlimeNetwork slimeNetwork, int flowAmount, GraphWithFoodSources graphWithFoodSources)
+        private SimulationState GetStateWithFlow(SlimeNetwork slimeNetwork, double flowAmount, GraphWithFoodSources graphWithFoodSources)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             }
         }
 
-        private FlowResult GetFlow(SlimeNetwork network, int flow)
+        private FlowResult GetFlow(SlimeNetwork network, double flow)
         {
             Node source = network.FoodSources.PickRandom();
             Node sink = network.FoodSources.PickRandom();
@@ -93,7 +93,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return GetFlow(network, flow, source, sink);
         }
 
-        private FlowResult GetFlow(SlimeNetwork network, int flow, Node source, Node sink)
+        private FlowResult GetFlow(SlimeNetwork network, double flow, Node source, Node sink)
         {
             var flowResult = _flowCalculator.CalculateFlow(network,
               source, sink, flow);

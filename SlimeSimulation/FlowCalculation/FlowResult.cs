@@ -11,10 +11,10 @@ namespace SlimeSimulation.FlowCalculation
 
         private readonly SlimeNetwork _network;
         private readonly Node _source, _sink;
-        private readonly int _flowAmount;
+        private readonly double _flowAmount;
         private readonly FlowOnEdges _flowOnEdges;
 
-        public FlowResult(SlimeNetwork network, Node source, Node sink, int flowAmount,
+        public FlowResult(SlimeNetwork network, Node source, Node sink, double flowAmount,
           FlowOnEdges flowOnEdges)
         {
             _source = source;
@@ -61,7 +61,7 @@ namespace SlimeSimulation.FlowCalculation
             get { return _sink; }
         }
 
-        public int FlowAmount {
+        public double FlowAmount {
             get { return _flowAmount; }
         }
 
