@@ -50,7 +50,7 @@ namespace SlimeSimulation.Controller.WindowController
 
         internal void StartSimulation(SimulationConfiguration config)
         {
-            SlimeEdge.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
+            FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
             var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
             var slimeNetworkGenerator = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig);
             var slimeNetworkAdapter = new SlimeNetworkAdaptionCalculator(config.SlimeNetworkAdaptionCalculatorConfig);

@@ -45,20 +45,20 @@ namespace SlimeSimulation.View.Windows
             container.Add(FlowBox());
             container.Add(FeedbackParameterBox());
             container.Add(MatrixGenerationProperties());
+            container.Add(ShouldDisconnectionBeAllowedCheckButton());
             container.Add(BeginSimulationButton());
-            container.Add(ShouldDisconnectoinBeAllowedCheckButton());
             container.Add(ErrorLabel());
             window.Add(container);
             _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
             window.Unmaximize();
         }
 
-        private CheckButton ShouldDisconnectoinBeAllowedCheckButton()
+        private CheckButton ShouldDisconnectionBeAllowedCheckButton()
         {
             if (_shouldAllowDisconnectionCheckButton == null)
             {
                 _shouldAllowDisconnectionCheckButton =
-                    new CheckButton("Should simulation step result (flow graph) be displayed?")
+                    new CheckButton("Should the slime be allowed to disconnect from parts of the graph?")
                     {
                         Active = _defaultConfig.ShouldAllowDisconnection
                     };

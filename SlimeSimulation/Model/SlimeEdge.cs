@@ -2,27 +2,13 @@ namespace SlimeSimulation.Model
 {
     public class SlimeEdge : Edge
     {
-        private const double SmallAmountToStopDisconnection = 0.000001;
-
         public Edge Edge { get; }
         public double Connectivity { get; }
-
-        public static bool ShouldAllowDisconnection { get; set; }
 
         public SlimeEdge(Edge edge, double connectivity) : base(edge.A, edge.B)
         {
             Edge = edge;
-            if (ShouldAllowDisconnection)
-            {
-                Connectivity = connectivity;
-            }
-            else
-            {
-                if (connectivity == 0)
-                {
-                    Connectivity = SmallAmountToStopDisconnection;
-                }
-            }
+            Connectivity = connectivity;
         }
 
         public SlimeEdge(Node a, Node b, double connectivity) : this(new Edge(a, b), connectivity)

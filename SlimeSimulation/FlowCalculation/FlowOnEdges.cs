@@ -8,7 +8,9 @@ namespace SlimeSimulation.FlowCalculation
     public class FlowOnEdges
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
+        private const double SmallAmountToStopDisconnection = 0.0000001;
+        public static bool ShouldAllowDisconnection { get; set; }
+
         private readonly Dictionary<Edge, double> _flowOnEdgeMapping;
 
         public FlowOnEdges(FlowOnEdges flowOnEdges)
@@ -21,7 +23,14 @@ namespace SlimeSimulation.FlowCalculation
             _flowOnEdgeMapping = new Dictionary<Edge, double>();
             foreach (var edge in edges)
             {
-                _flowOnEdgeMapping.Add(edge, 0);
+                if (ShouldAllowDisconnection)
+                {
+                    _flowOnEdgeMapping.Add(edge, 0);
+                }
+                else
+                {
+                    _flowOnEdgeMapping.Add(edge, SmallAmountToStopDisconnection);
+                }
             }
         }
 
