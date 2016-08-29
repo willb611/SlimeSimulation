@@ -81,5 +81,33 @@ namespace SlimeSimulation.Model
             }
             return edges;
         }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as SlimeNetwork);
+        }
+        public bool Equals(SlimeNetwork other)
+        {
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            if (ReferenceEquals(other, this))
+            {
+                return true;
+            }
+
+            if (GetType() != other.GetType())
+            {
+                return false;
+            }
+
+            return SlimeEdges.Equals(other.SlimeEdges)
+                   && base.Equals(other);
+        }
+        public override int GetHashCode()
+        {
+            return SlimeEdges.GetHashCode() * 17 + base.GetHashCode();
+        }
     }
 }
