@@ -32,7 +32,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 slimeEdges.Add(new SlimeEdge(unslimedEdge, _connectivityOfNewSlimeEdges));
             }
             Logger.Info(
-                $"[ExpandSlimeInNetwork] Expanded 1 step, slime now covers {(graph.EdgesInGraph.Count/(double) slimeEdges.Count)*100} percent");
+                $"[ExpandSlimeInNetwork] Expanded 1 step, slime now covers {((double) slimeEdges.Count/graph.EdgesInGraph.Count) *100} percent");
             return new SlimeNetwork(slimeEdges);
         }
 

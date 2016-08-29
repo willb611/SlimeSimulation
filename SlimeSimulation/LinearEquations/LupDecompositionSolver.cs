@@ -20,7 +20,7 @@ namespace SlimeSimulation.LinearEquations
             {
                 Logger.Trace("A: " + LogHelper.PrintArrWithSpaces(a) + ", B: " + LogHelper.PrintArrWithNewLines(b));
             }
-            Logger.Info($"[FindX] Solving with matrix with a size: {a.Length}, b size: {b.Length}");
+            Logger.Info($"[FindX] Solving with matrix with a size: {a.Length}, b size: {b.Length}. This will take approx {(long)b.Length * b.Length * ((long)b.Length)} operations");
             var pi = LupDecompose(a);
             var matrix = new UpperLowerMatrix(a);
             matrix.LogUpper();
