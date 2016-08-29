@@ -16,9 +16,10 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller
 {
-    public class SimulationController
+    public sealed class SimulationController : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static bool _disposed = false;
         
         private readonly SimulationUpdater _simulationUpdater;
         private readonly GtkLifecycleController _gtkLifecycleController = GtkLifecycleController.Instance;
@@ -85,9 +86,10 @@ namespace SlimeSimulation.Controller
             Logger.Info($"[DoNextSimulationSteps] Running {numberOfSteps} steps");
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
-                Logger.Debug($"[DoNextSimulationSteps] Now completed {++stepsRunSoFar} steps");
                 DoNextSimulationStep();
+                Logger.Debug($"[DoNextSimulationSteps] Now completed {stepsRunSoFar} steps");
             }
+            Logger.Info($"[DoNextSimulationSteps] Completed {numberOfSteps} steps");
         }
 
         public void RunStepsUntilSlimeHasFullyExplored()
@@ -109,21 +111,25 @@ namespace SlimeSimulation.Controller
             if (!state.HasFinishedExpanding)
             {
                 nextState = _simulationUpdater.ExpandSlime(state);
+                SimulationStepsCompleted++;
             }
             else if (ShouldFlowResultsBeDisplayed)
             {
                 if (state.FlowResult == null)
                 {
-                    // This step is just calculating the flow through the network, it doesn't count as a step.
-                    SimulationStepsCompleted--;
+                    nextState = _simulationUpdater.CalculateFlow(state);
                 }
-                nextState = _simulationUpdater.CalculateFlowResultOrUpdateNetworkUsingFlowInState(state);
+                else
+                {
+                    nextState = _simulationUpdater.UpdateNetworkUsingFlowInState(state);
+                    SimulationStepsCompleted++;
+                }
             }
             else
             {
                 nextState = _simulationUpdater.CalculateFlowAndUpdateNetwork(state);
+                SimulationStepsCompleted++;
             }
-            SimulationStepsCompleted++;
             UpdateControllerState(nextState);
         }
 
@@ -173,6 +179,35 @@ namespace SlimeSimulation.Controller
         private WindowControllerTemplate DisplayControllerForNetworkConnectivity(SlimeNetwork network, GraphWithFoodSources graphWithFoodSources)
         {
             return new SlimeNetworkWindowController(this, network, graphWithFoodSources, new SimulationAdaptionPhaseControlBoxFactory());
+        }
+
+        ~SimulationController()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            Logger.Debug("[Dispose] Overriden method called from within " + this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                _activeWindowController.Dispose();
+                _activeWindowController = null;
+                _protectedState.Lock();
+                _protectedState.SetAndClearLock(null);
+            }
+            _disposed = true;
+            Logger.Debug("[Dispose : bool] finished from within " + this);
         }
     }
 }

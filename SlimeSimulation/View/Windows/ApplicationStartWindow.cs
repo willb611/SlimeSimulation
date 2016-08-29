@@ -33,7 +33,8 @@ namespace SlimeSimulation.View.Windows
         private List<string> _errors = new List<string>();
 
 
-        public ApplicationStartWindow(string windowTitle, ApplicationStartWindowController windowController) : base(windowTitle, windowController)
+        public ApplicationStartWindow(string windowTitle, ApplicationStartWindowController windowController)
+            : base(windowTitle, windowController)
         {
             _windowController = windowController;
             Window.Resize(600, 600);
@@ -101,15 +102,17 @@ namespace SlimeSimulation.View.Windows
             int? minFoodSources = ExtractIntFromView(_latticeGeneratorMinimumFoodSourcesTextView);
             int? rowSize = ExtractIntFromView(_latticeGeneratorRowSizeTextView);
             bool shouldAllowDisconnection = _shouldAllowDisconnectionCheckButton.Active;
-            if (feedbackParam.HasValue && flowAmount.HasValue && 
+            if (feedbackParam.HasValue && flowAmount.HasValue &&
                 probabilityNewNodeIsFood.HasValue && minFoodSources.HasValue && rowSize.HasValue)
             {
                 try
                 {
-                    var generationConfig = new LatticeGraphWithFoodSourcesGenerationConfig(rowSize.Value, 
+                    var generationConfig = new LatticeGraphWithFoodSourcesGenerationConfig(rowSize.Value,
                         probabilityNewNodeIsFood.Value, minFoodSources.Value);
-                    return new SimulationConfiguration(generationConfig, flowAmount.Value, new SlimeNetworkAdaptionCalculatorConfig(feedbackParam.Value), shouldAllowDisconnection);
-                } catch (ArgumentException e)
+                    return new SimulationConfiguration(generationConfig, flowAmount.Value,
+                        new SlimeNetworkAdaptionCalculatorConfig(feedbackParam.Value), shouldAllowDisconnection);
+                }
+                catch (ArgumentException e)
                 {
                     string errorMsg = "Invalid parameter: " + e.Message;
                     Logger.Info(errorMsg);
@@ -128,7 +131,7 @@ namespace SlimeSimulation.View.Windows
             }
             return _beginSimulationButton;
         }
-        
+
         private Widget MatrixGenerationProperties()
         {
             VBox vBox = new VBox();
@@ -191,7 +194,7 @@ namespace SlimeSimulation.View.Windows
             _textViewLabelMapping[textView] = description;
             return hBox;
         }
-        
+
         public double? ExtractDoubleFromView(TextView view)
         {
             double result;
@@ -218,14 +221,15 @@ namespace SlimeSimulation.View.Windows
 
         private void HighlightErrorOn(TextView view)
         {
-            DisplayError("Not valid value for input box matching: " 
-                + _textViewLabelMapping[view].Text);
+            DisplayError("Not valid value for input box matching: "
+                         + _textViewLabelMapping[view].Text);
         }
 
         private void DisplayError(string error)
         {
             _errors.Add(error);
         }
+
         private void DisplayErrors()
         {
             StringBuilder sb = new StringBuilder();
@@ -254,6 +258,11 @@ namespace SlimeSimulation.View.Windows
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
+        }
+
+        ~ApplicationStartWindow()
+        {
+            Dispose(false);
         }
     }
 }

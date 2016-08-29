@@ -22,7 +22,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         public SlimeNetwork ExpandSlimeInNetwork(SlimeNetwork slimeNetwork, GraphWithFoodSources graph)
         {
-            Logger.Info("[ExpandSlimeInNetwork] Expanding..");
+            Logger.Info("[ExpandSlimeInNetwork] Expanding.. ");
             var edgesConnectedToSlime = GetEdgesConnectedToSlimeInGraph(slimeNetwork, graph);
             var edgesToBeCoveredWithSlime = RemoveEdgesAlreadyCoveredBySlime(edgesConnectedToSlime, slimeNetwork);
 
@@ -31,6 +31,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             {
                 slimeEdges.Add(new SlimeEdge(unslimedEdge, _connectivityOfNewSlimeEdges));
             }
+            Logger.Info(
+                $"[ExpandSlimeInNetwork] Expanded 1 step, slime now covers {(graph.EdgesInGraph.Count/(double) slimeEdges.Count)*100} percent");
             return new SlimeNetwork(slimeEdges);
         }
 

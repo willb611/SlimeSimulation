@@ -56,14 +56,15 @@ namespace SlimeSimulation.Controller.WindowController
             var slimeNetworkAdapter = new SlimeNetworkAdaptionCalculator(config.SlimeNetworkAdaptionCalculatorConfig);
             var simulationUpdater = new SimulationUpdater(flowCalculator, slimeNetworkAdapter, config.FlowAmount);
             var possible = slimeNetworkGenerator.Generate();
-            var initial = MakeSlimeNetworkOfOneFoodSource(possible);
-            var controller = new SimulationController(this, simulationUpdater, initial, possible);
+            var controller = new SimulationController(this, simulationUpdater, MakeSlimeNetworkOfOneFoodSource(possible), possible);
+            possible = null; // aid gc ?
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Application.Invoke(delegate
             {
                 Logger.Debug("[StartSimulation] Invoking from main thread ");
                 _startingWindow.Hide();
                 controller.RunSimulation();
+                controller = null; // aid gc ?
             });
         }
 
@@ -76,7 +77,8 @@ namespace SlimeSimulation.Controller.WindowController
 
         public void FinishSimulation(SimulationController controller)
         {
-            Logger.Info("[FinishSimulation] Finished");
+            controller.Dispose();
+            Logger.Info("[FinishSimulation] Finished one simulation");
             _startingWindow.Display();
         }
 

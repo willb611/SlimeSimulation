@@ -10,7 +10,7 @@ namespace SlimeSimulation.Model.Bfs
 
         public BfsResult From(Node source, Graph graph)
         {
-            Logger.Info($"[From] Runing from source {source}");
+            Logger.Debug($"[From] Runing from source {source}");
             Dictionary<Node, bool> connected = new Dictionary<Node, bool>();
             foreach (var node in graph.NodesInGraph)
             {

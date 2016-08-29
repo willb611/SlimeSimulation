@@ -60,6 +60,10 @@ namespace SlimeSimulation.View
             }
             Disposed = true;
         }
+        ~GtkLifecycleController()
+        {
+            Dispose(false);
+        }
 
         public void StartBeingAbleToDisplay()
         {

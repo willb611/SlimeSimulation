@@ -27,5 +27,9 @@ namespace SlimeSimulation.View.Windows.Templates
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
         }
+        ~GraphDrawingWindowTemplate()
+        {
+            Dispose(false);
+        }
     }
 }

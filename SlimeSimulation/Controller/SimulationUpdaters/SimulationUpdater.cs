@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
@@ -38,12 +39,26 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             _slimeNetworkExplorer = slimeNetworkExplorer;
         }
 
+        public Task<SimulationState> UpdateNetworkUsingFlowInState(SimulationState state)
+        {
+            return Task.Run(() =>
+            {
+                if (state.FlowResult == null)
+                {
+                    throw new ArgumentException("Given null flow in state");
+                }
+                else
+                {
+                    return UpdateNetworkUsingFlowInState(state);
+                }
+            });
+        }
 
         internal Task<SimulationState> CalculateFlowAndUpdateNetwork(SimulationState state)
         {
             return Task.Run(() =>
             {
-                var stateWithFlow = GetStateWithFlow(state.SlimeNetwork, _flowAmount, state.PossibleNetwork);
+                var stateWithFlow = GetStateWithFlow(state);
                 if (stateWithFlow.FlowResult != null)
                 {
                     return GetNextStateWithUpdatedConductivites(stateWithFlow.SlimeNetwork, stateWithFlow.FlowResult,
@@ -56,18 +71,11 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             });
         }
 
-        internal Task<SimulationState> CalculateFlowResultOrUpdateNetworkUsingFlowInState(SimulationState state)
+        public Task<SimulationState> CalculateFlow(SimulationState state)
         {
             return Task.Run(() =>
             {
-                if (state.FlowResult == null)
-                {
-                    Logger.Info("[CalculateFlowResultOrUpdateNetworkUsingFlowInState] Calculating flowResult");
-                    return GetStateWithFlow(state.SlimeNetwork, _flowAmount, state.PossibleNetwork);
-                }
-                Logger.Info(
-                    "[CalculateFlowResultOrUpdateNetworkUsingFlowInState] Updating simulation based on flow result pre-existing");
-                return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult, state.PossibleNetwork);
+                return GetStateWithFlow(state);
             });
         }
 
@@ -77,6 +85,10 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return new SimulationState(nextNetwork, true, graphWithFoodSources);
         }
 
+        private SimulationState GetStateWithFlow(SimulationState state)
+        {
+            return GetStateWithFlow(state.SlimeNetwork, _flowAmount, state.PossibleNetwork);
+        }
         private SimulationState GetStateWithFlow(SlimeNetwork slimeNetwork, double flowAmount, GraphWithFoodSources graphWithFoodSources)
         {
             try
@@ -93,17 +105,37 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private FlowResult GetFlow(SlimeNetwork network, double flow)
         {
-            Node source = network.FoodSources.PickRandom();
-            Node sink = network.FoodSources.PickRandom();
+            Node source = SelectSource(network);
+            Node sink = SelectSink(network);
             int iterations = 0;
             while (InvalidSourceSink(source, sink, network))
             {
-                source = network.FoodSources.PickRandom();
-                sink = network.FoodSources.PickRandom();
+                source = SelectSource(network);
+                sink = SelectSink(network);
                 iterations++;
             }
             Logger.Info($"[GetFlow] Took {iterations} attempts to find a valid source and sink combination");
             return GetFlow(network, flow, source, sink);
+        }
+
+        private Node SelectSink(SlimeNetwork network)
+        {
+            return network.FoodSources.PickRandom();
+        }
+        
+        private Node SelectSource(SlimeNetwork network)
+        {
+            return AdvanceAndGetFoodSourceEnumerator(network).Current;
+        }
+        private IEnumerator<FoodSourceNode> _foodSourceEnumerator;
+        private IEnumerator<FoodSourceNode> AdvanceAndGetFoodSourceEnumerator(SlimeNetwork network)
+        {
+            while (_foodSourceEnumerator == null || !_foodSourceEnumerator.MoveNext())
+            {
+                _foodSourceEnumerator = network.FoodSources.GetEnumerator();
+                Logger.Debug("[AdvanceAndGetFoodSourceEnumerator] Entered method");
+            }
+            return _foodSourceEnumerator;
         }
         
         private bool InvalidSourceSink(Node source, Node sink, SlimeNetwork network)
