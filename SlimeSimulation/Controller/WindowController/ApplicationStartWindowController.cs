@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
+using SlimeSimulation.Controller.Factories;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.FlowCalculation;
@@ -20,12 +21,19 @@ namespace SlimeSimulation.Controller.WindowController
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static ApplicationStartWindowController Instance { get; private set; }
 
-        public ApplicationStartWindowController()
+        private ApplicationStartWindow _startingWindow;
+        private readonly SimulationControllerFactory _controllerFactory = new SimulationControllerFactory(GtkLifecycleController.Instance);
+
+        public ApplicationStartWindowController() : this(new SimulationControllerFactory())
         {
             Instance = this;
         }
+        public ApplicationStartWindowController(SimulationControllerFactory simulationControllerFactory)
+        {
 
-        private ApplicationStartWindow _startingWindow;
+        }
+
+
         
         public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
         {
@@ -50,7 +58,7 @@ namespace SlimeSimulation.Controller.WindowController
 
         internal void StartSimulation(SimulationConfiguration config)
         {
-            var controller = new SimulationController(this, config, GtkLifecycleController.Instance);
+            var controller = _controllerFactory.MakeSimulationController(this, config);
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Application.Invoke(delegate
             {

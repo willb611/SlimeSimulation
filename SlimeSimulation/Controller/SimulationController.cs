@@ -19,7 +19,7 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller
 {
-    public sealed class SimulationController : IDisposable
+    public class SimulationController : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static bool _disposed = false;
@@ -37,18 +37,12 @@ namespace SlimeSimulation.Controller
         public int SimulationStepsCompleted { get; internal set; }
         
         public SimulationController(ApplicationStartWindowController applicationStartWindowController, SimulationConfiguration config,
-            GtkLifecycleController gtkLifecycleController)
+            GtkLifecycleController gtkLifecycleController, SimulationState initialState, SimulationUpdater simulationUpdater)
         {
             _config = config;
             _gtkLifecycleController = gtkLifecycleController;
             _applicationStartWindowController = applicationStartWindowController;
-            FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
-            var latticeGraphWithFoodSourcesGenerator = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig);
-            var graphWithFoodSources = latticeGraphWithFoodSourcesGenerator.Generate();
-            SlimeNetwork initial = new SlimeNetworkGenerator().FromSingleFoodSourceInGraph(graphWithFoodSources);
-
-            _simulationUpdater = new SimulationUpdater(config);
-            var initialState = new SimulationState(initial, false, graphWithFoodSources);
+            _simulationUpdater = simulationUpdater;
             _protectedState.Lock();
             _protectedState.SetAndClearLock(initialState);
         }
@@ -58,7 +52,8 @@ namespace SlimeSimulation.Controller
             _gtkLifecycleController.Display(window);
         }
 
-        private SimulationState GetSimulationState()
+        // Visible for testing
+        internal SimulationState GetSimulationState()
         {
             return _protectedState.Get();
         }

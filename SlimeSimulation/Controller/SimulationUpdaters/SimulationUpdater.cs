@@ -50,7 +50,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             });
         }
 
-        internal Task<SimulationState> TaskCalculateFlowAndUpdateNetwork(SimulationState state)
+        internal virtual Task<SimulationState> TaskCalculateFlowAndUpdateNetwork(SimulationState state)
         {
             return Task.Run(() =>
             {
