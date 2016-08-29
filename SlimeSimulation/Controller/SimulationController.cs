@@ -117,17 +117,17 @@ namespace SlimeSimulation.Controller
             {
                 if (state.FlowResult == null)
                 {
-                    nextState = _simulationUpdater.CalculateFlow(state);
+                    nextState = _simulationUpdater.TaskCalculateFlow(state);
                 }
                 else
                 {
-                    nextState = _simulationUpdater.UpdateNetworkUsingFlowInState(state);
+                    nextState = _simulationUpdater.TaskUpdateNetworkUsingFlowInState(state);
                     SimulationStepsCompleted++;
                 }
             }
             else
             {
-                nextState = _simulationUpdater.CalculateFlowAndUpdateNetwork(state);
+                nextState = _simulationUpdater.TaskCalculateFlowAndUpdateNetwork(state);
                 SimulationStepsCompleted++;
             }
             UpdateControllerState(nextState);
@@ -142,13 +142,14 @@ namespace SlimeSimulation.Controller
         {
             Application.Invoke(delegate
             {
-                Logger.Debug("[UpdateControllerState] Invoking from main thread ");
+                Logger.Debug("[UpdateDisplay] Invoking from main thread ");
                 UpdateDisplayFromState(_protectedState.Get());
             });
         }
 
         private void UpdateDisplayFromState(SimulationState state)
         {
+            Logger.Debug("[UpdateDisplayFromState] Entered");
             WindowControllerTemplate nextWindowController;
             if (!state.HasFinishedExpanding)
             {
@@ -161,6 +162,7 @@ namespace SlimeSimulation.Controller
             {
                 nextWindowController = DisplayControllerForFlowResult(state.FlowResult);
             }
+            Logger.Debug($"[UpdateDisplayFromState] Found nextWindow controller {nextWindowController}");
             _activeWindowController = nextWindowController;
             nextWindowController.Render();
         }

@@ -39,7 +39,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             _slimeNetworkExplorer = slimeNetworkExplorer;
         }
 
-        public Task<SimulationState> UpdateNetworkUsingFlowInState(SimulationState state)
+        public Task<SimulationState> TaskUpdateNetworkUsingFlowInState(SimulationState state)
         {
             return Task.Run(() =>
             {
@@ -49,12 +49,12 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 }
                 else
                 {
-                    return UpdateNetworkUsingFlowInState(state);
+                    return GetNextStateWithUpdatedConductivites(state.SlimeNetwork, state.FlowResult, state.PossibleNetwork);
                 }
             });
         }
 
-        internal Task<SimulationState> CalculateFlowAndUpdateNetwork(SimulationState state)
+        internal Task<SimulationState> TaskCalculateFlowAndUpdateNetwork(SimulationState state)
         {
             return Task.Run(() =>
             {
@@ -71,12 +71,9 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             });
         }
 
-        public Task<SimulationState> CalculateFlow(SimulationState state)
+        public Task<SimulationState> TaskCalculateFlow(SimulationState state)
         {
-            return Task.Run(() =>
-            {
-                return GetStateWithFlow(state);
-            });
+            return Task.Run(() => GetStateWithFlow(state));
         }
 
         private SimulationState GetNextStateWithUpdatedConductivites(SlimeNetwork slimeNetwork, FlowResult flowResult, GraphWithFoodSources graphWithFoodSources)

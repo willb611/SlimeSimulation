@@ -18,7 +18,9 @@ namespace SlimeSimulation.StdLibHelpers
 
         public T Get()
         {
+            Logger.Trace("[Get] Locking..");
             Lock();
+            Logger.Trace("[Get] Returning item");
             try
             {
                 return _item;
@@ -37,6 +39,7 @@ namespace SlimeSimulation.StdLibHelpers
 
         public void ClearLock()
         {
+            Logger.Trace("[ClearLock] Unlocking..");
             var value = Interlocked.Exchange(ref _accessCount, 0);
             if (value != 1)
             {
