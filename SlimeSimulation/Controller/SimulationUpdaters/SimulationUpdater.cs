@@ -95,11 +95,14 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
             Node source = network.FoodSources.PickRandom();
             Node sink = network.FoodSources.PickRandom();
+            int iterations = 0;
             while (InvalidSourceSink(source, sink, network))
             {
                 source = network.FoodSources.PickRandom();
                 sink = network.FoodSources.PickRandom();
+                iterations++;
             }
+            Logger.Info($"[GetFlow] Took {iterations} attempts to find a valid source and sink combination");
             return GetFlow(network, flow, source, sink);
         }
         
