@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Model.Generation
 {
@@ -15,6 +16,13 @@ namespace SlimeSimulation.Model.Generation
                 edges.Add(slimeEdge);
             }
             return new SlimeNetwork(graphWithFoodSources.NodesInGraph, graphWithFoodSources.FoodSources, edges);
+        }
+
+        public SlimeNetwork FromSingleFoodSourceInGraph(GraphWithFoodSources graphWithFoodSources)
+        {
+            var nodeSlimeStartsAt = graphWithFoodSources.FoodSources.PickRandom();
+            var slimeNodes = new HashSet<FoodSourceNode> { nodeSlimeStartsAt };
+            return new SlimeNetwork(new HashSet<Node>(slimeNodes), slimeNodes, new HashSet<SlimeEdge>());
         }
     }
 }

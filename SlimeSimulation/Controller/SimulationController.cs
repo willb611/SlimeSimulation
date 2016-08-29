@@ -3,11 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Gtk;
 using NLog;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.FlowCalculation;
+using SlimeSimulation.LinearEquations;
 using SlimeSimulation.Model;
+using SlimeSimulation.Model.Generation;
 using SlimeSimulation.Model.Simulation;
 using SlimeSimulation.StdLibHelpers;
 using SlimeSimulation.View;
@@ -22,24 +25,32 @@ namespace SlimeSimulation.Controller
         private static bool _disposed = false;
         
         private readonly SimulationUpdater _simulationUpdater;
-        private readonly GtkLifecycleController _gtkLifecycleController = GtkLifecycleController.Instance;
+        private readonly GtkLifecycleController _gtkLifecycleController;
 
         private readonly ItemLock<SimulationState> _protectedState = new ItemLock<SimulationState>();
         private bool _shouldFlowResultsBeDisplayed = false;
         private WindowControllerTemplate _activeWindowController;
 
         private readonly ApplicationStartWindowController _applicationStartWindowController;
+        private SimulationConfiguration _config;
 
         public int SimulationStepsCompleted { get; internal set; }
-
-        public SimulationController(ApplicationStartWindowController startingWindowController,
-            SimulationUpdater simulationUpdater, SlimeNetwork initial,
-            GraphWithFoodSources graphWithFoodSources)
+        
+        public SimulationController(ApplicationStartWindowController applicationStartWindowController, SimulationConfiguration config,
+            GtkLifecycleController gtkLifecycleController)
         {
-            _applicationStartWindowController = startingWindowController;
-            _simulationUpdater = simulationUpdater;
+            _config = config;
+            _gtkLifecycleController = gtkLifecycleController;
+            _applicationStartWindowController = applicationStartWindowController;
+            FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
+            var latticeGraphWithFoodSourcesGenerator = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig);
+            var graphWithFoodSources = latticeGraphWithFoodSourcesGenerator.Generate();
+            SlimeNetwork initial = new SlimeNetworkGenerator().FromSingleFoodSourceInGraph(graphWithFoodSources);
+
+            _simulationUpdater = new SimulationUpdater(config);
+            var initialState = new SimulationState(initial, false, graphWithFoodSources);
             _protectedState.Lock();
-            _protectedState.SetAndClearLock(new SimulationState(initial, initial.CoversGraph(graphWithFoodSources), graphWithFoodSources));
+            _protectedState.SetAndClearLock(initialState);
         }
 
         internal void Display(WindowTemplate window)

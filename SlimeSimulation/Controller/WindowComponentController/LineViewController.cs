@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NLog;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 using SlimeSimulation.View;
@@ -14,7 +15,7 @@ namespace SlimeSimulation.Controller.WindowComponentController
         public abstract Rgb GetColourForEdge(Edge edge);
     }
 
-    internal class FlowResultLineViewController : LineViewController
+    public class FlowResultLineViewController : LineViewController
     {
         private readonly FlowResult _flowResult;
         private readonly double _maxLineWidth;
@@ -41,8 +42,10 @@ namespace SlimeSimulation.Controller.WindowComponentController
         }
     }
 
-    internal class SlimeLineViewController : LineViewController
+    public class SlimeLineViewController : LineViewController
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly double _maxSlimeEdgeConnectivity;
         private readonly double _weightForNonSlimeEdge = GraphDrawingArea.MinEdgeWeightToDraw;
 

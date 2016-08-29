@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
@@ -22,21 +23,16 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private readonly SlimeNetworkExplorer _slimeNetworkExplorer;
 
         public SimulationUpdater() 
-            : this(new FlowCalculator(), new SlimeNetworkAdaptionCalculator(), 1)
+            : this(new SimulationConfiguration())
         {
         }
-        public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator,
-            double flowAmount)
-            : this(flowCalculator, slimeNetworkAdapterCalculator, flowAmount, new SlimeNetworkExplorer())
+
+        public SimulationUpdater(SimulationConfiguration simulationConfiguration)
         {
-        }
-        public SimulationUpdater(FlowCalculator flowCalculator, SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator,
-            double flowAmount, SlimeNetworkExplorer slimeNetworkExplorer)
-        {
-            _flowCalculator = flowCalculator;
-            _slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
-            _flowAmount = flowAmount;
-            _slimeNetworkExplorer = slimeNetworkExplorer;
+            _flowCalculator = new FlowCalculator(new LupDecompositionSolver());
+            _flowAmount = simulationConfiguration.FlowAmount;
+            _slimeNetworkAdapterCalculator = new SlimeNetworkAdaptionCalculator(simulationConfiguration.SlimeNetworkAdaptionCalculatorConfig);
+            _slimeNetworkExplorer = new SlimeNetworkExplorer();
         }
 
         public Task<SimulationState> TaskUpdateNetworkUsingFlowInState(SimulationState state)

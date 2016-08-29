@@ -50,14 +50,7 @@ namespace SlimeSimulation.Controller.WindowController
 
         internal void StartSimulation(SimulationConfiguration config)
         {
-            FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
-            var flowCalculator = new FlowCalculator(new LupDecompositionSolver());
-            var slimeNetworkGenerator = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig);
-            var slimeNetworkAdapter = new SlimeNetworkAdaptionCalculator(config.SlimeNetworkAdaptionCalculatorConfig);
-            var simulationUpdater = new SimulationUpdater(flowCalculator, slimeNetworkAdapter, config.FlowAmount);
-            var possible = slimeNetworkGenerator.Generate();
-            var controller = new SimulationController(this, simulationUpdater, MakeSlimeNetworkOfOneFoodSource(possible), possible);
-            possible = null; // aid gc ?
+            var controller = new SimulationController(this, config, GtkLifecycleController.Instance);
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Application.Invoke(delegate
             {
@@ -66,13 +59,6 @@ namespace SlimeSimulation.Controller.WindowController
                 controller.RunSimulation();
                 controller = null; // aid gc ?
             });
-        }
-
-        private SlimeNetwork MakeSlimeNetworkOfOneFoodSource(GraphWithFoodSources possible)
-        {
-            var nodeSlimeStartsAt = possible.FoodSources.PickRandom();
-            var slimeNodes = new HashSet<FoodSourceNode> { nodeSlimeStartsAt };
-            return new SlimeNetwork(new HashSet<Node>(slimeNodes), slimeNodes, new HashSet<SlimeEdge>());
         }
 
         public void FinishSimulation(SimulationController controller)
