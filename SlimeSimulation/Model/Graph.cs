@@ -58,6 +58,19 @@ namespace SlimeSimulation.Model
 
         internal Edge GetEdgeBetween(Node a, Node b)
         {
+            var edge = GetEdgeOrNullBetween(a, b);
+            if (edge == null)
+            {
+                throw new ArgumentException("Couldn't find an edge between nodes: " + a + ", and: " + b);
+            }
+            else
+            {
+                return edge;
+            }
+        }
+
+        protected Edge GetEdgeOrNullBetween(Node a, Node b)
+        {
             foreach (var edge in EdgesConnectedToNode(a))
             {
                 if (edge.GetOtherNode(a).Equals(b))
@@ -65,12 +78,7 @@ namespace SlimeSimulation.Model
                     return edge;
                 }
             }
-            throw new ArgumentException("Couldn't find an SlimeEdge between nodes: " + a + ", and: " + b);
-        }
-
-        internal bool EdgeExistsBetween(Node a, Node b)
-        {
-            return EdgesConnectedToNode(a).Any(edge => edge.GetOtherNode(a).Equals(b));
+            return null;
         }
 
         public bool RouteExistsBetween(Node a, Node b)

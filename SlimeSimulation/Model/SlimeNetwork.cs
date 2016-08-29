@@ -38,16 +38,12 @@ namespace SlimeSimulation.Model
 
         internal double GetEdgeConnectivityOrZero(Node a, Node b)
         {
-            if (EdgeExistsBetween(a, b))
+            var edge = GetEdgeOrNullBetween(a, b) as SlimeEdge;
+            if (edge != null)
             {
-                return GetEdgeBetween(a, b).Connectivity;
+                return edge.Connectivity;
             }
             return 0;
-        }
-
-        internal new SlimeEdge GetEdgeBetween(Node a, Node b)
-        {
-            return (SlimeEdge) base.GetEdgeBetween(a, b);
         }
 
         public bool CoversGraph(GraphWithFoodSources graphWithFoodSources)

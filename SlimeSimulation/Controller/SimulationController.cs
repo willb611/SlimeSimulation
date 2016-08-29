@@ -82,6 +82,7 @@ namespace SlimeSimulation.Controller
 
         internal void DoNextSimulationSteps(int numberOfSteps)
         {
+            Logger.Info($"[DoNextSimulationSteps] Running {numberOfSteps} steps");
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
                 Logger.Debug($"[DoNextSimulationSteps] Now completed {++stepsRunSoFar} steps");

@@ -11,12 +11,16 @@ namespace SlimeSimulation.LinearEquations
         // Ax = b
         public double[] FindX(double[][] a, double[] b)
         {
-            CheckMatrix(a);
+            if (Logger.IsDebugEnabled)
+            {
+                CheckMatrix(a);
+                LogDensity(a);
+            }
             if (Logger.IsTraceEnabled)
             {
                 Logger.Trace("A: " + LogHelper.PrintArrWithSpaces(a) + ", B: " + LogHelper.PrintArrWithNewLines(b));
             }
-            LogDensity(a);
+            Logger.Info($"[FindX] Solving with matrix with a size: {a.Length}, b size: {b.Length}");
             var pi = LupDecompose(a);
             var matrix = new UpperLowerMatrix(a);
             matrix.LogUpper();
