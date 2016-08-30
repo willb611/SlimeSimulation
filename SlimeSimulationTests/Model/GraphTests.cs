@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SlimeSimulation.Model.Tests
 {
@@ -52,6 +53,17 @@ namespace SlimeSimulation.Model.Tests
 
             var abActual = graph.GetEdgeBetween(a, b);
             Assert.AreEqual(ab, abActual);
+        }
+
+        [TestMethod()]
+        public void EdgesConnectedToNode_WhenNodeNotInGraph_ReturnsEmptySet()
+        {
+            Graph g = new Graph(new HashSet<Edge>());
+            Node a = new Node(1, 1, 1);
+
+            var neighbours = g.EdgesConnectedToNode(a);
+            Assert.IsNotNull(neighbours);
+            Assert.IsFalse(neighbours.Any());
         }
     }
 }

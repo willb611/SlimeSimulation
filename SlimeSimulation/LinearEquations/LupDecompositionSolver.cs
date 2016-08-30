@@ -23,7 +23,6 @@ namespace SlimeSimulation.LinearEquations
             Logger.Info($"[FindX] Solving with matrix with a size: {a.Length}, b size: {b.Length}. This will take approx {(long)b.Length * b.Length * ((long)b.Length)} operations");
             var pi = LupDecompose(a);
             var matrix = new UpperLowerMatrix(a);
-            matrix.LogUpper();
             return LupSolve(matrix, pi, b);
         }
 
@@ -222,15 +221,6 @@ namespace SlimeSimulation.LinearEquations
             return upper;
         }
 
-        public void LogUpper()
-        {
-            if (Logger.IsTraceEnabled)
-            {
-                Logger.Trace("[LogUpper] Printing");
-                Logger.Trace(LogHelper.PrintArr(_upper));
-            }
-        }
-
         private double CheckedUpper(int i, int j)
         {
             if (i > j)
@@ -249,13 +239,11 @@ namespace SlimeSimulation.LinearEquations
                 Logger.Warn("Lower matrix requested element which would have been upper");
                 return 0;
             }
-            Logger.Trace("[Lower] Request for i, j: {0}, {1} returning {2}", i, j, _original[i][j]);
             return _original[i][j];
         }
 
         internal double Upper(int i, int j)
         {
-            Logger.Trace("[Upper] Request for i, j: {0}, {1}", i, j);
             CheckArg(i);
             CheckArg(j);
             return _upper[i][j];

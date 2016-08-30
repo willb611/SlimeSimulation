@@ -32,7 +32,9 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             }
             var connectedEdges = RemoveDisconnectedEdges(edges);
             var connectedNodes = Edges.GetNodesContainedIn(connectedEdges);
-            connectedNodes.UnionWith(slimeNetwork.FoodSources); // Food sources never disconnect
+            // Food sources never disconnect. Otherwise slime *might* not be able to grow at the start from a single food source.
+            // Also weird errors occur if food sources are allowed to disconnect, not sure why.
+            connectedNodes.UnionWith(slimeNetwork.FoodSources);
             return new SlimeNetwork(connectedNodes, slimeNetwork.FoodSources,
                 connectedEdges);
         }

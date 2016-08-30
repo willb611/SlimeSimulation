@@ -18,11 +18,11 @@ namespace SlimeSimulation.Model
             ISet<Node> nodes = new HashSet<Node>();
             foreach (var edge in edges)
             {
-                AddNodesInEdgeNotContained(edge, ref nodes);
+                AddNodesFromEdge(edge, ref nodes);
             }
             return nodes;
         }
-        private static void AddNodesInEdgeNotContained(Edge slimeEdge, ref ISet<Node> nodes)
+        private static void AddNodesFromEdge(Edge slimeEdge, ref ISet<Node> nodes)
         {
             nodes.Add(slimeEdge.A);
             nodes.Add(slimeEdge.B);

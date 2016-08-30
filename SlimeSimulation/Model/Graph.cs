@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
 using SlimeSimulation.Model.Bfs;
 
 namespace SlimeSimulation.Model
 {
     public class Graph
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public ISet<Node> NodesInGraph { get; protected set; }
         public ISet<Edge> EdgesInGraph { get; }
         private readonly Dictionary<Node, ISet<Edge>> _edgesConnectedToNodeMapping;
@@ -53,7 +56,14 @@ namespace SlimeSimulation.Model
 
         internal ISet<Edge> EdgesConnectedToNode(Node node)
         {
-            return _edgesConnectedToNodeMapping[node];
+            if (_edgesConnectedToNodeMapping.ContainsKey(node))
+            {
+                return _edgesConnectedToNodeMapping[node];
+            }
+            {
+                Logger.Warn("[EdgesConnectedToNode] Node not contained in this graph... returning empty set");
+                return new HashSet<Edge>();
+            }
         }
 
         internal Edge GetEdgeBetween(Node a, Node b)

@@ -119,7 +119,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 iterations++;
             }
             Logger.Info($"[GetFlow] Took {iterations} attempts to find a valid source and sink combination");
-            return GetFlow(network, flow, source, sink);
+            return _flowCalculator.CalculateFlow(network, source, sink, flow);
         }
 
         private Node SelectSink(SlimeNetwork network)
@@ -154,13 +154,6 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             }
         }
         
-        private FlowResult GetFlow(SlimeNetwork network, double flow, Node source, Node sink)
-        {
-            var flowResult = _flowCalculator.CalculateFlow(network,
-              source, sink, flow);
-            return flowResult;
-        }
-
         public double FlowUsedWhenAdaptingNetwork()
         {
             return _flowAmount;

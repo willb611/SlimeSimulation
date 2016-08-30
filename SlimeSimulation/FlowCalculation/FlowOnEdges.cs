@@ -47,7 +47,15 @@ namespace SlimeSimulation.FlowCalculation
 
         internal double GetFlowOnEdge(Edge edge)
         {
-            return _flowOnEdgeMapping[edge];
+            if (_flowOnEdgeMapping.ContainsKey(edge))
+            {
+                return _flowOnEdgeMapping[edge];
+            }
+            else
+            {
+                Logger.Warn("[GetFlowOnEdge] Edge {0} wasn't found, returning 0", edge);
+                return 0;
+            }
         }
 
         internal void IncreaseFlowOnEdgeBy(Edge edge, double amount)
