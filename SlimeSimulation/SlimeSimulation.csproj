@@ -130,6 +130,7 @@
     <Compile Include="View\WindowComponent\SimulationControlComponent\AbstractSimulationControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FeedbackRateDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\IsSlimeAllowedToDisconnectLabel.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\ShouldStepFromAllSourcesAtOnceControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\SimulationInitialConfigurationDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepNumberOfTimesComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepUntilFullyGrownComponent.cs" />

@@ -5,6 +5,7 @@ using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
+using SlimeSimulation.Model.Simulation;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {
@@ -27,6 +28,29 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             foreach (SlimeEdge edge in slimeNetwork.SlimeEdges)
             {
                 double connectivityInNextStepForEdge = NextConnectivityForEdge(edge, flowResult.FlowOnEdge(edge));
+                SlimeEdge updatedSlimeEdge = new SlimeEdge(edge.A, edge.B, connectivityInNextStepForEdge);
+                edges.Add(updatedSlimeEdge);
+            }
+            var connectedEdges = RemoveDisconnectedEdges(edges);
+            var connectedNodes = Edges.GetNodesContainedIn(connectedEdges);
+            // Food sources never disconnect. Otherwise slime *might* not be able to grow at the start from a single food source.
+            // Also weird errors occur if food sources are allowed to disconnect, not sure why.
+            connectedNodes.UnionWith(slimeNetwork.FoodSources);
+            return new SlimeNetwork(connectedNodes, slimeNetwork.FoodSources,
+                connectedEdges);
+        }
+        
+        internal SlimeNetwork CalculateNextStep(SlimeNetwork slimeNetwork, List<FlowResult> flowResults)
+        {
+            ISet<SlimeEdge> edges = new HashSet<SlimeEdge>();
+            foreach (SlimeEdge edge in slimeNetwork.SlimeEdges)
+            {
+                double sumOfNextConnectivityForEdge = 0;
+                foreach (var flowResult in flowResults)
+                {
+                    sumOfNextConnectivityForEdge += NextConnectivityForEdge(edge, flowResult.FlowOnEdge(edge));
+                }
+                var connectivityInNextStepForEdge = sumOfNextConnectivityForEdge/flowResults.Count;
                 SlimeEdge updatedSlimeEdge = new SlimeEdge(edge.A, edge.B, connectivityInNextStepForEdge);
                 edges.Add(updatedSlimeEdge);
             }
@@ -71,5 +95,6 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
             return _feedbackParameter;
         }
+
     }
 }

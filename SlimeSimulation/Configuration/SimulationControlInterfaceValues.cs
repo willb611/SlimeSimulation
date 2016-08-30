@@ -10,5 +10,6 @@ namespace SlimeSimulation.Configuration
     {
         public int NumberOfStepsToRun = 1;
         public bool ShouldFlowResultsBeDisplayed = false;
+        public bool ShouldStepFromAllSourcesAtOnce = true;
     }
 }

@@ -3,6 +3,7 @@ using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.Controller.WindowController.Templates;
+using SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent;
 using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
@@ -22,6 +23,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
             Add(new SimulationStepButton(simulationStepWindowController));
             Add(new SimulationStepNumberOfTimesComponent(simulationStepWindowController, parentWindow, controlInterfaceStartingValues.NumberOfStepsToRun));
             Add(new ShouldFlowResultsBeDisplayedControlComponent(controlInterfaceStartingValues));
+            Add(new ShouldStepFromAllSourcesAtOnceControlComponent(controlInterfaceStartingValues));
         }
     }
 }

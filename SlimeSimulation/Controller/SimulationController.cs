@@ -107,6 +107,12 @@ namespace SlimeSimulation.Controller
             Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Finished in {stepNumber} steps");
         }
 
+        public void DoStepWhichWontDisconnectNodes()
+        {
+            SimulationControlBoxConfig.ShouldStepFromAllSourcesAtOnce = true;
+            DoNextSimulationStep();
+        }
+
         public void DoNextSimulationStep()
         {
             var state = _protectedState.Lock();
@@ -129,7 +135,11 @@ namespace SlimeSimulation.Controller
                     SimulationStepsCompleted++;
                 }
             }
-            else
+            else if (SimulationControlBoxConfig.ShouldStepFromAllSourcesAtOnce)
+            {
+                nextState = _simulationUpdater.TaskCalculateFlowFromAllSourcesAndUpdateNetwork(state);
+                SimulationStepsCompleted++;
+            } else 
             {
                 nextState = _simulationUpdater.TaskCalculateFlowAndUpdateNetwork(state);
                 SimulationStepsCompleted++;
