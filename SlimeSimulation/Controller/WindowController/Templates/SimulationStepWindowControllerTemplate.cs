@@ -59,5 +59,15 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             SimulationController.RunStepsUntilSlimeHasFullyExplored();
             SimulationController.UpdateDisplay();
         }
+
+        public double FlowUsedInAdaptingNetwork()
+        {
+            return SimulationController.FlowUsedWhenAdaptingNetwork();
+        }
+
+        public double FeedbackUsedWhenAdaptingNetwork()
+        {
+            return SimulationController.FeedbackUsedWhenAdaptingNetwork();
+        }
     }
 }

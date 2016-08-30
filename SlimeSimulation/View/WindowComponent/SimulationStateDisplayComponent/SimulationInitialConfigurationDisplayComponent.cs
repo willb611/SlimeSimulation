@@ -3,7 +3,7 @@ using SlimeSimulation.Controller.WindowController.Templates;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
 {
-    class SimulationInitialConfigurationDisplayComponent : VBox
+    class SimulationInitialConfigurationDisplayComponent : HBox
     {
         private readonly SimulationStepWindowControllerTemplate _simulationStepWindowController;
 
@@ -11,12 +11,17 @@ namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
             SimulationStepWindowControllerTemplate simulationStepWindowController)
         {
             _simulationStepWindowController = simulationStepWindowController;
-            AddComponents(simulationStepWindowController);
+            Add(new Label("Initial simulation parameters:"));
+            Add(InitialParameters(simulationStepWindowController));
         }
 
-        private void AddComponents(SimulationStepWindowControllerTemplate simulationStepWindowController)
+        private VBox InitialParameters(SimulationStepWindowControllerTemplate simulationStepWindowController)
         {
-            Add(new IsSlimeAllowedToDisconnectLabel(simulationStepWindowController.IsSlimeAllowedToDisconnect()));
+            var box = new VBox();
+            box.Add(new IsSlimeAllowedToDisconnectLabel(simulationStepWindowController.IsSlimeAllowedToDisconnect()));
+            box.Add(new FlowAmountLabelComponent(simulationStepWindowController.FlowUsedInAdaptingNetwork()));
+            box.Add(new FeedbackRateDisplayComponent(simulationStepWindowController.FeedbackUsedWhenAdaptingNetwork()));
+            return box;
         }
     }
 }

@@ -64,5 +64,10 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             Logger.Debug("[RemoveDisconnectedEdges] Out of {0}, remaining: {1} ({2}%)", edges.Count, connected.Count, (connected.Count / (double)edges.Count) * 100);
             return connected;
         }
+
+        public double FeedbackUsedWhenUpdatingNetwork()
+        {
+            return _feedbackParameter;
+        }
     }
 }

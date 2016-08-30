@@ -223,5 +223,15 @@ namespace SlimeSimulation.Controller
         {
             return _config.ShouldAllowDisconnection;
         }
+
+        public double FlowUsedWhenAdaptingNetwork()
+        {
+            return _simulationUpdater.FlowUsedWhenAdaptingNetwork();
+        }
+
+        public double FeedbackUsedWhenAdaptingNetwork()
+        {
+            return _simulationUpdater.FeedbackUsedWhenAdaptingNetwork();
+        }
     }
 }

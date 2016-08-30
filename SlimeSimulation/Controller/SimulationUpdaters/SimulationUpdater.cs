@@ -160,5 +160,16 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
               source, sink, flow);
             return flowResult;
         }
+
+        public double FlowUsedWhenAdaptingNetwork()
+        {
+            return _flowAmount;
+        }
+
+        public double FeedbackUsedWhenAdaptingNetwork()
+        {
+            return _slimeNetworkAdapterCalculator.FeedbackUsedWhenUpdatingNetwork();
+        }
     }
 }
+
