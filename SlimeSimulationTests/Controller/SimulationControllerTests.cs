@@ -38,6 +38,8 @@ namespace SlimeSimulation.Controller.Tests
 
             updaterMock.Verify(t => t.TaskExpandSlime(nonExpandedSlimeState));
             Assert.AreEqual(resultState, actualSimulationState);
+
+            Assert.AreEqual(1, controller.SimulationStepsCompleted);
         }
     }
 }
