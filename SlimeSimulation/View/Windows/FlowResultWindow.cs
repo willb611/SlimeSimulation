@@ -40,7 +40,7 @@ namespace SlimeSimulation.View.Windows
             hbox.PackStart(new FlowResultNodeHighlightKey().GetVisualKey(), false, true, 0);
 
             VBox vbox = new VBox(false, 10);
-            vbox.PackStart(new Label("Network with amount of flow: " + _flowResult.FlowAmount), false, true, 10);
+            vbox.PackStart(new FlowAmountLabelComponent(_flowResult.FlowAmount), false, true, 10);
             vbox.PackStart(new SimulationStepButton(_windowController), false, true, 10);
             vbox.PackStart(hbox, true, true, 10);
 

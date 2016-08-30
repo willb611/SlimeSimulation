@@ -12,9 +12,23 @@ namespace SlimeSimulation.View
         protected bool Disposed;
         private int _runningCount;
 
-        public static GtkLifecycleController _instance;
+        private static GtkLifecycleController _instance = new GtkLifecycleController();
 
-        public static GtkLifecycleController Instance => _instance;
+        public static GtkLifecycleController Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    Logger.Warn("[get] no instance found, returning a new one");
+                    return new GtkLifecycleController();
+                }
+                else
+                {
+                    return _instance;
+                }
+            }
+        }
 
         internal void ApplicationRun()
         {
@@ -30,7 +44,7 @@ namespace SlimeSimulation.View
             Application.Quit();
         }
 
-        public GtkLifecycleController()
+        private GtkLifecycleController()
         {
             if (_instance != null)
             {
@@ -80,9 +94,6 @@ namespace SlimeSimulation.View
             catch (Exception e)
             {
                 Logger.Error(e, "Error: " + e);
-            }
-            finally
-            {
             }
         }
     }

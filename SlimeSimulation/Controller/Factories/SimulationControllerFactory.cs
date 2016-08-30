@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.Controller.WindowController;
@@ -16,15 +17,23 @@ namespace SlimeSimulation.Controller.Factories
 {
     public class SimulationControllerFactory
     {
-        private readonly GtkLifecycleController _gtkLifecycleController;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly GtkLifecycleController _gtkLifecycleGtkLifecycleController;
 
         public SimulationControllerFactory() : this(GtkLifecycleController.Instance)
         {
             
         }
-        public SimulationControllerFactory(GtkLifecycleController controller)
+        public SimulationControllerFactory(GtkLifecycleController gtkLifecycleController)
         {
-            _gtkLifecycleController = controller;
+            if (gtkLifecycleController == null)
+            {
+                throw new ArgumentNullException($"[constructor] Given null {gtkLifecycleController}");
+            }
+            else
+            {
+                _gtkLifecycleGtkLifecycleController = gtkLifecycleController;
+            }
         }
 
         public SimulationController MakeSimulationController(
@@ -37,7 +46,7 @@ namespace SlimeSimulation.Controller.Factories
             var simulationUpdater = new SimulationUpdater(config);
             var initialState = new SimulationState(initial, false, graphWithFoodSources);
 
-            return new SimulationController(applicationStartWindowController, config, _gtkLifecycleController, initialState,
+            return new SimulationController(applicationStartWindowController, config, _gtkLifecycleGtkLifecycleController, initialState,
                 simulationUpdater);
         }
 

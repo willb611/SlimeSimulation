@@ -15,27 +15,29 @@ namespace SlimeSimulation.Controller.Tests
     [TestClass()]
     public class SimulationControllerTests
     {
-        [TestMethod()]
-        public void DoSimulationStepTest()
+        [TestMethod(), Timeout(3000)]
+        public void DoSimulationStep_WhenStateIsSlimeExpanding_ShouldExpandSlime()
         {
             var slimeNetworkGenerator = new SlimeNetworkGenerator();
             var initial = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = slimeNetworkGenerator.FromSingleFoodSourceInGraph(initial);
+            var nonExpandedSlimeState = new SimulationState(slime, false, initial);
+
             var updatedSlime = slimeNetworkGenerator.FromGraphWithFoodSources(initial);
+            var resultState = new SimulationState(updatedSlime, initial);
 
             var updaterMock = new Mock<SimulationUpdater>();
-            var state = new SimulationState(slime, true, initial);
-            var otherState = new SimulationState(updatedSlime, false, initial);
-            SimulationController controller = new SimulationController(null, null, null, state, updaterMock.Object);
-            Task<SimulationState> nextStateAsync = Task.Run(() => otherState);
-            updaterMock.Setup(updater => updater.TaskCalculateFlowAndUpdateNetwork(state)).Returns(nextStateAsync);
-            Assert.IsFalse(controller.ShouldFlowResultsBeDisplayed);
+            Task<SimulationState> nextStateAsync = Task.Run(() => resultState);
+            updaterMock.Setup(updater => updater.TaskExpandSlime(nonExpandedSlimeState)).Returns(nextStateAsync);
+
+            SimulationController controller = new SimulationController(null, null, null, nonExpandedSlimeState, updaterMock.Object);
+            Assert.IsFalse(controller.ShouldFlowResultsBeDisplayed, "expect flow results to not be displayed for this test");
 
             controller.DoNextSimulationStep();
             SimulationState actualSimulationState = controller.GetSimulationState();
 
-            Assert.AreEqual(otherState, actualSimulationState);
-            updaterMock.Verify(t => t.TaskCalculateFlowAndUpdateNetwork(state));
+            updaterMock.Verify(t => t.TaskExpandSlime(nonExpandedSlimeState));
+            Assert.AreEqual(resultState, actualSimulationState);
         }
     }
 }

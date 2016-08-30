@@ -49,6 +49,7 @@ namespace SlimeSimulation.Controller
 
         internal void Display(WindowTemplate window)
         {
+            Logger.Debug("[Display] About to display {0}", window);
             _gtkLifecycleController.Display(window);
         }
 
@@ -116,7 +117,7 @@ namespace SlimeSimulation.Controller
             Task<SimulationState> nextState;
             if (!state.HasFinishedExpanding)
             {
-                nextState = _simulationUpdater.ExpandSlime(state);
+                nextState = _simulationUpdater.TaskExpandSlime(state);
                 SimulationStepsCompleted++;
             }
             else if (ShouldFlowResultsBeDisplayed)

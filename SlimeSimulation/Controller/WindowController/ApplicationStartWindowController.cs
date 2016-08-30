@@ -42,7 +42,7 @@ namespace SlimeSimulation.Controller.WindowController
         
         public override void Render()
         {
-            using (var gtkLifecycleController = new GtkLifecycleController())
+            using (var gtkLifecycleController = GtkLifecycleController.Instance)
             {
                 using (Window = new ApplicationStartWindow("Slime simulation parameter selection", this))
                 {
@@ -78,6 +78,7 @@ namespace SlimeSimulation.Controller.WindowController
 
         public override void OnWindowClose()
         {
+            Logger.Info("[OnWindowClose] Entered method, application probably shutting down");
             base.OnWindowClose();
             DisposeOfView();
             GtkLifecycleController.Instance.ApplicationQuit();

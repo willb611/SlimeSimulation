@@ -35,7 +35,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             _slimeNetworkExplorer = new SlimeNetworkExplorer();
         }
 
-        public Task<SimulationState> TaskUpdateNetworkUsingFlowInState(SimulationState state)
+        public virtual Task<SimulationState> TaskUpdateNetworkUsingFlowInState(SimulationState state)
         {
             return Task.Run(() =>
             {
@@ -67,9 +67,20 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             });
         }
 
-        public Task<SimulationState> TaskCalculateFlow(SimulationState state)
+        public virtual Task<SimulationState> TaskCalculateFlow(SimulationState state)
         {
             return Task.Run(() => GetStateWithFlow(state));
+        }
+
+        internal virtual Task<SimulationState> TaskExpandSlime(SimulationState state)
+        {
+            return Task.Run(() =>
+            {
+                Logger.Debug("[TaskExpandSlime] Starting");
+                var expandedNetwork = _slimeNetworkExplorer.ExpandSlimeInNetwork(state.SlimeNetwork, state.PossibleNetwork);
+                var hasFinishedExpanding = state.HasFinishedExpanding || state.SlimeNetwork.CoversGraph(state.PossibleNetwork);
+                return new SimulationState(expandedNetwork, hasFinishedExpanding, state.PossibleNetwork);
+            });
         }
 
         private SimulationState GetNextStateWithUpdatedConductivites(SlimeNetwork slimeNetwork, FlowResult flowResult, GraphWithFoodSources graphWithFoodSources)
@@ -148,16 +159,6 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             var flowResult = _flowCalculator.CalculateFlow(network,
               source, sink, flow);
             return flowResult;
-        }
-
-        internal Task<SimulationState> ExpandSlime(SimulationState state)
-        {
-            return Task.Run(() =>
-            {
-                var expandedNetwork = _slimeNetworkExplorer.ExpandSlimeInNetwork(state.SlimeNetwork, state.PossibleNetwork);
-                var hasFinishedExpanding = state.HasFinishedExpanding || state.SlimeNetwork.CoversGraph(state.PossibleNetwork);
-                return new SimulationState(expandedNetwork, hasFinishedExpanding, state.PossibleNetwork);
-            });
         }
     }
 }

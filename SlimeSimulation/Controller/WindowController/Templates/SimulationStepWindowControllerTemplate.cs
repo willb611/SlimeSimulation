@@ -7,7 +7,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected SimulationController SimulationController;
-
+        
         public SimulationStepWindowControllerTemplate(SimulationController simulationController)
         {
             SimulationController = simulationController;
@@ -15,8 +15,8 @@ namespace SlimeSimulation.Controller.WindowController.Templates
 
         public void OnStepCompleted()
         {
-            Window.Dispose();
             Logger.Debug("[OnStepCompleted] Entered");
+            Window.Dispose();
             SimulationController.DoNextSimulationStep();
             SimulationController.UpdateDisplay();
             Logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");

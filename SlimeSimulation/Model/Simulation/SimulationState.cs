@@ -10,6 +10,10 @@ namespace SlimeSimulation.Model.Simulation
         public bool HasFinishedExpanding { get; private set; }
         public GraphWithFoodSources PossibleNetwork { get; internal set; }
 
+        public SimulationState(SlimeNetwork network, GraphWithFoodSources graphWithFoodSources) : this(network,
+            network.CoversGraph(graphWithFoodSources), graphWithFoodSources)
+        {
+        }
         public SimulationState(SlimeNetwork network, bool hasFinishedExpanding, GraphWithFoodSources graphWithFoodSources)
         {
             if (network == null)

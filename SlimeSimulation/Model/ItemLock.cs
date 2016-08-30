@@ -14,13 +14,16 @@ namespace SlimeSimulation.StdLibHelpers
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private T _item;
-        private int _accessCount = 0;
+        private int _currentAccessCount = 0;
 
         public T Get()
         {
             Logger.Trace("[Get] Locking..");
             Lock();
-            Logger.Trace("[Get] Returning item");
+            if (Logger.IsTraceEnabled)
+            {
+                Logger.Trace($"[Get] Returning item {_item}");
+            }
             try
             {
                 return _item;
@@ -33,6 +36,10 @@ namespace SlimeSimulation.StdLibHelpers
 
         public void SetAndClearLock(T item)
         {
+            if (Logger.IsTraceEnabled)
+            {
+                Logger.Trace($"[SetAndClearLock] Setting {item}");
+            }
             _item = item;
             ClearLock();
         }
@@ -40,7 +47,7 @@ namespace SlimeSimulation.StdLibHelpers
         public void ClearLock()
         {
             Logger.Trace("[ClearLock] Unlocking..");
-            var value = Interlocked.Exchange(ref _accessCount, 0);
+            var value = Interlocked.Exchange(ref _currentAccessCount, 0);
             if (value != 1)
             {
                 Logger.Warn("[ClearLock] Attempted to clear something which was unlocked");
@@ -49,7 +56,7 @@ namespace SlimeSimulation.StdLibHelpers
 
         public T Lock()
         {
-            while (Interlocked.CompareExchange(ref _accessCount, 1, 0) == 1)
+            while (Interlocked.CompareExchange(ref _currentAccessCount, 1, 0) == 1)
             {
             }
             return _item;

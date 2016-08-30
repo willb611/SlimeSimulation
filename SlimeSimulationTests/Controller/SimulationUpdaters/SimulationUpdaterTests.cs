@@ -35,7 +35,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
         {
             var network = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(network);
-            var state = new SimulationState(slime, true, network);
+            var state = new SimulationState(slime, network);
 
             var updatedNetwork = new SimulationUpdater().TaskCalculateFlow(state);
             updatedNetwork.Wait(10000);
@@ -49,7 +49,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
         {
             var network = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(network);
-            var state = new SimulationState(slime, true, network);
+            var state = new SimulationState(slime, network);
 
             var updatedNetwork = new SimulationUpdater().TaskCalculateFlowAndUpdateNetwork(state);
             updatedNetwork.Wait(10000);

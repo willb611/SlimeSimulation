@@ -22,7 +22,7 @@ namespace SlimeSimulation.View.Windows.Templates
             if (disposing)
             {
                 base.Dispose(disposing);
-                GraphDrawingArea.Dispose();
+                GraphDrawingArea?.Dispose();
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
