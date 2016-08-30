@@ -69,8 +69,11 @@ namespace SlimeSimulation.View
             }
             if (disposing)
             {
-                Logger.Info("[Dispose] Quitting application");
-                ApplicationQuit();
+                Logger.Info("[Dispose] Quitting");
+                for (var i = Interlocked.Exchange(ref _runningCount, 0); i > 0; i--)
+                {
+                    ApplicationQuit();
+                }
             }
             Disposed = true;
         }

@@ -32,8 +32,6 @@ namespace SlimeSimulation.Controller.WindowController
         {
 
         }
-
-
         
         public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
         {
@@ -81,7 +79,6 @@ namespace SlimeSimulation.Controller.WindowController
             Logger.Info("[OnWindowClose] Entered method, application probably shutting down");
             base.OnWindowClose();
             DisposeOfView();
-            GtkLifecycleController.Instance.ApplicationQuit();
         }
 
         private void DisposeOfView()
