@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gtk;
+﻿using Gtk;
 using SlimeSimulation.Controller.WindowController.Templates;
 
-namespace SlimeSimulation.View.WindowComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
 {
     class SimulationInitialConfigurationDisplayComponent : VBox
     {
@@ -21,7 +16,7 @@ namespace SlimeSimulation.View.WindowComponent
 
         private void AddComponents(SimulationStepWindowControllerTemplate simulationStepWindowController)
         {
-            //simulationStepWindowController
+            Add(new IsSlimeAllowedToDisconnectLabel(simulationStepWindowController.IsSlimeAllowedToDisconnect()));
         }
     }
 }

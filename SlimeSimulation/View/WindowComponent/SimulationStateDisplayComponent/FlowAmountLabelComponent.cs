@@ -1,6 +1,6 @@
 using Gtk;
 
-namespace SlimeSimulation.View.WindowComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
 {
     internal class FlowAmountLabelComponent : Label
     {

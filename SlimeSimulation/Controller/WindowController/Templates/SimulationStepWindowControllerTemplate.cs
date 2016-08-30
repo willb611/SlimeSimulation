@@ -1,3 +1,4 @@
+using System;
 using NLog;
 
 namespace SlimeSimulation.Controller.WindowController.Templates
@@ -21,6 +22,11 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             SimulationController.UpdateDisplay();
             Logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
             Logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");
+        }
+
+        internal bool IsSlimeAllowedToDisconnect()
+        {
+            return SimulationController.IsSlimeAllowedToDisconnect();
         }
 
         public override void OnWindowClose()

@@ -218,5 +218,10 @@ namespace SlimeSimulation.Controller
             _disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
         }
+
+        public bool IsSlimeAllowedToDisconnect()
+        {
+            return _config.ShouldAllowDisconnection;
+        }
     }
 }
