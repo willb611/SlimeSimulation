@@ -12,11 +12,17 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         private readonly TextView _numberOfTimesToStepTextView;
         private readonly Window _parentWindow;
 
-        public SimulationStepNumberOfTimesComponent(SimulationStepWindowControllerTemplate simulationStepWindowController, Window enclosingWindow) : base(true, 10)
+        public SimulationStepNumberOfTimesComponent(
+            SimulationStepWindowControllerTemplate simulationStepWindowController, Window enclosingWindow)
+            : this(simulationStepWindowController, enclosingWindow, 1)
+        {
+        }
+        public SimulationStepNumberOfTimesComponent(SimulationStepWindowControllerTemplate simulationStepWindowController,
+            Window enclosingWindow, int numberOfStepsToRun) : base(true, 10)
         {
             _parentWindow = enclosingWindow;
             _simulationStepWindowController = simulationStepWindowController;
-            _numberOfTimesToStepTextView = new TextView {Buffer = {Text = "1"}};
+            _numberOfTimesToStepTextView = new TextView {Buffer = {Text = numberOfStepsToRun.ToString()}};
             var doStepsButton = new Button(new Label("Run number of steps"));
             doStepsButton.Clicked += DoStepsButtonOnClicked;
 

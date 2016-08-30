@@ -1,5 +1,6 @@
 using System;
 using NLog;
+using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.Controller.WindowController.Templates
 {
@@ -12,7 +13,10 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         public SimulationStepWindowControllerTemplate(SimulationController simulationController)
         {
             SimulationController = simulationController;
+            SimulationControlBoxConfig = simulationController.SimulationControlBoxConfig;
         }
+
+        public SimulationControlBoxConfig SimulationControlBoxConfig { get; set; }
 
         public void OnStepCompleted()
         {

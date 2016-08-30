@@ -32,10 +32,11 @@ namespace SlimeSimulation.Controller
         private WindowControllerTemplate _activeWindowController;
 
         private readonly ApplicationStartWindowController _applicationStartWindowController;
-        private SimulationConfiguration _config;
+        private readonly SimulationConfiguration _config;
 
+        public SimulationControlBoxConfig SimulationControlBoxConfig { get; } = new SimulationControlBoxConfig();
         public int SimulationStepsCompleted { get; internal set; }
-        
+
         public SimulationController(ApplicationStartWindowController applicationStartWindowController, SimulationConfiguration config,
             GtkLifecycleController gtkLifecycleController, SimulationState initialState, SimulationUpdater simulationUpdater)
         {
@@ -69,6 +70,7 @@ namespace SlimeSimulation.Controller
             }
         }
 
+
         public void RunSimulation()
         {
             try
@@ -90,6 +92,7 @@ namespace SlimeSimulation.Controller
 
         internal void DoNextSimulationSteps(int numberOfSteps)
         {
+            SimulationControlBoxConfig.NumberOfStepsToRun = numberOfSteps;
             Logger.Info($"[DoNextSimulationSteps] Running {numberOfSteps} steps");
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
