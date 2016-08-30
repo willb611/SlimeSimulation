@@ -41,5 +41,33 @@ namespace SlimeSimulation.Controller.Tests
 
             Assert.AreEqual(1, controller.SimulationStepsCompleted);
         }
+
+        [TestMethod(), Timeout(3000)]
+        public void RunStepsUntilSlimeHasFullyExplored_ShouldFullyExploreSlime()
+        {
+            var slimeNetworkGenerator = new SlimeNetworkGenerator();
+            var initial = new LatticeGraphWithFoodSourcesGenerator().Generate();
+            var slime = slimeNetworkGenerator.FromSingleFoodSourceInGraph(initial);
+            var initialState = new SimulationState(slime, false, initial);
+            var fullyEploredSlimeState = new SimulationState(slime, true, initial);
+
+            var updaterMock = new Mock<SimulationUpdater>();
+            Task<SimulationState> incompleteStateTask = Task.Run((() => initialState));
+            Task<SimulationState> nextStateAsync = Task.Run(() => fullyEploredSlimeState);
+            updaterMock.SetupSequence(updater => updater.TaskExpandSlime(initialState))
+                .Returns(incompleteStateTask)
+                .Returns(incompleteStateTask)
+                .Returns(incompleteStateTask)
+                .Returns(incompleteStateTask)
+                .Returns(nextStateAsync);
+            SimulationController controller = new SimulationController(null, null, null, initialState, updaterMock.Object);
+            Assert.IsFalse(controller.ShouldFlowResultsBeDisplayed, "expect flow results to not be displayed for this test");
+
+            controller.RunStepsUntilSlimeHasFullyExplored();
+
+            SimulationState actualSimulationState = controller.GetSimulationState();
+            Assert.AreEqual(fullyEploredSlimeState, actualSimulationState);
+            updaterMock.VerifyAll();
+        }
     }
 }
