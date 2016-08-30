@@ -38,12 +38,6 @@ namespace SlimeSimulation.View.Windows
                 slimeNetwork.GetAllEdgesInGraphReplacingThoseWhichAreSlimed(graphWithFoodSources);
         }
 
-        public override void Display()
-        {
-            _simulationControlBox.ReDraw();
-            base.Display();
-        }
-
         protected override void AddToWindow(Window window)
         {
             var bgColor = new Color(255, 255, 255);

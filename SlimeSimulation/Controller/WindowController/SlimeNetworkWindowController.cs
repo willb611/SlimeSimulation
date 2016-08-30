@@ -16,9 +16,7 @@ namespace SlimeSimulation.Controller.WindowController
         private readonly SlimeNetwork _slimeNetwork;
         private readonly GraphWithFoodSources _graphWithFoodSources;
         private readonly ISimulationControlBoxFactory _simulationControlBoxFactory;
-
-        internal bool WillFlowResultsBeDisplayed => SimulationController.ShouldFlowResultsBeDisplayed;
-
+        
         public SlimeNetworkWindowController(SimulationController mainController, SlimeNetwork slimeNetwork, GraphWithFoodSources graphWithFoodSources,
             ISimulationControlBoxFactory simulationControlBoxFactory)
           : base(mainController)
@@ -49,11 +47,6 @@ namespace SlimeSimulation.Controller.WindowController
         internal int StepsSoFarInSimulation()
         {
             return SimulationController.SimulationStepsCompleted;
-        }
-
-        internal void ToggleAreFlowResultsDisplayed(bool shouldResultsBeDisplayed)
-        {
-            SimulationController.ShouldFlowResultsBeDisplayed = shouldResultsBeDisplayed;
         }
         
         public void ReDraw()

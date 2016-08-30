@@ -9,14 +9,14 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected SimulationController SimulationController;
-        
+
+        public SimulationControlInterfaceValues SimulationControlInterfaceValues;
+
         public SimulationStepWindowControllerTemplate(SimulationController simulationController)
         {
             SimulationController = simulationController;
-            SimulationControlBoxConfig = simulationController.SimulationControlBoxConfig;
+            SimulationControlInterfaceValues = simulationController.SimulationControlBoxConfig;
         }
-
-        public SimulationControlBoxConfig SimulationControlBoxConfig { get; set; }
 
         public void OnStepCompleted()
         {

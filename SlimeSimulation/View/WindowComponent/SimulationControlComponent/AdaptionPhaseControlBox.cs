@@ -10,41 +10,18 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
     class AdaptionPhaseControlBox : AbstractSimulationControlBox
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private ShouldFlowResultsBeDisplayedControlComponent _shouldFlowResultsBeDisplayed;
-        private readonly SimulationControlBoxConfig _simulationControlBoxConfig;
         
         public AdaptionPhaseControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
         {
-            _simulationControlBoxConfig = simulationStepWindowController.SimulationControlBoxConfig;
             AddControls(simulationStepWindowController, parentWindow);
         }
 
         private void AddControls(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
         {
+            var controlInterfaceStartingValues = simulationStepWindowController.SimulationControlInterfaceValues;
             Add(new SimulationStepButton(simulationStepWindowController));
-            Add(new SimulationStepNumberOfTimesComponent(simulationStepWindowController, parentWindow, _simulationControlBoxConfig.NumberOfStepsToRun));
-            TryToAddShouldFlowResultsBeDisplayedComponent(simulationStepWindowController);
-        }
-
-        private void TryToAddShouldFlowResultsBeDisplayedComponent(SimulationStepWindowControllerTemplate simulationStepWindowController)
-        {
-            var slimeWindowController = simulationStepWindowController as SlimeNetworkWindowController;
-            if (slimeWindowController == null)
-            {
-                Logger.Warn(
-                    $"[AddControls] Expected {nameof(simulationStepWindowController)} to be of type {nameof(slimeWindowController)} but wasn't");
-            }
-            else
-            {
-                _shouldFlowResultsBeDisplayed = new ShouldFlowResultsBeDisplayedControlComponent(slimeWindowController);
-                Add(_shouldFlowResultsBeDisplayed);
-            }
-        }
-
-        public override void ReDraw()
-        {
-            _shouldFlowResultsBeDisplayed?.ReDraw();
+            Add(new SimulationStepNumberOfTimesComponent(simulationStepWindowController, parentWindow, controlInterfaceStartingValues.NumberOfStepsToRun));
+            Add(new ShouldFlowResultsBeDisplayedControlComponent(controlInterfaceStartingValues));
         }
     }
 }

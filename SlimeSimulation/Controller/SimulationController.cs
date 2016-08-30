@@ -28,14 +28,19 @@ namespace SlimeSimulation.Controller
         private readonly GtkLifecycleController _gtkLifecycleController;
 
         private readonly ItemLock<SimulationState> _protectedState = new ItemLock<SimulationState>();
-        private bool _shouldFlowResultsBeDisplayed = false;
         private WindowControllerTemplate _activeWindowController;
 
         private readonly ApplicationStartWindowController _applicationStartWindowController;
         private readonly SimulationConfiguration _config;
 
-        public SimulationControlBoxConfig SimulationControlBoxConfig { get; } = new SimulationControlBoxConfig();
+        public SimulationControlInterfaceValues SimulationControlBoxConfig { get; } = new SimulationControlInterfaceValues();
         public int SimulationStepsCompleted { get; internal set; }
+
+        public bool ShouldFlowResultsBeDisplayed
+        {
+            get { return SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed; }
+            set { SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed = false; }
+        }
 
         public SimulationController(ApplicationStartWindowController applicationStartWindowController, SimulationConfiguration config,
             GtkLifecycleController gtkLifecycleController, SimulationState initialState, SimulationUpdater simulationUpdater)
@@ -59,18 +64,7 @@ namespace SlimeSimulation.Controller
         {
             return _protectedState.Get();
         }
-
-        public bool ShouldFlowResultsBeDisplayed
-        {
-            get { return _shouldFlowResultsBeDisplayed; }
-            set {
-                _shouldFlowResultsBeDisplayed = value;
-                var slimeNetworkWindowController = _activeWindowController as SlimeNetworkWindowController;
-                slimeNetworkWindowController?.ReDraw();
-            }
-        }
-
-
+        
         public void RunSimulation()
         {
             try

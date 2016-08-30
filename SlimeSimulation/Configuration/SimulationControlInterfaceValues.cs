@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace SlimeSimulation.Configuration
 {
-    public class SimulationControlBoxConfig
+    public class SimulationControlInterfaceValues
     {
         public int NumberOfStepsToRun = 1;
+        public bool ShouldFlowResultsBeDisplayed = false;
     }
 }

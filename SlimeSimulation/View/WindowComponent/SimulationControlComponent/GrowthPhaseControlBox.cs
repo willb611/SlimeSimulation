@@ -20,10 +20,5 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
             Add(new SimulationStepButton(simulationStepWindowController));
             Add(new SimulationStepUntilFullyGrownComponent(simulationStepWindowController, parentWindow));
         }
-
-        public override void ReDraw()
-        {
-            // Do nothing
-        }
     }
 }

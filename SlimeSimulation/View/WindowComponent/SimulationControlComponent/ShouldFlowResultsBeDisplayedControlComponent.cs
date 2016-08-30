@@ -1,33 +1,32 @@
+using System;
 using Gtk;
 using NLog;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.Controller.WindowController.Templates;
 
 namespace SlimeSimulation.View.Windows
 {
     internal class ShouldFlowResultsBeDisplayedControlComponent : CheckButton
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly SlimeNetworkWindowController _controller;
+        private readonly SimulationControlInterfaceValues _simulationControlBoxConfig;
 
-        public ShouldFlowResultsBeDisplayedControlComponent(SlimeNetworkWindowController controller) : base("Should simulation step result (flow graph) be displayed?")
+        public ShouldFlowResultsBeDisplayedControlComponent(SimulationControlInterfaceValues simulationControlBoxConfig) 
+            : base("Should simulation step result (flow graph) be displayed?")
         {
-            _controller = controller;
+            _simulationControlBoxConfig = simulationControlBoxConfig;
             Setup();
         }
 
         private void Setup()
         {
-            Active = _controller.WillFlowResultsBeDisplayed;
-            Toggled += delegate
+            Active = _simulationControlBoxConfig.ShouldFlowResultsBeDisplayed;
+            Toggled += delegate(object sender, EventArgs args)
             {
-                _controller.ToggleAreFlowResultsDisplayed(Active);
+                _simulationControlBoxConfig.ShouldFlowResultsBeDisplayed = !_simulationControlBoxConfig.ShouldFlowResultsBeDisplayed;
             };
-            Logger.Debug("[ShouldSimulationStepResultsBeDisplayedInput] Setting initial value to: " + _controller.WillFlowResultsBeDisplayed);
-        }
-        
-        public void ReDraw()
-        {
-            Active = _controller.WillFlowResultsBeDisplayed;
+            Logger.Debug("[ShouldSimulationStepResultsBeDisplayedInput] Setting initial value to: " + _simulationControlBoxConfig.ShouldFlowResultsBeDisplayed);
         }
     }
 }
