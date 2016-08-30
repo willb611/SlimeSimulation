@@ -146,6 +146,8 @@
     <Compile Include="View\WindowComponent\FlowResultNodeHighlightKey.cs" />
     <Compile Include="View\Rgb.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepButton.cs" />
+    <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\StepsTakenInAdaptingSlimeDisplayComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\StepsTakenForSlimeToExploreDisplayComponent.cs" />
     <Compile Include="View\Windows\Templates\GraphDrawingWindowTemplate.cs" />
     <Compile Include="View\Windows\Templates\OnClickCallback.cs" />
     <Compile Include="View\Windows\Templates\WindowTemplate.cs" />

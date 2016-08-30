@@ -25,6 +25,8 @@ namespace SlimeSimulation.View.Windows
         private readonly ISet<Edge> _edgesInSlimeNetworkUnionEdgesFromGraphWithFoodSources;
         
         private AbstractSimulationControlBox _simulationControlBox;
+        private StepsTakenInAdaptingSlimeDisplayComponent _stepsTakenInSimulationDisplayComponent;
+        private StepsTakenForSlimeToExploreDisplayComponent _stepsTakenForSlimeToExploreDisplayComponent;
 
         public SlimeNetworkWindow(SlimeNetwork slimeNetwork, GraphWithFoodSources graphWithFoodSources,
             SlimeNetworkWindowController controller, ISimulationControlBoxFactory simulationControlBoxFactory)
@@ -72,14 +74,12 @@ namespace SlimeSimulation.View.Windows
         private Widget SimulationStateInterface()
         {
             _simulationControlBox = _simulationControlBoxFactory.MakeControlBox(_controller, Window);
-            return new VBox {StepNumberLabel(),
+            _stepsTakenInSimulationDisplayComponent = new StepsTakenInAdaptingSlimeDisplayComponent(_controller);
+            _stepsTakenForSlimeToExploreDisplayComponent = new StepsTakenForSlimeToExploreDisplayComponent(_controller);
+            return new VBox {
+                _stepsTakenForSlimeToExploreDisplayComponent,
+                _stepsTakenInSimulationDisplayComponent,
                 _simulationControlBox};
-        }
-
-        private Label StepNumberLabel()
-        {
-            var stepNumber = _controller.StepsSoFarInSimulation();
-            return new Label("Simulation steps completed: " + stepNumber);
         }
     }
 }

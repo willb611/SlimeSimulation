@@ -34,13 +34,15 @@ namespace SlimeSimulation.Controller
         private readonly SimulationConfiguration _config;
 
         public SimulationControlInterfaceValues SimulationControlBoxConfig { get; } = new SimulationControlInterfaceValues();
-        public int SimulationStepsCompleted { get; internal set; }
+        public int StepsTakenInAdaptingState => GetSimulationState().StepsTakenInAdaptingState;
+        public int StepsTakenForSlimeToExplore => GetSimulationState().StepsTakenInExploringState;
 
         public bool ShouldFlowResultsBeDisplayed
         {
             get { return SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed; }
             set { SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed = false; }
         }
+
 
         public SimulationController(ApplicationStartWindowController applicationStartWindowController, SimulationConfiguration config,
             GtkLifecycleController gtkLifecycleController, SimulationState initialState, SimulationUpdater simulationUpdater)
@@ -115,7 +117,6 @@ namespace SlimeSimulation.Controller
             if (!state.HasFinishedExpanding)
             {
                 nextState = _simulationUpdater.TaskExpandSlime(state);
-                SimulationStepsCompleted++;
             }
             else if (ShouldFlowResultsBeDisplayed)
             {
@@ -126,13 +127,11 @@ namespace SlimeSimulation.Controller
                 else
                 {
                     nextState = _simulationUpdater.TaskUpdateNetworkUsingFlowInState(state);
-                    SimulationStepsCompleted++;
                 }
             }
             else
             {
                 nextState = _simulationUpdater.TaskCalculateFlowAndUpdateNetwork(state);
-                SimulationStepsCompleted++;
             }
             UpdateControllerState(nextState);
         }

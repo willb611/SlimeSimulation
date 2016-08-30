@@ -43,11 +43,6 @@ namespace SlimeSimulation.Controller.WindowController
             var area = widget as GraphDrawingArea;
             area?.InvertEdgeDrawing();
         }
-
-        internal int StepsSoFarInSimulation()
-        {
-            return SimulationController.SimulationStepsCompleted;
-        }
         
         public void ReDraw()
         {

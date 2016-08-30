@@ -11,12 +11,15 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         protected SimulationController SimulationController;
 
         public SimulationControlInterfaceValues SimulationControlInterfaceValues;
+        public int StepsCompletedSoFarInAdaptingSlime => SimulationController.StepsTakenInAdaptingState;
+        public int StepsTakenForSlimeToExplore => SimulationController.StepsTakenForSlimeToExplore;
 
         public SimulationStepWindowControllerTemplate(SimulationController simulationController)
         {
             SimulationController = simulationController;
             SimulationControlInterfaceValues = simulationController.SimulationControlBoxConfig;
         }
+
 
         public void OnStepCompleted()
         {
