@@ -36,6 +36,10 @@ namespace SlimeSimulation.Controller
         public SimulationControlInterfaceValues SimulationControlBoxConfig { get; } = new SimulationControlInterfaceValues();
         public int SimulationStepsCompleted { get; internal set; }
 
+        public bool IsSlimeAllowedToDisconnect => _config.ShouldAllowDisconnection;
+        public double FlowUsedWhenAdaptingNetwork => _simulationUpdater.FlowUsedWhenAdaptingNetwork;
+        public double FeedbackUsedWhenAdaptingNetwork => _simulationUpdater.FeedbackUsedWhenAdaptingNetwork;
+
         public bool ShouldFlowResultsBeDisplayed
         {
             get { return SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed; }
@@ -224,21 +228,6 @@ namespace SlimeSimulation.Controller
             }
             _disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
-        }
-
-        public bool IsSlimeAllowedToDisconnect()
-        {
-            return _config.ShouldAllowDisconnection;
-        }
-
-        public double FlowUsedWhenAdaptingNetwork()
-        {
-            return _simulationUpdater.FlowUsedWhenAdaptingNetwork();
-        }
-
-        public double FeedbackUsedWhenAdaptingNetwork()
-        {
-            return _simulationUpdater.FeedbackUsedWhenAdaptingNetwork();
         }
     }
 }

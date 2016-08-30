@@ -9,8 +9,12 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected SimulationController SimulationController;
-
         public SimulationControlInterfaceValues SimulationControlInterfaceValues;
+        internal bool StepWithoutShowingFlowResult => !SimulationController.ShouldFlowResultsBeDisplayed;
+
+        internal bool IsSlimeAllowedToDisconnect => SimulationController.IsSlimeAllowedToDisconnect;
+        public double FlowUsedInAdaptingNetwork => SimulationController.FlowUsedWhenAdaptingNetwork;
+        public double FeedbackUsedWhenAdaptingNetwork => SimulationController.FeedbackUsedWhenAdaptingNetwork;
 
         public SimulationStepWindowControllerTemplate(SimulationController simulationController)
         {
@@ -28,10 +32,6 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             Logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");
         }
 
-        internal bool IsSlimeAllowedToDisconnect()
-        {
-            return SimulationController.IsSlimeAllowedToDisconnect();
-        }
 
         public override void OnWindowClose()
         {
@@ -46,11 +46,6 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             SimulationController.UpdateDisplay();
         }
 
-        internal bool StepWithoutShowingFlowResult()
-        {
-            return !SimulationController.ShouldFlowResultsBeDisplayed;
-        }
-
         public void DisableShowingFlowResults()
         {
             SimulationController.ShouldFlowResultsBeDisplayed = false;
@@ -62,16 +57,6 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             Logger.Debug("[RunStepsUntilSlimeHasFullyExplored] Starting");
             SimulationController.RunStepsUntilSlimeHasFullyExplored();
             SimulationController.UpdateDisplay();
-        }
-
-        public double FlowUsedInAdaptingNetwork()
-        {
-            return SimulationController.FlowUsedWhenAdaptingNetwork();
-        }
-
-        public double FeedbackUsedWhenAdaptingNetwork()
-        {
-            return SimulationController.FeedbackUsedWhenAdaptingNetwork();
         }
     }
 }

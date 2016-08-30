@@ -14,6 +14,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly double _feedbackParameter;
+        public double FeedbackUsedWhenUpdatingNetwork => _feedbackParameter;
 
         public SlimeNetworkAdaptionCalculator() : this(new SlimeNetworkAdaptionCalculatorConfig())
         {
@@ -91,10 +92,6 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return connected;
         }
 
-        public double FeedbackUsedWhenUpdatingNetwork()
-        {
-            return _feedbackParameter;
-        }
 
     }
 }

@@ -23,6 +23,9 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private readonly double _flowAmount;
         private readonly SlimeNetworkExplorer _slimeNetworkExplorer;
 
+        public double FlowUsedWhenAdaptingNetwork => _flowAmount;
+        public double FeedbackUsedWhenAdaptingNetwork => _slimeNetworkAdapterCalculator.FeedbackUsedWhenUpdatingNetwork;
+
         public SimulationUpdater() 
             : this(new SimulationConfiguration())
         {
@@ -73,6 +76,14 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return Task.Run(() => GetStateWithFlow(state));
         }
 
+        private Task<FlowResult> TaskCalculateFlowWithGivenSourceSink(SimulationState state, FoodSourceNode source, FoodSourceNode sink)
+        {
+            return Task.Run(() =>
+            {
+                return _flowCalculator.CalculateFlow(state.SlimeNetwork, source, sink, _flowAmount);
+            });
+        }
+
         internal virtual Task<SimulationState> TaskExpandSlime(SimulationState state)
         {
             return Task.Run(() =>
@@ -86,38 +97,43 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         public Task<SimulationState> TaskCalculateFlowFromAllSourcesAndUpdateNetwork(SimulationState state)
         {
-            return Task.Run((() =>
+            return Task.Run((async () =>
             {
                 var flowResults = new List<FlowResult>();
-                var slime = state.SlimeNetwork;
-                var expectedCalculations = slime.FoodSources.Count;
-                Logger.Info("[TaskCalculateFlowFromAllSourcesAndUpdateNetwork] Starting. Predict to calculate {0} flow results in this step", expectedCalculations);
-                var enumerator = slime.FoodSources.GetEnumerator();
-                var flowResultsCalculated = 0;
-                while (enumerator.MoveNext())
+                var tasks = GetAsyncTasksToPushFlowFromEachSourceNodeInSlime(state);
+                Logger.Info("[TaskCalculateFlowFromAllSourcesAndUpdateNetwork] Starting. Will await completion of {0} flow results", tasks.Count);
+                foreach (var task in tasks)
                 {
-                    var source = enumerator.Current;
-                    var connectedPossibleSinks = Nodes.GetFoodSourcesConnectedToNodeInGraph(source, slime).ToList();
-                    if (connectedPossibleSinks.Any())
-                    {
-                        var sink = connectedPossibleSinks.PickRandom();
-                        flowResults.Add(_flowCalculator.CalculateFlow(slime, source, sink, _flowAmount));
-                        flowResultsCalculated++;
-                        Logger.Info(
-                            "[TaskCalculateFlowFromAllSourcesAndUpdateNetwork] Calculated {0}/{1} flow results for this step",
-                            flowResultsCalculated, expectedCalculations);
-                    }
-                    else
-                    {
-                        expectedCalculations--;
-                        Logger.Info("[TaskCalculateFlowFromAllSourcesAndUpdateNetwork] Found no food sources connected to {0} in graph, now only predict to calculate {1} flow results in this step",
-                            source, expectedCalculations);
-                    }
+                    var flowResultFromTask = await task;
+                    flowResults.Add(flowResultFromTask);
                 }
-                enumerator.Dispose();
-                var updatedSlime = _slimeNetworkAdapterCalculator.CalculateNextStep(slime, flowResults);
+                var updatedSlime = _slimeNetworkAdapterCalculator.CalculateNextStep(state.SlimeNetwork, flowResults);
                 return new SimulationState(updatedSlime, true, state.PossibleNetwork);
             }));
+        }
+
+        private List<Task<FlowResult>> GetAsyncTasksToPushFlowFromEachSourceNodeInSlime(SimulationState state)
+        {
+            var slime = state.SlimeNetwork;
+            var enumerator = slime.FoodSources.GetEnumerator();
+            var tasks = new List<Task<FlowResult>>();
+            while (enumerator.MoveNext())
+            {
+                var source = enumerator.Current;
+                var connectedPossibleSinks = Nodes.GetFoodSourcesConnectedToNodeInGraph(source, slime).ToList();
+                if (connectedPossibleSinks.Any())
+                {
+                    var sink = connectedPossibleSinks.PickRandom();
+                    tasks.Add(TaskCalculateFlowWithGivenSourceSink(state, source, sink));
+                }
+                else
+                {
+                    Logger.Debug(
+                        "[TaskCalculateFlowFromAllSourcesAndUpdateNetwork] Found no food sources connected to {0} in graph", source);
+                }
+            }
+            enumerator.Dispose();
+            return tasks;
         }
 
         private SimulationState GetNextStateWithUpdatedConductivites(SlimeNetwork slimeNetwork, FlowResult flowResult, GraphWithFoodSources graphWithFoodSources)
@@ -190,16 +206,6 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             {
                 return !network.RouteExistsBetween(source, sink);
             }
-        }
-        
-        public double FlowUsedWhenAdaptingNetwork()
-        {
-            return _flowAmount;
-        }
-
-        public double FeedbackUsedWhenAdaptingNetwork()
-        {
-            return _slimeNetworkAdapterCalculator.FeedbackUsedWhenUpdatingNetwork();
         }
 
     }

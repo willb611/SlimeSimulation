@@ -12,6 +12,8 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         private readonly TextView _numberOfTimesToStepTextView;
         private readonly Window _parentWindow;
 
+        private bool IsStepWithoutShowingFlowResultTicked => _simulationStepWindowController.StepWithoutShowingFlowResult;
+
         public SimulationStepNumberOfTimesComponent(
             SimulationStepWindowControllerTemplate simulationStepWindowController, Window enclosingWindow)
             : this(simulationStepWindowController, enclosingWindow, 1)
@@ -33,7 +35,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private void DoStepsButtonOnClicked(object sender, EventArgs eventArgs)
         {
-            if (!IsStepWithoutShowingFlowResultTicked())
+            if (!IsStepWithoutShowingFlowResultTicked)
             {
                 MessageDialog confirmSkipFlowResultsDialog = new MessageDialog(_parentWindow, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.OkCancel,
                     "Flow results are set to be displayed, running this will disable show flow results. Continue?");
@@ -70,11 +72,6 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
                 errorDialogBox.Run();
                 errorDialogBox.Destroy();
             }
-        }
-
-        private bool IsStepWithoutShowingFlowResultTicked()
-        {
-            return _simulationStepWindowController.StepWithoutShowingFlowResult();
         }
     }
 }

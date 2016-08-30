@@ -18,9 +18,9 @@ namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
         private VBox InitialParameters(SimulationStepWindowControllerTemplate simulationStepWindowController)
         {
             var box = new VBox();
-            box.Add(new IsSlimeAllowedToDisconnectLabel(simulationStepWindowController.IsSlimeAllowedToDisconnect()));
-            box.Add(new FlowAmountLabelComponent(simulationStepWindowController.FlowUsedInAdaptingNetwork()));
-            box.Add(new FeedbackRateDisplayComponent(simulationStepWindowController.FeedbackUsedWhenAdaptingNetwork()));
+            box.Add(new IsSlimeAllowedToDisconnectLabel(simulationStepWindowController.IsSlimeAllowedToDisconnect));
+            box.Add(new FlowAmountLabelComponent(simulationStepWindowController.FlowUsedInAdaptingNetwork));
+            box.Add(new FeedbackRateDisplayComponent(simulationStepWindowController.FeedbackUsedWhenAdaptingNetwork));
             return box;
         }
     }
