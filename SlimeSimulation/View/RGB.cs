@@ -1,4 +1,3 @@
-using Gdk;
 using NLog;
 
 namespace SlimeSimulation.View

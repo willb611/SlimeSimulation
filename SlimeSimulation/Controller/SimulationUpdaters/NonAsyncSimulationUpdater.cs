@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NLog;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
-using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {

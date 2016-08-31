@@ -2,9 +2,7 @@ using System;
 using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
-using SlimeSimulation.Controller;
 using SlimeSimulation.Controller.WindowController.Templates;
-using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {

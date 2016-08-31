@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Gtk;
 using NLog;
@@ -8,9 +7,7 @@ using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.LinearEquations;
 using SlimeSimulation.Model;
-using SlimeSimulation.Model.Generation;
 using SlimeSimulation.Model.Simulation;
 using SlimeSimulation.StdLibHelpers;
 using SlimeSimulation.View;

@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.Factories;
-using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.Controller.WindowController.Templates;
-using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.LinearEquations;
-using SlimeSimulation.Model;
-using SlimeSimulation.Model.Generation;
-using SlimeSimulation.StdLibHelpers;
 using SlimeSimulation.View;
 using SlimeSimulation.View.Windows;
 

@@ -4,11 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using SlimeSimulation.Configuration;
-using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
 using SlimeSimulation.Model;
-using SlimeSimulation.Model.Bfs;
 using SlimeSimulation.Model.Simulation;
 using SlimeSimulation.StdLibHelpers;
 

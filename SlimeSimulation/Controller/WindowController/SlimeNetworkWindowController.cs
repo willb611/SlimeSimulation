@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Diagnostics;
 using Gtk;
 using NLog;
 using SlimeSimulation.Controller.WindowController.Templates;

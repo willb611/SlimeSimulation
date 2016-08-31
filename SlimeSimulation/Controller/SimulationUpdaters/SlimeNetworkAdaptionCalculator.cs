@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
-using SlimeSimulation.Model.Simulation;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {
