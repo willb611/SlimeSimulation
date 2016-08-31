@@ -40,5 +40,10 @@ namespace SlimeSimulation.Model
         {
             return _source.GetHashCode()*17 + _sink.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + "Source={" + Source + "},Sink={" + Sink + "}";
+        }
     }
 }

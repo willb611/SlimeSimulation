@@ -26,8 +26,10 @@ namespace SlimeSimulation.FlowCalculation
             _flowAmount = flowAmount;
             _network = network;
             _flowOnEdges = flowOnEdges;
-            Logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + network.SlimeEdges.Count);
-            Logger.Info("[constructor] And route {0}", route);
+            Logger.Info("[constructor] Creating flowResult for flow: {0}, and numer of edges: {1} and route {2}", flowAmount, network.SlimeEdges.Count, route);
+#if DEBUG
+            Validate();
+#endif
         }
 
         internal double GetMaximumFlowOnEdge()
@@ -35,21 +37,21 @@ namespace SlimeSimulation.FlowCalculation
             return _flowOnEdges.GetMaximumFlowOnAnyEdge();
         }
 
-        internal void ValidateFlowResult()
+        internal void Validate()
         {
             var acceptedError = 0.00001;
             double sourceFlow = GetFlowOnNode(Source);
-            Logger.Info("[ValidateFlowResult] flow on source {0}: {1}", Source, sourceFlow);
+            Logger.Info("[Validate] flow on source {0}: {1}", Source, sourceFlow);
             double sinkFlow = GetFlowOnNode(Sink);
-            Logger.Info("[ValidateFlowResult] flow on Sink {0}: {1}", Sink, sinkFlow);
-            Logger.Info("[ValidateFlowResult] Original flow: {0}", FlowAmount);
+            Logger.Info("[Validate] flow on Sink {0}: {1}", Sink, sinkFlow);
+            Logger.Info("[Validate] Original flow: {0}", FlowAmount);
             if (_flowAmount - Math.Abs(sourceFlow) < acceptedError && _flowAmount - Math.Abs(sinkFlow) < acceptedError)
             {
-                Logger.Info("[ValidateFlowResult] VALID!");
+                Logger.Info("[Validate] VALID!");
             }
             else
             {
-                Logger.Error("[ValidateFlowResult] INVALID!");
+                Logger.Error("[Validate] INVALID!");
             }
         }
 
