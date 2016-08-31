@@ -66,8 +66,10 @@ namespace SlimeSimulation.View.Windows
                 new SlimeNodeViewController(_slimeNetwork.NodesInGraph));
             ListenToClicksOn(GraphDrawingArea);
 
-            hbox.Add(GraphDrawingArea);
-            return hbox;;
+
+            hbox.PackStart(GraphDrawingArea, true, true, 0);
+            hbox.PackStart(new SlimeWindowNodeHighlightKey(), false, true, 0);
+            return hbox;
         }
 
         private Widget SimulationStateInterface()
