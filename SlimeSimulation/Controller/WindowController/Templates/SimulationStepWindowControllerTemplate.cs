@@ -7,8 +7,8 @@ namespace SlimeSimulation.Controller.WindowController.Templates
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        protected SimulationController SimulationController;
-        public SimulationControlInterfaceValues SimulationControlInterfaceValues;
+        public readonly SimulationController SimulationController;
+        public readonly SimulationControlInterfaceValues SimulationControlInterfaceValues;
 
         internal bool IsSlimeAllowedToDisconnect => SimulationController.IsSlimeAllowedToDisconnect;
         public double FlowUsedInAdaptingNetwork => SimulationController.FlowUsedWhenAdaptingNetwork;

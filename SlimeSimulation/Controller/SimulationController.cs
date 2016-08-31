@@ -38,11 +38,14 @@ namespace SlimeSimulation.Controller
         public double FlowUsedWhenAdaptingNetwork => _simulationUpdater.FlowUsedWhenAdaptingNetwork;
         public double FeedbackUsedWhenAdaptingNetwork => _simulationUpdater.FeedbackUsedWhenAdaptingNetwork;
 
+        public SimulationConfiguration InitialConfiguration => _config;
+
         public bool ShouldFlowResultsBeDisplayed
         {
             get { return SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed; }
             set { SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed = value; }
         }
+
 
 
         public SimulationController(ApplicationStartWindowController applicationStartWindowController, SimulationConfiguration config,

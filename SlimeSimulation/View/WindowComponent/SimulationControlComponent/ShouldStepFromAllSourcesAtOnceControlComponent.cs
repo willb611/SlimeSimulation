@@ -2,7 +2,7 @@ using System;
 using Gtk;
 using SlimeSimulation.Configuration;
 
-namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
     public class ShouldStepFromAllSourcesAtOnceControlComponent : CheckButton
     {
