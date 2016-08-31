@@ -33,7 +33,7 @@ namespace SlimeSimulation.Controller.Tests
             SimulationController controller = new SimulationController(null, null, null, nonExpandedSlimeState, updaterMock.Object);
             Assert.IsFalse(controller.ShouldFlowResultsBeDisplayed, "expect flow results to not be displayed for this test");
 
-            controller.DoNextSimulationStep();
+            controller.AsyncDoNextSimulationStep();
             SimulationState actualSimulationState = controller.GetSimulationState();
 
             updaterMock.Verify(t => t.TaskExpandSlime(nonExpandedSlimeState));
@@ -63,7 +63,7 @@ namespace SlimeSimulation.Controller.Tests
             SimulationController controller = new SimulationController(null, null, null, initialState, updaterMock.Object);
             Assert.IsFalse(controller.ShouldFlowResultsBeDisplayed, "expect flow results to not be displayed for this test");
 
-            controller.RunStepsUntilSlimeHasFullyExplored();
+            controller.AsyncRunStepsUntilSlimeHasFullyExplored();
 
             SimulationState actualSimulationState = controller.GetSimulationState();
             Assert.AreEqual(fullyEploredSlimeState, actualSimulationState);
