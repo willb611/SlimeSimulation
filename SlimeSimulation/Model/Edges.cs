@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace SlimeSimulation.Model
 {
     public class Edges
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public static ISet<Node> GetNodesContainedIn(ISet<SlimeEdge> edges)
         {
             return GetNodesContainedIn(FromSlimeEdges(edges));
@@ -40,7 +43,7 @@ namespace SlimeSimulation.Model
             return connected;
         }
 
-        private static int GetMaxNodeId(ISet<Edge> edges)
+        public static int GetMaxNodeId(ISet<Edge> edges)
         {
             int max = 0;
             foreach (var edge in edges)
@@ -59,6 +62,24 @@ namespace SlimeSimulation.Model
                 edges.Add(slimeEdge.Edge);
             }
             return edges;
+        }
+
+        public static ISet<SlimeEdge> CastToSlimeEdges(ISet<Edge> edges)
+        {
+            var result = new HashSet<SlimeEdge>();
+            foreach (var edge in edges)
+            {
+                var slimeEdge = edge as SlimeEdge;
+                if (slimeEdge != null)
+                {
+                    result.Add(slimeEdge);
+                }
+                else
+                {
+                    Logger.Warn("[CastToSlimeEdges] Given set containing non-slime edge: {0}", edge);
+                }
+            }
+            return result;
         }
     }
 }

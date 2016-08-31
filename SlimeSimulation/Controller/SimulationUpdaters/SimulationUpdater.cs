@@ -165,7 +165,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             Node source = SelectSource(network);
             Node sink = SelectSink(network);
             int iterations = 0;
-            while (InvalidSourceSink(source, sink, network))
+            while (network.InvalidSourceSink(source, sink))
             {
                 source = SelectSource(network);
                 sink = SelectSink(network);
@@ -195,19 +195,6 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             }
             return _foodSourceEnumerator;
         }
-        
-        private bool InvalidSourceSink(Node source, Node sink, SlimeNetwork network)
-        {
-            if (source == sink)
-            {
-                return true;
-            }
-            else
-            {
-                return !network.RouteExistsBetween(source, sink);
-            }
-        }
-
     }
 }
 

@@ -14,26 +14,12 @@ namespace SlimeSimulation.Model
 
         public SlimeNetwork(ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges))
         {
-            SlimeEdges = Cast(base.EdgesInGraph);
+            SlimeEdges = Edges.CastToSlimeEdges(base.EdgesInGraph);
         }
         public SlimeNetwork(ISet<Node> nodesInGraph, ISet<FoodSourceNode> foodSources,
             ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges), nodesInGraph, foodSources)
         {
-            SlimeEdges = Cast(base.EdgesInGraph);
-        }
-
-        private ISet<SlimeEdge> Cast(ISet<Edge> edges)
-        {
-            var result = new HashSet<SlimeEdge>();
-            foreach (var edge in edges)
-            {
-                var slimeEdge = edge as SlimeEdge;
-                if (slimeEdge != null)
-                {
-                    result.Add(slimeEdge);
-                }
-            }
-            return result;
+            SlimeEdges = Edges.CastToSlimeEdges(base.EdgesInGraph);
         }
 
         internal double GetEdgeConnectivityOrZero(Node a, Node b)
@@ -108,6 +94,18 @@ namespace SlimeSimulation.Model
         public override int GetHashCode()
         {
             return SlimeEdges.GetHashCode() * 17 + base.GetHashCode();
+        }
+
+        public bool InvalidSourceSink(Node source, Node sink)
+        {
+            if (Equals(source, sink))
+            {
+                return true;
+            }
+            else
+            {
+                return !this.RouteExistsBetween(source, sink);
+            }
         }
     }
 }

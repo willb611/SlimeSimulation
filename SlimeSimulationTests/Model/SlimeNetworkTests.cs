@@ -1,3 +1,4 @@
+using SlimeSimulation.Model;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
@@ -40,11 +41,24 @@ namespace SlimeSimulation.Model.Tests
 
             var slime = new SlimeNetwork(new HashSet<SlimeEdge>() { abSlime });
             var graph = new GraphWithFoodSources(edges);
-            
+
             var allEdgesWithSlime = slime.GetAllEdgesInGraphReplacingThoseWhichAreSlimed(graph);
 
             Assert.IsTrue(allEdgesWithSlime.Count == edges.Count);
             Assert.IsTrue(allEdgesWithSlime.Contains(abSlime));
+        }
+
+        [TestMethod()]
+        public void InvalidSourceSinkTest()
+        {
+            Node a = new Node(1, 1, 1);
+            Node b = new Node(2, 2, 2);
+            var ab = new SlimeEdge(a, b, 1);
+            var slimeEdges = new HashSet<SlimeEdge>() {ab};
+            var slime = new SlimeNetwork(slimeEdges);
+
+            Assert.IsTrue(slime.InvalidSourceSink(a, a), "Same node cannot be source AND sink");
+            Assert.IsFalse(slime.InvalidSourceSink(a, b));
         }
     }
 }
