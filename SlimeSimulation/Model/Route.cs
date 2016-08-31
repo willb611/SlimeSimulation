@@ -43,7 +43,7 @@ namespace SlimeSimulation.Model
 
         public override string ToString()
         {
-            return base.ToString() + "Source={" + Source + "},Sink={" + Sink + "}";
+            return base.ToString() + "{Source=" + Source + ",Sink=" + Sink + "}";
         }
     }
 }

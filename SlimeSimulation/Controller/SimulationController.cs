@@ -87,36 +87,30 @@ namespace SlimeSimulation.Controller
             _applicationStartWindowController.FinishSimulation(this);
         }
 
-        internal void DoNextSimulationSteps(int numberOfSteps)
+        internal void AsyncDoNextSimulationSteps(int numberOfSteps)
         {
             SimulationControlBoxConfig.NumberOfStepsToRun = numberOfSteps;
-            Logger.Info($"[DoNextSimulationSteps] Running {numberOfSteps} steps");
+            Logger.Info($"[AsyncDoNextSimulationSteps] Running {numberOfSteps} steps");
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
-                DoNextSimulationStep();
+                AsyncDoNextSimulationStep();
                 Logger.Info($"[DoNextSimulationSteps] Now completed {stepsRunSoFar}/{numberOfSteps} steps");
             }
-            Logger.Info($"[DoNextSimulationSteps] Completed {numberOfSteps} steps");
+            Logger.Info($"[AsyncDoNextSimulationSteps] Completed {numberOfSteps} steps");
         }
 
-        public void RunStepsUntilSlimeHasFullyExplored()
+        public void AsyncRunStepsUntilSlimeHasFullyExplored()
         {
             int stepNumber;
             for (stepNumber = 0; !GetSimulationState().HasFinishedExpanding; stepNumber++)
             {
-                DoNextSimulationStep();
-                Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Now completed {stepNumber} steps");
+                AsyncDoNextSimulationStep();
+                Logger.Debug($"[AsyncRunStepsUntilSlimeHasFullyExplored] Now started {stepNumber} steps");
             }
-            Logger.Debug($"[RunStepsUntilSlimeHasFullyExplored] Finished in {stepNumber} steps");
+            Logger.Debug($"[AsyncRunStepsUntilSlimeHasFullyExplored] Started all {stepNumber} steps");
         }
 
-        public void DoStepWhichWontDisconnectNodes()
-        {
-            SimulationControlBoxConfig.ShouldStepFromAllSourcesAtOnce = true;
-            DoNextSimulationStep();
-        }
-
-        public void DoNextSimulationStep()
+        public void AsyncDoNextSimulationStep()
         {
             var state = _protectedState.Lock();
             Logger.Debug("[DoNextSimulationStep] Stepping");

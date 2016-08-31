@@ -27,7 +27,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         {
             Logger.Debug("[OnStepCompleted] Entered");
             Window.Dispose();
-            SimulationController.DoNextSimulationStep();
+            SimulationController.AsyncDoNextSimulationStep();
             SimulationController.UpdateDisplay();
             Logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
             Logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");
@@ -42,7 +42,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         internal void RunNumberOfSteps(int numberOfSteps)
         {
             Window.Dispose();
-            SimulationController.DoNextSimulationSteps(numberOfSteps);
+            SimulationController.AsyncDoNextSimulationSteps(numberOfSteps);
             SimulationController.UpdateDisplay();
         }
 
@@ -50,7 +50,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         {
             Window.Dispose();
             Logger.Debug("[RunStepsUntilSlimeHasFullyExplored] Starting");
-            SimulationController.RunStepsUntilSlimeHasFullyExplored();
+            SimulationController.AsyncRunStepsUntilSlimeHasFullyExplored();
             SimulationController.UpdateDisplay();
         }
     }
