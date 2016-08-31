@@ -27,7 +27,7 @@ namespace SlimeSimulation.Controller
         private readonly ItemLock<SimulationState> _protectedState = new ItemLock<SimulationState>();
         private WindowControllerTemplate _activeWindowController;
 
-        private readonly ApplicationStartWindowController _applicationStartWindowController;
+        private readonly NewSimulationStarterWindowController _applicationStartWindowController;
         private readonly SimulationConfiguration _config;
 
         public SimulationControlInterfaceValues SimulationControlBoxConfig { get; } = new SimulationControlInterfaceValues();
@@ -48,7 +48,7 @@ namespace SlimeSimulation.Controller
 
 
 
-        public SimulationController(ApplicationStartWindowController applicationStartWindowController, SimulationConfiguration config,
+        public SimulationController(NewSimulationStarterWindowController applicationStartWindowController, SimulationConfiguration config,
             GtkLifecycleController gtkLifecycleController, SimulationState initialState, SimulationUpdater simulationUpdater)
         {
             _config = config;

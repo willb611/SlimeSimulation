@@ -33,7 +33,7 @@ namespace SlimeSimulation.Controller.Factories
         }
 
         public SimulationController MakeSimulationController(
-            ApplicationStartWindowController applicationStartWindowController, SimulationConfiguration config)
+            NewSimulationStarterWindowController applicationStartWindowController, SimulationConfiguration config)
         {
             FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
             var graphWithFoodSources = MakeGraph(config.GenerationConfig);

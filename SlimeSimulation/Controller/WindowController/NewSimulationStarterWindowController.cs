@@ -8,19 +8,19 @@ using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    public class ApplicationStartWindowController : WindowControllerTemplate
+    public class NewSimulationStarterWindowController : WindowControllerTemplate
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static ApplicationStartWindowController Instance { get; private set; }
+        public static NewSimulationStarterWindowController Instance { get; private set; }
 
-        private ApplicationStartWindow _startingWindow;
+        private NewSimulationStarterWindow _startingWindow;
         private readonly SimulationControllerFactory _controllerFactory = new SimulationControllerFactory(GtkLifecycleController.Instance);
 
-        public ApplicationStartWindowController() : this(new SimulationControllerFactory())
+        public NewSimulationStarterWindowController() : this(new SimulationControllerFactory())
         {
             Instance = this;
         }
-        public ApplicationStartWindowController(SimulationControllerFactory simulationControllerFactory)
+        public NewSimulationStarterWindowController(SimulationControllerFactory simulationControllerFactory)
         {
 
         }
@@ -34,10 +34,10 @@ namespace SlimeSimulation.Controller.WindowController
         {
             using (var gtkLifecycleController = GtkLifecycleController.Instance)
             {
-                using (Window = new ApplicationStartWindow("Slime simulation parameter selection", this))
+                using (Window = new NewSimulationStarterWindow("Slime simulation parameter selection", this))
                 {
                     Logger.Debug("[Render] Made window");
-                    _startingWindow = (ApplicationStartWindow) Window;
+                    _startingWindow = (NewSimulationStarterWindow) Window;
                     Logger.Debug("[Render] Display with main view");
                     gtkLifecycleController.Display(Window);
                     Logger.Debug("[Render] Left main GTK loop ? ");

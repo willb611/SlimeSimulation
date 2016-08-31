@@ -147,7 +147,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLibHelpers\EnumerableExtension.cs" />
-    <Compile Include="Controller\WindowController\ApplicationStartWindowController.cs" />
+    <Compile Include="Controller\WindowController\NewSimulationStarterWindowController.cs" />
     <Compile Include="View\Factories\ButtonPressHandlerFactory.cs" />
     <Compile Include="View\Factories\SimulationAdaptionPhaseControlBoxFactory.cs" />
     <Compile Include="View\Factories\ISimulationControlBoxFactory.cs" />
@@ -162,7 +162,7 @@
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepNumberOfTimesComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepUntilFullyGrownComponent.cs" />
     <Compile Include="View\WindowComponent\SlimeWindowNodeHighlightKey.cs" />
-    <Compile Include="View\Windows\ApplicationStartWindow.cs" />
+    <Compile Include="View\Windows\NewSimulationStarterWindow.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FlowAmountLabelComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\ShouldFlowResultsBeDisplayedControlComponent.cs" />
     <Compile Include="View\Windows\SlimeNetworkWindow.cs" />
