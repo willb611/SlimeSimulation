@@ -31,9 +31,7 @@ namespace SlimeSimulation.Controller.WindowController
             Logger.Debug("[Render] Making new window");
             using (Window = new SlimeNetworkWindow(_slimeNetwork, _graphWithFoodSources, this, _simulationControlBoxFactory))
             {
-                Logger.Debug("[Render] displaying using controller");
                 SimulationController.Display(Window);
-                Logger.Debug("[Render] SimulationController.Display(Window); has finihsed");
             }
         }
         
@@ -42,11 +40,6 @@ namespace SlimeSimulation.Controller.WindowController
             Logger.Debug("[OnClickCallback] Clicked!");
             var area = widget as GraphDrawingArea;
             area?.InvertEdgeDrawing();
-        }
-
-        internal int StepsSoFarInSimulation()
-        {
-            return SimulationController.SimulationStepsCompleted;
         }
         
         public void ReDraw()

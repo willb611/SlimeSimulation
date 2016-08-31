@@ -25,6 +25,13 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         internal SlimeNetwork CalculateNextStep(SlimeNetwork slimeNetwork, FlowResult flowResult)
         {
+            if (slimeNetwork == null)
+            {
+                throw new ArgumentNullException(nameof(slimeNetwork));
+            } else if (flowResult == null)
+            {
+                throw new ArgumentNullException(nameof(flowResult));
+            }
             ISet<SlimeEdge> edges = new HashSet<SlimeEdge>();
             foreach (SlimeEdge edge in slimeNetwork.SlimeEdges)
             {

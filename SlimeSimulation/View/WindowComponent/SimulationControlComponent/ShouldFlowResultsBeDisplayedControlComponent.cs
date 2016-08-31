@@ -2,10 +2,8 @@ using System;
 using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
-using SlimeSimulation.Controller.WindowController;
-using SlimeSimulation.Controller.WindowController.Templates;
 
-namespace SlimeSimulation.View.Windows
+namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
     internal class ShouldFlowResultsBeDisplayedControlComponent : CheckButton
     {

@@ -1,6 +1,7 @@
 using System;
 using Gtk;
 using NLog;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController.Templates;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
@@ -11,8 +12,9 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         private readonly SimulationStepWindowControllerTemplate _simulationStepWindowController;
         private readonly TextView _numberOfTimesToStepTextView;
         private readonly Window _parentWindow;
+        private readonly SimulationControlInterfaceValues _simulationControlInterfaceValues;
 
-        private bool IsStepWithoutShowingFlowResultTicked => _simulationStepWindowController.StepWithoutShowingFlowResult;
+        private bool ShouldFlowResultsBeDisplayed => _simulationControlInterfaceValues.ShouldFlowResultsBeDisplayed;
 
         public SimulationStepNumberOfTimesComponent(
             SimulationStepWindowControllerTemplate simulationStepWindowController, Window enclosingWindow)
@@ -22,6 +24,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         public SimulationStepNumberOfTimesComponent(SimulationStepWindowControllerTemplate simulationStepWindowController,
             Window enclosingWindow, int numberOfStepsToRun) : base(true, 10)
         {
+            _simulationControlInterfaceValues = simulationStepWindowController.SimulationControlInterfaceValues;
             _parentWindow = enclosingWindow;
             _simulationStepWindowController = simulationStepWindowController;
             _numberOfTimesToStepTextView = new TextView {Buffer = {Text = numberOfStepsToRun.ToString()}};
@@ -35,7 +38,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private void DoStepsButtonOnClicked(object sender, EventArgs eventArgs)
         {
-            if (!IsStepWithoutShowingFlowResultTicked)
+            if (ShouldFlowResultsBeDisplayed)
             {
                 MessageDialog confirmSkipFlowResultsDialog = new MessageDialog(_parentWindow, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.OkCancel,
                     "Flow results are set to be displayed, running this will disable show flow results. Continue?");

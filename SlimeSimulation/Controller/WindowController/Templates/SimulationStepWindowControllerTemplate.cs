@@ -10,17 +10,20 @@ namespace SlimeSimulation.Controller.WindowController.Templates
 
         protected SimulationController SimulationController;
         public SimulationControlInterfaceValues SimulationControlInterfaceValues;
-        internal bool StepWithoutShowingFlowResult => !SimulationController.ShouldFlowResultsBeDisplayed;
 
         internal bool IsSlimeAllowedToDisconnect => SimulationController.IsSlimeAllowedToDisconnect;
         public double FlowUsedInAdaptingNetwork => SimulationController.FlowUsedWhenAdaptingNetwork;
         public double FeedbackUsedWhenAdaptingNetwork => SimulationController.FeedbackUsedWhenAdaptingNetwork;
+
+        public int StepsCompletedSoFarInAdaptingSlime => SimulationController.StepsTakenInAdaptingState;
+        public int StepsTakenForSlimeToExplore => SimulationController.StepsTakenForSlimeToExplore;
 
         public SimulationStepWindowControllerTemplate(SimulationController simulationController)
         {
             SimulationController = simulationController;
             SimulationControlInterfaceValues = simulationController.SimulationControlBoxConfig;
         }
+
 
         public void OnStepCompleted()
         {

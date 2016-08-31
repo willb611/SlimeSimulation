@@ -20,14 +20,16 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
         {
             var network = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(network);
-            var flowResult = new FlowCalculator().CalculateFlow(slime, slime.FoodSources.First(), slime.FoodSources.Last(), 1);
-            var stateWithFlow = new SimulationState(slime, flowResult, network);
+            var flowResult = new FlowCalculator().CalculateFlow(slime, slime.FoodSources.First(),
+                slime.FoodSources.Last(), 1);
+            var stateWithFlow = new SimulationState(slime, flowResult, network, 0, 0);
 
             var updatedNetwork = new SimulationUpdater().TaskUpdateNetworkUsingFlowInState(stateWithFlow);
             updatedNetwork.Wait(10000);
             var result = updatedNetwork.Result;
             Assert.IsNull(result.FlowResult, "Updating slime network with flow result should remove flow result");
-            Assert.AreNotEqual(slime, result.SlimeNetwork, "Slime network should change after updating it from flow result");
+            Assert.AreNotEqual(slime, result.SlimeNetwork,
+                "Slime network should change after updating it from flow result");
         }
 
         [TestMethod()]
@@ -35,13 +37,14 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
         {
             var network = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(network);
-            var state = new SimulationState(slime, network);
+            var state = new SimulationState(slime, true, network);
 
             var updatedNetwork = new SimulationUpdater().TaskCalculateFlow(state);
             updatedNetwork.Wait(10000);
             var result = updatedNetwork.Result;
             Assert.IsNotNull(result.FlowResult, "Calculate flow task should return a state with a flow result");
-            Assert.AreEqual(slime, result.SlimeNetwork, "Slime network should NOT change after updating it from flow result");
+            Assert.AreEqual(slime, result.SlimeNetwork,
+                "Slime network should NOT change after updating it from flow result");
         }
 
         [TestMethod()]
@@ -49,13 +52,14 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
         {
             var network = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(network);
-            var state = new SimulationState(slime, network);
+            var state = new SimulationState(slime, true, network);
 
             var updatedNetwork = new SimulationUpdater().TaskCalculateFlowAndUpdateNetwork(state);
             updatedNetwork.Wait(10000);
             var result = updatedNetwork.Result;
             Assert.IsNull(result.FlowResult, "Calculate flow task should return a state without a flow result");
-            Assert.AreNotEqual(slime, result.SlimeNetwork, "Slime network should be different after updating it from flow result");
+            Assert.AreNotEqual(slime, result.SlimeNetwork,
+                "Slime network should be different after updating it from flow result");
         }
     }
 }
