@@ -18,7 +18,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private void AddControls(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
         {
-            Add(new SimulationStepButton(simulationStepWindowController));
+            Add(new SimulationStepButton(simulationStepWindowController, parentWindow));
             Add(new SimulationStepUntilFullyGrownComponent(simulationStepWindowController, parentWindow));
         }
     }

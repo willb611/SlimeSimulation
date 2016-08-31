@@ -24,7 +24,6 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             SimulationControlInterfaceValues = simulationController.SimulationControlBoxConfig;
         }
 
-
         public void OnStepCompleted()
         {
             Logger.Debug("[OnStepCompleted] Entered");
@@ -34,8 +33,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             Logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
             Logger.Debug("[OnStepCompleted] base.OnWindowClose(); finished");
         }
-
-
+        
         public override void OnWindowClose()
         {
             base.OnWindowClose();
@@ -47,11 +45,6 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             Window.Dispose();
             SimulationController.DoNextSimulationSteps(numberOfSteps);
             SimulationController.UpdateDisplay();
-        }
-
-        public void DisableShowingFlowResults()
-        {
-            SimulationController.ShouldFlowResultsBeDisplayed = false;
         }
 
         public void RunStepsUntilSlimeHasFullyExplored()

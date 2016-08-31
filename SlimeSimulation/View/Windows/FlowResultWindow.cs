@@ -42,7 +42,7 @@ namespace SlimeSimulation.View.Windows
 
             VBox vbox = new VBox(false, 10);
             vbox.PackStart(new FlowAmountLabelComponent(_flowResult.FlowAmount), false, true, 10);
-            vbox.PackStart(new SimulationStepButton(_windowController), false, true, 10);
+            vbox.PackStart(new SimulationStepButton(_windowController, Window), false, true, 10);
             vbox.PackStart(hbox, true, true, 10);
 
             window.Add(vbox);

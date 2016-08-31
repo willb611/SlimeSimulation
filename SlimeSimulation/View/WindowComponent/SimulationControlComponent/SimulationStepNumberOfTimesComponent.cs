@@ -13,14 +13,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         private readonly TextView _numberOfTimesToStepTextView;
         private readonly Window _parentWindow;
         private readonly SimulationControlInterfaceValues _simulationControlInterfaceValues;
-
-        private bool ShouldFlowResultsBeDisplayed => _simulationControlInterfaceValues.ShouldFlowResultsBeDisplayed;
-
-        public SimulationStepNumberOfTimesComponent(
-            SimulationStepWindowControllerTemplate simulationStepWindowController, Window enclosingWindow)
-            : this(simulationStepWindowController, enclosingWindow, 1)
-        {
-        }
+        
         public SimulationStepNumberOfTimesComponent(SimulationStepWindowControllerTemplate simulationStepWindowController,
             Window enclosingWindow, int numberOfStepsToRun) : base(true, 10)
         {
@@ -38,7 +31,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private void DoStepsButtonOnClicked(object sender, EventArgs eventArgs)
         {
-            if (ShouldFlowResultsBeDisplayed)
+            if (_simulationControlInterfaceValues.ShouldFlowResultsBeDisplayed)
             {
                 MessageDialog confirmSkipFlowResultsDialog = new MessageDialog(_parentWindow, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.OkCancel,
                     "Flow results are set to be displayed, running this will disable show flow results. Continue?");
@@ -51,7 +44,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
                     return;
                 }
                 Logger.Debug("[DoStepsButtonOnClicked] Skip flow results was not enabled, but user confirmed ok to disable flow results");
-                _simulationStepWindowController.DisableShowingFlowResults();
+                _simulationControlInterfaceValues.ShouldFlowResultsBeDisplayed = false;
             }
             TryToRunSteps();
         }
