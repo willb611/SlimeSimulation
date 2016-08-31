@@ -17,13 +17,11 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
     public class SimulationUpdater
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private readonly FlowCalculator _flowCalculator;
+        
         private readonly SlimeNetworkAdaptionCalculator _slimeNetworkAdapterCalculator;
-        private readonly double _flowAmount;
-        private readonly SlimeNetworkExplorer _slimeNetworkExplorer;
+        private readonly NonAsyncSimulationUpdater _nonAsyncSimulationUpdater;
 
-        public double FlowUsedWhenAdaptingNetwork => _flowAmount;
+        public double FlowUsedWhenAdaptingNetwork => _nonAsyncSimulationUpdater.FlowUsedWhenAdaptingNetwork;
         public double FeedbackUsedWhenAdaptingNetwork => _slimeNetworkAdapterCalculator.FeedbackUsedWhenUpdatingNetwork;
 
         public SimulationUpdater() 
@@ -33,10 +31,9 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         public SimulationUpdater(SimulationConfiguration simulationConfiguration)
         {
-            _flowCalculator = new FlowCalculator(new LupDecompositionSolver());
-            _flowAmount = simulationConfiguration.FlowAmount;
             _slimeNetworkAdapterCalculator = new SlimeNetworkAdaptionCalculator(simulationConfiguration.SlimeNetworkAdaptionCalculatorConfig);
-            _slimeNetworkExplorer = new SlimeNetworkExplorer();
+            _nonAsyncSimulationUpdater = new NonAsyncSimulationUpdater(new FlowCalculator(new LupDecompositionSolver()), simulationConfiguration.FlowAmount,
+                _slimeNetworkAdapterCalculator, new SlimeNetworkExplorer());
         }
 
         public virtual Task<SimulationState> TaskUpdateNetworkUsingFlowInState(SimulationState state)
@@ -49,7 +46,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 }
                 else
                 {
-                    return GetNextStateWithUpdatedConductivites(state);
+                    return _nonAsyncSimulationUpdater.GetNextStateWithUpdatedConductivites(state);
                 }
             });
         }
@@ -58,40 +55,31 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
             return Task.Run(() =>
             {
-                var stateWithFlow = GetStateWithFlow(state);
+                var stateWithFlow = _nonAsyncSimulationUpdater.GetStateWithFlow(state);
                 if (stateWithFlow.FlowResult == null)
                 {
                     throw new ArgumentException("Given null flow in state");
                 }
                 else
                 {
-                    return GetNextStateWithUpdatedConductivites(stateWithFlow);
+                    return _nonAsyncSimulationUpdater.GetNextStateWithUpdatedConductivites(stateWithFlow);
                 }
             });
         }
 
         public virtual Task<SimulationState> TaskCalculateFlow(SimulationState state)
         {
-            return Task.Run(() => GetStateWithFlow(state));
+            return Task.Run(() => _nonAsyncSimulationUpdater.GetStateWithFlow(state));
         }
 
-        private Task<FlowResult> TaskCalculateFlowWithGivenSourceSink(SimulationState state, FoodSourceNode source, FoodSourceNode sink)
+        private Task<FlowResult> TaskCalculateFlowForRoute(SimulationState state, Route route)
         {
-            return Task.Run(() =>
-            {
-                return _flowCalculator.CalculateFlow(state.SlimeNetwork, source, sink, _flowAmount);
-            });
+            return Task.Run(() => _nonAsyncSimulationUpdater.GetFlowForRouteInNetwork(route, state.SlimeNetwork));
         }
 
         internal virtual Task<SimulationState> TaskExpandSlime(SimulationState state)
         {
-            return Task.Run(() =>
-            {
-                Logger.Debug("[TaskExpandSlime] Starting");
-                var expandedNetwork = _slimeNetworkExplorer.ExpandSlimeInNetwork(state.SlimeNetwork, state.PossibleNetwork);
-                var hasFinishedExpanding = state.HasFinishedExpanding || state.SlimeNetwork.CoversGraph(state.PossibleNetwork);
-                return new SimulationState(expandedNetwork, hasFinishedExpanding, state.PossibleNetwork, state.StepsTakenInExploringState + 1, 0);
-            });
+            return Task.Run(() => _nonAsyncSimulationUpdater.ExpandSlime(state));
         }
         
         public Task<SimulationState> TaskCalculateFlowFromAllSourcesAndUpdateNetwork(SimulationState state)
@@ -123,7 +111,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 if (connectedPossibleSinks.Any())
                 {
                     var sink = connectedPossibleSinks.PickRandom();
-                    tasks.Add(TaskCalculateFlowWithGivenSourceSink(state, source, sink));
+                    tasks.Add(TaskCalculateFlowForRoute(state, new Route(source, sink)));
                 }
                 else
                 {
@@ -133,67 +121,6 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             }
             enumerator.Dispose();
             return tasks;
-        }
-        
-        private SimulationState GetNextStateWithUpdatedConductivites(SimulationState state)
-        {
-            var nextNetwork = _slimeNetworkAdapterCalculator.CalculateNextStep(state.SlimeNetwork, state.FlowResult);
-            return new SimulationState(nextNetwork, true, state.PossibleNetwork, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState + 1);
-        }
-
-        private SimulationState GetStateWithFlow(SimulationState state)
-        {
-            return GetStateWithFlow(state, _flowAmount);
-        }
-        private SimulationState GetStateWithFlow(SimulationState state, double flowAmount)
-        {
-            var slime = state.SlimeNetwork;
-            try
-            {
-                var flowResult = GetFlow(slime, flowAmount);
-                return new SimulationState(slime, flowResult, state.PossibleNetwork, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState);
-            }
-            catch (SingularMatrixException e)
-            {
-                Logger.Error(e);
-                return state;
-            }
-        }
-
-        private FlowResult GetFlow(SlimeNetwork network, double flow)
-        {
-            Node source = SelectSource(network);
-            Node sink = SelectSink(network);
-            int iterations = 0;
-            while (network.InvalidSourceSink(source, sink))
-            {
-                source = SelectSource(network);
-                sink = SelectSink(network);
-                iterations++;
-            }
-            Logger.Info($"[GetFlow] Took {iterations} attempts to find a valid source and sink combination");
-            return _flowCalculator.CalculateFlow(network, source, sink, flow);
-        }
-
-        private Node SelectSink(SlimeNetwork network)
-        {
-            return network.FoodSources.PickRandom();
-        }
-        
-        private Node SelectSource(SlimeNetwork network)
-        {
-            return AdvanceAndGetFoodSourceEnumerator(network).Current;
-        }
-        private IEnumerator<FoodSourceNode> _foodSourceEnumerator;
-        private IEnumerator<FoodSourceNode> AdvanceAndGetFoodSourceEnumerator(SlimeNetwork network)
-        {
-            while (_foodSourceEnumerator == null || !_foodSourceEnumerator.MoveNext())
-            {
-                _foodSourceEnumerator?.Dispose();
-                _foodSourceEnumerator = network.FoodSources.GetEnumerator();
-                Logger.Debug("[AdvanceAndGetFoodSourceEnumerator] Entered method");
-            }
-            return _foodSourceEnumerator;
         }
     }
 }

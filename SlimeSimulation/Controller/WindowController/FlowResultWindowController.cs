@@ -30,7 +30,7 @@ namespace SlimeSimulation.Controller.WindowController
         public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
         {
             Logger.Debug("[OnClick] Clicked!");
-            _flowResult.Validate();
+            _flowResult.ValidateFlowResult();
             GraphDrawingArea area = widget as GraphDrawingArea;
             if (area != null)
             {

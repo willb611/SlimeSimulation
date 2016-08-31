@@ -80,8 +80,11 @@
     <Compile Include="Model\Generation\LatticeSlimeNetworkGeneratorTests.cs" />
     <Compile Include="Model\GraphWithFoodSourcesTests.cs" />
     <Compile Include="Model\NodeTests.cs" />
+    <Compile Include="Model\RouteTests.cs" />
+    <Compile Include="Model\Simulation\RouteSelectorTests.cs" />
     <Compile Include="Model\SlimeNetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StdLibHelpers\EnumeratorExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SlimeSimulation\SlimeSimulation.csproj">

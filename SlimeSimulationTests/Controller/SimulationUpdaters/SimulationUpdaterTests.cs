@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.FlowCalculation;
+using SlimeSimulation.Model;
 using SlimeSimulation.Model.Generation;
 using SlimeSimulation.Model.Simulation;
 
@@ -20,8 +21,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
         {
             var network = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(network);
-            var flowResult = new FlowCalculator().CalculateFlow(slime, slime.FoodSources.First(),
-                slime.FoodSources.Last(), 1);
+            var flowResult = new FlowCalculator().CalculateFlow(slime,
+                new Route(slime.FoodSources.First(), slime.FoodSources.Last()), 1);
             var stateWithFlow = new SimulationState(slime, flowResult, network, 0, 0);
 
             var updatedNetwork = new SimulationUpdater().TaskUpdateNetworkUsingFlowInState(stateWithFlow);

@@ -85,12 +85,16 @@
     <Compile Include="Configuration\SimulationControlInterfaceValues.cs" />
     <Compile Include="Configuration\SlimeNetworkAdaptionCalculatorConfig.cs" />
     <Compile Include="Controller\Factories\SimulationControllerFactory.cs" />
+    <Compile Include="Controller\SimulationUpdaters\NonAsyncSimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
     <Compile Include="Model\Bfs\BfsResult.cs" />
     <Compile Include="Model\Bfs\BfsSolver.cs" />
     <Compile Include="Model\Edges.cs" />
     <Compile Include="Model\Nodes.cs" />
     <Compile Include="Model\ItemLock.cs" />
+    <Compile Include="Model\Route.cs" />
+    <Compile Include="Model\Simulation\RouteSelector.cs" />
+    <Compile Include="StdLibHelpers\IEnumeratorExtension.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\GrowthPhaseControlBox.cs" />
     <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />

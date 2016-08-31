@@ -10,20 +10,24 @@ namespace SlimeSimulation.FlowCalculation
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly SlimeNetwork _network;
-        private readonly Node _source, _sink;
+        private readonly Route _route;
         private readonly double _flowAmount;
         private readonly FlowOnEdges _flowOnEdges;
 
-        public FlowResult(SlimeNetwork network, Node source, Node sink, double flowAmount,
+        internal Node Source => _route.Source;
+        internal Node Sink => _route.Sink;
+        public double FlowAmount => _flowAmount;
+        internal ISet<Edge> Edges => (_network as Graph).EdgesInGraph;
+
+        public FlowResult(SlimeNetwork network, Route route, double flowAmount,
           FlowOnEdges flowOnEdges)
         {
-            _source = source;
-            _sink = sink;
+            _route = route;
             _flowAmount = flowAmount;
             _network = network;
             _flowOnEdges = flowOnEdges;
             Logger.Info("[constructor] Creating flowResult for flow: " + flowAmount + ", and numer of edges: " + network.SlimeEdges.Count);
-            Logger.Info("[constructor] And source {0}, and Sink {1}", source, sink);
+            Logger.Info("[constructor] And route {0}", route);
         }
 
         internal double GetMaximumFlowOnEdge()
@@ -31,15 +35,7 @@ namespace SlimeSimulation.FlowCalculation
             return _flowOnEdges.GetMaximumFlowOnAnyEdge();
         }
 
-        internal ISet<Edge> Edges {
-            get { return (_network as Graph).EdgesInGraph; }
-        }
-
-        internal Node Source {
-            get { return _source; }
-        }
-
-        internal void Validate()
+        internal void ValidateFlowResult()
         {
             var acceptedError = 0.00001;
             double sourceFlow = GetFlowOnNode(Source);
@@ -57,14 +53,6 @@ namespace SlimeSimulation.FlowCalculation
             }
         }
 
-        internal Node Sink {
-            get { return _sink; }
-        }
-
-        public double FlowAmount {
-            get { return _flowAmount; }
-        }
-
         public double FlowOnEdge(Edge slimeEdge)
         {
             return _flowOnEdges.GetFlowOnEdge(slimeEdge);
@@ -77,7 +65,7 @@ namespace SlimeSimulation.FlowCalculation
             {
                 var slimeEdge = (SlimeEdge) edge;
                 var flow = FlowOnEdge(slimeEdge);
-                if (slimeEdge.A == node)
+                if (Equals(slimeEdge.A, node))
                 {
                     sum += flow;
                 }

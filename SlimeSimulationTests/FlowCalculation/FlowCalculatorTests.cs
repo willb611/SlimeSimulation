@@ -41,7 +41,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
             Node sink = network.FoodSources.Last();
             var flowAmount = 10;
             var dflow = 10.0;
-            var result = calculator.CalculateFlow(new SlimeNetworkGenerator().FromGraphWithFoodSources(network), source, sink, flowAmount);
+            var result = calculator.CalculateFlow(new SlimeNetworkGenerator().FromGraphWithFoodSources(network), new Route(source, sink), flowAmount);
 
             Assert.AreEqual(dflow, Math.Abs(result.GetFlowOnNode(source)), 0.000001);
             Assert.AreEqual(dflow, Math.Abs(result.GetFlowOnNode(sink)), 0.000001);

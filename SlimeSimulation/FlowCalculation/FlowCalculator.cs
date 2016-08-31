@@ -22,10 +22,10 @@ namespace SlimeSimulation.FlowCalculation
             _linearEquationSolver = solver;
         }
 
-        public FlowResult CalculateFlow(SlimeNetwork network, Node source, Node sink, double flowAmount)
+        public FlowResult CalculateFlow(SlimeNetwork network, Route route, double flowAmount)
         {
-            List<Node> nodeList = new List<Node>(network.AllNodesConnectedTo(source));
-            EnsureSourceSinkInCorrectPositions(nodeList, source, sink);
+            List<Node> nodeList = new List<Node>(network.AllNodesConnectedTo(route.Source));
+            EnsureSourceSinkInCorrectPositions(nodeList, route.Source, route.Sink);
             double[][] a = GetSystemOfEquations(network, nodeList);
             double[] b = GetMatrixOfFlowGainedAtNodeFromZeroToN(flowAmount, nodeList.Count() - 1);
             try
@@ -33,7 +33,7 @@ namespace SlimeSimulation.FlowCalculation
                 double[] solution = _linearEquationSolver.FindX(a, b);
                 Pressures pressures = new Pressures(solution, nodeList);
                 FlowOnEdges flowOnEdges = GetFlowOnEdges(network, pressures, nodeList);
-                return new FlowResult(network, source, sink, flowAmount, flowOnEdges);
+                return new FlowResult(network, route, flowAmount, flowOnEdges);
             }
             catch (SingularMatrixException e)
             {

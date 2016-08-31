@@ -24,7 +24,7 @@ namespace SlimeSimulation.Controller.WindowComponentController.Tests
             var flow = new FlowOnEdges(slime.EdgesInGraph);
             const double flowOnEdgeAb = 1;
             flow.IncreaseFlowOnEdgeBy(ab, flowOnEdgeAb);
-            var flowResult = new FlowResult(slime, a, b, 1, flow);
+            var flowResult = new FlowResult(slime, new Route(a, b), 1, flow);
 
             FlowResultLineViewController controller = new FlowResultLineViewController(flowResult);
             Assert.AreEqual(flowOnEdgeAb, controller.GetLineWeightForEdge(ab), 0.000001);
