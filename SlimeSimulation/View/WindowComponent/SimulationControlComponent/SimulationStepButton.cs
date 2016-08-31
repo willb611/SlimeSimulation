@@ -26,7 +26,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private void DoSimulationStepOnClicked(object sender, EventArgs eventArgs)
         {
-            if (_simulationControlInterfaceValues.ShouldFlowResultsBeDisplayed)
+            if (_simulationControlInterfaceValues.ShouldFlowResultsBeDisplayed && _simulationControlInterfaceValues.ShouldStepFromAllSourcesAtOnce)
             {
                 MessageDialog confirmSkipFlowResultsDialog = new MessageDialog(_parentWindow, DialogFlags.DestroyWithParent, MessageType.Question, ButtonsType.OkCancel,
                     "Flow results are set to be displayed, running a step as the average of flow results from each slime food node will disable flow results being displayed. Continue?");

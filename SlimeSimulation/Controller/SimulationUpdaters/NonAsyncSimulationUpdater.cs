@@ -21,6 +21,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private readonly double _flowAmount;
         private readonly SlimeNetworkExplorer _slimeNetworkExplorer;
         private readonly RouteSelector _routeSelector = new RouteSelector();
+        
+        public double FlowUsedWhenAdaptingNetwork => _flowAmount;
 
         public NonAsyncSimulationUpdater(FlowCalculator flowCalculator, double flowAmount,
             SlimeNetworkAdaptionCalculator slimeNetworkAdapterCalculator, SlimeNetworkExplorer slimeNetworkExplorer)
