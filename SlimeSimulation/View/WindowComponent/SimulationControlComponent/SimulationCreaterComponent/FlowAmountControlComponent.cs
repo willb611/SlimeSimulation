@@ -14,9 +14,9 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
 
         public FlowAmountControlComponent(double flowAmount) : base()
         {
+            _flowAmountTextView = new TextView();
             _flowAmountTextView.Buffer.Text = flowAmount.ToString();
             Add(DescriptionLabel());
-            _flowAmountTextView = new TextView();
             Add(_flowAmountTextView);
         }
 

@@ -149,6 +149,9 @@
     <Compile Include="View\WindowComponent\ColorArea.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\AdaptionPhaseControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\AbstractSimulationControlBox.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\BeginSimulationComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FlowAmountControlComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\ShouldAllowSlimeDisconnectionButton.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FeedbackRateDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\IsSlimeAllowedToDisconnectLabel.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\ShouldStepFromAllSourcesAtOnceControlComponent.cs" />
