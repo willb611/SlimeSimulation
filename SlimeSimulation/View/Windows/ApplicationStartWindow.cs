@@ -8,6 +8,7 @@ using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Windows.Templates;
 using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
 using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent;
+using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.View.Windows
 {
@@ -90,11 +91,16 @@ namespace SlimeSimulation.View.Windows
         private SimulationConfiguration GetConfigFromViews()
         {
             _errors = new List<string>();
-            double? feedbackParam = ExtractDoubleFromView(_feedbackParamTextView);
-            double? flowAmount = ExtractDoubleFromView(_flowAmountControlComponent.TextView);
-            double? probabilityNewNodeIsFood = ExtractDoubleFromView(_latticeGeneratorProbabiltyOfNewFoodTextView);
-            int? minFoodSources = ExtractIntFromView(_latticeGeneratorMinimumFoodSourcesTextView);
-            int? rowSize = ExtractIntFromView(_latticeGeneratorRowSizeTextView);
+            double? feedbackParam = _feedbackParamTextView.ExtractDoubleFromView();
+            HighglightErrorIfNull(feedbackParam, _feedbackParamTextView);
+            double? flowAmount = _flowAmountControlComponent.TextView.ExtractDoubleFromView();
+            HighglightErrorIfNull(flowAmount, _flowAmountControlComponent.TextView);
+            double? probabilityNewNodeIsFood = _latticeGeneratorProbabiltyOfNewFoodTextView.ExtractDoubleFromView();
+            HighglightErrorIfNull(probabilityNewNodeIsFood, _latticeGeneratorProbabiltyOfNewFoodTextView);
+            int? minFoodSources = _latticeGeneratorMinimumFoodSourcesTextView.ExtractIntFromView();
+            HighglightErrorIfNull(minFoodSources, _latticeGeneratorMinimumFoodSourcesTextView);
+            int? rowSize = _latticeGeneratorRowSizeTextView.ExtractIntFromView();
+            HighglightErrorIfNull(rowSize, _latticeGeneratorRowSizeTextView);
             bool shouldAllowDisconnection = _shouldAllowDisconnectionCheckButton.Active;
             if (feedbackParam.HasValue && flowAmount.HasValue &&
                 probabilityNewNodeIsFood.HasValue && minFoodSources.HasValue && rowSize.HasValue)
@@ -115,6 +121,21 @@ namespace SlimeSimulation.View.Windows
             }
             DisplayErrors();
             return null;
+        }
+
+        private void HighglightErrorIfNull(double? nullable, TextView parameterToLogErrorOn)
+        {
+            if (nullable == null)
+            {
+                HighlightErrorOn(parameterToLogErrorOn);
+            }
+        }
+        private void HighglightErrorIfNull(int? nullable, TextView parameterToLogErrorOn)
+        {
+            if (nullable == null)
+            {
+                HighlightErrorOn(parameterToLogErrorOn);
+            }
         }
 
         private Widget MatrixGenerationProperties()
@@ -169,30 +190,6 @@ namespace SlimeSimulation.View.Windows
             hBox.Add(textView);
             _textViewLabelMapping[textView] = description;
             return hBox;
-        }
-
-        public double? ExtractDoubleFromView(TextView view)
-        {
-            double result;
-            var success = double.TryParse(view.Buffer.Text, out result);
-            if (success)
-            {
-                return result;
-            }
-            HighlightErrorOn(view);
-            return null;
-        }
-
-        private int? ExtractIntFromView(TextView view)
-        {
-            int result;
-            var success = int.TryParse(view.Buffer.Text, out result);
-            if (success)
-            {
-                return result;
-            }
-            HighlightErrorOn(view);
-            return null;
         }
 
         private void HighlightErrorOn(TextView view)
