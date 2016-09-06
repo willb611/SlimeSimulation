@@ -19,9 +19,8 @@ namespace SlimeSimulation.View.Windows
 
         private readonly ApplicationStartWindowController _windowController;
         private readonly SimulationConfiguration _defaultConfig = new SimulationConfiguration();
-        private readonly Dictionary<TextView, Label> _textViewLabelMapping = new Dictionary<TextView, Label>();
-
-        private Button _beginSimulationButton;
+       
+        private Button _beginSimulationComponent;
         private CheckButton _shouldAllowDisconnectionCheckButton;
 
         private FlowAmountControlComponent _flowAmountControlComponent;
@@ -43,7 +42,7 @@ namespace SlimeSimulation.View.Windows
             container.Add(_slimeNetworkAdaptionComponent);
             container.Add(_latticeGenerationControlComponent);
             container.Add(_shouldAllowDisconnectionCheckButton);
-            container.Add(_beginSimulationButton);
+            container.Add(_beginSimulationComponent);
             container.Add(_errorDisplayComponent);
             window.Add(container);
             window.Unmaximize();
@@ -54,29 +53,14 @@ namespace SlimeSimulation.View.Windows
             _slimeNetworkAdaptionComponent = new FeedbackParameterControlComponent(_defaultConfig.SlimeNetworkAdaptionCalculatorConfig);
             _flowAmountControlComponent = new FlowAmountControlComponent(_defaultConfig.FlowAmount);
             _shouldAllowDisconnectionCheckButton = new ShouldAllowSlimeDisconnectionButton(_defaultConfig.ShouldAllowDisconnection);
-            _beginSimulationButton = new BeginSimulationComponent();
-            _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
+            _beginSimulationComponent = new BeginSimulationComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
             _latticeGenerationControlComponent =
                 new LatticeGenerationControlComponent(_defaultConfig.GenerationConfig);
             return new VBox();
         }
 
-        private void BeginSimulationButton_Clicked(object obj, EventArgs args)
-        {
-            Logger.Debug("[BeginSimulationButton_Clicked] Entered");
-            var config = GetConfigFromViews();
-            if (config == null)
-            {
-                Logger.Info("[BeginSimulationButton_Clicked] Not starting simulation due to invalid parameters");
-            }
-            else
-            {
-                _windowController.StartSimulation(config);
-            }
-        }
-
-        private SimulationConfiguration GetConfigFromViews()
+        internal SimulationConfiguration GetConfigFromViews()
         {
             var slimeNetworkAdaptionConfig = _slimeNetworkAdaptionComponent.ReadConfiguration();
             _errorDisplayComponent.AddToDisplayBuffer(_slimeNetworkAdaptionComponent.Errors());
@@ -115,7 +99,7 @@ namespace SlimeSimulation.View.Windows
             if (disposing)
             {
                 base.Dispose(true);
-                _beginSimulationButton.Dispose();
+                _beginSimulationComponent.Dispose();
                 _errorDisplayComponent.Dispose();
                 _flowAmountControlComponent.Dispose();
                 _latticeGenerationControlComponent.Dispose();
