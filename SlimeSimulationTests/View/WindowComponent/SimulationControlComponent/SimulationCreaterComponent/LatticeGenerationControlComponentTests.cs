@@ -13,12 +13,6 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
     public class LatticeGenerationControlComponentTests
     {
         [TestMethod()]
-        public void LatticeGenerationControlComponentTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
         public void ReadGenerationConfigTest()
         {
             var size = 123;

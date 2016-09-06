@@ -113,6 +113,7 @@
     <Compile Include="Model\Simulation\RouteSelector.cs" />
     <Compile Include="StdLibHelpers\IEnumeratorExtension.cs" />
     <Compile Include="StdLibHelpers\TextViewExtension.cs" />
+    <Compile Include="View\WindowComponent\ErrorDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\GrowthPhaseControlBox.cs" />
     <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />

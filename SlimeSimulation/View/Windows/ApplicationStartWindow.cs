@@ -9,6 +9,7 @@ using SlimeSimulation.View.Windows.Templates;
 using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
 using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent;
 using SlimeSimulation.StdLibHelpers;
+using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.Windows
 {
@@ -22,15 +23,11 @@ namespace SlimeSimulation.View.Windows
 
         private Button _beginSimulationButton;
         private CheckButton _shouldAllowDisconnectionCheckButton;
-        
+
         private FlowAmountControlComponent _flowAmountControlComponent;
-
-        private Label _errorLabel;
-
-
-        private List<string> _errors = new List<string>();
         private LatticeGenerationControlComponent _latticeGenerationControlComponent;
         private FeedbackParameterControlComponent _slimeNetworkAdaptionComponent;
+        private ErrorDisplayComponent _errorDisplayComponent;
 
         public ApplicationStartWindow(string windowTitle, ApplicationStartWindowController windowController)
             : base(windowTitle, windowController)
@@ -47,7 +44,7 @@ namespace SlimeSimulation.View.Windows
             container.Add(_latticeGenerationControlComponent);
             container.Add(_shouldAllowDisconnectionCheckButton);
             container.Add(_beginSimulationButton);
-            container.Add(ErrorDisplayComponent());
+            container.Add(_errorDisplayComponent);
             window.Add(container);
             window.Unmaximize();
         }
@@ -59,7 +56,7 @@ namespace SlimeSimulation.View.Windows
             _shouldAllowDisconnectionCheckButton = new ShouldAllowSlimeDisconnectionButton(_defaultConfig.ShouldAllowDisconnection);
             _beginSimulationButton = new BeginSimulationComponent();
             _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
-            _errorLabel = new Label();
+            _errorDisplayComponent = new ErrorDisplayComponent();
             _latticeGenerationControlComponent =
                 new LatticeGenerationControlComponent(_defaultConfig.GenerationConfig);
             return new VBox();
@@ -79,28 +76,19 @@ namespace SlimeSimulation.View.Windows
             }
         }
 
-        private Widget ErrorDisplayComponent()
-        {
-            HBox box = new HBox();
-            box.Add(_errorLabel);
-            return box;
-        }
-
-
         private SimulationConfiguration GetConfigFromViews()
         {
-            _errors = new List<string>();
             var slimeNetworkAdaptionConfig = _slimeNetworkAdaptionComponent.ReadConfiguration();
-            AddToErrorDisplayBuffer(_slimeNetworkAdaptionComponent.Errors());
+            _errorDisplayComponent.AddToDisplayBuffer(_slimeNetworkAdaptionComponent.Errors());
             double? flowAmount = _flowAmountControlComponent.ReadFlowAmount();
-            AddToErrorDisplayBuffer(_flowAmountControlComponent.Errors());
+            _errorDisplayComponent.AddToDisplayBuffer(_flowAmountControlComponent.Errors());
             bool shouldAllowDisconnection = _shouldAllowDisconnectionCheckButton.Active;
             if (slimeNetworkAdaptionConfig != null && flowAmount.HasValue)
             {
                 try
                 {
                     var generationConfig = _latticeGenerationControlComponent.ReadGenerationConfig();
-                    AddToErrorDisplayBuffer(_latticeGenerationControlComponent.Errors());
+                    _errorDisplayComponent.AddToDisplayBuffer(_latticeGenerationControlComponent.Errors());
                     if (generationConfig != null)
                     {
                         return new SimulationConfiguration(generationConfig, flowAmount.Value,
@@ -111,52 +99,11 @@ namespace SlimeSimulation.View.Windows
                 {
                     string errorMsg = "Invalid parameter: " + e.Message;
                     Logger.Info(errorMsg);
-                    AddToErrorDisplayBuffer(errorMsg);
+                    _errorDisplayComponent.AddToDisplayBuffer(errorMsg);
                 }
             }
-            DisplayErrors();
+            _errorDisplayComponent.UpdateDisplayFromBuffer();
             return null;
-        }
-
-        private void AddToErrorDisplayBuffer(List<string> errors)
-        {
-            foreach (var errorMessage in errors)
-            {
-                AddToErrorDisplayBuffer(errorMessage);
-            }
-        }
-
-        private void HighglightErrorIfNull(double? nullable, TextView parameterToLogErrorOn)
-        {
-            if (nullable == null)
-            {
-                HighlightErrorOn(parameterToLogErrorOn);
-            }
-        }
-
-        private void HighlightErrorOn(TextView view)
-        {
-            AddToErrorDisplayBuffer("Not valid value for input box matching: "
-                         + _textViewLabelMapping[view].Text);
-        }
-
-        private void AddToErrorDisplayBuffer(string error)
-        {
-            _errors.Add(error);
-        }
-
-        private void DisplayErrors()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (string error in _errors)
-            {
-                if (sb.Length > 0)
-                {
-                    sb.Append(Environment.NewLine);
-                }
-                sb.Append(error);
-            }
-            _errorLabel.Text = sb.ToString();
         }
 
         protected override void Dispose(bool disposing)
@@ -169,7 +116,7 @@ namespace SlimeSimulation.View.Windows
             {
                 base.Dispose(true);
                 _beginSimulationButton.Dispose();
-                _errorLabel.Dispose();
+                _errorDisplayComponent.Dispose();
                 _flowAmountControlComponent.Dispose();
                 _latticeGenerationControlComponent.Dispose();
                 _shouldAllowDisconnectionCheckButton.Dispose();
