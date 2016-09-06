@@ -21,6 +21,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
             ApplicationStartWindowController controller)
             : base (new Label("Begin simulation")) {
             _enclosingWindow = enclosingWindow;
+            _enclosingWindowController = controller;
             Clicked += BeginSimulationComponent_Clicked;
         }
 
