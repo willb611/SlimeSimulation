@@ -37,7 +37,7 @@ namespace SlimeSimulation.View.Windows
 
         protected override void AddToWindow(Window window)
         {
-            var container = MakeComponents();
+            var container = MakeComponentsAndReturnContainerForThem();
             container.Add(_flowAmountControlComponent);
             container.Add(_slimeNetworkAdaptionComponent);
             container.Add(_latticeGenerationControlComponent);
@@ -48,7 +48,7 @@ namespace SlimeSimulation.View.Windows
             window.Unmaximize();
         }
 
-        private VBox MakeComponents()
+        private VBox MakeComponentsAndReturnContainerForThem()
         {
             _slimeNetworkAdaptionComponent = new FeedbackParameterControlComponent(_defaultConfig.SlimeNetworkAdaptionCalculatorConfig);
             _flowAmountControlComponent = new FlowAmountControlComponent(_defaultConfig.FlowAmount);
