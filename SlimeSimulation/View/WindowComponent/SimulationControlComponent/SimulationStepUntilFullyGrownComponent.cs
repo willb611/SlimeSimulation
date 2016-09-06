@@ -10,11 +10,11 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly Window _parentWindow;
-        private readonly SimulationStepWindowControllerTemplate _simulationStepWindowController;
+        private readonly SimulationStepAbstractWindowController _simulationStepAbstractWindowController;
 
-        public SimulationStepUntilFullyGrownComponent(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
+        public SimulationStepUntilFullyGrownComponent(SimulationStepAbstractWindowController simulationStepAbstractWindowController, Window parentWindow)
         {
-            this._simulationStepWindowController = simulationStepWindowController;
+            this._simulationStepAbstractWindowController = simulationStepAbstractWindowController;
             this._parentWindow = parentWindow;
 
             var doStepsButton = new Button(new Label("Run until slime has finished expanding"));
@@ -25,7 +25,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private void DoStepsButtonOnClicked(object sender, EventArgs eventArgs)
         {
-            _simulationStepWindowController.RunStepsUntilSlimeHasFullyExplored();
+            _simulationStepAbstractWindowController.RunStepsUntilSlimeHasFullyExplored();
         }
     }
 }

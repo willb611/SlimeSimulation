@@ -5,17 +5,17 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller.WindowController.Templates
 {
-    public abstract class WindowControllerTemplate : IDisposable
+    public abstract class AbstractWindowController : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         protected bool Disposed = false;
 
-        public WindowTemplate Window;
+        public AbstractWindow AbstractWindow;
 
         public virtual void OnWindowClose()
         {
-            Logger.Debug("[OnWindowClose] About to dispose of window: {0}", Window);
-            Window.Dispose();
+            Logger.Debug("[OnWindowClose] About to dispose of window: {0}", AbstractWindow);
+            AbstractWindow.Dispose();
             Logger.Debug("[OnWindowClose] Disposed of window.");
         }
         
@@ -36,16 +36,16 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             }
             if (disposing)
             {
-                if (Window != null)
+                if (AbstractWindow != null)
                 {
-                    Window.Dispose();
-                    Window = null;
+                    AbstractWindow.Dispose();
+                    AbstractWindow = null;
                 }
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
         }
-        ~WindowControllerTemplate()
+        ~AbstractWindowController()
         {
             Dispose(false);
         }

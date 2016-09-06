@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using NLog;
 
 namespace SlimeSimulation.Model
 {
     public class GraphWithFoodSources : Graph
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private ISet<FoodSourceNode> _foodSources;
         public ISet<FoodSourceNode> FoodSources {
             get
@@ -15,7 +19,7 @@ namespace SlimeSimulation.Model
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("FoodSources");
+                    throw new ArgumentNullException(nameof(value));
                 }
                 else
                 {
@@ -26,11 +30,28 @@ namespace SlimeSimulation.Model
 
         public GraphWithFoodSources(ISet<Edge> edgesInGraph) : base(edgesInGraph)
         {
+            if (edgesInGraph == null)
+            {
+                throw new ArgumentNullException(nameof(edgesInGraph));
+            }
             FoodSources = Nodes.GetFoodSourceNodes(NodesInGraph);
         }
-        public GraphWithFoodSources(ISet<Edge> edgesInGraph, ISet<Node> nodesInGraph, ISet<FoodSourceNode> foodSourcesNodes) : base(edgesInGraph, nodesInGraph)
+        [JsonConstructor]
+        public GraphWithFoodSources(ISet<Edge> edgesInGraph, ISet<Node> nodesInGraph, ISet<FoodSourceNode> foodSources) : base(edgesInGraph, nodesInGraph)
         {
-            FoodSources = foodSourcesNodes;
+            if (edgesInGraph == null)
+            {
+                throw new ArgumentNullException(nameof(edgesInGraph));
+            } else if (nodesInGraph == null)
+            {
+                throw new ArgumentNullException(nameof(nodesInGraph));
+            } else if (foodSources == null)
+            {
+                throw new ArgumentNullException(nameof(foodSources));
+            }
+            FoodSources = foodSources;
+            Logger.Debug("[Constructor] Finished with foodSources.Count {0}, nodesInGraph.Count {1}, edgesINGraph.Count {2}",
+                foodSources.Count, nodesInGraph.Count, edgesInGraph.Count);
         }
 
         public override bool Equals(object obj)

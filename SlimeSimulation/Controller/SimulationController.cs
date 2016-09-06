@@ -25,12 +25,12 @@ namespace SlimeSimulation.Controller
         private readonly GtkLifecycleController _gtkLifecycleController;
 
         private readonly ItemLock<SimulationState> _protectedState = new ItemLock<SimulationState>();
-        private WindowControllerTemplate _activeWindowController;
+        private AbstractWindowController _activeAbstractWindowController;
 
-        private readonly NewSimulationStarterWindowController _applicationStartWindowController;
+        private readonly AbstractSimulationControllerStarter _startingController;
         private readonly SimulationConfiguration _config;
 
-        public SimulationControlInterfaceValues SimulationControlBoxConfig { get; } = new SimulationControlInterfaceValues();
+        public SimulationControlInterfaceValues SimulationControlBoxConfig { get; }
         public int StepsTakenInAdaptingState => GetSimulationState().StepsTakenInAdaptingState;
         public int StepsTakenForSlimeToExplore => GetSimulationState().StepsTakenInExploringState;
 
@@ -46,23 +46,23 @@ namespace SlimeSimulation.Controller
             set { SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed = value; }
         }
 
-
-
-        public SimulationController(NewSimulationStarterWindowController applicationStartWindowController, SimulationConfiguration config,
-            GtkLifecycleController gtkLifecycleController, SimulationState initialState, SimulationUpdater simulationUpdater)
+        public SimulationController(AbstractSimulationControllerStarter startingController,
+            GtkLifecycleController gtkLifecycleController, SimulationUpdater simulationUpdater,
+            SimulationSave simulationSave)
         {
-            _config = config;
+            SimulationControlBoxConfig = simulationSave.SimulationControlInterfaceValues;
+            _config = simulationSave.SimulationConfiguration;
             _gtkLifecycleController = gtkLifecycleController;
-            _applicationStartWindowController = applicationStartWindowController;
+            _startingController = startingController;
             _simulationUpdater = simulationUpdater;
             _protectedState.Lock();
-            _protectedState.SetAndClearLock(initialState);
+            _protectedState.SetAndClearLock(simulationSave.SimulationState);
         }
 
-        internal void Display(WindowTemplate window)
+        internal void Display(AbstractWindow abstractWindow)
         {
-            Logger.Debug("[Display] About to display {0}", window);
-            _gtkLifecycleController.Display(window);
+            Logger.Debug("[Display] About to display {0}", abstractWindow);
+            _gtkLifecycleController.Display(abstractWindow);
         }
 
         // Visible for testing
@@ -81,13 +81,13 @@ namespace SlimeSimulation.Controller
             {
                 var error = "[RunSimulation] Unexpected exception: " + e + e.Data;
                 Logger.Fatal(error);
-                _applicationStartWindowController.DisplayError(error);
+                _startingController.DisplayError(error);
             }
         }
 
         internal void FinishSimulation()
         {
-            _applicationStartWindowController.FinishSimulation(this);
+            _startingController.RegainControlFromFinishedSimulation(this);
         }
 
         internal void AsyncDoNextSimulationSteps(int numberOfSteps)
@@ -160,35 +160,35 @@ namespace SlimeSimulation.Controller
         private void UpdateDisplayFromState(SimulationState state)
         {
             Logger.Debug("[UpdateDisplayFromState] Entered");
-            WindowControllerTemplate nextWindowController;
+            AbstractWindowController nextAbstractWindowController;
             if (!state.HasFinishedExpanding)
             {
-                nextWindowController = DisplayControllerForNotFullyExpandedSlime(state.PossibleNetwork, state.SlimeNetwork);
+                nextAbstractWindowController = DisplayControllerForNotFullyExpandedSlime(state.GraphWithFoodSources, state.SlimeNetwork);
             } else if (state.FlowResult == null || !ShouldFlowResultsBeDisplayed)
             {
-                nextWindowController = DisplayControllerForNetworkConnectivity(state.SlimeNetwork, state.PossibleNetwork);
+                nextAbstractWindowController = DisplayControllerForNetworkConnectivity(state.SlimeNetwork, state.GraphWithFoodSources);
             }
             else
             {
-                nextWindowController = DisplayControllerForFlowResult(state.FlowResult);
+                nextAbstractWindowController = DisplayControllerForFlowResult(state.FlowResult);
             }
-            Logger.Debug($"[UpdateDisplayFromState] Found nextWindow controller {nextWindowController}");
-            _activeWindowController = nextWindowController;
-            nextWindowController.Render();
+            Logger.Debug($"[UpdateDisplayFromState] Found nextWindow controller {nextAbstractWindowController}");
+            _activeAbstractWindowController = nextAbstractWindowController;
+            nextAbstractWindowController.Render();
         }
 
-        private WindowControllerTemplate DisplayControllerForNotFullyExpandedSlime(GraphWithFoodSources graphWithFoodSources, SlimeNetwork slimeNetwork)
+        private AbstractWindowController DisplayControllerForNotFullyExpandedSlime(GraphWithFoodSources graphWithFoodSources, SlimeNetwork slimeNetwork)
         {
             return new SlimeNetworkWindowController(this, slimeNetwork, graphWithFoodSources,
                 new SimulationGrowthPhaseControlBoxFactory());
         }
 
-        private WindowControllerTemplate DisplayControllerForFlowResult(FlowResult flowResult)
+        private AbstractWindowController DisplayControllerForFlowResult(FlowResult flowResult)
         {
             return new FlowResultWindowController(this, flowResult);
         }
 
-        private WindowControllerTemplate DisplayControllerForNetworkConnectivity(SlimeNetwork network, GraphWithFoodSources graphWithFoodSources)
+        private AbstractWindowController DisplayControllerForNetworkConnectivity(SlimeNetwork network, GraphWithFoodSources graphWithFoodSources)
         {
             return new SlimeNetworkWindowController(this, network, graphWithFoodSources, new SimulationAdaptionPhaseControlBoxFactory());
         }
@@ -213,8 +213,8 @@ namespace SlimeSimulation.Controller
             }
             if (disposing)
             {
-                _activeWindowController.Dispose();
-                _activeWindowController = null;
+                _activeAbstractWindowController.Dispose();
+                _activeAbstractWindowController = null;
                 _protectedState.Lock();
                 _protectedState.SetAndClearLock(null);
             }

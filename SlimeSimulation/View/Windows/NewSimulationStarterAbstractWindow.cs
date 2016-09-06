@@ -9,7 +9,7 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.View.Windows
 {
-    public class NewSimulationStarterWindow : WindowTemplate
+    public class NewSimulationStarterAbstractWindow : AbstractWindow
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -33,7 +33,7 @@ namespace SlimeSimulation.View.Windows
         private List<string> _errors = new List<string>();
 
 
-        public NewSimulationStarterWindow(string windowTitle, NewSimulationStarterWindowController windowController)
+        public NewSimulationStarterAbstractWindow(string windowTitle, NewSimulationStarterWindowController windowController)
             : base(windowTitle, windowController)
         {
             _windowController = windowController;
@@ -260,7 +260,7 @@ namespace SlimeSimulation.View.Windows
             Logger.Debug("[Dispose : bool] finished from within " + this);
         }
 
-        ~NewSimulationStarterWindow()
+        ~NewSimulationStarterAbstractWindow()
         {
             Dispose(false);
         }

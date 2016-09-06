@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using NLog;
 
 namespace SlimeSimulation.Model
@@ -8,16 +10,32 @@ namespace SlimeSimulation.Model
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ISet<SlimeEdge> SlimeEdges { get; }
+        public ISet<SlimeEdge> SlimeEdges { get; private set; }
 
-        public SlimeNetwork(ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges))
+        public SlimeNetwork(ISet<SlimeEdge> slimeEdges) : base(Edges.FromSlimeEdges(slimeEdges))
         {
-            SlimeEdges = Edges.CastToSlimeEdges(base.EdgesInGraph);
+            if (slimeEdges == null)
+            {
+                throw new ArgumentNullException(nameof(slimeEdges));
+            }
+            SlimeEdges = slimeEdges;
         }
+        [JsonConstructor]
         public SlimeNetwork(ISet<Node> nodesInGraph, ISet<FoodSourceNode> foodSources,
-            ISet<SlimeEdge> edges) : base(new HashSet<Edge>(edges), nodesInGraph, foodSources)
+            ISet<SlimeEdge> slimeEdges) : base(Edges.FromSlimeEdges(slimeEdges), nodesInGraph, foodSources)
         {
-            SlimeEdges = Edges.CastToSlimeEdges(base.EdgesInGraph);
+            if (nodesInGraph == null)
+            {
+                throw new ArgumentNullException(nameof(nodesInGraph));
+            } else if (foodSources == null)
+            {
+                throw new ArgumentNullException(nameof(foodSources));
+            } else if (slimeEdges == null)
+            {
+                throw new ArgumentNullException(nameof(slimeEdges));
+            }
+            SlimeEdges = slimeEdges;
+            Logger.Debug("[Constructor] Finished with slimeEdges.Count {0}", slimeEdges.Count);
         }
 
         internal double GetEdgeConnectivityOrZero(Node a, Node b)
@@ -104,6 +122,12 @@ namespace SlimeSimulation.Model
             {
                 return !this.RouteExistsBetween(source, sink);
             }
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + "{slimeEdges.Count=" + SlimeEdges.Count + ",edgesInGraph.Count=" + EdgesInGraph.Count
+                + ",foodSources.Count=" + FoodSources.Count + ",nodesInGraph.Count=" + NodesInGraph.Count + "}";
         }
     }
 }

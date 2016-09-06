@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gdk;
 using Gtk;
@@ -14,7 +15,7 @@ using Window = Gtk.Window;
 
 namespace SlimeSimulation.View.Windows
 {
-    public class SlimeNetworkWindow : GraphDrawingWindowTemplate
+    public class SlimeNetworkWindow : GraphDrawingAbstractWindow
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly SlimeNetworkWindowController _controller;
@@ -31,12 +32,26 @@ namespace SlimeSimulation.View.Windows
             SlimeNetworkWindowController controller, ISimulationControlBoxFactory simulationControlBoxFactory)
           : base("SlimeNetworkWindow", controller)
         {
+            if (slimeNetwork == null)
+            {
+                throw new ArgumentNullException(nameof(slimeNetwork));
+            } else if  (graphWithFoodSources == null)
+            {
+                throw new ArgumentNullException(nameof(slimeNetwork));
+            } else if (controller == null)
+            {
+                throw new ArgumentNullException(nameof(controller));
+            } else if (simulationControlBoxFactory == null)
+            {
+                throw new ArgumentNullException(nameof(simulationControlBoxFactory));
+            }
             _slimeNetwork = slimeNetwork;
             _graphWithFoodSources = graphWithFoodSources;
             _controller = controller;
             _simulationControlBoxFactory = simulationControlBoxFactory;
             _edgesInSlimeNetworkUnionEdgesFromGraphWithFoodSources =
                 slimeNetwork.GetAllEdgesInGraphReplacingThoseWhichAreSlimed(graphWithFoodSources);
+            Logger.Debug("[constructor] Given slimeNetwork: {0}", slimeNetwork);
         }
 
         protected override void AddToWindow(Window window)
@@ -84,3 +99,4 @@ namespace SlimeSimulation.View.Windows
         }
     }
 }
+

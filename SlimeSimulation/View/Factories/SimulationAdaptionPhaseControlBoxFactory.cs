@@ -9,10 +9,10 @@ namespace SlimeSimulation.View.Factories
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public AbstractSimulationControlBox MakeControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
+        public AbstractSimulationControlBox MakeControlBox(SimulationStepAbstractWindowController simulationStepAbstractWindowController, Window parentWindow)
         {
             Logger.Debug("[MakeControlBox] Making");
-            return new AdaptionPhaseControlBox(simulationStepWindowController, parentWindow);
+            return new AdaptionPhaseControlBox(simulationStepAbstractWindowController, parentWindow);
         }
     }
 }

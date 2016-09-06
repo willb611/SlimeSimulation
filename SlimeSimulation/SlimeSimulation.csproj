@@ -108,14 +108,19 @@
     <Compile Include="Controller\Factories\SimulationControllerFactory.cs" />
     <Compile Include="Controller\SimulationUpdaters\NonAsyncSimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
+    <Compile Include="Controller\WindowController\ApplicationStartWindowController.cs" />
+    <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
     <Compile Include="Model\Bfs\BfsResult.cs" />
     <Compile Include="Model\Bfs\BfsSolver.cs" />
     <Compile Include="Model\Edges.cs" />
     <Compile Include="Model\Nodes.cs" />
     <Compile Include="Model\ItemLock.cs" />
     <Compile Include="Model\Route.cs" />
+    <Compile Include="Model\Simulation\Persistence\SimulationSaver.cs" />
     <Compile Include="Model\Simulation\RouteSelector.cs" />
+    <Compile Include="Model\Simulation\Persistence\SimulationLoader.cs" />
     <Compile Include="Model\Simulation\SimulationSave.cs" />
+    <Compile Include="Model\Simulation\SimulationStepsTaken.cs" />
     <Compile Include="StdLibHelpers\IEnumeratorExtension.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\GrowthPhaseControlBox.cs" />
     <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
@@ -126,8 +131,8 @@
     <Compile Include="Controller\WindowController\SlimeNetworkWindowController.cs" />
     <Compile Include="Controller\WindowController\FlowResultWindowController.cs" />
     <Compile Include="Controller\SimulationController.cs" />
-    <Compile Include="Controller\WindowController\Templates\SimulationStepWindowControllerTemplate.cs" />
-    <Compile Include="Controller\WindowController\Templates\WindowControllerTemplate.cs" />
+    <Compile Include="Controller\WindowController\Templates\SimulationStepAbstractWindowController.cs" />
+    <Compile Include="Controller\WindowController\Templates\AbstractWindowController.cs" />
     <Compile Include="FlowCalculation\FlowCalculator.cs" />
     <Compile Include="LinearEquations\LupDecompositionSolver.cs" />
     <Compile Include="LinearEquations\LinearEquationSolver.cs" />
@@ -162,11 +167,12 @@
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepNumberOfTimesComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepUntilFullyGrownComponent.cs" />
     <Compile Include="View\WindowComponent\SlimeWindowNodeHighlightKey.cs" />
-    <Compile Include="View\Windows\NewSimulationStarterWindow.cs" />
+    <Compile Include="View\Windows\ApplicationStartAbstractWindow.cs" />
+    <Compile Include="View\Windows\NewSimulationStarterAbstractWindow.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FlowAmountLabelComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\ShouldFlowResultsBeDisplayedControlComponent.cs" />
     <Compile Include="View\Windows\SlimeNetworkWindow.cs" />
-    <Compile Include="View\Windows\FlowResultWindow.cs" />
+    <Compile Include="View\Windows\FlowResultAbstractWindow.cs" />
     <Compile Include="View\WindowComponent\GraphDrawingArea.cs" />
     <Compile Include="Controller\WindowComponentController\LineViewController.cs" />
     <Compile Include="View\GtkLifecycleController.cs" />
@@ -177,9 +183,9 @@
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepButton.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\StepsTakenInAdaptingSlimeDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\StepsTakenForSlimeToExploreDisplayComponent.cs" />
-    <Compile Include="View\Windows\Templates\GraphDrawingWindowTemplate.cs" />
+    <Compile Include="View\Windows\Templates\GraphDrawingAbstractWindow.cs" />
     <Compile Include="View\Windows\Templates\OnClickCallback.cs" />
-    <Compile Include="View\Windows\Templates\WindowTemplate.cs" />
+    <Compile Include="View\Windows\Templates\AbstractWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

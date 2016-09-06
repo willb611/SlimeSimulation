@@ -53,12 +53,7 @@ namespace SlimeSimulation.Model
 
         public static HashSet<Edge> FromSlimeEdges(ISet<SlimeEdge> slimeEdges)
         {
-            HashSet<Edge> edges = new HashSet<Edge>();
-            foreach (var slimeEdge in slimeEdges)
-            {
-                edges.Add(slimeEdge.Edge);
-            }
-            return edges;
+            return new HashSet<Edge>(slimeEdges);
         }
 
         public static ISet<SlimeEdge> CastToSlimeEdges(ISet<Edge> edges)

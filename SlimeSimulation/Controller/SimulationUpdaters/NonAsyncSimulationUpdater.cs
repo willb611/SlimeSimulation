@@ -30,7 +30,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         public SimulationState GetNextStateWithUpdatedConductivites(SimulationState state)
         {
             var nextNetwork = _slimeNetworkAdapterCalculator.CalculateNextStep(state.SlimeNetwork, state.FlowResult);
-            return new SimulationState(nextNetwork, true, state.PossibleNetwork, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState + 1);
+            return new SimulationState(nextNetwork, true, state.GraphWithFoodSources, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState + 1);
         }
 
         public SimulationState GetStateWithFlow(SimulationState state)
@@ -39,7 +39,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             try
             {
                 var flowResult = GetFlow(slime);
-                return new SimulationState(slime, flowResult, state.PossibleNetwork, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState);
+                return new SimulationState(slime, flowResult, state.GraphWithFoodSources, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState);
             }
             catch (SingularMatrixException e)
             {
@@ -62,9 +62,9 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         public SimulationState ExpandSlime(SimulationState state)
         {
             Logger.Debug("[TaskExpandSlime] Starting");
-            var expandedNetwork = _slimeNetworkExplorer.ExpandSlimeInNetwork(state.SlimeNetwork, state.PossibleNetwork);
-            var hasFinishedExpanding = state.HasFinishedExpanding || state.SlimeNetwork.CoversGraph(state.PossibleNetwork);
-            return new SimulationState(expandedNetwork, hasFinishedExpanding, state.PossibleNetwork, state.StepsTakenInExploringState + 1, 0);
+            var expandedNetwork = _slimeNetworkExplorer.ExpandSlimeInNetwork(state.SlimeNetwork, state.GraphWithFoodSources);
+            var hasFinishedExpanding = state.HasFinishedExpanding || state.SlimeNetwork.CoversGraph(state.GraphWithFoodSources);
+            return new SimulationState(expandedNetwork, hasFinishedExpanding, state.GraphWithFoodSources, state.StepsTakenInExploringState + 1, 0);
         }
     }
 }

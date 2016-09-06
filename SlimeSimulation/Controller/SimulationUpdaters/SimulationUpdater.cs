@@ -93,7 +93,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                     flowResults.Add(flowResultFromTask);
                 }
                 var updatedSlime = _slimeNetworkAdapterCalculator.CalculateNextStep(state.SlimeNetwork, flowResults);
-                return new SimulationState(updatedSlime, true, state.PossibleNetwork, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState + 1);
+                return new SimulationState(updatedSlime, true, state.GraphWithFoodSources, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState + 1);
             }));
         }
 
@@ -113,7 +113,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
                 }
                 else
                 {
-                    Logger.Debug(
+                    Logger.Warn(
                         "[TaskCalculateFlowFromAllSourcesAndUpdateNetwork] Found no food sources connected to {0} in graph", source);
                 }
             }
