@@ -15,7 +15,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
         private TextView _latticeGeneratorProbabiltyOfNewFoodTextView;
         private TextView _latticeGeneratorMinimumFoodSourcesTextView;
 
-        private List<string> errorComponents;
+        private List<string> _errors;
         private readonly Dictionary<TextView, Label> _textViewLabelMapping = new Dictionary<TextView, Label>();
 
         public LatticeGenerationControlComponent(LatticeGraphWithFoodSourcesGenerationConfig defaultConfig)
@@ -63,7 +63,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
 
         public LatticeGraphWithFoodSourcesGenerationConfig ReadGenerationConfig()
         {
-            _textViewLabelMapping.Clear();
+            _errors = new List<string>();
             double? probabilityNewNodeIsFood = _latticeGeneratorProbabiltyOfNewFoodTextView.ExtractDoubleFromView();
             AddToErrorsIfNull(probabilityNewNodeIsFood, _latticeGeneratorProbabiltyOfNewFoodTextView);
             int? minFoodSources = _latticeGeneratorMinimumFoodSourcesTextView.ExtractIntFromView();
@@ -85,13 +85,13 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
         {
             if (nullableValue == null)
             {
-                errorComponents.Add(_textViewLabelMapping[componentWhichReturnedValue].Text);
+                _errors.Add(_textViewLabelMapping[componentWhichReturnedValue].Text);
             }
         }
 
-        internal List<string> ErrorMessages()
+        internal List<string> Errors()
         {
-            return errorComponents;
+            return _errors;
         }
     }
 }

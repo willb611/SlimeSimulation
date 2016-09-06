@@ -22,8 +22,7 @@ namespace SlimeSimulation.View.Windows
 
         private Button _beginSimulationButton;
         private CheckButton _shouldAllowDisconnectionCheckButton;
-
-        private TextView _feedbackParamTextView;
+        
         private FlowAmountControlComponent _flowAmountControlComponent;
 
         private Label _errorLabel;
@@ -50,7 +49,6 @@ namespace SlimeSimulation.View.Windows
             container.Add(_beginSimulationButton);
             container.Add(ErrorDisplayComponent());
             window.Add(container);
-            _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
             window.Unmaximize();
         }
 
@@ -60,6 +58,7 @@ namespace SlimeSimulation.View.Windows
             _flowAmountControlComponent = new FlowAmountControlComponent(_defaultConfig.FlowAmount);
             _shouldAllowDisconnectionCheckButton = new ShouldAllowSlimeDisconnectionButton(_defaultConfig.ShouldAllowDisconnection);
             _beginSimulationButton = new BeginSimulationComponent();
+            _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
             _errorLabel = new Label();
             _latticeGenerationControlComponent =
                 new LatticeGenerationControlComponent(_defaultConfig.GenerationConfig);
@@ -92,23 +91,17 @@ namespace SlimeSimulation.View.Windows
         {
             _errors = new List<string>();
             var slimeNetworkAdaptionConfig = _slimeNetworkAdaptionComponent.ReadConfiguration();
-            if (slimeNetworkAdaptionConfig == null)
-            {
-                DisplayAllErrors(_slimeNetworkAdaptionComponent.Errors());
-            }
-            double? flowAmount = _flowAmountControlComponent.TextView.ExtractDoubleFromView();
-            HighglightErrorIfNull(flowAmount, _flowAmountControlComponent.TextView);
+            AddToErrorDisplayBuffer(_slimeNetworkAdaptionComponent.Errors());
+            double? flowAmount = _flowAmountControlComponent.ReadFlowAmount();
+            AddToErrorDisplayBuffer(_flowAmountControlComponent.Errors());
             bool shouldAllowDisconnection = _shouldAllowDisconnectionCheckButton.Active;
             if (slimeNetworkAdaptionConfig != null && flowAmount.HasValue)
             {
                 try
                 {
                     var generationConfig = _latticeGenerationControlComponent.ReadGenerationConfig();
-                    if (generationConfig == null)
-                    {
-                        DisplayAllErrors(_latticeGenerationControlComponent.ErrorMessages());
-                    }
-                    else
+                    AddToErrorDisplayBuffer(_latticeGenerationControlComponent.Errors());
+                    if (generationConfig != null)
                     {
                         return new SimulationConfiguration(generationConfig, flowAmount.Value,
                             slimeNetworkAdaptionConfig, shouldAllowDisconnection);
@@ -118,18 +111,18 @@ namespace SlimeSimulation.View.Windows
                 {
                     string errorMsg = "Invalid parameter: " + e.Message;
                     Logger.Info(errorMsg);
-                    DisplayError(errorMsg);
+                    AddToErrorDisplayBuffer(errorMsg);
                 }
             }
             DisplayErrors();
             return null;
         }
 
-        private void DisplayAllErrors(List<string> errors)
+        private void AddToErrorDisplayBuffer(List<string> errors)
         {
             foreach (var errorMessage in errors)
             {
-                DisplayError(errorMessage);
+                AddToErrorDisplayBuffer(errorMessage);
             }
         }
 
@@ -140,30 +133,14 @@ namespace SlimeSimulation.View.Windows
                 HighlightErrorOn(parameterToLogErrorOn);
             }
         }
-        private void HighglightErrorIfNull(int? nullable, TextView parameterToLogErrorOn)
-        {
-            if (nullable == null)
-            {
-                HighlightErrorOn(parameterToLogErrorOn);
-            }
-        }
-
-        private HBox MakeHbox(Label description, TextView textView)
-        {
-            HBox hBox = new HBox();
-            hBox.Add(description);
-            hBox.Add(textView);
-            _textViewLabelMapping[textView] = description;
-            return hBox;
-        }
 
         private void HighlightErrorOn(TextView view)
         {
-            DisplayError("Not valid value for input box matching: "
+            AddToErrorDisplayBuffer("Not valid value for input box matching: "
                          + _textViewLabelMapping[view].Text);
         }
 
-        private void DisplayError(string error)
+        private void AddToErrorDisplayBuffer(string error)
         {
             _errors.Add(error);
         }
@@ -193,6 +170,10 @@ namespace SlimeSimulation.View.Windows
                 base.Dispose(true);
                 _beginSimulationButton.Dispose();
                 _errorLabel.Dispose();
+                _flowAmountControlComponent.Dispose();
+                _latticeGenerationControlComponent.Dispose();
+                _shouldAllowDisconnectionCheckButton.Dispose();
+                _slimeNetworkAdaptionComponent.Dispose();
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);

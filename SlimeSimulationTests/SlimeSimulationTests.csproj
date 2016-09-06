@@ -94,7 +94,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLibHelpers\EnumeratorExtensionTests.cs" />
     <Compile Include="StdLibHelpers\TextViewExtensionTests.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FeedbackParameterControlComponentTests.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FlowAmountControlComponentTests.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\LatticeGenerationControlComponentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SlimeSimulation\SlimeSimulation.csproj">

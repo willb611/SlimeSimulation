@@ -17,7 +17,10 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
         {
             double flowAmount = 5.32;
             var component = new FlowAmountControlComponent(flowAmount);
-            Assert.AreEqual(flowAmount, double.Parse(component.TextView.Buffer.Text), 0.000001);
+            var readValue = component.ReadFlowAmount();
+            Assert.IsTrue(readValue.HasValue);
+            Assert.AreEqual(flowAmount, readValue.Value, 0.000001);
+            Assert.IsFalse(component.Errors().Any());
         }
     }
 }

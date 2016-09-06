@@ -31,12 +31,12 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
             var feedbackParameter = _feedbackParamTextView.ExtractDoubleFromView();
             if (feedbackParameter.HasValue)
             {
-                _errors.Add(descriptionString);
-                return null;
-            } else
-            {
                 var adaptionConfig = new SlimeNetworkAdaptionCalculatorConfig(feedbackParameter.Value);
                 return adaptionConfig;
+            } else
+            {
+                _errors.Add("Invalid value for: " + descriptionString);
+                return null;
             }
         }
 
