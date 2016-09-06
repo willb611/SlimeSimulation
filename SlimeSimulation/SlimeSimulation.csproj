@@ -151,6 +151,7 @@
     <Compile Include="View\WindowComponent\SimulationControlComponent\AdaptionPhaseControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\AbstractSimulationControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\BeginSimulationComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FeedbackParameterControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FlowAmountControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\LatticeGenerationControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\ShouldAllowSlimeDisconnectionButton.cs" />

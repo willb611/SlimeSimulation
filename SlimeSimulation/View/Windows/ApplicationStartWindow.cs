@@ -31,6 +31,7 @@ namespace SlimeSimulation.View.Windows
 
         private List<string> _errors = new List<string>();
         private LatticeGenerationControlComponent _latticeGenerationControlComponent;
+        private FeedbackParameterControlComponent _slimeNetworkAdaptionComponent;
 
         public ApplicationStartWindow(string windowTitle, ApplicationStartWindowController windowController)
             : base(windowTitle, windowController)
@@ -43,7 +44,7 @@ namespace SlimeSimulation.View.Windows
         {
             var container = MakeComponents();
             container.Add(_flowAmountControlComponent);
-            container.Add(FeedbackParameterBox());
+            container.Add(_slimeNetworkAdaptionComponent);
             container.Add(_latticeGenerationControlComponent);
             container.Add(_shouldAllowDisconnectionCheckButton);
             container.Add(_beginSimulationButton);
@@ -55,6 +56,7 @@ namespace SlimeSimulation.View.Windows
 
         private VBox MakeComponents()
         {
+            _slimeNetworkAdaptionComponent = new FeedbackParameterControlComponent(_defaultConfig.SlimeNetworkAdaptionCalculatorConfig);
             _flowAmountControlComponent = new FlowAmountControlComponent(_defaultConfig.FlowAmount);
             _shouldAllowDisconnectionCheckButton = new ShouldAllowSlimeDisconnectionButton(_defaultConfig.ShouldAllowDisconnection);
             _beginSimulationButton = new BeginSimulationComponent();
@@ -89,27 +91,27 @@ namespace SlimeSimulation.View.Windows
         private SimulationConfiguration GetConfigFromViews()
         {
             _errors = new List<string>();
-            double? feedbackParam = _feedbackParamTextView.ExtractDoubleFromView();
-            HighglightErrorIfNull(feedbackParam, _feedbackParamTextView);
+            var slimeNetworkAdaptionConfig = _slimeNetworkAdaptionComponent.ReadConfiguration();
+            if (slimeNetworkAdaptionConfig == null)
+            {
+                DisplayAllErrors(_slimeNetworkAdaptionComponent.Errors());
+            }
             double? flowAmount = _flowAmountControlComponent.TextView.ExtractDoubleFromView();
             HighglightErrorIfNull(flowAmount, _flowAmountControlComponent.TextView);
             bool shouldAllowDisconnection = _shouldAllowDisconnectionCheckButton.Active;
-            if (feedbackParam.HasValue && flowAmount.HasValue)
+            if (slimeNetworkAdaptionConfig != null && flowAmount.HasValue)
             {
                 try
                 {
                     var generationConfig = _latticeGenerationControlComponent.ReadGenerationConfig();
                     if (generationConfig == null)
                     {
-                        foreach (var errorMessage in _latticeGenerationControlComponent.ErrorMessages())
-                        {
-                            _errors.Add(errorMessage);
-                        }
+                        DisplayAllErrors(_latticeGenerationControlComponent.ErrorMessages());
                     }
                     else
                     {
                         return new SimulationConfiguration(generationConfig, flowAmount.Value,
-                            new SlimeNetworkAdaptionCalculatorConfig(feedbackParam.Value), shouldAllowDisconnection);
+                            slimeNetworkAdaptionConfig, shouldAllowDisconnection);
                     }
                 }
                 catch (ArgumentException e)
@@ -121,6 +123,14 @@ namespace SlimeSimulation.View.Windows
             }
             DisplayErrors();
             return null;
+        }
+
+        private void DisplayAllErrors(List<string> errors)
+        {
+            foreach (var errorMessage in errors)
+            {
+                DisplayError(errorMessage);
+            }
         }
 
         private void HighglightErrorIfNull(double? nullable, TextView parameterToLogErrorOn)
@@ -138,17 +148,7 @@ namespace SlimeSimulation.View.Windows
             }
         }
 
-
-        private Widget FeedbackParameterBox()
-        {
-            Label description = new Label("Feedback parameter for updating slime simulation at each step");
-            TextView textView = new TextView();
-            textView.Buffer.Text = _defaultConfig.SlimeNetworkAdaptionCalculatorConfig.FeedbackParam.ToString();
-            _feedbackParamTextView = textView;
-            return HBox(description, textView);
-        }
-
-        private HBox HBox(Label description, TextView textView)
+        private HBox MakeHbox(Label description, TextView textView)
         {
             HBox hBox = new HBox();
             hBox.Add(description);

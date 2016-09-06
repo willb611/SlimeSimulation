@@ -89,7 +89,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
             }
         }
 
-        internal IEnumerable<string> ErrorMessages()
+        internal List<string> ErrorMessages()
         {
             return errorComponents;
         }
