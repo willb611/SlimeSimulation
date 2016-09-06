@@ -26,7 +26,7 @@ namespace SlimeSimulation.Controller.Tests
             var updatedSlime = slimeNetworkGenerator.FromGraphWithFoodSources(initial);
             var resultState = new SimulationState(updatedSlime, true, initial, 1, 0);
 
-            var updaterMock = new Mock<SimulationUpdater>();
+            var updaterMock = new Mock<AsyncSimulationUpdater>();
             Task<SimulationState> nextStateAsync = Task.Run(() => resultState);
             updaterMock.Setup(updater => updater.TaskExpandSlime(nonExpandedSlimeState)).Returns(nextStateAsync);
 
@@ -51,7 +51,7 @@ namespace SlimeSimulation.Controller.Tests
             var initialState = new SimulationState(slime, false, initial);
             var fullyEploredSlimeState = new SimulationState(slime, true, initial);
 
-            var updaterMock = new Mock<SimulationUpdater>();
+            var updaterMock = new Mock<AsyncSimulationUpdater>();
             Task<SimulationState> incompleteStateTask = Task.Run((() => initialState));
             Task<SimulationState> nextStateAsync = Task.Run(() => fullyEploredSlimeState);
             updaterMock.SetupSequence(updater => updater.TaskExpandSlime(initialState))

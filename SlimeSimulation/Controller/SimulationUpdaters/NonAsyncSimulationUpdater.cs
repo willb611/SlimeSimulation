@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.LinearEquations;
@@ -30,7 +31,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         public SimulationState GetNextStateWithUpdatedConductivites(SimulationState state)
         {
             var nextNetwork = _slimeNetworkAdapterCalculator.CalculateNextStep(state.SlimeNetwork, state.FlowResult);
-            return new SimulationState(nextNetwork, true, state.PossibleNetwork, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState + 1);
+            throw new Exception("Just testing please ignore");
+            //return new SimulationState(nextNetwork, true, state.PossibleNetwork, state.StepsTakenInExploringState, state.StepsTakenInAdaptingState + 1);
         }
 
         public SimulationState GetStateWithFlow(SimulationState state)

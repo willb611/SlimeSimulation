@@ -25,7 +25,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
                 new Route(slime.FoodSources.First(), slime.FoodSources.Last()), 1);
             var stateWithFlow = new SimulationState(slime, flowResult, network, 0, 0);
 
-            var updatedNetwork = new SimulationUpdater().TaskUpdateNetworkUsingFlowInState(stateWithFlow);
+            var updatedNetwork = new AsyncSimulationUpdater().TaskUpdateNetworkUsingFlowInState(stateWithFlow);
             updatedNetwork.Wait(10000);
             var result = updatedNetwork.Result;
             Assert.IsNull(result.FlowResult, "Updating slime network with flow result should remove flow result");
@@ -40,7 +40,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
             var slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(network);
             var state = new SimulationState(slime, true, network);
 
-            var updatedNetwork = new SimulationUpdater().TaskCalculateFlow(state);
+            var updatedNetwork = new AsyncSimulationUpdater().TaskCalculateFlow(state);
             updatedNetwork.Wait(10000);
             var result = updatedNetwork.Result;
             Assert.IsNotNull(result.FlowResult, "Calculate flow task should return a state with a flow result");
@@ -55,7 +55,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
             var slime = new SlimeNetworkGenerator().FromGraphWithFoodSources(network);
             var state = new SimulationState(slime, true, network);
 
-            var updatedNetwork = new SimulationUpdater().TaskCalculateFlowAndUpdateNetwork(state);
+            var updatedNetwork = new AsyncSimulationUpdater().TaskCalculateFlowAndUpdateNetwork(state);
             updatedNetwork.Wait(10000);
             var result = updatedNetwork.Result;
             Assert.IsNull(result.FlowResult, "Calculate flow task should return a state without a flow result");

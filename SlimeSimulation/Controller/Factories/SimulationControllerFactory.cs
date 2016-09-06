@@ -39,7 +39,7 @@ namespace SlimeSimulation.Controller.Factories
             var graphWithFoodSources = MakeGraph(config.GenerationConfig);
             SlimeNetwork initial = new SlimeNetworkGenerator().FromSingleFoodSourceInGraph(graphWithFoodSources);
 
-            var simulationUpdater = new SimulationUpdater(config);
+            var simulationUpdater = new AsyncSimulationUpdater(config);
             var initialState = new SimulationState(initial, false, graphWithFoodSources);
 
             return new SimulationController(applicationStartWindowController, config, _gtkLifecycleGtkLifecycleController, initialState,

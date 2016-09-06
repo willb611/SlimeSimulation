@@ -118,7 +118,7 @@
     <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />
     <Compile Include="Model\GraphWithFoodSources.cs" />
-    <Compile Include="Controller\SimulationUpdaters\SimulationUpdater.cs" />
+    <Compile Include="Controller\SimulationUpdaters\AsyncSimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkAdaptionCalculator.cs" />
     <Compile Include="Controller\WindowController\SlimeNetworkWindowController.cs" />
     <Compile Include="Controller\WindowController\FlowResultWindowController.cs" />
