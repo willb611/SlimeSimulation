@@ -2,7 +2,7 @@ using System;
 
 namespace SlimeSimulation.LinearEquations
 {
-    public class SingularMatrixException : Exception
+   public class SingularMatrixException : Exception
     {
         public SingularMatrixException()
         {

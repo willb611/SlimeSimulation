@@ -3,6 +3,7 @@ using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Generation;
@@ -24,7 +25,7 @@ namespace SlimeSimulation.Controller.Factories
         {
             if (gtkLifecycleController == null)
             {
-                throw new ArgumentNullException($"[constructor] Given null {gtkLifecycleController}");
+                throw new ArgumentNullException($"[constructor] Given null {nameof(gtkLifecycleController)}");
             }
             else
             {
@@ -32,24 +33,34 @@ namespace SlimeSimulation.Controller.Factories
             }
         }
 
+        public SimulationController MakeSimulationController(AbstractSimulationControllerStarter simulationControllerStarter,
+            SimulationSave save)
+        {
+            return new SimulationController(simulationControllerStarter, GtkLifecycleController.Instance,
+                new SimulationUpdater(save.SimulationConfiguration), save);
+        }
+
         public SimulationController MakeSimulationController(
-            NewSimulationStarterWindowController applicationStartWindowController, SimulationConfiguration config)
+            AbstractSimulationControllerStarter simulationControllerStarter,
+            SimulationConfiguration simulationConfiguration, SimulationControlInterfaceValues controlInterfaceValues,
+            SimulationState initial)
+        {
+            var initialSave = new SimulationSave(initial, controlInterfaceValues, simulationConfiguration);
+            return MakeSimulationController(simulationControllerStarter, initialSave);
+        }
+
+        public SimulationController MakeSimulationController(
+            AbstractSimulationControllerStarter simulationControllerStarter, SimulationConfiguration config)
         {
             FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
-            var graphWithFoodSources = MakeGraph(config.GenerationConfig);
+            var graphWithFoodSources = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig).Generate();
             SlimeNetwork initial = new SlimeNetworkGenerator().FromSingleFoodSourceInGraph(graphWithFoodSources);
-
-            var simulationUpdater = new SimulationUpdater(config);
+            
             var initialState = new SimulationState(initial, false, graphWithFoodSources);
 
-            return new SimulationController(applicationStartWindowController, config, _gtkLifecycleGtkLifecycleController, initialState,
-                simulationUpdater);
+            return MakeSimulationController(simulationControllerStarter, config, new SimulationControlInterfaceValues(),
+                initialState);
         }
 
-        private GraphWithFoodSources MakeGraph(LatticeGraphWithFoodSourcesGenerationConfig config)
-        {
-            var latticeGraphWithFoodSourcesGenerator = new LatticeGraphWithFoodSourcesGenerator(config);
-            return latticeGraphWithFoodSourcesGenerator.Generate();
-        }
     }
 }

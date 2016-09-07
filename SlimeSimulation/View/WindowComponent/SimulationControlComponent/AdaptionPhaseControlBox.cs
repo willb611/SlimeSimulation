@@ -9,19 +9,19 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        public AdaptionPhaseControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
+        public AdaptionPhaseControlBox(SimulationStepAbstractWindowController simulationStepAbstractWindowController, Window parentWindow)
         {
-            AddControls(simulationStepWindowController, parentWindow);
+            AddControls(simulationStepAbstractWindowController, parentWindow);
         }
 
-        private void AddControls(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
+        private void AddControls(SimulationStepAbstractWindowController simulationStepAbstractWindowController, Window parentWindow)
         {
-            var controlInterfaceStartingValues = simulationStepWindowController.SimulationControlInterfaceValues;
-            Add(new SimulationStepButton(simulationStepWindowController, parentWindow));
-            Add(new SimulationStepNumberOfTimesComponent(simulationStepWindowController, parentWindow, controlInterfaceStartingValues.NumberOfStepsToRun));
+            var controlInterfaceStartingValues = simulationStepAbstractWindowController.SimulationControlInterfaceValues;
+            Add(new SimulationStepButton(simulationStepAbstractWindowController, parentWindow));
+            Add(new SimulationStepNumberOfTimesComponent(simulationStepAbstractWindowController, parentWindow, controlInterfaceStartingValues.NumberOfStepsToRun));
             Add(new ShouldFlowResultsBeDisplayedControlComponent(controlInterfaceStartingValues));
             Add(new ShouldStepFromAllSourcesAtOnceControlComponent(controlInterfaceStartingValues));
-            Add(new SimulationSaveComponent(simulationStepWindowController.SimulationController, parentWindow));
+            Add(new SimulationSaveComponent(simulationStepAbstractWindowController.SimulationController, parentWindow));
         }
     }
 }

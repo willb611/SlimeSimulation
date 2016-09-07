@@ -4,12 +4,12 @@ using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.Windows.Templates
 {
-    public abstract class GraphDrawingWindowTemplate : WindowTemplate
+    public abstract class GraphDrawingAbstractWindow : AbstractWindow
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected GraphDrawingArea GraphDrawingArea;
-        public GraphDrawingWindowTemplate(string windowTitle, WindowControllerTemplate windowController) : base(windowTitle, windowController)
+        public GraphDrawingAbstractWindow(string windowTitle, AbstractWindowController windowController) : base(windowTitle, windowController)
         {
         }
         
@@ -27,7 +27,7 @@ namespace SlimeSimulation.View.Windows.Templates
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
         }
-        ~GraphDrawingWindowTemplate()
+        ~GraphDrawingAbstractWindow()
         {
             Dispose(false);
         }

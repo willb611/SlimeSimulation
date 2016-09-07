@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NLog;
 using SlimeSimulation.Model.Bfs;
 
@@ -14,15 +15,20 @@ namespace SlimeSimulation.Model
         private readonly Dictionary<Node, ISet<Edge>> _edgesConnectedToNodeMapping;
         private static readonly BfsSolver BfsSolver = new BfsSolver();
 
-        public Graph(ISet<Edge> edgesInGraph)
+        public Graph(ISet<Edge> edgesInGraph) : this(edgesInGraph, Edges.GetNodesContainedIn(edgesInGraph))
         {
-            EdgesInGraph = edgesInGraph;
-            NodesInGraph = Edges.GetNodesContainedIn(EdgesInGraph);
-            _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edgesInGraph, NodesInGraph);
         }
 
+        [JsonConstructor]
         public Graph(ISet<Edge> edgesInGraph, ISet<Node> nodesInGraph)
         {
+            if (edgesInGraph == null)
+            {
+                throw new ArgumentNullException(nameof(edgesInGraph));
+            } else if (nodesInGraph == null)
+            {
+                throw new ArgumentNullException(nameof(nodesInGraph));
+            }
             NodesInGraph = nodesInGraph;
             EdgesInGraph = edgesInGraph;
             _edgesConnectedToNodeMapping = MakeEdgesConnectedToNodeMapping(edgesInGraph, nodesInGraph);

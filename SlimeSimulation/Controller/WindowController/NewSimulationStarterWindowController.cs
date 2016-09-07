@@ -8,13 +8,13 @@ using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    public class NewSimulationStarterWindowController : WindowControllerTemplate
+    public class NewSimulationStarterWindowController : AbstractSimulationControllerStarter
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static NewSimulationStarterWindowController Instance { get; private set; }
 
-        private NewSimulationStarterWindow _startingWindow;
-        private readonly SimulationControllerFactory _controllerFactory = new SimulationControllerFactory(GtkLifecycleController.Instance);
+        private NewSimulationStarterAbstractWindow _startingAbstractWindow;
+        private readonly SimulationControllerFactory _controllerFactory;
 
         public NewSimulationStarterWindowController() : this(new SimulationControllerFactory())
         {
@@ -22,7 +22,7 @@ namespace SlimeSimulation.Controller.WindowController
         }
         public NewSimulationStarterWindowController(SimulationControllerFactory simulationControllerFactory)
         {
-
+            _controllerFactory = simulationControllerFactory;
         }
         
         public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
@@ -34,13 +34,10 @@ namespace SlimeSimulation.Controller.WindowController
         {
             using (var gtkLifecycleController = GtkLifecycleController.Instance)
             {
-                using (Window = new NewSimulationStarterWindow("Slime simulation parameter selection", this))
+                using (AbstractWindow = new NewSimulationStarterAbstractWindow("Slime simulation parameter selection", this))
                 {
-                    Logger.Debug("[Render] Made window");
-                    _startingWindow = (NewSimulationStarterWindow) Window;
-                    Logger.Debug("[Render] Display with main view");
-                    gtkLifecycleController.Display(Window);
-                    Logger.Debug("[Render] Left main GTK loop ? ");
+                    _startingAbstractWindow = (NewSimulationStarterAbstractWindow) AbstractWindow;
+                    gtkLifecycleController.Display(AbstractWindow);
                 }
                 Logger.Debug("[Render] Finished");
             }
@@ -53,46 +50,16 @@ namespace SlimeSimulation.Controller.WindowController
             Application.Invoke(delegate
             {
                 Logger.Debug("[StartSimulation] Invoking from main thread ");
-                _startingWindow.Hide();
+                _startingAbstractWindow.Hide();
                 controller.RunSimulation();
                 controller = null; // aid gc ?
             });
         }
 
-        public void FinishSimulation(SimulationController controller)
-        {
-            controller.Dispose();
-            Logger.Info("[FinishSimulation] Finished one simulation");
-            _startingWindow.Display();
-        }
-
         public override void OnWindowClose()
         {
-            Logger.Info("[OnWindowClose] Entered method, application probably shutting down");
             base.OnWindowClose();
-            DisposeOfView();
-        }
-
-        private void DisposeOfView()
-        {
-            Logger.Debug("[DisposeOfView] Disposing of view..");
-            _startingWindow.Dispose();
-        }
-
-        public void DisplayError(string error)
-        {
-            Logger.Error(error);
-            Application.Invoke(delegate
-            {
-                MessageDialog errorDialog = new MessageDialog(_startingWindow.Window, DialogFlags.DestroyWithParent,
-                    MessageType.Error, ButtonsType.Ok,
-                    "Unexpected error. Simulation tried to do a step when an step was in progress.")
-                {
-                    Title = "Unexpected error"
-                };
-                errorDialog.Run();
-                errorDialog.Destroy();
-            });
+            _startingAbstractWindow.Dispose();
         }
     }
 }

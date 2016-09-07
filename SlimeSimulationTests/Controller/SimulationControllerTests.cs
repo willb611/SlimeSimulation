@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.SimulationUpdaters;
 using SlimeSimulation.Model.Generation;
 using SlimeSimulation.Model.Simulation;
@@ -22,6 +23,7 @@ namespace SlimeSimulation.Controller.Tests
             var initial = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = slimeNetworkGenerator.FromSingleFoodSourceInGraph(initial);
             var nonExpandedSlimeState = new SimulationState(slime, false, initial);
+            var initialSave = new SimulationSave(nonExpandedSlimeState, new SimulationControlInterfaceValues(), new SimulationConfiguration());
 
             var updatedSlime = slimeNetworkGenerator.FromGraphWithFoodSources(initial);
             var resultState = new SimulationState(updatedSlime, true, initial, 1, 0);
@@ -30,7 +32,7 @@ namespace SlimeSimulation.Controller.Tests
             Task<SimulationState> nextStateAsync = Task.Run(() => resultState);
             updaterMock.Setup(updater => updater.TaskExpandSlime(nonExpandedSlimeState)).Returns(nextStateAsync);
 
-            SimulationController controller = new SimulationController(null, null, null, nonExpandedSlimeState, updaterMock.Object);
+            SimulationController controller = new SimulationController(null, null, updaterMock.Object, initialSave);
             Assert.IsFalse(controller.ShouldFlowResultsBeDisplayed, "expect flow results to not be displayed for this test");
 
             controller.AsyncDoNextSimulationStep();
@@ -49,6 +51,7 @@ namespace SlimeSimulation.Controller.Tests
             var initial = new LatticeGraphWithFoodSourcesGenerator().Generate();
             var slime = slimeNetworkGenerator.FromSingleFoodSourceInGraph(initial);
             var initialState = new SimulationState(slime, false, initial);
+            var initialSave = new SimulationSave(initialState, new SimulationControlInterfaceValues(), new SimulationConfiguration());
             var fullyEploredSlimeState = new SimulationState(slime, true, initial);
 
             var updaterMock = new Mock<SimulationUpdater>();
@@ -60,7 +63,7 @@ namespace SlimeSimulation.Controller.Tests
                 .Returns(incompleteStateTask)
                 .Returns(incompleteStateTask)
                 .Returns(nextStateAsync);
-            SimulationController controller = new SimulationController(null, null, null, initialState, updaterMock.Object);
+            SimulationController controller = new SimulationController(null, null, updaterMock.Object, initialSave);
             Assert.IsFalse(controller.ShouldFlowResultsBeDisplayed, "expect flow results to not be displayed for this test");
 
             controller.AsyncRunStepsUntilSlimeHasFullyExplored();

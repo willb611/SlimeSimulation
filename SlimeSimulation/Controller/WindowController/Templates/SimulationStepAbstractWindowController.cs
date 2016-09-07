@@ -3,7 +3,7 @@ using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.Controller.WindowController.Templates
 {
-    public abstract class SimulationStepWindowControllerTemplate : WindowControllerTemplate
+    public abstract class SimulationStepAbstractWindowController : AbstractWindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -17,7 +17,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         public int StepsCompletedSoFarInAdaptingSlime => SimulationController.StepsTakenInAdaptingState;
         public int StepsTakenForSlimeToExplore => SimulationController.StepsTakenForSlimeToExplore;
 
-        public SimulationStepWindowControllerTemplate(SimulationController simulationController)
+        public SimulationStepAbstractWindowController(SimulationController simulationController)
         {
             SimulationController = simulationController;
             SimulationControlInterfaceValues = simulationController.SimulationControlBoxConfig;
@@ -26,7 +26,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
         public void OnStepCompleted()
         {
             Logger.Debug("[OnStepCompleted] Entered");
-            Window.Dispose();
+            AbstractWindow.Dispose();
             SimulationController.AsyncDoNextSimulationStep();
             SimulationController.UpdateDisplay();
             Logger.Debug("[OnStepCompleted] SimulationController.DoNextSimulationStep(); finished");
@@ -41,14 +41,14 @@ namespace SlimeSimulation.Controller.WindowController.Templates
 
         internal void RunNumberOfSteps(int numberOfSteps)
         {
-            Window.Dispose();
+            AbstractWindow.Dispose();
             SimulationController.AsyncDoNextSimulationSteps(numberOfSteps);
             SimulationController.UpdateDisplay();
         }
 
         public void RunStepsUntilSlimeHasFullyExplored()
         {
-            Window.Dispose();
+            AbstractWindow.Dispose();
             Logger.Debug("[RunStepsUntilSlimeHasFullyExplored] Starting");
             SimulationController.AsyncRunStepsUntilSlimeHasFullyExplored();
             SimulationController.UpdateDisplay();

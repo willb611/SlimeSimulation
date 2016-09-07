@@ -8,15 +8,15 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public GrowthPhaseControlBox(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
+        public GrowthPhaseControlBox(SimulationStepAbstractWindowController simulationStepAbstractWindowController, Window parentWindow)
         {
-            AddControls(simulationStepWindowController, parentWindow);
+            AddControls(simulationStepAbstractWindowController, parentWindow);
         }
 
-        private void AddControls(SimulationStepWindowControllerTemplate simulationStepWindowController, Window parentWindow)
+        private void AddControls(SimulationStepAbstractWindowController simulationStepAbstractWindowController, Window parentWindow)
         {
-            Add(new SimulationStepButton(simulationStepWindowController, parentWindow));
-            Add(new SimulationStepUntilFullyGrownComponent(simulationStepWindowController, parentWindow));
+            Add(new SimulationStepButton(simulationStepAbstractWindowController, parentWindow));
+            Add(new SimulationStepUntilFullyGrownComponent(simulationStepAbstractWindowController, parentWindow));
         }
     }
 }

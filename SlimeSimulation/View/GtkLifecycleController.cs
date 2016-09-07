@@ -87,12 +87,12 @@ namespace SlimeSimulation.View
             ApplicationRun();
         }
 
-        public void Display(WindowTemplate window)
+        public void Display(AbstractWindow abstractWindow)
         {
             try
             {
-                Logger.Debug("[Display] About to display window {0}", window);
-                window.InitialDisplay();
+                Logger.Debug("[Display] About to display window {0}", abstractWindow);
+                abstractWindow.InitialDisplay();
             }
             catch (Exception e)
             {

@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace SlimeSimulation.Model
 {
     public class SlimeEdge : Edge
@@ -5,6 +7,7 @@ namespace SlimeSimulation.Model
         public Edge Edge { get; }
         public double Connectivity { get; }
 
+        [JsonConstructor]
         public SlimeEdge(Edge edge, double connectivity) : base(edge.A, edge.B)
         {
             Edge = edge;

@@ -7,7 +7,7 @@ using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Controller.WindowController
 {
-    class FlowResultWindowController : SimulationStepWindowControllerTemplate
+    class FlowResultWindowController : SimulationStepAbstractWindowController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly FlowResult _flowResult;
@@ -20,9 +20,9 @@ namespace SlimeSimulation.Controller.WindowController
         public override void Render()
         {
             Logger.Debug("[Render] Entered");
-            using (Window = new FlowResultWindow(_flowResult, this))
+            using (AbstractWindow = new FlowResultAbstractWindow(_flowResult, this))
             {
-                SimulationController.Display(Window);
+                SimulationController.Display(AbstractWindow);
                 Logger.Debug("[Render]  _gtkLifecycleController.Display(Window); has finished running");
             }
         }

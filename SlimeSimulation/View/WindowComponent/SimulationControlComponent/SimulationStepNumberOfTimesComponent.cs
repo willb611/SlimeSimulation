@@ -9,17 +9,17 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
     internal class SimulationStepNumberOfTimesComponent : HBox
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly SimulationStepWindowControllerTemplate _simulationStepWindowController;
+        private readonly SimulationStepAbstractWindowController _simulationStepAbstractWindowController;
         private readonly TextView _numberOfTimesToStepTextView;
         private readonly Window _parentWindow;
         private readonly SimulationControlInterfaceValues _simulationControlInterfaceValues;
         
-        public SimulationStepNumberOfTimesComponent(SimulationStepWindowControllerTemplate simulationStepWindowController,
+        public SimulationStepNumberOfTimesComponent(SimulationStepAbstractWindowController simulationStepAbstractWindowController,
             Window enclosingWindow, int numberOfStepsToRun) : base(true, 10)
         {
-            _simulationControlInterfaceValues = simulationStepWindowController.SimulationControlInterfaceValues;
+            _simulationControlInterfaceValues = simulationStepAbstractWindowController.SimulationControlInterfaceValues;
             _parentWindow = enclosingWindow;
-            _simulationStepWindowController = simulationStepWindowController;
+            _simulationStepAbstractWindowController = simulationStepAbstractWindowController;
             _numberOfTimesToStepTextView = new TextView {Buffer = {Text = numberOfStepsToRun.ToString()}};
             var doStepsButton = new Button(new Label("Run number of steps"));
             doStepsButton.Clicked += DoStepsButtonOnClicked;
@@ -56,7 +56,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
             var success = int.TryParse(textRead, out numberOfSteps);
             if (success)
             {
-                _simulationStepWindowController.RunNumberOfSteps(numberOfSteps);
+                _simulationStepAbstractWindowController.RunNumberOfSteps(numberOfSteps);
             }
             else
             {

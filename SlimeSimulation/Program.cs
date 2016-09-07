@@ -6,8 +6,7 @@ namespace SlimeSimulation
     {
         static void Main(string[] args)
         {
-            var applicationStarter = new NewSimulationStarterWindowController();
-            applicationStarter.Render();
+            new ApplicationStartWindowController().Render();
         }
     }
 }

@@ -9,11 +9,11 @@ using Window = Gtk.Window;
 
 namespace SlimeSimulation.View.Windows.Templates
 {
-    public abstract class WindowTemplate : IDisposable
+    public abstract class AbstractWindow : IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         protected bool Disposed;
-        private readonly WindowControllerTemplate _windowController;
+        private readonly AbstractWindowController _windowController;
 
         private readonly Window _window;
 
@@ -21,7 +21,7 @@ namespace SlimeSimulation.View.Windows.Templates
             get { return _window; }
         }
 
-        public WindowTemplate(String windowTitle, WindowControllerTemplate windowController)
+        public AbstractWindow(String windowTitle, AbstractWindowController windowController)
         {
             _windowController = windowController;
             _window = new Window(windowTitle);
@@ -93,7 +93,7 @@ namespace SlimeSimulation.View.Windows.Templates
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
         }
-        ~WindowTemplate()
+        ~AbstractWindow()
         {
             Dispose(false);
         }

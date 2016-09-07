@@ -10,11 +10,11 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly SimulationStepWindowControllerTemplate _controller;
+        private readonly SimulationStepAbstractWindowController _controller;
         private readonly SimulationControlInterfaceValues _simulationControlInterfaceValues;
         private readonly Window _parentWindow;
 
-        public SimulationStepButton(SimulationStepWindowControllerTemplate controller, Window parentWindow) : base(new Label("Next Simulation Step"))
+        public SimulationStepButton(SimulationStepAbstractWindowController controller, Window parentWindow) : base(new Label("Next Simulation Step"))
         {
             _controller = controller;
             _simulationControlInterfaceValues = controller.SimulationControlInterfaceValues;

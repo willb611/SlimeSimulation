@@ -10,6 +10,7 @@ using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller;
 using SlimeSimulation.Model.Simulation;
+using SlimeSimulation.Model.Simulation.Persistence;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
@@ -22,6 +23,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private readonly SimulationController _simulationController;
         private readonly Window _parentWindow;
+        private readonly SimulationSaver _simulationSaver = new SimulationSaver();
 
         private SimulationState SimulationState => _simulationController.GetSimulationState();
         private SimulationControlInterfaceValues InterfaceValues => _simulationController.SimulationControlBoxConfig;
@@ -39,21 +41,15 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
             var currentState = new SimulationSave(SimulationState, InterfaceValues, SimulationConfiguration);
             DateTime currentDateTime = DateTime.Now;
             var dateTimeString = currentDateTime.ToString(CurrentDateTimeSafeForFilenameFormat);
-            SaveSimulation(currentState, SaveLocationPrefix + dateTimeString + SaveLocationFileExtension);
-        }
-
-        public void SaveSimulation(SimulationSave simulation, string filepath)
-        {
-            try
+            var saveLocation = SaveLocationPrefix + dateTimeString + SaveLocationFileExtension;
+            var exception = _simulationSaver.SaveSimulation(currentState, saveLocation);
+            if (exception == null)
             {
-                var simulationAsJson = JsonConvert.SerializeObject(simulation);
-                System.IO.File.WriteAllText(filepath, simulationAsJson);
-                DisplaySaveSuccess(filepath);
+                DisplaySaveSuccess(saveLocation);
             }
-            catch (Exception e)
+            else
             {
-                Logger.Error(e);
-                DisplaySaveError($"Unable to save simulation to file {filepath} due to exception: {e}");
+                DisplaySaveError($"Unable to save simulation to given file location {saveLocation} due to exception {exception}");
             }
         }
 
@@ -77,3 +73,4 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         }
     }
 }
+
