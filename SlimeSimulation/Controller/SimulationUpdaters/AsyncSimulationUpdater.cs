@@ -12,7 +12,7 @@ using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {
-    public class SimulationUpdater
+    public class AsyncSimulationUpdater
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
@@ -22,12 +22,12 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         public double FlowUsedWhenAdaptingNetwork => _nonAsyncSimulationUpdater.FlowUsedWhenAdaptingNetwork;
         public double FeedbackUsedWhenAdaptingNetwork => _slimeNetworkAdapterCalculator.FeedbackUsedWhenUpdatingNetwork;
 
-        public SimulationUpdater() 
+        public AsyncSimulationUpdater() 
             : this(new SimulationConfiguration())
         {
         }
 
-        public SimulationUpdater(SimulationConfiguration simulationConfiguration)
+        public AsyncSimulationUpdater(SimulationConfiguration simulationConfiguration)
         {
             _slimeNetworkAdapterCalculator = new SlimeNetworkAdaptionCalculator(simulationConfiguration.SlimeNetworkAdaptionCalculatorConfig);
             _nonAsyncSimulationUpdater = new NonAsyncSimulationUpdater(new FlowCalculator(new LupDecompositionSolver()), simulationConfiguration.FlowAmount,

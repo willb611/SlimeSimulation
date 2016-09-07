@@ -40,7 +40,7 @@ namespace SlimeSimulation.FlowCalculation
                 var edgesConnectedToBadNode = LogHelper.CollectionToString(new List<Edge>(network.EdgesConnectedToNode(errorNode)));;
                 var error =
                     $"Error column was {LupDecompositionSolver.ErrorColumnNumber}, meaning error node was {errorNode}. Connected edges: {edgesConnectedToBadNode}";
-                Logger.Error(error);
+                Logger.Error(error, e);
                 return null;
             }
         }

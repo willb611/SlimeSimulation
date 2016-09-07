@@ -6,6 +6,10 @@ using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Windows.Templates;
+using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
+using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent;
+using SlimeSimulation.StdLibHelpers;
+using SlimeSimulation.View.WindowComponent;
 
 namespace SlimeSimulation.View.Windows
 {
@@ -15,23 +19,14 @@ namespace SlimeSimulation.View.Windows
 
         private readonly NewSimulationStarterWindowController _windowController;
         private readonly SimulationConfiguration _defaultConfig = new SimulationConfiguration();
-        private readonly Dictionary<TextView, Label> _textViewLabelMapping = new Dictionary<TextView, Label>();
-
-        private Button _beginSimulationButton;
+       
+        private Button _beginSimulationComponent;
         private CheckButton _shouldAllowDisconnectionCheckButton;
 
-        private TextView _latticeGeneratorRowSizeTextView;
-        private TextView _latticeGeneratorProbabiltyOfNewFoodTextView;
-        private TextView _latticeGeneratorMinimumFoodSourcesTextView;
-
-        private TextView _feedbackParamTextView;
-        private TextView _flowAmountTextView;
-
-        private Label _errorLabel;
-
-
-        private List<string> _errors = new List<string>();
-
+        private FlowAmountControlComponent _flowAmountControlComponent;
+        private LatticeGenerationControlComponent _latticeGenerationControlComponent;
+        private FeedbackParameterControlComponent _slimeNetworkAdaptionComponent;
+        private ErrorDisplayComponent _errorDisplayComponent;
 
         public NewSimulationStarterAbstractWindow(string windowTitle, NewSimulationStarterWindowController windowController)
             : base(windowTitle, windowController)
@@ -42,206 +37,57 @@ namespace SlimeSimulation.View.Windows
 
         protected override void AddToWindow(Window window)
         {
-            VBox container = new VBox();
-            container.Add(FlowBox());
-            container.Add(FeedbackParameterBox());
-            container.Add(MatrixGenerationProperties());
-            container.Add(ShouldDisconnectionBeAllowedCheckButton());
-            container.Add(BeginSimulationButton());
-            container.Add(ErrorLabel());
+            var container = MakeComponentsAndReturnContainerForThem();
+            container.Add(_flowAmountControlComponent);
+            container.Add(_slimeNetworkAdaptionComponent);
+            container.Add(_latticeGenerationControlComponent);
+            container.Add(_shouldAllowDisconnectionCheckButton);
+            container.Add(_beginSimulationComponent);
+            container.Add(_errorDisplayComponent);
             window.Add(container);
-            _beginSimulationButton.Clicked += BeginSimulationButton_Clicked;
             window.Unmaximize();
         }
 
-        private CheckButton ShouldDisconnectionBeAllowedCheckButton()
+        private VBox MakeComponentsAndReturnContainerForThem()
         {
-            if (_shouldAllowDisconnectionCheckButton == null)
-            {
-                _shouldAllowDisconnectionCheckButton =
-                    new CheckButton("Should the slime be allowed to disconnect from parts of the graph?")
-                    {
-                        Active = _defaultConfig.ShouldAllowDisconnection
-                    };
-            }
-            return _shouldAllowDisconnectionCheckButton;
+            _slimeNetworkAdaptionComponent = new FeedbackParameterControlComponent(_defaultConfig.SlimeNetworkAdaptionCalculatorConfig);
+            _flowAmountControlComponent = new FlowAmountControlComponent(_defaultConfig.FlowAmount);
+            _shouldAllowDisconnectionCheckButton = new ShouldAllowSlimeDisconnectionButton(_defaultConfig.ShouldAllowDisconnection);
+            _beginSimulationComponent = new CreateNewSimulationComponent(this, _windowController);
+            _errorDisplayComponent = new ErrorDisplayComponent();
+            _latticeGenerationControlComponent =
+                new LatticeGenerationControlComponent(_defaultConfig.GenerationConfig);
+            return new VBox();
         }
 
-        private void BeginSimulationButton_Clicked(object obj, EventArgs args)
+        internal SimulationConfiguration GetConfigFromViews()
         {
-            Logger.Debug("[BeginSimulationButton_Clicked] Entered");
-            var config = GetConfigFromViews();
-            if (config == null)
-            {
-                Logger.Info("[BeginSimulationButton_Clicked] Not starting simulation due to invalid parameters");
-            }
-            else
-            {
-                _windowController.StartSimulation(config);
-            }
-        }
-
-        private Widget ErrorLabel()
-        {
-            if (_errorLabel == null)
-            {
-                _errorLabel = new Label();
-            }
-            HBox box = new HBox();
-            box.Add(_errorLabel);
-            return box;
-        }
-
-
-        private SimulationConfiguration GetConfigFromViews()
-        {
-            _errors = new List<string>();
-            double? feedbackParam = ExtractDoubleFromView(_feedbackParamTextView);
-            double? flowAmount = ExtractDoubleFromView(_flowAmountTextView);
-            double? probabilityNewNodeIsFood = ExtractDoubleFromView(_latticeGeneratorProbabiltyOfNewFoodTextView);
-            int? minFoodSources = ExtractIntFromView(_latticeGeneratorMinimumFoodSourcesTextView);
-            int? rowSize = ExtractIntFromView(_latticeGeneratorRowSizeTextView);
+            var slimeNetworkAdaptionConfig = _slimeNetworkAdaptionComponent.ReadConfiguration();
+            _errorDisplayComponent.AddToDisplayBuffer(_slimeNetworkAdaptionComponent.Errors());
+            double? flowAmount = _flowAmountControlComponent.ReadFlowAmount();
+            _errorDisplayComponent.AddToDisplayBuffer(_flowAmountControlComponent.Errors());
             bool shouldAllowDisconnection = _shouldAllowDisconnectionCheckButton.Active;
-            if (feedbackParam.HasValue && flowAmount.HasValue &&
-                probabilityNewNodeIsFood.HasValue && minFoodSources.HasValue && rowSize.HasValue)
+            if (slimeNetworkAdaptionConfig != null && flowAmount.HasValue)
             {
                 try
                 {
-                    var generationConfig = new LatticeGraphWithFoodSourcesGenerationConfig(rowSize.Value,
-                        probabilityNewNodeIsFood.Value, minFoodSources.Value);
-                    return new SimulationConfiguration(generationConfig, flowAmount.Value,
-                        new SlimeNetworkAdaptionCalculatorConfig(feedbackParam.Value), shouldAllowDisconnection);
+                    var generationConfig = _latticeGenerationControlComponent.ReadGenerationConfig();
+                    _errorDisplayComponent.AddToDisplayBuffer(_latticeGenerationControlComponent.Errors());
+                    if (generationConfig != null)
+                    {
+                        return new SimulationConfiguration(generationConfig, flowAmount.Value,
+                            slimeNetworkAdaptionConfig, shouldAllowDisconnection);
+                    }
                 }
                 catch (ArgumentException e)
                 {
                     string errorMsg = "Invalid parameter: " + e.Message;
                     Logger.Info(errorMsg);
-                    DisplayError(errorMsg);
+                    _errorDisplayComponent.AddToDisplayBuffer(errorMsg);
                 }
             }
-            DisplayErrors();
+            _errorDisplayComponent.UpdateDisplayFromBuffer();
             return null;
-        }
-
-        private Button BeginSimulationButton()
-        {
-            if (_beginSimulationButton == null)
-            {
-                _beginSimulationButton = new Button(new Label("Begin simulation"));
-            }
-            return _beginSimulationButton;
-        }
-
-        private Widget MatrixGenerationProperties()
-        {
-            VBox vBox = new VBox();
-            vBox.Add(RowSizeBox());
-            vBox.Add(ProbabilityNewNodeIsFoodBox());
-            vBox.Add(MinimumNumberFoodSourcesBox());
-            return vBox;
-        }
-
-        private Widget MinimumNumberFoodSourcesBox()
-        {
-            Label description = new Label("Minimum number of food sources in the network");
-            TextView textView = new TextView();
-            textView.Buffer.Text = _defaultConfig.GenerationConfig.MinimumFoodSources.ToString();
-            _latticeGeneratorMinimumFoodSourcesTextView = textView;
-            return HBox(description, textView);
-        }
-
-        private Widget ProbabilityNewNodeIsFoodBox()
-        {
-            Label description = new Label("Probability new nodes in network are food sources");
-            TextView textView = new TextView();
-            textView.Buffer.Text = _defaultConfig.GenerationConfig.ProbabilityNewNodeIsFoodSource.ToString();
-            _latticeGeneratorProbabiltyOfNewFoodTextView = textView;
-            return HBox(description, textView);
-        }
-
-        private Widget RowSizeBox()
-        {
-            Label description = new Label("Number of rows in lattice to generate");
-            TextView textView = new TextView();
-            textView.Buffer.Text = _defaultConfig.GenerationConfig.Size.ToString();
-            _latticeGeneratorRowSizeTextView = textView;
-            return HBox(description, textView);
-        }
-
-        private Widget FeedbackParameterBox()
-        {
-            Label description = new Label("Feedback parameter for updating slime simulation at each step");
-            TextView textView = new TextView();
-            textView.Buffer.Text = _defaultConfig.SlimeNetworkAdaptionCalculatorConfig.FeedbackParam.ToString();
-            _feedbackParamTextView = textView;
-            return HBox(description, textView);
-        }
-
-        private HBox FlowBox()
-        {
-            Label description = new Label("Flow through system per iteration");
-            TextView textView = new TextView();
-            textView.Buffer.Text = _defaultConfig.FlowAmount.ToString();
-            _flowAmountTextView = textView;
-            return HBox(description, textView);
-        }
-
-        private HBox HBox(Label description, TextView textView)
-        {
-            HBox hBox = new HBox();
-            hBox.Add(description);
-            hBox.Add(textView);
-            _textViewLabelMapping[textView] = description;
-            return hBox;
-        }
-
-        public double? ExtractDoubleFromView(TextView view)
-        {
-            double result;
-            var success = double.TryParse(view.Buffer.Text, out result);
-            if (success)
-            {
-                return result;
-            }
-            HighlightErrorOn(view);
-            return null;
-        }
-
-        private int? ExtractIntFromView(TextView view)
-        {
-            int result;
-            var success = int.TryParse(view.Buffer.Text, out result);
-            if (success)
-            {
-                return result;
-            }
-            HighlightErrorOn(view);
-            return null;
-        }
-
-        private void HighlightErrorOn(TextView view)
-        {
-            DisplayError("Not valid value for input box matching: "
-                         + _textViewLabelMapping[view].Text);
-        }
-
-        private void DisplayError(string error)
-        {
-            _errors.Add(error);
-        }
-
-        private void DisplayErrors()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (string error in _errors)
-            {
-                if (sb.Length > 0)
-                {
-                    sb.Append(Environment.NewLine);
-                }
-                sb.Append(error);
-            }
-            _errorLabel.Text = sb.ToString();
         }
 
         protected override void Dispose(bool disposing)
@@ -253,8 +99,12 @@ namespace SlimeSimulation.View.Windows
             if (disposing)
             {
                 base.Dispose(true);
-                _beginSimulationButton.Dispose();
-                _errorLabel.Dispose();
+                _beginSimulationComponent.Dispose();
+                _errorDisplayComponent.Dispose();
+                _flowAmountControlComponent.Dispose();
+                _latticeGenerationControlComponent.Dispose();
+                _shouldAllowDisconnectionCheckButton.Dispose();
+                _slimeNetworkAdaptionComponent.Dispose();
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);

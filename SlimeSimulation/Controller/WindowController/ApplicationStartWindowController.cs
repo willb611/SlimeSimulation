@@ -54,7 +54,6 @@ namespace SlimeSimulation.Controller.WindowController
                 {
                     var errorMsg = "Unable to load previous simulation due to exception: " + e;
                     Logger.Error(errorMsg);
-                    //DisplayError(errorMsg);
                 }
             });
         }

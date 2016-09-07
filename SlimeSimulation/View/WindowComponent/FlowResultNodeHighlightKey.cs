@@ -18,13 +18,13 @@ namespace SlimeSimulation.View.WindowComponent
             sinkPart.Add(new Label("Sink"));
             sinkPart.Add(new ColorArea(FlowResultNodeViewController.SinkColour));
 
-            var normalPart = new HBox(true, 10);
-            normalPart.Add(new Label("Normal node"));
-            normalPart.Add(new ColorArea(FlowResultNodeViewController.NormalNodeColour));
+            var notSinkOrSourceNodePart = new HBox(true, 10);
+            notSinkOrSourceNodePart.Add(new Label("Normal node"));
+            notSinkOrSourceNodePart.Add(new ColorArea(FlowResultNodeViewController.NormalNodeColour));
 
             Add(sourcePart);
             Add(sinkPart);
-            Add(normalPart);
+            Add(notSinkOrSourceNodePart);
         }
     }
 

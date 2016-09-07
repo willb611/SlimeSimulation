@@ -20,9 +20,9 @@ namespace SlimeSimulation.Model.Tests
                     new LatticeGraphWithFoodSourcesGenerator().Generate()).SlimeEdges;
 
             var edges = Edges.FromSlimeEdges(slimeEdges);
-            foreach (var slime in slimeEdges)
+            foreach (var slimeEdge in slimeEdges)
             {
-                Assert.IsTrue(edges.Contains(slime.Edge));
+                Assert.IsTrue(edges.Contains(slimeEdge.Edge) || edges.Contains(slimeEdge));
             }
         }
 

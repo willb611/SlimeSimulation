@@ -11,6 +11,9 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -23,11 +26,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputType>Exe</OutputType>
@@ -108,7 +108,6 @@
     <Compile Include="Controller\Factories\SimulationControllerFactory.cs" />
     <Compile Include="Controller\SimulationUpdaters\NonAsyncSimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
-    <Compile Include="Controller\WindowController\ApplicationStartWindowController.cs" />
     <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
     <Compile Include="Model\Bfs\BfsResult.cs" />
     <Compile Include="Model\Bfs\BfsSolver.cs" />
@@ -122,11 +121,13 @@
     <Compile Include="Model\Simulation\SimulationSave.cs" />
     <Compile Include="Model\Simulation\SimulationStepsTaken.cs" />
     <Compile Include="StdLibHelpers\IEnumeratorExtension.cs" />
+    <Compile Include="StdLibHelpers\TextViewExtension.cs" />
+    <Compile Include="View\WindowComponent\ErrorDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\GrowthPhaseControlBox.cs" />
     <Compile Include="View\Factories\SimulationGrowthPhaseControlBoxFactory.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGenerator.cs" />
     <Compile Include="Model\GraphWithFoodSources.cs" />
-    <Compile Include="Controller\SimulationUpdaters\SimulationUpdater.cs" />
+    <Compile Include="Controller\SimulationUpdaters\AsyncSimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkAdaptionCalculator.cs" />
     <Compile Include="Controller\WindowController\SlimeNetworkWindowController.cs" />
     <Compile Include="Controller\WindowController\FlowResultWindowController.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLibHelpers\EnumerableExtension.cs" />
+    <Compile Include="Controller\WindowController\ApplicationStartWindowController.cs" />
     <Compile Include="Controller\WindowController\NewSimulationStarterWindowController.cs" />
     <Compile Include="View\Factories\ButtonPressHandlerFactory.cs" />
     <Compile Include="View\Factories\SimulationAdaptionPhaseControlBoxFactory.cs" />
@@ -159,6 +161,11 @@
     <Compile Include="View\WindowComponent\ColorArea.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\AdaptionPhaseControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\AbstractSimulationControlBox.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\CreateNewSimulationComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FeedbackParameterControlComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FlowAmountControlComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\LatticeGenerationControlComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\ShouldAllowSlimeDisconnectionButton.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationSaveComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FeedbackRateDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\IsSlimeAllowedToDisconnectLabel.cs" />

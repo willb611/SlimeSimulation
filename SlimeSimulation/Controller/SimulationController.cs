@@ -21,7 +21,7 @@ namespace SlimeSimulation.Controller
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static bool _disposed = false;
         
-        private readonly SimulationUpdater _simulationUpdater;
+        private readonly AsyncSimulationUpdater _asyncSimulationUpdater;
         private readonly GtkLifecycleController _gtkLifecycleController;
 
         private readonly ItemLock<SimulationState> _protectedState = new ItemLock<SimulationState>();
@@ -35,8 +35,8 @@ namespace SlimeSimulation.Controller
         public int StepsTakenForSlimeToExplore => GetSimulationState().StepsTakenInExploringState;
 
         public bool IsSlimeAllowedToDisconnect => _config.ShouldAllowDisconnection;
-        public double FlowUsedWhenAdaptingNetwork => _simulationUpdater.FlowUsedWhenAdaptingNetwork;
-        public double FeedbackUsedWhenAdaptingNetwork => _simulationUpdater.FeedbackUsedWhenAdaptingNetwork;
+        public double FlowUsedWhenAdaptingNetwork => _asyncSimulationUpdater.FlowUsedWhenAdaptingNetwork;
+        public double FeedbackUsedWhenAdaptingNetwork => _asyncSimulationUpdater.FeedbackUsedWhenAdaptingNetwork;
 
         public SimulationConfiguration InitialConfiguration => _config;
 
@@ -45,16 +45,16 @@ namespace SlimeSimulation.Controller
             get { return SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed; }
             set { SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed = value; }
         }
-
+        
         public SimulationController(AbstractSimulationControllerStarter startingController,
-            GtkLifecycleController gtkLifecycleController, SimulationUpdater simulationUpdater,
+            GtkLifecycleController gtkLifecycleController, AsyncSimulationUpdater simulationUpdater,
             SimulationSave simulationSave)
         {
             SimulationControlBoxConfig = simulationSave.SimulationControlInterfaceValues;
             _config = simulationSave.SimulationConfiguration;
             _gtkLifecycleController = gtkLifecycleController;
             _startingController = startingController;
-            _simulationUpdater = simulationUpdater;
+            _asyncSimulationUpdater = simulationUpdater;
             _protectedState.Lock();
             _protectedState.SetAndClearLock(simulationSave.SimulationState);
         }
@@ -120,25 +120,25 @@ namespace SlimeSimulation.Controller
             Task<SimulationState> nextState;
             if (!state.HasFinishedExpanding)
             {
-                nextState = _simulationUpdater.TaskExpandSlime(state);
+                nextState = _asyncSimulationUpdater.TaskExpandSlime(state);
             }
             else if (ShouldFlowResultsBeDisplayed)
             {
                 if (state.FlowResult == null)
                 {
-                    nextState = _simulationUpdater.TaskCalculateFlow(state);
+                    nextState = _asyncSimulationUpdater.TaskCalculateFlow(state);
                 }
                 else
                 {
-                    nextState = _simulationUpdater.TaskUpdateNetworkUsingFlowInState(state);
+                    nextState = _asyncSimulationUpdater.TaskUpdateNetworkUsingFlowInState(state);
                 }
             }
             else if (SimulationControlBoxConfig.ShouldStepFromAllSourcesAtOnce)
             {
-                nextState = _simulationUpdater.TaskCalculateFlowFromAllSourcesAndUpdateNetwork(state);
+                nextState = _asyncSimulationUpdater.TaskCalculateFlowFromAllSourcesAndUpdateNetwork(state);
             } else 
             {
-                nextState = _simulationUpdater.TaskCalculateFlowAndUpdateNetwork(state);
+                nextState = _asyncSimulationUpdater.TaskCalculateFlowAndUpdateNetwork(state);
             }
             UpdateControllerState(nextState);
         }

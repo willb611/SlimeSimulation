@@ -21,7 +21,15 @@ namespace SlimeSimulation.Model.Simulation.Tests
             var slime = new SlimeNetwork(slimeEdges);
             
             var routeSelector = new RouteSelector();
-
+            var actualRoute = routeSelector.SelectRoute(slime);
+            Assert.IsNotNull(actualRoute);
+            Assert.IsNotNull(actualRoute.Sink);
+            Assert.IsNotNull(actualRoute.Source);
+            var actualSink = actualRoute.Sink;
+            Assert.IsTrue(actualSink.Equals(a) || actualSink.Equals(b));
+            var actualSource = actualRoute.Source;
+            Assert.IsNotNull(actualSource);
+            Assert.AreEqual(ab.GetOtherNode(actualSink), actualSource);
         }
     }
 }

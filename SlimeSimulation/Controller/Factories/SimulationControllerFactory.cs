@@ -37,7 +37,7 @@ namespace SlimeSimulation.Controller.Factories
             SimulationSave save)
         {
             return new SimulationController(simulationControllerStarter, GtkLifecycleController.Instance,
-                new SimulationUpdater(save.SimulationConfiguration), save);
+                new AsyncSimulationUpdater(save.SimulationConfiguration), save);
         }
 
         public SimulationController MakeSimulationController(
@@ -55,7 +55,6 @@ namespace SlimeSimulation.Controller.Factories
             FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
             var graphWithFoodSources = new LatticeGraphWithFoodSourcesGenerator(config.GenerationConfig).Generate();
             SlimeNetwork initial = new SlimeNetworkGenerator().FromSingleFoodSourceInGraph(graphWithFoodSources);
-            
             var initialState = new SimulationState(initial, false, graphWithFoodSources);
 
             return MakeSimulationController(simulationControllerStarter, config, new SimulationControlInterfaceValues(),

@@ -31,7 +31,7 @@ namespace SlimeSimulation.Model.Simulation.Persistence
             catch (Exception e)
             {
                 Logger.Error(e);
-                throw e;
+                throw;
             }
         }
     }
