@@ -14,7 +14,7 @@ using SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simulation
 
 namespace SlimeSimulation.View.Windows
 {
-    public class NewSimulationStarterAbstractWindow : AbstractWindow
+    public class NewSimulationStarterWindow : AbstractWindow
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -27,7 +27,7 @@ namespace SlimeSimulation.View.Windows
         private ErrorDisplayComponent _errorDisplayComponent;
         private SimulationUpdateParameterComponent _simulationUpdateParameterComponent;
 
-        public NewSimulationStarterAbstractWindow(string windowTitle, NewSimulationStarterWindowController windowController)
+        public NewSimulationStarterWindow(string windowTitle, NewSimulationStarterWindowController windowController)
             : base(windowTitle, windowController)
         {
             _windowController = windowController;
@@ -47,7 +47,7 @@ namespace SlimeSimulation.View.Windows
 
         private VBox MakeComponentsAndReturnContainerForThem()
         {
-            _simulationUpdateParameterComponent = new SimulationUpdateParameterComponent(defaultConfiguration:);
+            _simulationUpdateParameterComponent = new SimulationUpdateParameterComponent(_defaultConfig);
             _beginSimulationComponent = new CreateNewSimulationComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
             _latticeGenerationControlComponent =
@@ -102,7 +102,7 @@ namespace SlimeSimulation.View.Windows
             Logger.Debug("[Dispose : bool] finished from within " + this);
         }
 
-        ~NewSimulationStarterAbstractWindow()
+        ~NewSimulationStarterWindow()
         {
             Dispose(false);
         }

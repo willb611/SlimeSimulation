@@ -13,7 +13,7 @@ namespace SlimeSimulation.Controller.WindowController
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static NewSimulationStarterWindowController Instance { get; private set; }
 
-        private NewSimulationStarterAbstractWindow _startingAbstractWindow;
+        private NewSimulationStarterWindow _startingWindow;
         private readonly SimulationControllerFactory _controllerFactory;
 
         public NewSimulationStarterWindowController() : this(new SimulationControllerFactory())
@@ -34,9 +34,9 @@ namespace SlimeSimulation.Controller.WindowController
         {
             using (var gtkLifecycleController = GtkLifecycleController.Instance)
             {
-                using (AbstractWindow = new NewSimulationStarterAbstractWindow("Slime simulation parameter selection", this))
+                using (AbstractWindow = new NewSimulationStarterWindow("Slime simulation parameter selection", this))
                 {
-                    _startingAbstractWindow = (NewSimulationStarterAbstractWindow) AbstractWindow;
+                    _startingWindow = (NewSimulationStarterWindow) AbstractWindow;
                     gtkLifecycleController.Display(AbstractWindow);
                 }
                 Logger.Debug("[Render] Finished");
@@ -50,7 +50,7 @@ namespace SlimeSimulation.Controller.WindowController
             Application.Invoke(delegate
             {
                 Logger.Debug("[StartSimulation] Invoking from main thread ");
-                _startingAbstractWindow.Hide();
+                _startingWindow.Hide();
                 controller.RunSimulation();
                 controller = null; // aid gc ?
             });
@@ -59,7 +59,7 @@ namespace SlimeSimulation.Controller.WindowController
         public override void OnWindowClose()
         {
             base.OnWindowClose();
-            _startingAbstractWindow.Dispose();
+            _startingWindow.Dispose();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SlimeSimulation.Controller.WindowController
         public override void Render()
         {
             Logger.Debug("[Render] Entered");
-            using (AbstractWindow = new FlowResultAbstractWindow(_flowResult, this))
+            using (AbstractWindow = new FlowResultWindow(_flowResult, this))
             {
                 SimulationController.Display(AbstractWindow);
                 Logger.Debug("[Render]  _gtkLifecycleController.Display(Window); has finished running");

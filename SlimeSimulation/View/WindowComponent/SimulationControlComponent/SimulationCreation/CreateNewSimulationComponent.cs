@@ -10,10 +10,10 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private NewSimulationStarterAbstractWindow _enclosingWindow;
+        private NewSimulationStarterWindow _enclosingWindow;
         private NewSimulationStarterWindowController _enclosingWindowController;
 
-        public CreateNewSimulationComponent(NewSimulationStarterAbstractWindow enclosingWindow,
+        public CreateNewSimulationComponent(NewSimulationStarterWindow enclosingWindow,
             NewSimulationStarterWindowController controller)
             : base (new Label("Begin simulation")) {
             _enclosingWindow = enclosingWindow;

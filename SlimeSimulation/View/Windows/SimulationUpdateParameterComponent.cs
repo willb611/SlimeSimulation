@@ -7,7 +7,7 @@ using SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simulation
 
 namespace SlimeSimulation.View.Windows
 {
-    public class SimulationUpdateParameterComponent : HBox
+    public class SimulationUpdateParameterComponent : VBox
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         protected bool Disposed;

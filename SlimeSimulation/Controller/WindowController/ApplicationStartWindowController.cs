@@ -16,7 +16,7 @@ namespace SlimeSimulation.Controller.WindowController
     public class ApplicationStartWindowController : AbstractSimulationControllerStarter
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static ApplicationStartAbstractWindow _applicationStartAbstractWindow;
+        private static ApplicationStartWindow _applicationStartWindow;
 
         private readonly SimulationLoader _simulationLoader = new SimulationLoader();
 
@@ -29,9 +29,9 @@ namespace SlimeSimulation.Controller.WindowController
         {
             using (var gtkLifecycleController = GtkLifecycleController.Instance)
             {
-                using (AbstractWindow = new ApplicationStartAbstractWindow(this))
+                using (AbstractWindow = new ApplicationStartWindow(this))
                 {
-                    _applicationStartAbstractWindow = (ApplicationStartAbstractWindow)AbstractWindow;
+                    _applicationStartWindow = (ApplicationStartWindow)AbstractWindow;
                     gtkLifecycleController.Display(AbstractWindow);
                     Logger.Debug("[Render] Left main GTK loop ? ");
                 }

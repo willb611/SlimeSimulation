@@ -5,11 +5,11 @@ using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.View.Windows
 {
-    public class ApplicationStartAbstractWindow : AbstractWindow
+    public class ApplicationStartWindow : AbstractWindow
     {
         private readonly ApplicationStartWindowController _applicationStartWindowController;
 
-        public ApplicationStartAbstractWindow(ApplicationStartWindowController applicationStartWindowController) 
+        public ApplicationStartWindow(ApplicationStartWindowController applicationStartWindowController) 
             : base("Slime simulation start window", applicationStartWindowController)
         {
             _applicationStartWindowController = applicationStartWindowController;

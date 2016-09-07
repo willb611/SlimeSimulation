@@ -12,14 +12,14 @@ using Window = Gtk.Window;
 
 namespace SlimeSimulation.View.Windows
 {
-    class FlowResultAbstractWindow : GraphDrawingAbstractWindow
+    class FlowResultWindow : GraphDrawingAbstractWindow
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly FlowResult _flowResult;
         private readonly FlowResultWindowController _windowController;
 
-        public FlowResultAbstractWindow(FlowResult flowResult, FlowResultWindowController windowController) : base("Flow result", windowController)
+        public FlowResultWindow(FlowResult flowResult, FlowResultWindowController windowController) : base("Flow result", windowController)
         {
             _flowResult = flowResult;
             _windowController = windowController;
