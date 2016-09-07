@@ -1,13 +1,8 @@
-﻿using Gtk;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GLib;
+﻿using System.Collections.Generic;
+using Gtk;
 using SlimeSimulation.StdLibHelpers;
 
-namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationUpdateParameters
 {
     public class FlowAmountControlComponent : HBox
     {

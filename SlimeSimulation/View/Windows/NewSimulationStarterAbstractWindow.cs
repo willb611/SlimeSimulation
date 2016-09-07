@@ -7,9 +7,10 @@ using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Windows.Templates;
 using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
-using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent;
 using SlimeSimulation.StdLibHelpers;
 using SlimeSimulation.View.WindowComponent;
+using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreation;
+using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationUpdateParameters;
 
 namespace SlimeSimulation.View.Windows
 {

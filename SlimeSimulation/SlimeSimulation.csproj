@@ -161,11 +161,11 @@
     <Compile Include="View\WindowComponent\ColorArea.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\AdaptionPhaseControlBox.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\AbstractSimulationControlBox.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\CreateNewSimulationComponent.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FeedbackParameterControlComponent.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FlowAmountControlComponent.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\LatticeGenerationControlComponent.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\ShouldAllowSlimeDisconnectionButton.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreation\CreateNewSimulationComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationUpdateParameters\FeedbackParameterControlComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationUpdateParameters\FlowAmountControlComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreation\LatticeGenerationControlComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationUpdateParameters\ShouldAllowSlimeDisconnectionButton.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationSaveComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FeedbackRateDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\IsSlimeAllowedToDisconnectLabel.cs" />

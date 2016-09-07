@@ -1,14 +1,10 @@
-﻿using Gtk;
+﻿using System;
+using Gtk;
 using NLog;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Windows;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreation
 {
     public class CreateNewSimulationComponent : Button
     {
