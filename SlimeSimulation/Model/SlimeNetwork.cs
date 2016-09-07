@@ -35,7 +35,8 @@ namespace SlimeSimulation.Model
                 throw new ArgumentNullException(nameof(slimeEdges));
             }
             SlimeEdges = slimeEdges;
-            Logger.Debug("[Constructor] Finished with slimeEdges.Count {0}", slimeEdges.Count);
+            Logger.Trace("[Constructor : 3 params] Finished with slimeEdges.Count {3}, foodSources.Count {0}, nodesInGraph.Count {1}, edgesINGraph.Count {2}",
+                FoodSources.Count, NodesInGraph.Count, EdgesInGraph.Count, SlimeEdges.Count);
         }
 
         internal double GetEdgeConnectivityOrZero(Node a, Node b)

@@ -35,6 +35,8 @@ namespace SlimeSimulation.Model
                 throw new ArgumentNullException(nameof(edgesInGraph));
             }
             FoodSources = Nodes.GetFoodSourceNodes(NodesInGraph);
+            Logger.Trace("[Constructor : 1 param] Finished with foodSources.Count {0}, nodesInGraph.Count {1}, edgesINGraph.Count {2}",
+                FoodSources.Count, NodesInGraph.Count, edgesInGraph.Count);
         }
         [JsonConstructor]
         public GraphWithFoodSources(ISet<Edge> edgesInGraph, ISet<Node> nodesInGraph, ISet<FoodSourceNode> foodSources) : base(edgesInGraph, nodesInGraph)
@@ -50,8 +52,8 @@ namespace SlimeSimulation.Model
                 throw new ArgumentNullException(nameof(foodSources));
             }
             FoodSources = foodSources;
-            Logger.Debug("[Constructor] Finished with foodSources.Count {0}, nodesInGraph.Count {1}, edgesINGraph.Count {2}",
-                foodSources.Count, nodesInGraph.Count, edgesInGraph.Count);
+            Logger.Trace("[Constructor : 3 param] Finished with foodSources.Count {0}, nodesInGraph.Count {1}, edgesINGraph.Count {2}",
+                FoodSources.Count, NodesInGraph.Count, edgesInGraph.Count);
         }
 
         public override bool Equals(object obj)
