@@ -108,6 +108,8 @@
     <Compile Include="Controller\Factories\SimulationControllerFactory.cs" />
     <Compile Include="Controller\SimulationUpdaters\NonAsyncSimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
+    <Compile Include="Controller\WindowController\ModifySimulationConfigurationController.cs" />
+    <Compile Include="View\Windows\ModifySimulationConfigurationWindow.cs" />
     <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
     <Compile Include="Model\Bfs\BfsResult.cs" />
     <Compile Include="Model\Bfs\BfsSolver.cs" />
@@ -170,7 +172,7 @@
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FeedbackRateDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\IsSlimeAllowedToDisconnectLabel.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\ShouldStepFromAllSourcesAtOnceControlComponent.cs" />
-    <Compile Include="View\WindowComponent\SimulationInterfaceComponent\SimulationUpdateConfigurationInterface.cs" />
+    <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\SimulationConfigurationDisplay.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepNumberOfTimesComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepUntilFullyGrownComponent.cs" />
     <Compile Include="View\WindowComponent\SlimeWindowNodeHighlightKey.cs" />

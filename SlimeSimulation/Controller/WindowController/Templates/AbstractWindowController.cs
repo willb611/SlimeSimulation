@@ -38,6 +38,7 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             {
                 if (AbstractWindow != null)
                 {
+                    AbstractWindow.Hide();
                     AbstractWindow.Dispose();
                     AbstractWindow = null;
                 }

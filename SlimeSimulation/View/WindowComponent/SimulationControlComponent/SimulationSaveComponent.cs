@@ -27,7 +27,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private SimulationState SimulationState => _simulationController.GetSimulationState();
         private SimulationControlInterfaceValues InterfaceValues => _simulationController.SimulationControlBoxConfig;
-        private SimulationConfiguration SimulationConfiguration => _simulationController.InitialConfiguration;
+        private SimulationConfiguration SimulationConfiguration => _simulationController.Configuration;
 
         public SimulationSaveComponent(SimulationController simulationController, Window window) : base("Save simulation to file")
         {

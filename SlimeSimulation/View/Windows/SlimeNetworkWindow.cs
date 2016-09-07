@@ -9,7 +9,6 @@ using SlimeSimulation.Model;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
-using SlimeSimulation.View.WindowComponent.SimulationInterfaceComponent;
 using SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent;
 using SlimeSimulation.View.Windows.Templates;
 using Window = Gtk.Window;
@@ -70,7 +69,18 @@ namespace SlimeSimulation.View.Windows
 
         private Widget SlimeUpdateConfigurationInterface()
         {
-            return new SimulationUpdateConfigurationInterface(_controller);
+            var button = new Button("Modify update configuration");
+            button.Clicked += (sender, args) =>
+            {
+                Logger.Debug("[Clicked] Launching window to modify configuration");
+                Dispose();
+                new ModifySimulationConfigurationController(_controller.SimulationController).Render();
+            };
+
+            var box = new HBox(false, 10);
+            box.Add(new SimulationConfigurationDisplay(_controller.SimulationController.Configuration));
+            box.Add(button);
+            return box;
         }
 
         private Widget SlimeNetworkDisplay(Color bgColor)

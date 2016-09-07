@@ -56,7 +56,7 @@ namespace SlimeSimulation.View.Windows
 
         internal SimulationConfiguration GetConfigFromViews()
         {
-            var slimeNetworkAdaptionConfig = _simulationUpdateParameterComponent.ReadSlimeNetworkAdaptionConfiguration();
+            var slimeNetworkAdaptionConfig = _simulationUpdateParameterComponent.ReadSlimeNetworkAdaptionCalculatorConfiguration();
             double? flowAmount = _simulationUpdateParameterComponent.ReadFlowAmountConfiguration();
             bool shouldAllowDisconnection = _simulationUpdateParameterComponent.ShouldAllowDisconnection;
             _errorDisplayComponent.AddToDisplayBuffer(_simulationUpdateParameterComponent.Errors());

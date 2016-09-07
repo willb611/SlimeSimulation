@@ -1,6 +1,7 @@
 using System;
 using Gtk;
 using NLog;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.Model;
 using SlimeSimulation.View.Factories;
@@ -58,6 +59,11 @@ namespace SlimeSimulation.Controller.WindowController
         public void ReDraw()
         {
             AbstractWindow.Display();
+        }
+
+        public void UpdateConfigurationAndDisplay(SimulationConfiguration simulationConfiguration)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace SlimeSimulation.Controller
         private AbstractWindowController _activeAbstractWindowController;
 
         private readonly AbstractSimulationControllerStarter _startingController;
-        private readonly SimulationConfiguration _config;
+        private SimulationConfiguration _config;
 
         public SimulationControlInterfaceValues SimulationControlBoxConfig { get; }
         public int StepsTakenInAdaptingState => GetSimulationState().StepsTakenInAdaptingState;
@@ -38,7 +38,11 @@ namespace SlimeSimulation.Controller
         public double FlowUsedWhenAdaptingNetwork => _asyncSimulationUpdater.FlowUsedWhenAdaptingNetwork;
         public double FeedbackUsedWhenAdaptingNetwork => _asyncSimulationUpdater.FeedbackUsedWhenAdaptingNetwork;
 
-        public SimulationConfiguration InitialConfiguration => _config;
+        public SimulationConfiguration Configuration
+        {
+            get { return _config; }
+            set { _config = value; }
+        }
 
         public bool ShouldFlowResultsBeDisplayed
         {
@@ -220,6 +224,11 @@ namespace SlimeSimulation.Controller
             }
             _disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
+        }
+
+        public void DisplayError(string errorMessage)
+        {
+            _startingController.DisplayError(errorMessage);
         }
     }
 }

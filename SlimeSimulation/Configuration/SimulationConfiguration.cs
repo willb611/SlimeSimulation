@@ -28,5 +28,10 @@ namespace SlimeSimulation.Configuration
         public double FlowAmount { get; private set; }
         public bool ShouldAllowDisconnection { get; private set; }
         public LatticeGraphWithFoodSourcesGenerationConfig GenerationConfig { get; private set; }
+
+        public SimulationConfiguration Clone()
+        {
+            return new SimulationConfiguration(GenerationConfig, FlowAmount, SlimeNetworkAdaptionCalculatorConfig, ShouldAllowDisconnection);
+        }
     }
 }

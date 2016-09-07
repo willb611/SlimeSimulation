@@ -53,5 +53,15 @@ namespace SlimeSimulation.Controller.WindowController.Templates
             SimulationController.AsyncRunStepsUntilSlimeHasFullyExplored();
             SimulationController.UpdateDisplay();
         }
+
+        public void UpdateConfiguration(SimulationConfiguration simulationConfiguration)
+        {
+            SimulationController.Configuration = simulationConfiguration;
+        }
+
+        public void Hide()
+        {
+            AbstractWindow.Hide();
+        }
     }
 }

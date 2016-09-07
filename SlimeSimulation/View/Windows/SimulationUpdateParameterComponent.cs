@@ -58,7 +58,7 @@ namespace SlimeSimulation.View.Windows
             Dispose(false);
         }
 
-        public SlimeNetworkAdaptionCalculatorConfig ReadSlimeNetworkAdaptionConfiguration()
+        public SlimeNetworkAdaptionCalculatorConfig ReadSlimeNetworkAdaptionCalculatorConfiguration()
         {
             return _slimeNetworkAdaptionComponent.ReadConfiguration();
         }
