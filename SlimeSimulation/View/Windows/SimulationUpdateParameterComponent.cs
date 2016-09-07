@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
-using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationUpdateParameters;
+using SlimeSimulation.View.WindowComponent.SimulationConfigurationComponent;
 
 namespace SlimeSimulation.View.Windows
 {

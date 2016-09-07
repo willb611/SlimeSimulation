@@ -2,7 +2,7 @@
 using Gtk;
 using SlimeSimulation.StdLibHelpers;
 
-namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationUpdateParameters
+namespace SlimeSimulation.View.WindowComponent.SimulationConfigurationComponent
 {
     public class FlowAmountControlComponent : HBox
     {

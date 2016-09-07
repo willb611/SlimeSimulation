@@ -9,6 +9,7 @@ using SlimeSimulation.Model;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
+using SlimeSimulation.View.WindowComponent.SimulationInterfaceComponent;
 using SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent;
 using SlimeSimulation.View.Windows.Templates;
 using Window = Gtk.Window;
@@ -61,15 +62,15 @@ namespace SlimeSimulation.View.Windows
             
             var vbox = new VBox(false, 10);
             vbox.PackStart(SimulationStateInterface(), false, true, 10);
-            vbox.PackStart(SlimeSimulationDisplayParameters(), false, true, 10);
+            vbox.PackStart(SlimeUpdateConfigurationInterface(), false, true, 10);
             vbox.PackStart(SlimeNetworkDisplay(bgColor), true, true, 10);
 
             window.Add(vbox);
         }
 
-        private Widget SlimeSimulationDisplayParameters()
+        private Widget SlimeUpdateConfigurationInterface()
         {
-            return new SimulationInitialConfigurationDisplayComponent(_controller);
+            return new SimulationUpdateConfigurationInterface(_controller);
         }
 
         private Widget SlimeNetworkDisplay(Color bgColor)

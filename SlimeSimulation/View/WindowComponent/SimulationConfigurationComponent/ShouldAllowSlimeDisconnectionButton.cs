@@ -1,6 +1,6 @@
 ﻿using Gtk;
 
-namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationUpdateParameters
+namespace SlimeSimulation.View.WindowComponent.SimulationConfigurationComponent
 {
     public class ShouldAllowSlimeDisconnectionButton : CheckButton
     {

@@ -1,13 +1,14 @@
 ﻿using Gtk;
 using SlimeSimulation.Controller.WindowController.Templates;
+using SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent;
 
-namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
+namespace SlimeSimulation.View.WindowComponent.SimulationInterfaceComponent
 {
-    class SimulationInitialConfigurationDisplayComponent : HBox
+    class SimulationUpdateConfigurationInterface : HBox
     {
         private readonly SimulationStepAbstractWindowController _simulationStepAbstractWindowController;
 
-        public SimulationInitialConfigurationDisplayComponent(
+        public SimulationUpdateConfigurationInterface(
             SimulationStepAbstractWindowController simulationStepAbstractWindowController)
         {
             _simulationStepAbstractWindowController = simulationStepAbstractWindowController;

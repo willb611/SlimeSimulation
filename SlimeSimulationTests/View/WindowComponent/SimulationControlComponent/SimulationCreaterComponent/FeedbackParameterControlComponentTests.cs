@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreation;
-using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationUpdateParameters;
+using SlimeSimulation.View.WindowComponent.SimulationConfigurationComponent;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent.Tests
 {

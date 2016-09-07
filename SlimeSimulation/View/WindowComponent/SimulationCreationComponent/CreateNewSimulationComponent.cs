@@ -4,7 +4,7 @@ using NLog;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Windows;
 
-namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreation
+namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
 {
     public class CreateNewSimulationComponent : Button
     {
