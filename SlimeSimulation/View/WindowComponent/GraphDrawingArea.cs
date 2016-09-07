@@ -191,7 +191,7 @@ namespace SlimeSimulation.View.WindowComponent
             Logger.Trace("[OnExposeEvent] Drawing all nodes, total #: {0}", _nodes.Count);
             foreach (var node in _nodes)
             {
-                if (node.IsFoodSource())
+                if (node.IsFoodSource)
                 {
                     DrawPoint(context, node);
                 }

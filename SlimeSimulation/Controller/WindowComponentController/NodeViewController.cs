@@ -69,17 +69,17 @@ namespace SlimeSimulation.Controller.WindowComponentController
         {
             if (_slimeCoveredNodes.Contains(node))
             {
-                return node.IsFoodSource() ? SlimeFoodSourceColour : SlimeNodeColour;
+                return node.IsFoodSource ? SlimeFoodSourceColour : SlimeNodeColour;
             }
             else
             {
-                return node.IsFoodSource() ? FoodSourceColour : NormalNodeColour;
+                return node.IsFoodSource ? FoodSourceColour : NormalNodeColour;
             }
         }
 
         public override int GetSizeForNode(Node node)
         {
-            if (node.IsFoodSource())
+            if (node.IsFoodSource)
             {
                 return FoodSourcePointSize;
             }

@@ -10,6 +10,7 @@ namespace SlimeSimulation.Model
 
         private readonly int _id;
         private readonly double _x, _y;
+        public virtual bool IsFoodSource => false;
 
         public Node(int id, double x, double y)
         {
@@ -18,22 +19,10 @@ namespace SlimeSimulation.Model
             _y = y;
         }
 
-        public int Id {
-            get { return _id; }
-        }
+        public int Id => _id;
+        public double X => _x;
+        public double Y => _y;
 
-        public double X {
-            get { return _x; }
-        }
-
-        public double Y {
-            get { return _y; }
-        }
-
-        public virtual bool IsFoodSource()
-        {
-            return false;
-        }
 
         public override bool Equals(object obj)
         {

@@ -11,7 +11,7 @@ namespace SlimeSimulation.Model
             var foodSources = new HashSet<FoodSourceNode>();
             foreach (var node in nodes)
             {
-                if (node.IsFoodSource())
+                if (node.IsFoodSource)
                 {
                     foodSources.Add((FoodSourceNode)node);
                 }

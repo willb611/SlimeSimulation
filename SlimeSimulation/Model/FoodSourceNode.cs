@@ -2,14 +2,12 @@ namespace SlimeSimulation.Model
 {
     public class FoodSourceNode : Node
     {
+        public override bool IsFoodSource => true;
+
         public FoodSourceNode(int id, double x, double y) : base(id, x, y)
         {
         }
 
-        public override bool IsFoodSource()
-        {
-            return true;
-        }
 
         public override bool Equals(object obj)
         {

@@ -165,7 +165,7 @@ namespace SlimeSimulation.Model.Generation
             while (_foodSources.Count < _config.MinimumFoodSources)
             {
                 var index = _random.Next(_nodes.Count - 1);
-                while (nodesList[index].IsFoodSource())
+                while (nodesList[index].IsFoodSource)
                 {
                     index = _random.Next(_nodes.Count - 1);
                 }
