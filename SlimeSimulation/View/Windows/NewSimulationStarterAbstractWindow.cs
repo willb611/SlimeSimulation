@@ -22,12 +22,10 @@ namespace SlimeSimulation.View.Windows
         private readonly SimulationConfiguration _defaultConfig = new SimulationConfiguration();
        
         private Button _beginSimulationComponent;
-        private CheckButton _shouldAllowDisconnectionCheckButton;
 
-        private FlowAmountControlComponent _flowAmountControlComponent;
         private LatticeGenerationControlComponent _latticeGenerationControlComponent;
-        private FeedbackParameterControlComponent _slimeNetworkAdaptionComponent;
         private ErrorDisplayComponent _errorDisplayComponent;
+        private SimulationUpdateParameterComponent _simulationUpdateParameterComponent;
 
         public NewSimulationStarterAbstractWindow(string windowTitle, NewSimulationStarterWindowController windowController)
             : base(windowTitle, windowController)
@@ -39,10 +37,8 @@ namespace SlimeSimulation.View.Windows
         protected override void AddToWindow(Window window)
         {
             var container = MakeComponentsAndReturnContainerForThem();
-            container.Add(_flowAmountControlComponent);
-            container.Add(_slimeNetworkAdaptionComponent);
+            container.Add(_simulationUpdateParameterComponent);
             container.Add(_latticeGenerationControlComponent);
-            container.Add(_shouldAllowDisconnectionCheckButton);
             container.Add(_beginSimulationComponent);
             container.Add(_errorDisplayComponent);
             window.Add(container);
@@ -51,9 +47,7 @@ namespace SlimeSimulation.View.Windows
 
         private VBox MakeComponentsAndReturnContainerForThem()
         {
-            _slimeNetworkAdaptionComponent = new FeedbackParameterControlComponent(_defaultConfig.SlimeNetworkAdaptionCalculatorConfig);
-            _flowAmountControlComponent = new FlowAmountControlComponent(_defaultConfig.FlowAmount);
-            _shouldAllowDisconnectionCheckButton = new ShouldAllowSlimeDisconnectionButton(_defaultConfig.ShouldAllowDisconnection);
+            _simulationUpdateParameterComponent = new SimulationUpdateParameterComponent(defaultConfiguration:);
             _beginSimulationComponent = new CreateNewSimulationComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
             _latticeGenerationControlComponent =
@@ -63,11 +57,10 @@ namespace SlimeSimulation.View.Windows
 
         internal SimulationConfiguration GetConfigFromViews()
         {
-            var slimeNetworkAdaptionConfig = _slimeNetworkAdaptionComponent.ReadConfiguration();
-            _errorDisplayComponent.AddToDisplayBuffer(_slimeNetworkAdaptionComponent.Errors());
-            double? flowAmount = _flowAmountControlComponent.ReadFlowAmount();
-            _errorDisplayComponent.AddToDisplayBuffer(_flowAmountControlComponent.Errors());
-            bool shouldAllowDisconnection = _shouldAllowDisconnectionCheckButton.Active;
+            var slimeNetworkAdaptionConfig = _simulationUpdateParameterComponent.ReadSlimeNetworkAdaptionConfiguration();
+            double? flowAmount = _simulationUpdateParameterComponent.ReadFlowAmountConfiguration();
+            bool shouldAllowDisconnection = _simulationUpdateParameterComponent.ShouldAllowDisconnection;
+            _errorDisplayComponent.AddToDisplayBuffer(_simulationUpdateParameterComponent.Errors());
             if (slimeNetworkAdaptionConfig != null && flowAmount.HasValue)
             {
                 try
@@ -102,10 +95,8 @@ namespace SlimeSimulation.View.Windows
                 base.Dispose(true);
                 _beginSimulationComponent.Dispose();
                 _errorDisplayComponent.Dispose();
-                _flowAmountControlComponent.Dispose();
                 _latticeGenerationControlComponent.Dispose();
-                _shouldAllowDisconnectionCheckButton.Dispose();
-                _slimeNetworkAdaptionComponent.Dispose();
+                _simulationUpdateParameterComponent.Dispose();
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
