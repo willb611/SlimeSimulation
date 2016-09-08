@@ -1,4 +1,4 @@
-﻿using Gtk;
+using Gtk;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -57,12 +57,12 @@ namespace SlimeSimulation.View.WindowComponent
             ClearBuffer();
         }
 
-        public override void Dispose()
+        public sealed override void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (Disposed)
             {

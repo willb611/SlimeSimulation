@@ -29,18 +29,17 @@ namespace SlimeSimulation.View.Windows
             Add(_shouldAllowDisconnectionCheckButton);
         }
 
-        public override void Dispose()
+        public sealed override void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
             Logger.Debug("[Dispose] Overriden method called from within " + this);
         }
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (Disposed)
-            {
-                return;
+            {                return;
             }
             if (disposing)
             {
