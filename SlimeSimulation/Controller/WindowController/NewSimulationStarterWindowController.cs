@@ -11,18 +11,20 @@ namespace SlimeSimulation.Controller.WindowController
     public class NewSimulationStarterWindowController : AbstractSimulationControllerStarter
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static NewSimulationStarterWindowController Instance { get; private set; }
 
-        private NewSimulationStarterWindow _startingWindow;
+        private readonly ApplicationStartWindowController _applicationStartWindowController;
+        private NewSimulationStarterWindow _newSimulationStarterWindow;
         private readonly SimulationControllerFactory _controllerFactory;
 
-        public NewSimulationStarterWindowController() : this(new SimulationControllerFactory())
+        public NewSimulationStarterWindowController(ApplicationStartWindowController applicationStartWindowController)
+            : this(applicationStartWindowController, new SimulationControllerFactory())
         {
-            Instance = this;
         }
-        public NewSimulationStarterWindowController(SimulationControllerFactory simulationControllerFactory)
+        public NewSimulationStarterWindowController(ApplicationStartWindowController applicationStartWindowController, 
+            SimulationControllerFactory simulationControllerFactory)
         {
             _controllerFactory = simulationControllerFactory;
+            _applicationStartWindowController = applicationStartWindowController;
         }
         
         public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
@@ -32,14 +34,10 @@ namespace SlimeSimulation.Controller.WindowController
         
         public override void Render()
         {
-            using (var gtkLifecycleController = GtkLifecycleController.Instance)
+            using (AbstractWindow = new NewSimulationStarterWindow("Slime simulation parameter selection", this))
             {
-                using (AbstractWindow = new NewSimulationStarterWindow("Slime simulation parameter selection", this))
-                {
-                    _startingWindow = (NewSimulationStarterWindow) AbstractWindow;
-                    gtkLifecycleController.Display(AbstractWindow);
-                }
-                Logger.Debug("[Render] Finished");
+                _newSimulationStarterWindow = (NewSimulationStarterWindow) AbstractWindow;
+                GtkLifecycleController.Instance.Display(AbstractWindow);
             }
         }
 
@@ -50,7 +48,7 @@ namespace SlimeSimulation.Controller.WindowController
             Application.Invoke(delegate
             {
                 Logger.Debug("[StartSimulation] Invoking from main thread ");
-                _startingWindow.Hide();
+                _newSimulationStarterWindow.Hide();
                 controller.RunSimulation();
                 controller = null; // aid gc ?
             });
@@ -59,7 +57,8 @@ namespace SlimeSimulation.Controller.WindowController
         public override void OnWindowClose()
         {
             base.OnWindowClose();
-            _startingWindow.Dispose();
+            _newSimulationStarterWindow.Dispose();
+            _applicationStartWindowController.Display();
         }
     }
 }

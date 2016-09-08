@@ -63,8 +63,13 @@ namespace SlimeSimulation.Controller.WindowController
             Application.Invoke(delegate
             {
                 AbstractWindow.Hide();
-                new NewSimulationStarterWindowController().Render();
+                new NewSimulationStarterWindowController(this).Render();
             });
+        }
+
+        public void Display()
+        {
+            AbstractWindow.Display();
         }
     }
 }
