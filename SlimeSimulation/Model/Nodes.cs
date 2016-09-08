@@ -4,7 +4,7 @@ using SlimeSimulation.Algorithms.Bfs;
 
 namespace SlimeSimulation.Model
 {
-    class Nodes
+    public class Nodes
     {
         public static ISet<FoodSourceNode> GetFoodSourceNodes(ISet<Node> nodes)
         {
@@ -28,6 +28,16 @@ namespace SlimeSimulation.Model
         public static IEnumerable<FoodSourceNode> CastToFood(IEnumerable<Node> nodes)
         {
             return nodes.Cast<FoodSourceNode>();
+        }
+
+        public static List<Node> SortByXAscending(ICollection<Node> nodes)
+        {
+            return nodes.OrderBy(node => node.X).ToList();
+        }
+
+        public static List<Node> SortByYAscending(ICollection<Node> nodes)
+        {
+            return nodes.OrderBy(node => node.Y).ToList();
         }
     }
 }

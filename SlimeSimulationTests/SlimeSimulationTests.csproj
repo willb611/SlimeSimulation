@@ -90,6 +90,7 @@
     <Compile Include="Model\GraphTests.cs" />
     <Compile Include="Model\Generation\LatticeSlimeNetworkGeneratorTests.cs" />
     <Compile Include="Model\GraphWithFoodSourcesTests.cs" />
+    <Compile Include="Model\NodesTests.cs" />
     <Compile Include="Model\NodeTests.cs" />
     <Compile Include="Model\RouteTests.cs" />
     <Compile Include="Model\Simulation\RouteSelectorTests.cs" />

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cairo;
 using Gdk;
 using Gtk;
@@ -28,8 +29,8 @@ namespace SlimeSimulation.View.WindowComponent
         private readonly double _maxNodeX;
         private readonly double _maxNodeY;
 
-        private readonly double _minNodeY = double.MaxValue;
-        private readonly double _minNodeX = double.MaxValue;
+        private readonly double _minNodeY;
+        private readonly double _minNodeX;
 
         private double _maxWindowX = 100;
         private double _maxWindowY = 100;
@@ -43,14 +44,14 @@ namespace SlimeSimulation.View.WindowComponent
             {
                 AddEdge(edge);
             }
-            foreach (var node in _nodes)
-            {
-                _maxNodeX = Math.Max(node.X, _maxNodeX);
-                _maxNodeY = Math.Max(node.Y, _maxNodeY);
+            var nodesSortedByXAscending = Nodes.SortByXAscending(_nodes);
+            _minNodeX = nodesSortedByXAscending.First().X;
+            _maxNodeX = nodesSortedByXAscending.Last().X;
 
-                _minNodeX = Math.Min(node.X, _minNodeX);
-                _minNodeY = Math.Min(node.Y, _minNodeY);
-            }
+            var nodesSortedByYAscending = Nodes.SortByYAscending(_nodes);
+            _minNodeY = nodesSortedByYAscending.First().Y;
+            _maxNodeY = nodesSortedByYAscending.Last().Y;
+
             _lineViewController = lineWidthController;
             Logger.Debug("[Constructor] Given number of edges: {0}", edges.Count);
         }
