@@ -1,10 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlimeSimulation.LinearEquations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using SlimeSimulation.Model;
 using NLog;
+using SlimeSimulation.Algorithms.FlowCalculation;
+using SlimeSimulation.Algorithms.LinearEquations;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Model.Generation;
 

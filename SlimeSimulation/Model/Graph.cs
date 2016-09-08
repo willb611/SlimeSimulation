@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using NLog;
-using SlimeSimulation.Model.Bfs;
+using SlimeSimulation.Algorithms.Bfs;
 
 namespace SlimeSimulation.Model
 {

@@ -1,4 +1,4 @@
-namespace SlimeSimulation.LinearEquations
+namespace SlimeSimulation.Algorithms.LinearEquations
 {
     public interface ILinearEquationSolver
     {

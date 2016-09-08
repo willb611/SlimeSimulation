@@ -1,6 +1,6 @@
 using System;
 
-namespace SlimeSimulation.LinearEquations
+namespace SlimeSimulation.Algorithms.LinearEquations
 {
    public class SingularMatrixException : Exception
     {

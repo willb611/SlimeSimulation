@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NLog;
-using SlimeSimulation.FlowCalculation;
+using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Model;
 using SlimeSimulation.View;
 using SlimeSimulation.View.WindowComponent;

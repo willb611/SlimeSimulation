@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;

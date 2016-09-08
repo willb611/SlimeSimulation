@@ -1,7 +1,7 @@
 using Gtk;
 using NLog;
+using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Controller.WindowController.Templates;
-using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.Windows;
 

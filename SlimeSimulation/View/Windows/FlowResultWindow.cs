@@ -1,9 +1,9 @@
 using Gdk;
 using Gtk;
 using NLog;
+using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Controller.WindowComponentController;
 using SlimeSimulation.Controller.WindowController;
-using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
 using SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent;

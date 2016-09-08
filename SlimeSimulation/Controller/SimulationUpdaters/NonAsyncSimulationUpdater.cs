@@ -1,7 +1,7 @@
 using System;
 using NLog;
-using SlimeSimulation.FlowCalculation;
-using SlimeSimulation.LinearEquations;
+using SlimeSimulation.Algorithms.FlowCalculation;
+using SlimeSimulation.Algorithms.LinearEquations;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
 

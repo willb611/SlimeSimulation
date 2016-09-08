@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using SlimeSimulation.LinearEquations;
+using SlimeSimulation.Algorithms.LinearEquations;
 using SlimeSimulation.Model;
 
-namespace SlimeSimulation.FlowCalculation
+namespace SlimeSimulation.Algorithms.FlowCalculation
 {
     public class FlowCalculator
     {

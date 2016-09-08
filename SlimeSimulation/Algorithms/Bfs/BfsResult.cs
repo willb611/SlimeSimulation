@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using NLog;
+using SlimeSimulation.Model;
 
-namespace SlimeSimulation.Model.Bfs
+namespace SlimeSimulation.Algorithms.Bfs
 {
     internal class BfsResult
     {

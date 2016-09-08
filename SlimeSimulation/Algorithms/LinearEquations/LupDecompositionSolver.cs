@@ -1,7 +1,7 @@
 using System;
 using NLog;
 
-namespace SlimeSimulation.LinearEquations
+namespace SlimeSimulation.Algorithms.LinearEquations
 {
     public class LupDecompositionSolver : ILinearEquationSolver
     {

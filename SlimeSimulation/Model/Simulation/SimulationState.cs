@@ -1,6 +1,6 @@
 using System;
 using Newtonsoft.Json;
-using SlimeSimulation.FlowCalculation;
+using SlimeSimulation.Algorithms.FlowCalculation;
 
 namespace SlimeSimulation.Model.Simulation
 {

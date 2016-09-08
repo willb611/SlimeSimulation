@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NLog;
 using SlimeSimulation.Model;
 
-namespace SlimeSimulation.FlowCalculation
+namespace SlimeSimulation.Algorithms.FlowCalculation
 {
     public class FlowOnEdges
     {

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SlimeSimulation.FlowCalculation;
+using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Model;
 using SlimeSimulation.View;
 
