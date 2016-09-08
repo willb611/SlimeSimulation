@@ -100,10 +100,5 @@ namespace SlimeSimulation.View.Windows
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
         }
-
-        ~NewSimulationStarterWindow()
-        {
-            Dispose(false);
-        }
     }
 }
