@@ -177,6 +177,7 @@ namespace SlimeSimulation.Controller
                 nextAbstractWindowController = DisplayControllerForFlowResult(state.FlowResult);
             }
             Logger.Debug($"[UpdateDisplayFromState] Found nextWindow controller {nextAbstractWindowController}");
+            _activeAbstractWindowController?.Dispose();
             _activeAbstractWindowController = nextAbstractWindowController;
             nextAbstractWindowController.Render();
         }
