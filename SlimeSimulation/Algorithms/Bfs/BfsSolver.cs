@@ -13,29 +13,32 @@ namespace SlimeSimulation.Algorithms.Bfs
         public Subgraph From(Node source, Graph graph)
         {
             Logger.Debug($"[From] Runing from source {source}");
-            Dictionary<Node, bool> connected = new Dictionary<Node, bool>();
-            foreach (var node in graph.NodesInGraph)
-            {
-                connected[node] = false;
-            }
+            ISet<Node> nodesInSubgraph = new HashSet<Node>();
+            ISet<Edge> edgesInSubgraph = new HashSet<Edge>();
 
             Queue<Node> nodesToVisit = new Queue<Node>();
             nodesToVisit.Enqueue(source);
-            connected[source] = true;
+            nodesInSubgraph.Add(source);
 
             while (nodesToVisit.Any())
             {
                 var current = nodesToVisit.Dequeue();
-                foreach (var node in graph.Neighbours(current))
+                foreach (var edge in graph.EdgesConnectedToNode(current))
                 {
-                    if (!connected[node])
+                    edgesInSubgraph.Add(edge);
+                    if (!nodesInSubgraph.Contains(edge.A))
                     {
-                        connected[node] = true;
-                        nodesToVisit.Enqueue(node);
+                        nodesToVisit.Enqueue(edge.A);
+                        nodesInSubgraph.Add(edge.A);
+                    }
+                    if (!nodesInSubgraph.Contains(edge.B))
+                    {
+                        nodesToVisit.Enqueue(edge.B);
+                        nodesInSubgraph.Add(edge.B);
                     }
                 }
             }
-            return new Subgraph(connected);
+            return new Subgraph(edgesInSubgraph, nodesInSubgraph);
         }
 
         public GraphSplitIntoSubgraphs SplitIntoSubgraphs(Graph graph)

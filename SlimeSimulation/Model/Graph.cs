@@ -104,8 +104,8 @@ namespace SlimeSimulation.Model
 
         public ISet<Node> AllNodesConnectedTo(Node source)
         {
-            var bfsResult = BfsSolver.From(source, this);
-            return bfsResult.ConnectedNodes();
+            var subgraph = BfsSolver.From(source, this);
+            return subgraph.ConnectedNodes();
         }
 
         public override bool Equals(object obj)

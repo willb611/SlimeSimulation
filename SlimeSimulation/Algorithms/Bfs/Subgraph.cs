@@ -4,41 +4,22 @@ using SlimeSimulation.Model;
 
 namespace SlimeSimulation.Algorithms.Bfs
 {
-    public class Subgraph
+    public class Subgraph : Graph
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        private readonly Dictionary<Node, bool> _connected;
-        private readonly ISet<Node> _connectedNodes;
-
-        protected internal Subgraph(Dictionary<Node, bool> connected)
+        
+        protected internal Subgraph(ISet<Edge> edges, ISet<Node> nodes) : base(edges, nodes)
         {
-            _connected = connected;
-            _connectedNodes = GetConnectedNodes();
-        }
-
-        private ISet<Node> GetConnectedNodes()
-        {
-            HashSet<Node> nodes = new HashSet<Node>();
-            foreach (Node node in _connected.Keys)
-            {
-                if (IsNodeConnected(node))
-                {
-                    nodes.Add(node);
-                }
-            }
-            Logger.Debug("[ConnectedNodes] Out of {0} returning {1}", _connected.Count, nodes.Count);
-            return nodes;
         }
 
         public bool IsNodeConnected(Node node)
         {
-            return _connected[node];
+            return NodesInGraph.Contains(node);
         }
 
         public ISet<Node> ConnectedNodes()
         {
-            return _connectedNodes;
+            return NodesInGraph;
         }
     }
 }
