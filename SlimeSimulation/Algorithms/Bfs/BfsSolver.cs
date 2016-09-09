@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using SlimeSimulation.Model;
+using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Algorithms.Bfs
 {
@@ -9,7 +10,7 @@ namespace SlimeSimulation.Algorithms.Bfs
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public BfsResult From(Node source, Graph graph)
+        public Subgraph From(Node source, Graph graph)
         {
             Logger.Debug($"[From] Runing from source {source}");
             Dictionary<Node, bool> connected = new Dictionary<Node, bool>();
@@ -34,7 +35,21 @@ namespace SlimeSimulation.Algorithms.Bfs
                     }
                 }
             }
-            return new BfsResult(connected);
+            return new Subgraph(connected);
+        }
+
+        public GraphSplitIntoSubgraphs SplitIntoSubgraphs(Graph graph)
+        {
+            List<Subgraph> subgraphs = new List<Subgraph>();
+            var unconnected = graph.NodesInGraph;
+            while (unconnected.Any())
+            {
+                var nextSource = unconnected.PickRandom();
+                var connectedToSource = From(nextSource, graph);
+                subgraphs.Add(connectedToSource);
+                unconnected.ExceptWith(connectedToSource.ConnectedNodes());
+            }
+            return new GraphSplitIntoSubgraphs(subgraphs);
         }
     }
 }

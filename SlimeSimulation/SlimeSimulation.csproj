@@ -116,6 +116,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Bfs\GraphSplitIntoSubgraphs.cs" />
+    <Compile Include="Algorithms\RouteSelection\EnumerateSubgraphsRouteSelector.cs" />
     <Compile Include="Configuration\LatticeGraphWithFoodSourcesGenerationConfig.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />
     <Compile Include="Configuration\SimulationControlInterfaceValues.cs" />
@@ -125,9 +127,10 @@
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
     <Compile Include="Controller\WindowController\ModifySimulationConfigurationController.cs" />
     <Compile Include="Algorithms\RouteSelection\RouteSelector.cs" />
+    <Compile Include="StdLibHelpers\CollectionExtension.cs" />
     <Compile Include="View\Windows\ModifySimulationConfigurationWindow.cs" />
     <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
-    <Compile Include="Algorithms\Bfs\BfsResult.cs" />
+    <Compile Include="Algorithms\Bfs\Subgraph.cs" />
     <Compile Include="Algorithms\Bfs\BfsSolver.cs" />
     <Compile Include="Model\Edges.cs" />
     <Compile Include="Model\Nodes.cs" />

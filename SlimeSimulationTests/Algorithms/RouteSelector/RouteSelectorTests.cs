@@ -6,22 +6,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SlimeSimulation.Algorithms.RouteSelection;
+using SlimeSimulation.Model;
 
-namespace SlimeSimulation.Model.Simulation.Tests
+namespace SlimeSimulation.Algorithms.Bfs.Tests
 {
     [TestClass()]
-    public class EnumerateBySourcesRouteSelectorTests
+    public class RouteSelectorTests
     {
         [TestMethod()]
-        public void SelectRouteTest()
+        public void EnumerateBySourcesRouteSelectorTest()
+        {
+            TestRouteSelector(new EnumerateBySourcesRouteSelector());
+        }
+        [TestMethod()]
+        public void EnumerateSubgraphsRouteSelectorTest()
+        {
+            TestRouteSelector(new EnumerateSubgraphsRouteSelector());
+        }
+
+        public void TestRouteSelector(IRouteSelector routeSelector)
         {
             var a = new FoodSourceNode(1, 1, 1);
             var b = new FoodSourceNode(2, 2, 2);
             var ab = new SlimeEdge(a, b, 1);
-            var slimeEdges = new HashSet<SlimeEdge>() {ab};
+            var slimeEdges = new HashSet<SlimeEdge>() { ab };
             var slime = new SlimeNetwork(slimeEdges);
-            
-            var routeSelector = new EnumerateBySourcesRouteSelector();
+
             var actualRoute = routeSelector.SelectRoute(slime);
             Assert.IsNotNull(actualRoute);
             Assert.IsNotNull(actualRoute.Sink);

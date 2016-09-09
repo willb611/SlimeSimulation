@@ -10,7 +10,8 @@ namespace SlimeSimulation.Model
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ISet<SlimeEdge> SlimeEdges { get; private set; }
+        private readonly ISet<SlimeEdge> _slimeEdges;
+        public ISet<SlimeEdge> SlimeEdges => _slimeEdges;
 
         public SlimeNetwork(ISet<SlimeEdge> slimeEdges) : base(Edges.FromSlimeEdges(slimeEdges))
         {
@@ -18,7 +19,7 @@ namespace SlimeSimulation.Model
             {
                 throw new ArgumentNullException(nameof(slimeEdges));
             }
-            SlimeEdges = slimeEdges;
+            _slimeEdges = slimeEdges;
         }
         [JsonConstructor]
         public SlimeNetwork(ISet<Node> nodesInGraph, ISet<FoodSourceNode> foodSources,
@@ -34,7 +35,7 @@ namespace SlimeSimulation.Model
             {
                 throw new ArgumentNullException(nameof(slimeEdges));
             }
-            SlimeEdges = slimeEdges;
+            _slimeEdges = slimeEdges;
             Logger.Trace("[Constructor : 3 params] Finished with slimeEdges.Count {3}, foodSources.Count {0}, nodesInGraph.Count {1}, edgesINGraph.Count {2}",
                 FoodSources.Count, NodesInGraph.Count, EdgesInGraph.Count, SlimeEdges.Count);
         }
@@ -85,7 +86,7 @@ namespace SlimeSimulation.Model
             return edges;
         }
 
-        public override bool Equals(object obj)
+        public new bool Equals(object obj)
         {
             return Equals(obj as SlimeNetwork);
         }
@@ -108,7 +109,7 @@ namespace SlimeSimulation.Model
             return SlimeEdges.Equals(other.SlimeEdges)
                    && base.Equals(other);
         }
-        public override int GetHashCode()
+        public new int GetHashCode()
         {
             return SlimeEdges.GetHashCode() * 17 + base.GetHashCode();
         }

@@ -56,7 +56,7 @@ namespace SlimeSimulation.Model
                 FoodSources.Count, NodesInGraph.Count, edgesInGraph.Count);
         }
 
-        public override bool Equals(object obj)
+        public new bool Equals(object obj)
         {
             return Equals(obj as GraphWithFoodSources);
         }
@@ -81,7 +81,7 @@ namespace SlimeSimulation.Model
                    && base.Equals(other);
         }
 
-        public override int GetHashCode()
+        public new int GetHashCode()
         {
             return FoodSources.GetHashCode() * 17 + base.GetHashCode();
         }

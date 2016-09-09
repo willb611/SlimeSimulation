@@ -74,6 +74,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Algorithms\Bfs\BfsSolverTests.cs" />
     <Compile Include="Configuration\LatticeSlimeNetworkGenerationConfigTests.cs" />
     <Compile Include="Controller\SimulationControllerTests.cs" />
     <Compile Include="Controller\SimulationUpdaters\SimulationUpdaterTests.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Model\NodesTests.cs" />
     <Compile Include="Model\NodeTests.cs" />
     <Compile Include="Model\RouteTests.cs" />
-    <Compile Include="Model\Simulation\EnumerateBySourcesRouteSelectorTests.cs" />
+    <Compile Include="Algorithms\RouteSelector\RouteSelectorTests.cs" />
     <Compile Include="Model\SlimeNetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLibHelpers\EnumeratorExtensionTests.cs" />
@@ -117,6 +118,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\Simulation\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

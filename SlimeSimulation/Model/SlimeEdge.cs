@@ -29,7 +29,7 @@ namespace SlimeSimulation.Model
             }
         }
         
-        public override bool Equals(object obj)
+        public new bool Equals(object obj)
         {
             return Equals(obj as SlimeEdge);
         }
@@ -57,7 +57,7 @@ namespace SlimeSimulation.Model
             return base.Equals(other);
         }
 
-        public override int GetHashCode()
+        public new int GetHashCode()
         {
             return Connectivity.GetHashCode() * 17 + base.GetHashCode();
         }
