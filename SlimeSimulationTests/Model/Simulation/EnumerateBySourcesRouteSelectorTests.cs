@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SlimeSimulation.Algorithms.RouteSelection;
 
 namespace SlimeSimulation.Model.Simulation.Tests
 {
     [TestClass()]
-    public class RouteSelectorTests
+    public class EnumerateBySourcesRouteSelectorTests
     {
         [TestMethod()]
         public void SelectRouteTest()
@@ -20,7 +21,7 @@ namespace SlimeSimulation.Model.Simulation.Tests
             var slimeEdges = new HashSet<SlimeEdge>() {ab};
             var slime = new SlimeNetwork(slimeEdges);
             
-            var routeSelector = new RouteSelector();
+            var routeSelector = new EnumerateBySourcesRouteSelector();
             var actualRoute = routeSelector.SelectRoute(slime);
             Assert.IsNotNull(actualRoute);
             Assert.IsNotNull(actualRoute.Sink);

@@ -2,6 +2,7 @@ using System;
 using NLog;
 using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Algorithms.LinearEquations;
+using SlimeSimulation.Algorithms.RouteSelection;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
 
@@ -15,7 +16,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private readonly SlimeNetworkAdaptionCalculator _slimeNetworkAdapterCalculator;
         private readonly double _flowAmount;
         private readonly SlimeNetworkExplorer _slimeNetworkExplorer;
-        private readonly RouteSelector _routeSelector = new RouteSelector();
+        private readonly IRouteSelector _routeSelector = new EnumerateBySourcesRouteSelector();
         
         public double FlowUsedWhenAdaptingNetwork => _flowAmount;
 

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using SlimeSimulation.Model;
 using SlimeSimulation.StdLibHelpers;
 
-namespace SlimeSimulation.Model.Simulation
+namespace SlimeSimulation.Algorithms.RouteSelection
 {
-    public class RouteSelector
+    public class EnumerateBySourcesRouteSelector : IRouteSelector
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

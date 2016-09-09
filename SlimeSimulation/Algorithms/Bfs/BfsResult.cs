@@ -15,7 +15,7 @@ namespace SlimeSimulation.Algorithms.Bfs
             _connected = connected;
         }
 
-        public bool Connected(Node node)
+        public bool IsNodeConnected(Node node)
         {
             return _connected[node];
         }
@@ -25,7 +25,7 @@ namespace SlimeSimulation.Algorithms.Bfs
             HashSet<Node> nodes = new HashSet<Node>();
             foreach (Node node in _connected.Keys)
             {
-                if (Connected(node))
+                if (IsNodeConnected(node))
                 {
                     nodes.Add(node);
                 }

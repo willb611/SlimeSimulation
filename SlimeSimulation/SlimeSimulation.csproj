@@ -124,6 +124,7 @@
     <Compile Include="Controller\SimulationUpdaters\NonAsyncSimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
     <Compile Include="Controller\WindowController\ModifySimulationConfigurationController.cs" />
+    <Compile Include="Algorithms\RouteSelection\RouteSelector.cs" />
     <Compile Include="View\Windows\ModifySimulationConfigurationWindow.cs" />
     <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
     <Compile Include="Algorithms\Bfs\BfsResult.cs" />
@@ -133,7 +134,7 @@
     <Compile Include="Model\ItemLock.cs" />
     <Compile Include="Model\Route.cs" />
     <Compile Include="Model\Simulation\Persistence\SimulationSaver.cs" />
-    <Compile Include="Model\Simulation\RouteSelector.cs" />
+    <Compile Include="Algorithms\RouteSelection\EnumerateBySourcesRouteSelector.cs" />
     <Compile Include="Model\Simulation\Persistence\SimulationLoader.cs" />
     <Compile Include="Model\Simulation\SimulationSave.cs" />
     <Compile Include="Model\Simulation\SimulationStepsTaken.cs" />
