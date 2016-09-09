@@ -105,7 +105,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             while (enumerator.MoveNext())
             {
                 var source = enumerator.Current;
-                var connectedPossibleSinks = Nodes.GetFoodSourcesConnectedToNodeInGraph(source, slime).Except(source).ToList();
+                var connectedPossibleSinks = slime.FoodSourcesConnectedTo(source).Except(source).ToList();
                 if (connectedPossibleSinks.Any())
                 {
                     var sink = connectedPossibleSinks.PickRandom();

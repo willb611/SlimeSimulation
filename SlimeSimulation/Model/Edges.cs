@@ -22,24 +22,12 @@ namespace SlimeSimulation.Model
             }
             return nodes;
         }
-        private static void AddNodesFromEdge(Edge slimeEdge, ref ISet<Node> nodes)
+        private static void AddNodesFromEdge(Edge edge, ref ISet<Node> nodes)
         {
-            nodes.Add(slimeEdge.A);
-            nodes.Add(slimeEdge.B);
+            nodes.Add(edge.A);
+            nodes.Add(edge.B);
         }
-
-        internal static bool[,] GetConnectedNodes(ISet<Edge> edges)
-        {
-            var max = GetMaxNodeId(edges);
-            var connected = new bool[max+1, max+1];
-            foreach (var edge in edges)
-            {
-                connected[edge.A.Id, edge.B.Id] = true;
-                connected[edge.B.Id, edge.A.Id] = true;
-            }
-            return connected;
-        }
-
+        
         public static int GetMaxNodeId(ISet<Edge> edges)
         {
             int max = 0;

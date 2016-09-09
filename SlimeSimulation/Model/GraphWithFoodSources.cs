@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using NLog;
 
@@ -54,6 +55,12 @@ namespace SlimeSimulation.Model
             FoodSources = foodSources;
             Logger.Trace("[Constructor : 3 param] Finished with foodSources.Count {0}, nodesInGraph.Count {1}, edgesINGraph.Count {2}",
                 FoodSources.Count, NodesInGraph.Count, edgesInGraph.Count);
+        }
+
+        public IEnumerable<FoodSourceNode> FoodSourcesConnectedTo(FoodSourceNode node)
+        {
+            var connectedFood = AllNodesConnectedTo(node).Where(n => n is FoodSourceNode);
+            return Nodes.CastToFood(connectedFood);
         }
 
         public new bool Equals(object obj)
