@@ -1,11 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SlimeSimulation.Configuration;
-using SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.View.WindowComponent.SimulationCreationComponent;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.SimulationCreaterComponent.Tests

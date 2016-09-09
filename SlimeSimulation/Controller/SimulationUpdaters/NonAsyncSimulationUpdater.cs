@@ -1,12 +1,9 @@
-using System;
-using System.Runtime.InteropServices;
 using NLog;
 using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Algorithms.LinearEquations;
 using SlimeSimulation.Algorithms.RouteSelection;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
-using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {

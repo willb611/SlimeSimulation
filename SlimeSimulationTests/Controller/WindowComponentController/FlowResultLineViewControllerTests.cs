@@ -1,14 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlimeSimulation.Controller.WindowComponentController;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.Algorithms.FlowCalculation;
-using SlimeSimulation.FlowCalculation;
 using SlimeSimulation.Model;
-using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.Controller.WindowComponentController.Tests
 {

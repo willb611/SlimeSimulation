@@ -49,16 +49,6 @@ namespace SlimeSimulation.Model
             return mapping;
         }
 
-        internal IEnumerable<Node> Neighbours(Node node)
-        {
-            ISet<Node> connected = new HashSet<Node>();
-            foreach (var edge in EdgesConnectedToNode(node))
-            {
-                connected.Add(edge.GetOtherNode(node));
-            }
-            return connected;
-        }
-
         internal ISet<Edge> EdgesConnectedToNode(Node node)
         {
             if (_edgesConnectedToNodeMapping.ContainsKey(node))

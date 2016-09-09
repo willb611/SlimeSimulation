@@ -1,10 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlimeSimulation.Model.Simulation;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.Algorithms.RouteSelection;
 using SlimeSimulation.Model;
 

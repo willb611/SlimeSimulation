@@ -1,11 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Gtk;
-using Newtonsoft.Json;
 using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller;

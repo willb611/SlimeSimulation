@@ -1,11 +1,5 @@
-﻿using Gtk;
+using Gtk;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlimeSimulation.StdLibHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SlimeSimulation.StdLibHelpers.Tests
 {

@@ -9,7 +9,6 @@ using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
-using SlimeSimulation.StdLibHelpers;
 using SlimeSimulation.View;
 using SlimeSimulation.View.Factories;
 using SlimeSimulation.View.Windows.Templates;

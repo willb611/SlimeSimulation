@@ -1,7 +1,6 @@
 using Gtk;
 using NLog;
 using SlimeSimulation.Controller.WindowController.Templates;
-using SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {

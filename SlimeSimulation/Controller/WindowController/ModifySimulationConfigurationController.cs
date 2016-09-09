@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Gtk;
+﻿using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController.Templates;

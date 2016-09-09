@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using SlimeSimulation.Controller.SimulationUpdaters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Model;

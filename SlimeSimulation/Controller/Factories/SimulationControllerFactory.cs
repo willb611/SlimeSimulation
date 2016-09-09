@@ -3,7 +3,6 @@ using NLog;
 using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.SimulationUpdaters;
-using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Generation;

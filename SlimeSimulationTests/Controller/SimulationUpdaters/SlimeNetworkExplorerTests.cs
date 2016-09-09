@@ -1,10 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlimeSimulation.Controller.SimulationUpdaters;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Generation;
 using SlimeSimulation.StdLibHelpers;

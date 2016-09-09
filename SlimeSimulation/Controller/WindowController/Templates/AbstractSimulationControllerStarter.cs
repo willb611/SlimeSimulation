@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Gtk;
 using NLog;
-using SlimeSimulation.View.Windows.Templates;
 
 namespace SlimeSimulation.Controller.WindowController.Templates
 {

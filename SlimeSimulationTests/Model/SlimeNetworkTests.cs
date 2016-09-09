@@ -1,10 +1,7 @@
-using SlimeSimulation.Model;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using SlimeSimulation.Model.Generation;
-using SlimeSimulation.View.Windows;
 
 namespace SlimeSimulation.Model.Tests
 {

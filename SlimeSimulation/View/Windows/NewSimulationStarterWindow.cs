@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController;
 using SlimeSimulation.View.Windows.Templates;
-using SlimeSimulation.View.WindowComponent.SimulationControlComponent;
-using SlimeSimulation.StdLibHelpers;
 using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.WindowComponent.SimulationCreationComponent;
 
