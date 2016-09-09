@@ -1,10 +1,12 @@
 using System;
+using System.Runtime.InteropServices;
 using NLog;
 using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Algorithms.LinearEquations;
 using SlimeSimulation.Algorithms.RouteSelection;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
+using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Controller.SimulationUpdaters
 {
@@ -16,8 +18,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private readonly SlimeNetworkAdaptionCalculator _slimeNetworkAdapterCalculator;
         private readonly double _flowAmount;
         private readonly SlimeNetworkExplorer _slimeNetworkExplorer;
-        private readonly IRouteSelector _routeSelector = new EnumerateBySourcesRouteSelector();
-        
+        private readonly ItemLock<IRouteSelector> _routeSelectorLock;
+
         public double FlowUsedWhenAdaptingNetwork => _flowAmount;
 
         public NonAsyncSimulationUpdater(FlowCalculator flowCalculator, double flowAmount,
@@ -27,6 +29,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             _slimeNetworkAdapterCalculator = slimeNetworkAdapterCalculator;
             _flowAmount = flowAmount;
             _slimeNetworkExplorer = slimeNetworkExplorer;
+            _routeSelectorLock = new ItemLock<IRouteSelector>(new EnumerateSubgraphsRouteSelector());
         }
         
         public SimulationState GetNextStateWithUpdatedConductivites(SimulationState state)
@@ -52,8 +55,16 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private FlowResult GetFlow(SlimeNetwork network)
         {
-            Route route = _routeSelector.SelectRoute(network);
-            return GetFlowForRouteInNetwork(route, network);
+            var routeSelector = _routeSelectorLock.Lock();
+            try
+            {
+                var route = routeSelector.SelectRoute(network);
+                return GetFlowForRouteInNetwork(route, network);
+            }
+            finally
+            {
+                _routeSelectorLock.ClearLock();
+            }
         }
 
         public FlowResult GetFlowForRouteInNetwork(Route route, SlimeNetwork network)

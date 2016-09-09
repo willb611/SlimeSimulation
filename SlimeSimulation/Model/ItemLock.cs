@@ -1,7 +1,7 @@
 using System.Threading;
 using NLog;
 
-namespace SlimeSimulation.StdLibHelpers
+namespace SlimeSimulation.Model
 {
     public class ItemLock<T>
     {
@@ -9,6 +9,11 @@ namespace SlimeSimulation.StdLibHelpers
 
         private T _item;
         private int _currentAccessCount = 0;
+
+        public ItemLock(T item)
+        {
+            _item = item;
+        }
 
         public T Get()
         {

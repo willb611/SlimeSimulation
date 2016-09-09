@@ -22,13 +22,13 @@ namespace SlimeSimulation.Algorithms.Bfs.Tests
 
             var solver = new BfsSolver();
             var connectedSubgraphs = solver.SplitIntoSubgraphs(slime);
-            Subgraph connectionResultForA = connectedSubgraphs.ConnectionResultForNode(a);
+            Subgraph connectionResultForA = connectedSubgraphs.SubgraphContainingNode(a);
             Assert.IsNotNull(connectionResultForA);
             Assert.IsNotNull(connectionResultForA.ConnectedNodes());
             Assert.IsTrue(connectionResultForA.ConnectedNodes().Contains(b));
             Assert.IsTrue(connectionResultForA.ConnectedNodes().Contains(a));
 
-            Subgraph connectionResultForC = connectedSubgraphs.ConnectionResultForNode(c);
+            Subgraph connectionResultForC = connectedSubgraphs.SubgraphContainingNode(c);
             Assert.IsNotNull(connectionResultForC);
             Assert.IsNotNull(connectionResultForC.ConnectedNodes());
             Assert.IsTrue(connectionResultForC.ConnectedNodes().Contains(c));

@@ -24,7 +24,7 @@ namespace SlimeSimulation.Controller
         private readonly AsyncSimulationUpdater _asyncSimulationUpdater;
         private readonly GtkLifecycleController _gtkLifecycleController;
 
-        private readonly ItemLock<SimulationState> _protectedState = new ItemLock<SimulationState>();
+        private readonly ItemLock<SimulationState> _protectedState;
         private AbstractWindowController _activeAbstractWindowController;
 
         private readonly AbstractSimulationControllerStarter _startingController;
@@ -59,8 +59,7 @@ namespace SlimeSimulation.Controller
             _gtkLifecycleController = gtkLifecycleController;
             _startingController = startingController;
             _asyncSimulationUpdater = simulationUpdater;
-            _protectedState.Lock();
-            _protectedState.SetAndClearLock(simulationSave.SimulationState);
+            _protectedState = new ItemLock<SimulationState>(simulationSave.SimulationState);
         }
 
         internal void Display(AbstractWindow abstractWindow)

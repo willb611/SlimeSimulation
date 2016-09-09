@@ -25,15 +25,20 @@ namespace SlimeSimulation.Algorithms.RouteSelection
         {
             if (SlimeNetworkHasChanged(slimeNetwork))
             {
-                UpdateEnumeratorsForDifferentSlime(slimeNetwork);
+                UpdateEnumeratorsForGivenSlime(slimeNetwork);
             }
             return SelectRouteUsingEnumerators();
         }
 
         private Route SelectRouteUsingEnumerators()
         {
-            while (true)
+            for (int i = 0; ; i++)
             {
+                if (i > _graph.NodesInGraph.Count)
+                {
+                    Logger.Warn("[SelectRouteUsingEnumerators] So far {0} attempts to find a route have failed, the graph only has {1} nodes. Graph seems to be disconnected ?",
+                        i, _graph.NodesInGraph.Count);
+                }
                 var subgraph = NextElement(_enumeratorOfAllSubgraphs);
                 if (subgraph.ConnectedNodes().Count < 2)
                 {
@@ -65,8 +70,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
                 throw new ArgumentException(nameof(subgraph));
             }
             var enumerator = _enumeratorForNodesInSubgraphForEachSubgraph[subgraph];
-            ResetEnumeratorIfNextElementIsNull(enumerator);
-            return enumerator;
+            return ResetEnumeratorIfNextElementIsNull(enumerator);
         }
 
         private IEnumerator<T> ResetEnumeratorIfNextElementIsNull<T>(IEnumerator<T> enumerator)
@@ -75,7 +79,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
             {
                 throw new NullReferenceException(nameof(enumerator));
             }
-            if (enumerator.Current == null)
+            if (enumerator.Current == null) 
             {
                 enumerator.Reset();
                 enumerator.MoveNext();
@@ -83,7 +87,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
             return enumerator;
         }
 
-        private void UpdateEnumeratorsForDifferentSlime(SlimeNetwork slimeNetwork)
+        private void UpdateEnumeratorsForGivenSlime(SlimeNetwork slimeNetwork)
         {
             Logger.Debug("[UpdateEnumeratorsForDifferentSlime] Entered");
             _graph = slimeNetwork;
