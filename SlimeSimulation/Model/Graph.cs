@@ -99,13 +99,13 @@ namespace SlimeSimulation.Model
         public bool RouteExistsBetween(Node a, Node b)
         {
             var bfsResult = BfsSolver.From(a, this);
-            return bfsResult.IsNodeConnected(b);
+            return bfsResult.ContainsNode(b);
         }
 
         public ISet<Node> AllNodesConnectedTo(Node source)
         {
             var subgraph = BfsSolver.From(source, this);
-            return subgraph.ConnectedNodes();
+            return subgraph.NodesInGraph;
         }
 
         public override bool Equals(object obj)

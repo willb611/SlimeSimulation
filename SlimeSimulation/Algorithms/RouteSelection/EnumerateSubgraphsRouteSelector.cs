@@ -40,13 +40,13 @@ namespace SlimeSimulation.Algorithms.RouteSelection
                         i, _graph.NodesInGraph.Count);
                 }
                 var subgraph = NextElement(_enumeratorOfAllSubgraphs);
-                if (subgraph.ConnectedNodes().Count < 2)
+                if (subgraph.NodesInGraph.Count < 2)
                 {
                     continue;
                 }
                 var enumeratorForNodesInSubgraph = GetEnumeratorForSubgraph(subgraph);
                 var source = NextElement(enumeratorForNodesInSubgraph);
-                var sink = subgraph.ConnectedNodes().Except(source).PickRandom();
+                var sink = subgraph.NodesInGraph.Except(source).PickRandom();
                 return new Route(source, sink);
             }
         }
@@ -97,7 +97,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
             _enumeratorForNodesInSubgraphForEachSubgraph = new Dictionary<Subgraph, IEnumerator<Node>>();
             foreach (var subgraph in _graphSplitIntoSubgraphs.Subgraphs)
             {
-                _enumeratorForNodesInSubgraphForEachSubgraph[subgraph] = subgraph.ConnectedNodes().GetEnumerator();
+                _enumeratorForNodesInSubgraphForEachSubgraph[subgraph] = subgraph.NodesInGraph.GetEnumerator();
             }
         }
 

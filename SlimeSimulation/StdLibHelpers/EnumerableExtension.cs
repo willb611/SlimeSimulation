@@ -20,5 +20,11 @@ namespace SlimeSimulation.StdLibHelpers
         {
             return source.OrderBy(x => Guid.NewGuid());
         }
+
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> source, T item)
+        {
+            var items = source.ToList();
+            return items.Except(item);
+        }
     }
 }

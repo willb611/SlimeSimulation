@@ -47,10 +47,10 @@ namespace SlimeSimulation.Algorithms.Bfs
             var unconnected = graph.NodesInGraph;
             while (unconnected.Any())
             {
-                var nextSource = unconnected.PickRandom();
-                var connectedToSource = From(nextSource, graph);
-                subgraphs.Add(connectedToSource);
-                unconnected.ExceptWith(connectedToSource.ConnectedNodes());
+                var node = unconnected.PickRandom();
+                var subgraphConnectedToNode = From(node, graph);
+                subgraphs.Add(subgraphConnectedToNode);
+                unconnected.ExceptWith(subgraphConnectedToNode.NodesInGraph);
             }
             return new GraphSplitIntoSubgraphs(subgraphs);
         }

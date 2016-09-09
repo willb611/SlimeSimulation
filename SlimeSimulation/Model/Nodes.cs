@@ -22,10 +22,9 @@ namespace SlimeSimulation.Model
         public static IEnumerable<FoodSourceNode> GetFoodSourcesConnectedToNodeInGraph(Node node,
             GraphWithFoodSources graphWithFoodSources)
         {
-            var connectedNodes = new BfsSolver().From(node, graphWithFoodSources).ConnectedNodes();
+            var connectedNodes = new BfsSolver().From(node, graphWithFoodSources).NodesInGraph;
             var connectedFood = connectedNodes.Where(n => n is FoodSourceNode);
-            var connectedFoodExcludingStartNode = connectedFood.Except(new List<Node>() { node });
-            return CastToFood(connectedFoodExcludingStartNode);
+            return CastToFood(connectedFood);
         }
 
         public static IEnumerable<FoodSourceNode> CastToFood(IEnumerable<Node> nodes)

@@ -11,15 +11,10 @@ namespace SlimeSimulation.Algorithms.Bfs
         protected internal Subgraph(ISet<Edge> edges, ISet<Node> nodes) : base(edges, nodes)
         {
         }
-
-        public bool IsNodeConnected(Node node)
+        
+        public bool ContainsNode(Node node)
         {
             return NodesInGraph.Contains(node);
-        }
-
-        public ISet<Node> ConnectedNodes()
-        {
-            return NodesInGraph;
         }
     }
 }

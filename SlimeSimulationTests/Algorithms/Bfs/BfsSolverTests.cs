@@ -24,15 +24,15 @@ namespace SlimeSimulation.Algorithms.Bfs.Tests
             var connectedSubgraphs = solver.SplitIntoSubgraphs(slime);
             Subgraph connectionResultForA = connectedSubgraphs.SubgraphContainingNode(a);
             Assert.IsNotNull(connectionResultForA);
-            Assert.IsNotNull(connectionResultForA.ConnectedNodes());
-            Assert.IsTrue(connectionResultForA.ConnectedNodes().Contains(b));
-            Assert.IsTrue(connectionResultForA.ConnectedNodes().Contains(a));
+            Assert.IsNotNull(connectionResultForA.NodesInGraph);
+            Assert.IsTrue(connectionResultForA.NodesInGraph.Contains(b));
+            Assert.IsTrue(connectionResultForA.NodesInGraph.Contains(a));
 
             Subgraph connectionResultForC = connectedSubgraphs.SubgraphContainingNode(c);
             Assert.IsNotNull(connectionResultForC);
-            Assert.IsNotNull(connectionResultForC.ConnectedNodes());
-            Assert.IsTrue(connectionResultForC.ConnectedNodes().Contains(c));
-            Assert.IsTrue(connectionResultForC.ConnectedNodes().Contains(d));
+            Assert.IsNotNull(connectionResultForC.NodesInGraph);
+            Assert.IsTrue(connectionResultForC.NodesInGraph.Contains(c));
+            Assert.IsTrue(connectionResultForC.NodesInGraph.Contains(d));
         }
     }
 }

@@ -25,7 +25,7 @@ namespace SlimeSimulation.Algorithms.Bfs
             Dictionary<Node, Subgraph> result = new Dictionary<Node, Subgraph>();
             foreach (var subgraph in subgraphs)
             {
-                foreach (var node in subgraph.ConnectedNodes())
+                foreach (var node in subgraph.NodesInGraph)
                 {
                     if (result.ContainsKey(node))
                     {
