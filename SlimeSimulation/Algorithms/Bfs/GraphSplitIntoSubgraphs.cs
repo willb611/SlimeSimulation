@@ -17,10 +17,10 @@ namespace SlimeSimulation.Algorithms.Bfs
         internal GraphSplitIntoSubgraphs(List<Subgraph> subgraphs)
         {
             _subgraphs = subgraphs;
-            _nodeToConnectionResults = BuildNodeToConnectionResultMapping(subgraphs);
+            _nodeToConnectionResults = BuildNodeToSubgraphMapping(subgraphs);
         }
 
-        private Dictionary<Node, Subgraph> BuildNodeToConnectionResultMapping(List<Subgraph> subgraphs)
+        private Dictionary<Node, Subgraph> BuildNodeToSubgraphMapping(List<Subgraph> subgraphs)
         {
             Dictionary<Node, Subgraph> result = new Dictionary<Node, Subgraph>();
             foreach (var subgraph in subgraphs)
@@ -37,7 +37,7 @@ namespace SlimeSimulation.Algorithms.Bfs
             return result;
         }
 
-        public Subgraph ConnectionResultForNode(Node source)
+        public Subgraph SubgraphContainingNode(Node source)
         {
             if (_nodeToConnectionResults.ContainsKey(source))
             {
