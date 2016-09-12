@@ -17,7 +17,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         {
             var controlInterfaceStartingValues = simulationStepAbstractWindowController.SimulationControlInterfaceValues;
             Add(new SimulationStepButton(simulationStepAbstractWindowController, parentWindow));
-            Add(new SimulationStepNumberOfTimesComponent(simulationStepAbstractWindowController, parentWindow, controlInterfaceStartingValues.NumberOfStepsToRun));
+            Add(new SimulationStepNumberOfTimesComponent(simulationStepAbstractWindowController, parentWindow, controlInterfaceStartingValues));
             Add(new ShouldFlowResultsBeDisplayedControlComponent(controlInterfaceStartingValues));
             Add(new ShouldStepFromAllSourcesAtOnceControlComponent(controlInterfaceStartingValues));
             Add(new SimulationSaveComponent(simulationStepAbstractWindowController.SimulationController, parentWindow));

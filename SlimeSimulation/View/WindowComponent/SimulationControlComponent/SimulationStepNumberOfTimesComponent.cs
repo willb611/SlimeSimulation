@@ -7,36 +7,36 @@ using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
-    internal class SimulationStepNumberOfTimesComponent : VBox
+    public class SimulationStepNumberOfTimesComponent : VBox
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly SimulationStepAbstractWindowController _simulationStepAbstractWindowController;
-        private readonly TextView _numberOfTimesToStepTextView;
         private readonly Window _parentWindow;
         private readonly SimulationControlInterfaceValues _simulationControlInterfaceValues;
-
-        private CheckButton _shouldSaveEveryNSteps;
-        private TextView _nStepsToSaveAt;
+        
+        internal readonly TextView _numberOfTimesToStepTextView;
+        internal CheckButton _shouldSaveEveryNSteps;
+        internal TextView _nStepsToSaveAt;
 
         public SimulationStepNumberOfTimesComponent(SimulationStepAbstractWindowController simulationStepAbstractWindowController,
-            Window enclosingWindow, int initialNumberOfStepsToRun) : base(true, 10)
+            Window enclosingWindow, SimulationControlInterfaceValues simulationControlInterfaceValues) : base(true, 10)
         {
-            _simulationControlInterfaceValues = simulationStepAbstractWindowController.SimulationControlInterfaceValues;
+            _simulationControlInterfaceValues = simulationControlInterfaceValues;
             _parentWindow = enclosingWindow;
             _simulationStepAbstractWindowController = simulationStepAbstractWindowController;
-            _numberOfTimesToStepTextView = new TextView {Buffer = {Text = initialNumberOfStepsToRun.ToString()}};
+            _numberOfTimesToStepTextView = new TextView {Buffer = {Text = simulationControlInterfaceValues.NumberOfStepsToRun.ToString()}};
             
             Add(StepButtonAndAmountInput());
-            Add(SaveEveryStepAmountInput());
+            Add(SaveEveryStepAmountInput(simulationControlInterfaceValues.ShouldSaveEveryNSteps, simulationControlInterfaceValues.IntervalAtWhichToSaveSimulationWhileRunningSteps));
         }
 
-        private Widget SaveEveryStepAmountInput()
+        private Widget SaveEveryStepAmountInput(bool initialShouldSaveEveryNSteps, int initialIntervalAtWhichToSaveSimulationWhileRunningSteps)
         {
             _shouldSaveEveryNSteps = new CheckButton("Should save simulation after stepping a certain amount");
-            _shouldSaveEveryNSteps.Active = true;
-            _nStepsToSaveAt = new TextView {Buffer = {Text = "1"}};
+            _shouldSaveEveryNSteps.Active = initialShouldSaveEveryNSteps;
+            _nStepsToSaveAt = new TextView { Buffer = { Text = initialIntervalAtWhichToSaveSimulationWhileRunningSteps.ToString() } };
 
-            return new HBox() {_shouldSaveEveryNSteps, new Label("interval to save steps at"), _nStepsToSaveAt};
+            return new HBox() { _shouldSaveEveryNSteps, new Label("interval to save steps at"), _nStepsToSaveAt };
         }
 
         private HBox StepButtonAndAmountInput()
@@ -77,6 +77,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
                 }
                 else
                 {
+                    UpdateInterfaceValuePersistence(numberOfSteps.Value);
                     _simulationStepAbstractWindowController.RunNumberOfSteps(numberOfSteps.Value);
                 }
             }
@@ -92,6 +93,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
             var simulationSaveInterval = _nStepsToSaveAt.ExtractIntFromView();
             if (simulationSaveInterval.HasValue)
             {
+                UpdateInterfaceValuePersistence(numberOfSteps, simulationSaveInterval.Value);
                 _simulationStepAbstractWindowController.RunNumberOfStepsSavingEvery(numberOfSteps,
                     simulationSaveInterval.Value);
             }
@@ -100,6 +102,19 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
                 var error = $"Given save interval for steps \"{_nStepsToSaveAt.Buffer.Text}\" wasn't a number.";
                 DisplayError(error);
             }
+        }
+
+        private void UpdateInterfaceValuePersistence(int numberOfStepsToRun)
+        {
+            _simulationControlInterfaceValues.NumberOfStepsToRun = numberOfStepsToRun;
+            _simulationControlInterfaceValues.ShouldSaveEveryNSteps = false;
+        }
+        private void UpdateInterfaceValuePersistence(int numberOfStepsToRun, int intervalAtWhichToSaveSimulationWhileRunning)
+        {
+            _simulationControlInterfaceValues.NumberOfStepsToRun = numberOfStepsToRun;
+            _simulationControlInterfaceValues.ShouldSaveEveryNSteps = true;
+            _simulationControlInterfaceValues.IntervalAtWhichToSaveSimulationWhileRunningSteps =
+                intervalAtWhichToSaveSimulationWhileRunning;
         }
 
         private void DisplayError(string error)

@@ -99,7 +99,6 @@ namespace SlimeSimulation.Controller
 
         internal void AsyncDoNextSimulationSteps(int numberOfSteps)
         {
-            SimulationControlBoxConfig.NumberOfStepsToRun = numberOfSteps;
             Logger.Info($"[AsyncDoNextSimulationSteps] Running {numberOfSteps} steps");
             for (var stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar++)
             {
