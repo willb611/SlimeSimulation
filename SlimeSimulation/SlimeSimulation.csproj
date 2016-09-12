@@ -123,6 +123,7 @@
     <Compile Include="Configuration\SimulationControlInterfaceValues.cs" />
     <Compile Include="Configuration\SlimeNetworkAdaptionCalculatorConfig.cs" />
     <Compile Include="Controller\Factories\SimulationControllerFactory.cs" />
+    <Compile Include="Controller\SimulationSavingController.cs" />
     <Compile Include="Controller\SimulationUpdaters\NonAsyncSimulationUpdater.cs" />
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
     <Compile Include="Controller\WindowController\ModifySimulationConfigurationController.cs" />

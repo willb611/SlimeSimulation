@@ -3,30 +3,47 @@ using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController.Templates;
+using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
-    internal class SimulationStepNumberOfTimesComponent : HBox
+    internal class SimulationStepNumberOfTimesComponent : VBox
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly SimulationStepAbstractWindowController _simulationStepAbstractWindowController;
         private readonly TextView _numberOfTimesToStepTextView;
         private readonly Window _parentWindow;
         private readonly SimulationControlInterfaceValues _simulationControlInterfaceValues;
-        
+
+        private CheckButton _shouldSaveEveryNSteps;
+        private TextView _nStepsToSaveAt;
+
         public SimulationStepNumberOfTimesComponent(SimulationStepAbstractWindowController simulationStepAbstractWindowController,
-            Window enclosingWindow, int numberOfStepsToRun) : base(true, 10)
+            Window enclosingWindow, int initialNumberOfStepsToRun) : base(true, 10)
         {
             _simulationControlInterfaceValues = simulationStepAbstractWindowController.SimulationControlInterfaceValues;
             _parentWindow = enclosingWindow;
             _simulationStepAbstractWindowController = simulationStepAbstractWindowController;
-            _numberOfTimesToStepTextView = new TextView {Buffer = {Text = numberOfStepsToRun.ToString()}};
+            _numberOfTimesToStepTextView = new TextView {Buffer = {Text = initialNumberOfStepsToRun.ToString()}};
+            
+            Add(StepButtonAndAmountInput());
+            Add(SaveEveryStepAmountInput());
+        }
+
+        private Widget SaveEveryStepAmountInput()
+        {
+            _shouldSaveEveryNSteps = new CheckButton("Should save simulation after stepping a certain amount");
+            _shouldSaveEveryNSteps.Active = true;
+            _nStepsToSaveAt = new TextView {Buffer = {Text = "1"}};
+
+            return new HBox() {_shouldSaveEveryNSteps, new Label("interval to save steps at"), _nStepsToSaveAt};
+        }
+
+        private HBox StepButtonAndAmountInput()
+        {
             var doStepsButton = new Button(new Label("Run number of steps"));
             doStepsButton.Clicked += DoStepsButtonOnClicked;
-
-            Add(new Label("Number of steps to run"));
-            Add(_numberOfTimesToStepTextView);
-            Add(doStepsButton);
+            return new HBox {new Label("Number of steps to run"), _numberOfTimesToStepTextView, doStepsButton};
         }
 
         private void DoStepsButtonOnClicked(object sender, EventArgs eventArgs)
@@ -51,23 +68,48 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private void TryToRunSteps()
         {
-            int numberOfSteps;
-            var textRead = _numberOfTimesToStepTextView.Buffer.Text;
-            var success = int.TryParse(textRead, out numberOfSteps);
-            if (success)
+            var numberOfSteps = _numberOfTimesToStepTextView.ExtractIntFromView();
+            if (numberOfSteps.HasValue)
             {
-                _simulationStepAbstractWindowController.RunNumberOfSteps(numberOfSteps);
+                if (_shouldSaveEveryNSteps.Active)
+                {
+                    RunNumberOfStepsSavingAtIntervals(numberOfSteps.Value);
+                }
+                else
+                {
+                    _simulationStepAbstractWindowController.RunNumberOfSteps(numberOfSteps.Value);
+                }
             }
             else
             {
-                var error = $"Given input \"{textRead}\" was not a number";
-                Logger.Debug(error);
-                var errorDialogBox = new MessageDialog(_parentWindow, DialogFlags.DestroyWithParent,
-                    MessageType.Error, ButtonsType.Close,
-                    error);
-                errorDialogBox.Run();
-                errorDialogBox.Destroy();
+                var error = $"Given input \"{_numberOfTimesToStepTextView.Buffer.Text}\" was not a number";
+                DisplayError(error);
             }
+        }
+
+        private void RunNumberOfStepsSavingAtIntervals(int numberOfSteps)
+        {
+            var simulationSaveInterval = _nStepsToSaveAt.ExtractIntFromView();
+            if (simulationSaveInterval.HasValue)
+            {
+                _simulationStepAbstractWindowController.RunNumberOfStepsSavingEvery(numberOfSteps,
+                    simulationSaveInterval.Value);
+            }
+            else
+            {
+                var error = $"Given save interval for steps \"{_nStepsToSaveAt.Buffer.Text}\" wasn't a number.";
+                DisplayError(error);
+            }
+        }
+
+        private void DisplayError(string error)
+        {
+            Logger.Debug(error);
+            var errorDialogBox = new MessageDialog(_parentWindow, DialogFlags.DestroyWithParent,
+                MessageType.Error, ButtonsType.Close,
+                error);
+            errorDialogBox.Run();
+            errorDialogBox.Destroy();
         }
     }
 }

@@ -26,6 +26,7 @@ namespace SlimeSimulation.Model.Simulation.Persistence
             {
                 var simulationAsJson = JsonConvert.SerializeObject(simulation, _jsonSerializerSettings);
                 System.IO.File.WriteAllText(filepath, simulationAsJson);
+                Logger.Info("[SaveSimulation] Saved simulation to {0}", filepath);
                 return null;
             }
             catch (Exception e)

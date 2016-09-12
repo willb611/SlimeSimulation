@@ -37,6 +37,9 @@ namespace SlimeSimulation.Controller
         public double FlowUsedWhenAdaptingNetwork => _asyncSimulationUpdater.FlowUsedWhenAdaptingNetwork;
         public double FeedbackUsedWhenAdaptingNetwork => _asyncSimulationUpdater.FeedbackUsedWhenAdaptingNetwork;
 
+        private readonly SimulationSavingController _simulationSavingController;
+        public string LastAttemptedSaveLocation => _simulationSavingController.LastAttemptedSaveLocation;
+
         public SimulationConfiguration Configuration
         {
             get { return _config; }
@@ -48,7 +51,8 @@ namespace SlimeSimulation.Controller
             get { return SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed; }
             set { SimulationControlBoxConfig.ShouldFlowResultsBeDisplayed = value; }
         }
-        
+
+
         public SimulationController(AbstractSimulationControllerStarter startingController,
             GtkLifecycleController gtkLifecycleController, AsyncSimulationUpdater simulationUpdater,
             SimulationSave simulationSave)
@@ -59,6 +63,7 @@ namespace SlimeSimulation.Controller
             _startingController = startingController;
             _asyncSimulationUpdater = simulationUpdater;
             _protectedState = new ItemLock<SimulationState>(simulationSave.SimulationState);
+            _simulationSavingController = new SimulationSavingController();
         }
 
         internal void Display(AbstractWindow abstractWindow)
@@ -102,6 +107,23 @@ namespace SlimeSimulation.Controller
                 Logger.Info($"[DoNextSimulationSteps] Now completed {stepsRunSoFar}/{numberOfSteps} steps");
             }
             Logger.Info($"[AsyncDoNextSimulationSteps] Completed {numberOfSteps} steps");
+        }
+
+        internal void AsyncDoNextSimulationStepsSavingEveryNSteps(int numberOfSteps, int intervalOfStepsToSaveSimulationAt)
+        {
+            int stepsRunSoFar;
+            for (stepsRunSoFar = 0; stepsRunSoFar < numberOfSteps; stepsRunSoFar += intervalOfStepsToSaveSimulationAt)
+            {
+                Logger.Debug("[AsyncDoNextSimulationStepsSavingEveryNSteps] So far ran {0} steps out of {1}",
+                    numberOfSteps, stepsRunSoFar);
+                AsyncDoNextSimulationSteps(intervalOfStepsToSaveSimulationAt);
+                SaveSimulation();
+            }
+            if (stepsRunSoFar < numberOfSteps)
+            {
+                AsyncDoNextSimulationSteps(numberOfSteps - stepsRunSoFar);
+            }
+            UpdateDisplay();
         }
 
         public void AsyncRunStepsUntilSlimeHasFullyExplored()
@@ -228,6 +250,11 @@ namespace SlimeSimulation.Controller
         public void DisplayError(string errorMessage)
         {
             _startingController.DisplayError(errorMessage);
+        }
+
+        public Exception SaveSimulation()
+        {
+            return _simulationSavingController.SaveSimulation(new SimulationSave(GetSimulationState(), SimulationControlBoxConfig, Configuration));
         }
     }
 }

@@ -99,9 +99,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StdLibHelpers\EnumeratorExtensionTests.cs" />
     <Compile Include="StdLibHelpers\TextViewExtensionTests.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FeedbackParameterControlComponentTests.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FlowAmountControlComponentTests.cs" />
-    <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\LatticeGenerationControlComponentTests.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\FeedbackParameterControlComponentTests.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\FlowAmountControlComponentTests.cs" />
+    <Compile Include="View\WindowComponent\SimulationControlComponent\LatticeGenerationControlComponentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SlimeSimulation\SlimeSimulation.csproj">
@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\Simulation\" />
+    <Folder Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

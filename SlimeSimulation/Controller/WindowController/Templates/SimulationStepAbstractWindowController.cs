@@ -41,9 +41,18 @@ namespace SlimeSimulation.Controller.WindowController.Templates
 
         internal void RunNumberOfSteps(int numberOfSteps)
         {
-            Logger.Debug("[RunNumberOfSteps] Entered");
+            Logger.Debug("[RunNumberOfSteps] Entered with numberOfSteps {0}", numberOfSteps);
             AbstractWindow.Dispose();
             SimulationController.AsyncDoNextSimulationSteps(numberOfSteps);
+            SimulationController.UpdateDisplay();
+        }
+
+        internal void RunNumberOfStepsSavingEvery(int numberOfSteps, int intervalOfStepsToSaveSimulationAt)
+        {
+            Logger.Debug("[RunNumberOfStepsSavingEvery] Entered with numberOfSteps {0}, intervalOfStepsToSaveSimulationAt {1}", 
+                numberOfSteps, intervalOfStepsToSaveSimulationAt);
+            AbstractWindow.Dispose();
+            SimulationController.AsyncDoNextSimulationStepsSavingEveryNSteps(numberOfSteps, intervalOfStepsToSaveSimulationAt);
             SimulationController.UpdateDisplay();
         }
 

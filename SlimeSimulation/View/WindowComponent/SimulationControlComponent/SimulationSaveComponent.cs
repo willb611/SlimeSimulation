@@ -1,27 +1,16 @@
 using System;
 using Gtk;
 using NLog;
-using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller;
-using SlimeSimulation.Model.Simulation;
-using SlimeSimulation.Model.Simulation.Persistence;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 {
     public class SimulationSaveComponent : Button
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private const string SaveLocationPrefix = "save";
-        private const string SaveLocationFileExtension = ".sim";
-        private const string CurrentDateTimeSafeForFilenameFormat = "yyyy.MM.dd-H.mm.ss";
 
         private readonly SimulationController _simulationController;
         private readonly Window _parentWindow;
-        private readonly SimulationSaver _simulationSaver = new SimulationSaver();
-
-        private SimulationState SimulationState => _simulationController.GetSimulationState();
-        private SimulationControlInterfaceValues InterfaceValues => _simulationController.SimulationControlBoxConfig;
-        private SimulationConfiguration SimulationConfiguration => _simulationController.Configuration;
 
         public SimulationSaveComponent(SimulationController simulationController, Window window) : base("Save simulation to file")
         {
@@ -32,18 +21,14 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
 
         private void OnClicked(object sender, EventArgs eventArgs)
         {
-            var currentState = new SimulationSave(SimulationState, InterfaceValues, SimulationConfiguration);
-            DateTime currentDateTime = DateTime.Now;
-            var dateTimeString = currentDateTime.ToString(CurrentDateTimeSafeForFilenameFormat);
-            var saveLocation = SaveLocationPrefix + dateTimeString + SaveLocationFileExtension;
-            var exception = _simulationSaver.SaveSimulation(currentState, saveLocation);
+            var exception = _simulationController.SaveSimulation();
             if (exception == null)
             {
-                DisplaySaveSuccess(saveLocation);
+                DisplaySaveSuccess(_simulationController.LastAttemptedSaveLocation);
             }
             else
             {
-                DisplaySaveError($"Unable to save simulation to given file location {saveLocation} due to exception {exception}");
+                DisplaySaveError($"Unable to save simulation to given file location {_simulationController.LastAttemptedSaveLocation} due to exception {exception}");
             }
         }
 
