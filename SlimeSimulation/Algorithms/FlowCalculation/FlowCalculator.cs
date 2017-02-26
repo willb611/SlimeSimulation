@@ -23,6 +23,10 @@ namespace SlimeSimulation.Algorithms.FlowCalculation
 
         public FlowResult CalculateFlow(SlimeNetwork network, Route route, double flowAmount)
         {
+# if DEBUG
+            var attemptedRoute = $"route attempted to take was: {route}";
+            Logger.Debug(attemptedRoute);
+#endif 
             List<Node> nodeList = new List<Node>(network.AllNodesConnectedTo(route.Source));
             EnsureSourceSinkInCorrectPositions(nodeList, route.Source, route.Sink);
             double[][] a = GetSystemOfEquations(network, nodeList);
@@ -37,9 +41,9 @@ namespace SlimeSimulation.Algorithms.FlowCalculation
             catch (SingularMatrixException e)
             {
                 var errorNode = nodeList[LupDecompositionSolver.ErrorColumnNumber];
-                var edgesConnectedToBadNode = LogHelper.CollectionToString(new List<Edge>(network.EdgesConnectedToNode(errorNode)));;
+                var edgesConnectedToBadNode = LogHelper.CollectionToString(new List<Edge>(network.EdgesConnectedToNode(errorNode)));
                 var error =
-                    $"Error column was {LupDecompositionSolver.ErrorColumnNumber}, meaning error node was {errorNode}. Connected edges: {edgesConnectedToBadNode}";
+                    $"Error column was {LupDecompositionSolver.ErrorColumnNumber}, meaning error node was {errorNode}. Connected edges: {edgesConnectedToBadNode}.";
                 Logger.Error(error, e);
                 return null;
             }

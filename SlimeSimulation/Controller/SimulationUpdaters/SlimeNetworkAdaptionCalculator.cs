@@ -80,7 +80,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         {
             double rateOfChangeOfConnectivity = FunctionOfFlow(flow) - slimeEdge.Connectivity;
             double updatedConnectivity = slimeEdge.Connectivity + rateOfChangeOfConnectivity;
-            return updatedConnectivity;
+            return Math.Abs(updatedConnectivity);
         }
         
         internal static HashSet<SlimeEdge> RemoveDisconnectedEdges(ISet<SlimeEdge> edges)
