@@ -85,6 +85,7 @@
     <Compile Include="Controller\WindowComponentController\SlimeNodeViewControllerTests.cs" />
     <Compile Include="FlowCalculation\FlowCalculatorTests.cs" />
     <Compile Include="FlowCalculation\LinearEquations\LupDecompositionSolverTests.cs" />
+    <Compile Include="Model\SlimeEdgeTests.cs" />
     <Compile Include="Model\EdgesTests.cs" />
     <Compile Include="Model\EdgeTests.cs" />
     <Compile Include="Model\Generation\SlimeNetworkGeneratorTests.cs" />

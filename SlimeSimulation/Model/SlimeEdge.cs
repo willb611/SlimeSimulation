@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 
 namespace SlimeSimulation.Model
@@ -6,6 +7,7 @@ namespace SlimeSimulation.Model
     {
         public Edge Edge { get; }
         public double Connectivity { get; }
+        private const double Tolerance = 0.000001;
 
         [JsonConstructor]
         public SlimeEdge(Edge edge, double connectivity) : base(edge.A, edge.B)
@@ -69,7 +71,7 @@ namespace SlimeSimulation.Model
 
         public bool IsDisconnected()
         {
-            return Connectivity == 0;
+            return Math.Abs(Connectivity) < Tolerance;
         }
     }
 }

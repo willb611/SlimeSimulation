@@ -86,14 +86,20 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         internal static HashSet<SlimeEdge> RemoveDisconnectedEdges(ISet<SlimeEdge> edges)
         {
             HashSet<SlimeEdge> connected = new HashSet<SlimeEdge>();
+            var minConnection = 10000.0;
             foreach (var slimeEdge in edges)
             {
+                if (slimeEdge.Connectivity < minConnection)
+                {
+                    minConnection = slimeEdge.Connectivity;
+                }
                 if (!slimeEdge.IsDisconnected())
                 {
                     connected.Add(slimeEdge);
                 }
             }
             Logger.Debug("[RemoveDisconnectedEdges] Out of {0}, remaining: {1} ({2}%)", edges.Count, connected.Count, (connected.Count / (double)edges.Count) * 100);
+            Logger.Debug("[RemoveDisconnectedEdges] Minimum connectivity: {0}", minConnection);
             return connected;
         }
 
