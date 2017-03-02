@@ -75,6 +75,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Algorithms\Bfs\BfsSolverTests.cs" />
+    <Compile Include="Algorithms\RouteSelection\EnumerateSubgraphsRouteSelectorTests.cs" />
     <Compile Include="Configuration\LatticeSlimeNetworkGenerationConfigTests.cs" />
     <Compile Include="Controller\SimulationControllerTests.cs" />
     <Compile Include="Controller\SimulationUpdaters\SimulationUpdaterTests.cs" />

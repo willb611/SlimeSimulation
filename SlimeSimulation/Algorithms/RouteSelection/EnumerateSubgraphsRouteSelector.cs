@@ -7,7 +7,7 @@ using SlimeSimulation.StdLibHelpers;
 
 namespace SlimeSimulation.Algorithms.RouteSelection
 {
-    class EnumerateSubgraphsRouteSelector : IRouteSelector
+    public class EnumerateSubgraphsRouteSelector : IRouteSelector
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly BfsSolver _bfsSolver = new BfsSolver();
@@ -43,7 +43,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
                 }
                 var enumeratorForNodesInSubgraph = GetEnumeratorForSubgraph(subgraph);
                 var source = NextElement(enumeratorForNodesInSubgraph);
-                var sink = subgraph.NodesInGraph.Except(source).PickRandom();
+                var sink = GetFoodSourcesInSubGraph(subgraph).Except(source).PickRandom();
                 return new Route(source, sink);
             }
         }
@@ -86,6 +86,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
 
         private void UpdateEnumeratorsForGivenSlime(SlimeNetwork slimeNetwork)
         {
+            DisposeOfAnyExistingIterators();
             Logger.Debug("[UpdateEnumeratorsForDifferentSlime] Entered");
             _graph = slimeNetwork;
             _graphSplitIntoSubgraphs = _bfsSolver.SplitIntoSubgraphs(slimeNetwork);
@@ -94,7 +95,24 @@ namespace SlimeSimulation.Algorithms.RouteSelection
             _enumeratorForNodesInSubgraphForEachSubgraph = new Dictionary<Subgraph, IEnumerator<FoodSourceNode>>();
             foreach (var subgraph in _graphSplitIntoSubgraphs.Subgraphs)
             {
-                _enumeratorForNodesInSubgraphForEachSubgraph[subgraph] = GetFoodSourceEnumerator(subgraph);
+                _enumeratorForNodesInSubgraphForEachSubgraph[subgraph] = GetFoodSourcesInSubGraph(subgraph).GetEnumerator();
+            }
+        }
+
+        private void DisposeOfAnyExistingIterators()
+        {
+            if (_enumeratorOfAllSubgraphs != null)
+            {
+                _enumeratorOfAllSubgraphs?.Dispose();
+                _enumeratorOfAllSubgraphs = null;
+            }
+            if (_enumeratorForNodesInSubgraphForEachSubgraph != null)
+            {
+                foreach (var element in _enumeratorForNodesInSubgraphForEachSubgraph.Values)
+                {
+                    element?.Dispose();
+                }
+                _enumeratorForNodesInSubgraphForEachSubgraph = null;
             }
         }
 
@@ -103,7 +121,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
             return _graph == null || !_graph.Equals(slimeNetwork);
         }
 
-        private IEnumerator<FoodSourceNode> GetFoodSourceEnumerator(Subgraph subgraph)
+        private ISet<FoodSourceNode> GetFoodSourcesInSubGraph(Subgraph subgraph)
         {
             var nodesInSubgraph = new HashSet<Node>(subgraph.NodesInGraph);
             var foodSourcesInSubgraph = new HashSet<FoodSourceNode>();
@@ -114,7 +132,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
                     foodSourcesInSubgraph.Add(node as FoodSourceNode);
                 }
             }
-            return foodSourcesInSubgraph.GetEnumerator();
+            return foodSourcesInSubgraph;
         }
     }
 }
