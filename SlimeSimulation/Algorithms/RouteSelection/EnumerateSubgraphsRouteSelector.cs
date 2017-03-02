@@ -29,7 +29,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
 
         private Route SelectRouteUsingEnumerators()
         {
-            for (int i = 0; ; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 if (i > _graph.NodesInGraph.Count)
                 {
@@ -46,6 +46,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
                 var sink = GetFoodSourcesInSubGraph(subgraph).Except(source).PickRandom();
                 return new Route(source, sink);
             }
+            throw new ApplicationException("Unable to find a valid route");
         }
 
         private T NextElement<T>(IEnumerator<T> enumerator)

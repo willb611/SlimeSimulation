@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using NLog;
 using SlimeSimulation.Algorithms.FlowCalculation;
 using SlimeSimulation.Algorithms.LinearEquations;
-using SlimeSimulation.Algorithms.RouteSelection;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Model;
 using SlimeSimulation.Model.Simulation;
@@ -100,12 +99,25 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private List<Task<FlowResult>> GetAsyncTasksToPushFlowFromEachSourceNodeInSlime(SimulationState state)
         {
-            var tasks = new List<Task<FlowResult>>();
             var slime = state.SlimeNetwork;
-            var routeSelector = new EnumerateSubgraphsRouteSelector();
-            for (int i = 0; i < slime.FoodSources.Count; i++) {
-                    tasks.Add(TaskCalculateFlowForRoute(state, routeSelector.SelectRoute(slime)));
+            var enumerator = slime.FoodSources.GetEnumerator();
+            var tasks = new List<Task<FlowResult>>();
+            while (enumerator.MoveNext())
+            {
+                var source = enumerator.Current;
+                var connectedPossibleSinks = slime.FoodSourcesConnectedTo(source).Except(source).ToList();
+                if (connectedPossibleSinks.Any())
+                {
+                    var sink = connectedPossibleSinks.PickRandom();
+                    tasks.Add(TaskCalculateFlowForRoute(state, new Route(source, sink)));
+                }
+                else
+                {
+                    Logger.Warn(
+                        "[TaskCalculateFlowFromAllSourcesAndUpdateNetwork] Found no food sources connected to {0} in graph", source);
+                }
             }
+            enumerator.Dispose();
             return tasks;
         }
     }
