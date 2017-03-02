@@ -44,7 +44,7 @@ namespace SlimeSimulation.Algorithms.Bfs
         public GraphSplitIntoSubgraphs SplitIntoSubgraphs(Graph graph)
         {
             List<Subgraph> subgraphs = new List<Subgraph>();
-            var unconnected = graph.NodesInGraph;
+            var unconnected = new HashSet<Node>(graph.NodesInGraph);
             while (unconnected.Any())
             {
                 var node = unconnected.PickRandom();

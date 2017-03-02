@@ -16,7 +16,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
         private GraphSplitIntoSubgraphs _graphSplitIntoSubgraphs;
 
         private IEnumerator<Subgraph> _enumeratorOfAllSubgraphs;
-        private Dictionary<Subgraph, IEnumerator<Node>> _enumeratorForNodesInSubgraphForEachSubgraph;
+        private Dictionary<Subgraph, IEnumerator<FoodSourceNode>> _enumeratorForNodesInSubgraphForEachSubgraph;
 
         public Route SelectRoute(SlimeNetwork slimeNetwork)
         {
@@ -60,7 +60,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
             return element;
         }
 
-        private IEnumerator<Node> GetEnumeratorForSubgraph(Subgraph subgraph)
+        private IEnumerator<FoodSourceNode> GetEnumeratorForSubgraph(Subgraph subgraph)
         {
             if (!_enumeratorForNodesInSubgraphForEachSubgraph.ContainsKey(subgraph))
             {
@@ -91,16 +91,30 @@ namespace SlimeSimulation.Algorithms.RouteSelection
             _graphSplitIntoSubgraphs = _bfsSolver.SplitIntoSubgraphs(slimeNetwork);
             _enumeratorOfAllSubgraphs = _graphSplitIntoSubgraphs.Subgraphs.GetEnumerator();
             _enumeratorOfAllSubgraphs.MoveNext();
-            _enumeratorForNodesInSubgraphForEachSubgraph = new Dictionary<Subgraph, IEnumerator<Node>>();
+            _enumeratorForNodesInSubgraphForEachSubgraph = new Dictionary<Subgraph, IEnumerator<FoodSourceNode>>();
             foreach (var subgraph in _graphSplitIntoSubgraphs.Subgraphs)
             {
-                _enumeratorForNodesInSubgraphForEachSubgraph[subgraph] = subgraph.NodesInGraph.GetEnumerator();
+                _enumeratorForNodesInSubgraphForEachSubgraph[subgraph] = GetFoodSourceEnumerator(subgraph);
             }
         }
 
         private bool SlimeNetworkHasChanged(SlimeNetwork slimeNetwork)
         {
             return _graph == null || !_graph.Equals(slimeNetwork);
+        }
+
+        private IEnumerator<FoodSourceNode> GetFoodSourceEnumerator(Subgraph subgraph)
+        {
+            var nodesInSubgraph = new HashSet<Node>(subgraph.NodesInGraph);
+            var foodSourcesInSubgraph = new HashSet<FoodSourceNode>();
+            foreach (var node in nodesInSubgraph)
+            {
+                if (node.IsFoodSource)
+                {
+                    foodSourcesInSubgraph.Add(node as FoodSourceNode);
+                }
+            }
+            return foodSourcesInSubgraph.GetEnumerator();
         }
     }
 }
