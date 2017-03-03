@@ -16,8 +16,9 @@ namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
         {
             var box = new VBox();
             box.Add(new IsSlimeAllowedToDisconnectLabel(simulationConfiguration.ShouldAllowDisconnection));
-            box.Add(new FlowAmountLabelComponent(simulationConfiguration.FlowAmount));
             box.Add(new FeedbackRateDisplayComponent(simulationConfiguration.SlimeNetworkAdaptionCalculatorConfig.FeedbackParam));
+            box.Add(new TimePerSimulationStepDisplayComponent(simulationConfiguration.SlimeNetworkAdaptionCalculatorConfig.TimePerSimulationStep));
+            box.Add(new FlowAmountLabelComponent(simulationConfiguration.FlowAmount));
             return box;
         }
     }
