@@ -128,6 +128,7 @@
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
     <Compile Include="Controller\WindowController\ModifySimulationConfigurationController.cs" />
     <Compile Include="Algorithms\RouteSelection\RouteSelector.cs" />
+    <Compile Include="Model\Generation\GridGraphWithFoodSourcesGenerator.cs" />
     <Compile Include="StdLibHelpers\CollectionExtension.cs" />
     <Compile Include="View\WindowComponent\SimulationConfigurationComponent\SlimeNetworkAdaptionCalculatorComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationConfigurationComponent\TimePerSimulationStepControlComponent.cs" />
