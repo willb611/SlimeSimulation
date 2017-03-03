@@ -129,6 +129,8 @@
     <Compile Include="Controller\WindowController\ModifySimulationConfigurationController.cs" />
     <Compile Include="Algorithms\RouteSelection\RouteSelector.cs" />
     <Compile Include="StdLibHelpers\CollectionExtension.cs" />
+    <Compile Include="View\WindowComponent\SimulationConfigurationComponent\SlimeNetworkAdaptionCalculatorComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationConfigurationComponent\TimePerSimulationStepControlComponent.cs" />
     <Compile Include="View\Windows\ModifySimulationConfigurationWindow.cs" />
     <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
     <Compile Include="Algorithms\Bfs\Subgraph.cs" />
@@ -200,7 +202,7 @@
     <Compile Include="View\Windows\NewSimulationStarterWindow.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FlowAmountLabelComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\ShouldFlowResultsBeDisplayedControlComponent.cs" />
-    <Compile Include="View\Windows\SimulationUpdateParameterComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationUpdateParameterComponent.cs" />
     <Compile Include="View\Windows\SlimeNetworkWindow.cs" />
     <Compile Include="View\Windows\FlowResultWindow.cs" />
     <Compile Include="View\WindowComponent\GraphDrawingArea.cs" />

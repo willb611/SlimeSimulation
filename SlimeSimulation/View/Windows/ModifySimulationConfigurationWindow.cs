@@ -4,6 +4,7 @@ using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.WindowController;
+using SlimeSimulation.View.WindowComponent;
 using SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent;
 using SlimeSimulation.View.Windows.Templates;
 

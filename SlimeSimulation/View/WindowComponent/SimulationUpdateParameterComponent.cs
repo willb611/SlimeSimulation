@@ -5,7 +5,7 @@ using NLog;
 using SlimeSimulation.Configuration;
 using SlimeSimulation.View.WindowComponent.SimulationConfigurationComponent;
 
-namespace SlimeSimulation.View.Windows
+namespace SlimeSimulation.View.WindowComponent
 {
     public class SimulationUpdateParameterComponent : VBox
     {
@@ -13,14 +13,14 @@ namespace SlimeSimulation.View.Windows
         protected bool Disposed;
 
         private readonly CheckButton _shouldAllowDisconnectionCheckButton;
+        private readonly SlimeNetworkAdaptionCalculatorComponent _slimeNetworkAdaptionComponent;
         private readonly FlowAmountControlComponent _flowAmountControlComponent;
-        private readonly FeedbackParameterControlComponent _slimeNetworkAdaptionComponent;
 
         public bool ShouldAllowDisconnection => _shouldAllowDisconnectionCheckButton.Active;
 
         public SimulationUpdateParameterComponent(SimulationConfiguration defaultConfiguration)
         {
-            _slimeNetworkAdaptionComponent = new FeedbackParameterControlComponent(defaultConfiguration.SlimeNetworkAdaptionCalculatorConfig);
+            _slimeNetworkAdaptionComponent = new SlimeNetworkAdaptionCalculatorComponent(defaultConfiguration.SlimeNetworkAdaptionCalculatorConfig);
             _flowAmountControlComponent = new FlowAmountControlComponent(defaultConfiguration.FlowAmount);
             _shouldAllowDisconnectionCheckButton = new ShouldAllowSlimeDisconnectionButton(defaultConfiguration.ShouldAllowDisconnection);
 

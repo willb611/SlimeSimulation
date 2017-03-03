@@ -12,12 +12,11 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
         public void FeedbackParameterControlComponentTest()
         {
             var feedbackParam = 1.35123;
-            var givenConfig = new SlimeNetworkAdaptionCalculatorConfig(feedbackParam);
-            var component = new FeedbackParameterControlComponent(givenConfig);
+            var component = new FeedbackParameterControlComponent(feedbackParam);
 
-            var actualConfig = component.ReadConfiguration();
-            Assert.IsNotNull(actualConfig);
-            Assert.AreEqual(givenConfig.FeedbackParam, actualConfig.FeedbackParam);
+            var actualFeedbackParam = component.ReadFeedbackParameter();
+            Assert.IsNotNull(actualFeedbackParam);
+            Assert.AreEqual(feedbackParam, actualFeedbackParam.Value);
             Assert.IsFalse(component.Errors().Any());
         }
     }
