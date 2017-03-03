@@ -12,6 +12,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly double _feedbackParameter;
+        private readonly double _timePerSimulationStep = 0.5;
         public double FeedbackUsedWhenUpdatingNetwork => _feedbackParameter;
 
         public SlimeNetworkAdaptionCalculator() : this(new SlimeNetworkAdaptionCalculatorConfig())
@@ -79,7 +80,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         internal double NextConnectivityForEdge(SlimeEdge slimeEdge, double flow)
         {
             double rateOfChangeOfConnectivity = FunctionOfFlow(flow) - slimeEdge.Connectivity;
-            double updatedConnectivity = slimeEdge.Connectivity + rateOfChangeOfConnectivity;
+            double updatedConnectivity = slimeEdge.Connectivity + rateOfChangeOfConnectivity * _timePerSimulationStep;
             return Math.Abs(updatedConnectivity);
         }
         
