@@ -16,11 +16,14 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent
         private void AddControls(SimulationStepAbstractWindowController simulationStepAbstractWindowController, Window parentWindow)
         {
             var controlInterfaceStartingValues = simulationStepAbstractWindowController.SimulationControlInterfaceValues;
-            Add(new SimulationStepButton(simulationStepAbstractWindowController, parentWindow));
-            Add(new SimulationStepNumberOfTimesComponent(simulationStepAbstractWindowController, parentWindow, controlInterfaceStartingValues));
-            Add(new ShouldFlowResultsBeDisplayedControlComponent(controlInterfaceStartingValues));
-            Add(new ShouldStepFromAllSourcesAtOnceControlComponent(controlInterfaceStartingValues));
-            Add(new SimulationSaveComponent(simulationStepAbstractWindowController.SimulationController, parentWindow));
+            var container = new Table(6, 1, true);
+            container.Attach(new SimulationStepButton(simulationStepAbstractWindowController, parentWindow), 0, 1, 0, 1);
+            container.Attach(new SimulationStepNumberOfTimesComponent(simulationStepAbstractWindowController, parentWindow, controlInterfaceStartingValues), 0, 1, 1, 3);
+            container.Attach(new ShouldFlowResultsBeDisplayedControlComponent(controlInterfaceStartingValues), 0, 1, 3, 4);
+            container.Attach(new ShouldStepFromAllSourcesAtOnceControlComponent(controlInterfaceStartingValues), 0, 1, 4, 5);
+            container.Attach(new SimulationSaveComponent(simulationStepAbstractWindowController.SimulationController, parentWindow), 0, 1, 5, 6);
+
+            Add(container);
         }
     }
 }
