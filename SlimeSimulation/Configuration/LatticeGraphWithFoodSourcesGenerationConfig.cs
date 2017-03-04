@@ -1,4 +1,5 @@
 using System;
+using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.Configuration
 {

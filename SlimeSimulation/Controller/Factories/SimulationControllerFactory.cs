@@ -52,24 +52,12 @@ namespace SlimeSimulation.Controller.Factories
             AbstractSimulationControllerStarter simulationControllerStarter, SimulationConfiguration config)
         {
             FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
-            var graphWithFoodSources = MakeGenerator(config.GenerationConfig).Generate();
+            var graphWithFoodSources = GraphGeneratorFactory.MakeGenerator(config.GenerationConfig).Generate();
             SlimeNetwork initial = new SlimeNetworkGenerator().FromSingleFoodSourceInGraph(graphWithFoodSources);
             var initialState = new SimulationState(initial, false, graphWithFoodSources);
 
             return MakeSimulationController(simulationControllerStarter, config, new SimulationControlInterfaceValues(),
                 initialState);
-        }
-
-        private IGraphWithFoodSourcesGenerator MakeGenerator(LatticeGraphWithFoodSourcesGenerationConfig config)
-        {
-            if (new Random().NextDouble() > 0.5)
-            {
-                return new LatticeGraphWithFoodSourcesGenerator(config);
-            }
-            else
-            {
-                return new GridGraphWithFoodSourcesGenerator(config);
-            }
         }
     }
 }

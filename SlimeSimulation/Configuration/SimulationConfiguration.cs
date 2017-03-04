@@ -5,17 +5,17 @@ namespace SlimeSimulation.Configuration
         private static readonly double DefaultFlowAmount = 0.2;
         private static readonly bool DefaultShouldAllowDisconnection = true;
 
-        public SimulationConfiguration() : this(new LatticeGraphWithFoodSourcesGenerationConfig(), DefaultFlowAmount, new SlimeNetworkAdaptionCalculatorConfig())
+        public SimulationConfiguration() : this(new GraphWithFoodSourceGenerationConfig(), DefaultFlowAmount, new SlimeNetworkAdaptionCalculatorConfig())
         {
         }
 
-        public SimulationConfiguration(LatticeGraphWithFoodSourcesGenerationConfig generationConfig,
+        public SimulationConfiguration(GraphWithFoodSourceGenerationConfig generationConfig,
             double flowAmount, SlimeNetworkAdaptionCalculatorConfig slimeNetworkAdaptionCalculatorConfig) : this(generationConfig, flowAmount,
                 slimeNetworkAdaptionCalculatorConfig, DefaultShouldAllowDisconnection)
         {
         }
 
-        public SimulationConfiguration(LatticeGraphWithFoodSourcesGenerationConfig generationConfig,
+        public SimulationConfiguration(GraphWithFoodSourceGenerationConfig generationConfig,
             double flowAmount, SlimeNetworkAdaptionCalculatorConfig slimeNetworkAdaptionCalculatorConfig, bool shouldAllowDisconnection)
         {
             ShouldAllowDisconnection = shouldAllowDisconnection;
@@ -27,7 +27,7 @@ namespace SlimeSimulation.Configuration
         public SlimeNetworkAdaptionCalculatorConfig SlimeNetworkAdaptionCalculatorConfig { get; private set; }
         public double FlowAmount { get; private set; }
         public bool ShouldAllowDisconnection { get; private set; }
-        public LatticeGraphWithFoodSourcesGenerationConfig GenerationConfig { get; private set; }
+        public GraphWithFoodSourceGenerationConfig GenerationConfig { get; private set; }
 
         public SimulationConfiguration Clone()
         {

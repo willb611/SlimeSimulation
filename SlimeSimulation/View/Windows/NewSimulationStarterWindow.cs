@@ -18,7 +18,7 @@ namespace SlimeSimulation.View.Windows
        
         private Button _beginSimulationComponent;
 
-        private LatticeGenerationControlComponent _latticeGenerationControlComponent;
+        private GraphGenerationControlComponent _graphGenerationControlComponent;
         private ErrorDisplayComponent _errorDisplayComponent;
         private SimulationUpdateParameterComponent _simulationUpdateParameterComponent;
 
@@ -33,7 +33,7 @@ namespace SlimeSimulation.View.Windows
         {
             var container = MakeComponentsAndReturnContainerForThem();
             container.Add(_simulationUpdateParameterComponent);
-            container.Add(_latticeGenerationControlComponent);
+            container.Add(_graphGenerationControlComponent);
             container.Add(_beginSimulationComponent);
             container.Add(_errorDisplayComponent);
             window.Add(container);
@@ -45,8 +45,7 @@ namespace SlimeSimulation.View.Windows
             _simulationUpdateParameterComponent = new SimulationUpdateParameterComponent(_defaultConfig);
             _beginSimulationComponent = new CreateNewSimulationComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
-            _latticeGenerationControlComponent =
-                new LatticeGenerationControlComponent(_defaultConfig.GenerationConfig);
+            _graphGenerationControlComponent = new GraphGenerationControlComponent(_defaultConfig.GenerationConfig);
             return new VBox();
         }
 
@@ -60,8 +59,8 @@ namespace SlimeSimulation.View.Windows
             {
                 try
                 {
-                    var generationConfig = _latticeGenerationControlComponent.ReadGenerationConfig();
-                    _errorDisplayComponent.AddToDisplayBuffer(_latticeGenerationControlComponent.Errors());
+                    var generationConfig = _graphGenerationControlComponent.ReadGenerationConfig();
+                    _errorDisplayComponent.AddToDisplayBuffer(_graphGenerationControlComponent.Errors());
                     if (generationConfig != null)
                     {
                         return new SimulationConfiguration(generationConfig, flowAmount.Value,
@@ -90,7 +89,7 @@ namespace SlimeSimulation.View.Windows
                 base.Dispose(true);
                 _beginSimulationComponent.Dispose();
                 _errorDisplayComponent.Dispose();
-                _latticeGenerationControlComponent.Dispose();
+                _graphGenerationControlComponent.Dispose();
                 _simulationUpdateParameterComponent.Dispose();
             }
             Disposed = true;
