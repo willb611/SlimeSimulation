@@ -10,7 +10,7 @@ using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
 {
-    public class GraphGenerationControlComponent : VBox
+    public class GraphGenerationControlComponent : Table
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -18,13 +18,13 @@ namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
         private readonly ComboBox _generatorInputComboBox;
         protected bool Disposed;
 
-        public GraphGenerationControlComponent(GraphWithFoodSourceGenerationConfig defaultConfig)
+        public GraphGenerationControlComponent(GraphWithFoodSourceGenerationConfig defaultConfig) : base(4, 1, false)
         {
             _latticeGenerationControlComponent = new LatticeGenerationControlComponent(defaultConfig.ConfigForGenerator);
             _generatorInputComboBox = new ComboBox(GraphGeneratorFactory.Descriptions);
 
-            Add(_latticeGenerationControlComponent);
-            Add(_generatorInputComboBox);
+            Attach(_latticeGenerationControlComponent, 0, 1, 0, 2);
+            Attach(_generatorInputComboBox, 0, 1, 2, 3);
         }
 
         public GraphWithFoodSourceGenerationConfig ReadGenerationConfig()

@@ -31,22 +31,24 @@ namespace SlimeSimulation.View.Windows
 
         protected override void AddToWindow(Window window)
         {
-            var container = MakeComponentsAndReturnContainerForThem();
-            container.Add(_simulationUpdateParameterComponent);
-            container.Add(_graphGenerationControlComponent);
-            container.Add(_beginSimulationComponent);
-            container.Add(_errorDisplayComponent);
+            var container = MakeContainerWithComponents();
             window.Add(container);
             window.Unmaximize();
         }
 
-        private VBox MakeComponentsAndReturnContainerForThem()
+        private Container MakeContainerWithComponents()
         {
+            Table container = new Table(10, 1, false);
             _simulationUpdateParameterComponent = new SimulationUpdateParameterComponent(_defaultConfig);
             _beginSimulationComponent = new CreateNewSimulationComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
             _graphGenerationControlComponent = new GraphGenerationControlComponent(_defaultConfig.GenerationConfig);
-            return new VBox();
+
+            container.Attach(_simulationUpdateParameterComponent, 0, 1, 0, 3);
+            container.Attach(_graphGenerationControlComponent, 0, 1, 4, 7);
+            container.Attach(_beginSimulationComponent, 0, 1, 8, 9);
+            container.Attach(_errorDisplayComponent, 0, 1, 9, 10);
+            return container;
         }
 
         internal SimulationConfiguration GetConfigFromViews()

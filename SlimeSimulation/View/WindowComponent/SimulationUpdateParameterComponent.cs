@@ -7,7 +7,7 @@ using SlimeSimulation.View.WindowComponent.SimulationConfigurationComponent;
 
 namespace SlimeSimulation.View.WindowComponent
 {
-    public class SimulationUpdateParameterComponent : VBox
+    public class SimulationUpdateParameterComponent : Table
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         protected bool Disposed;
@@ -18,15 +18,15 @@ namespace SlimeSimulation.View.WindowComponent
 
         public bool ShouldAllowDisconnection => _shouldAllowDisconnectionCheckButton.Active;
 
-        public SimulationUpdateParameterComponent(SimulationConfiguration defaultConfiguration)
+        public SimulationUpdateParameterComponent(SimulationConfiguration defaultConfiguration) : base(4, 1, false)
         {
             _slimeNetworkAdaptionComponent = new SlimeNetworkAdaptionCalculatorComponent(defaultConfiguration.SlimeNetworkAdaptionCalculatorConfig);
             _flowAmountControlComponent = new FlowAmountControlComponent(defaultConfiguration.FlowAmount);
             _shouldAllowDisconnectionCheckButton = new ShouldAllowSlimeDisconnectionButton(defaultConfiguration.ShouldAllowDisconnection);
 
-            Add(_slimeNetworkAdaptionComponent);
-            Add(_flowAmountControlComponent);
-            Add(_shouldAllowDisconnectionCheckButton);
+            Attach(_slimeNetworkAdaptionComponent, 0, 1, 0, 2);
+            Attach(_flowAmountControlComponent, 0, 1, 2, 3);
+            Attach(_shouldAllowDisconnectionCheckButton, 0, 1, 3, 4);
         }
 
         public sealed override void Dispose()
