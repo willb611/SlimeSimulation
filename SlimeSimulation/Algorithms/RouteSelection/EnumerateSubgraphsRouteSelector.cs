@@ -43,7 +43,13 @@ namespace SlimeSimulation.Algorithms.RouteSelection
                 }
                 var enumeratorForNodesInSubgraph = GetEnumeratorForSubgraph(subgraph);
                 var source = NextElement(enumeratorForNodesInSubgraph);
-                var sink = GetFoodSourcesInSubGraph(subgraph).Except(source).PickRandom();
+                var foodSourcesFromSubgraphExceptSource = GetFoodSourcesInSubGraph(subgraph).Except(source);
+                if (foodSourcesFromSubgraphExceptSource.Count < 1)
+                {
+                    Logger.Warn("Using source {0} Couldnt find second foodSourceNode in subgraph {1}.", source, subgraph);
+                    continue;
+                }
+                var sink = foodSourcesFromSubgraphExceptSource.PickRandom();
                 return new Route(source, sink);
             }
             throw new ApplicationException("Unable to find a valid route");
@@ -76,7 +82,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection
             if (enumerator == null)
             {
                 throw new NullReferenceException(nameof(enumerator));
-            }
+            } 
             if (enumerator.Current == null) 
             {
                 enumerator.Reset();
