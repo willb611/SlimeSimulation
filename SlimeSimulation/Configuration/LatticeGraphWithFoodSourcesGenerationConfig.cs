@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.Configuration
@@ -16,7 +17,8 @@ namespace SlimeSimulation.Configuration
         public LatticeGraphWithFoodSourcesGenerationConfig(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources)
         {
         }
-        
+
+        [JsonConstructor]
         public LatticeGraphWithFoodSourcesGenerationConfig(int size, double probabilityNewNodeIsFoodSource,
             int minimumFoodSources)
         {

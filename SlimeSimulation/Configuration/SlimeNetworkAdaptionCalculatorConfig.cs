@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace SlimeSimulation.Configuration
 {
     public class SlimeNetworkAdaptionCalculatorConfig
@@ -10,6 +12,7 @@ namespace SlimeSimulation.Configuration
             
         }
 
+        [JsonConstructor]
         public SlimeNetworkAdaptionCalculatorConfig(double feedbackParam, double timePerSimulationStep)
         {
             FeedbackParam = feedbackParam;

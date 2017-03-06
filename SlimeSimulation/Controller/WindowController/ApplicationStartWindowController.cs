@@ -46,7 +46,7 @@ namespace SlimeSimulation.Controller.WindowController
                     var simulationController = simulationControllerFactory.MakeSimulationController(this, simulationSave);
                     AbstractWindow.Hide();
                     Logger.Debug("[LoadPreviousSimulationButtonClicked] Loaded. Using config: {0}",
-                        JsonConvert.SerializeObject(simulationSave.SimulationConfiguration));
+                        JsonConvert.SerializeObject(simulationSave.SimulationConfiguration, SerializationSettings.JsonSerializerSettings));
                     simulationController.RunSimulation();
                 }
                 catch (Exception e)

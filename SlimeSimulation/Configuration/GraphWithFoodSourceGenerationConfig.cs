@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.Configuration
@@ -12,15 +13,17 @@ namespace SlimeSimulation.Configuration
         private static readonly int DefaultGeneratorToUse = GraphGeneratorFactory.GridType;
 
         public GraphWithFoodSourceGenerationConfig() : this(new LatticeGraphWithFoodSourcesGenerationConfig(), DefaultGeneratorToUse) { }
-        public GraphWithFoodSourceGenerationConfig(LatticeGraphWithFoodSourcesGenerationConfig latticeConfig,
-            int generatorToUse)
+
+        [JsonConstructor]
+        public GraphWithFoodSourceGenerationConfig(LatticeGraphWithFoodSourcesGenerationConfig configForGenerator,
+            int generatorTypeToUse)
         {
-            GeneratorTypeToUse = generatorToUse;
-            ConfigForGenerator = latticeConfig;
+            GeneratorTypeToUse = generatorTypeToUse;
+            ConfigForGenerator = configForGenerator;
         }
 
 
-        public int GeneratorTypeToUse { get; }
-        public LatticeGraphWithFoodSourcesGenerationConfig ConfigForGenerator { get; }
+        public int GeneratorTypeToUse { get; private set; }
+        public LatticeGraphWithFoodSourcesGenerationConfig ConfigForGenerator { get; private set; }
     }
 }
