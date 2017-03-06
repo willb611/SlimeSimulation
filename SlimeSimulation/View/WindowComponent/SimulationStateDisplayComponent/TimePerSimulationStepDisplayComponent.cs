@@ -6,7 +6,8 @@ namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
     {
         private double timePerSimulationStep;
 
-        public TimePerSimulationStepDisplayComponent(double timePerSimulationStep) : base("When updating network in simulation steps, each step counts as " + timePerSimulationStep + " timeSteps ")
+        public TimePerSimulationStepDisplayComponent(double timePerSimulationStep) 
+            : base("When adapting network, each step counts as " + timePerSimulationStep + " units of time.")
         {
             this.timePerSimulationStep = timePerSimulationStep;
         }

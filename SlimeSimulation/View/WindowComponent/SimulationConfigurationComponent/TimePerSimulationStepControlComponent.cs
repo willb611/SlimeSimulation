@@ -7,7 +7,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationConfigurationComponent
     public class TimePerSimulationStepControlComponent : HBox
     {
 
-        private const string DescriptionString = "Time per simulation step. Should be a multiple, probably less than 1.";
+        private const string DescriptionString = "Units of time per simulation step";
         private List<string> _errors;
         private readonly TextView _timePerSimulationStepTextView;
 
