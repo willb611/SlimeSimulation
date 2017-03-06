@@ -62,7 +62,7 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
         }
 
         [TestMethod()]
-        public void TestRemoveDisconnectedEdges()
+        public void TestRemoveDisconnectedEdges_AllowedToDisconnect()
         {
             var a = new Node(1, 1, 1);
             var b = new FoodSourceNode(2, 2, 2);
@@ -75,8 +75,30 @@ namespace SlimeSimulation.Controller.SimulationUpdaters.Tests
             var bc = new SlimeEdge(b, c, 2);
             var edges = new HashSet<SlimeEdge>() { disconnectedEdge, ac, bc };
 
-            var connectedEdges = SlimeNetworkAdaptionCalculator.RemoveDisconnectedEdges(edges);
+            var calc = new SlimeNetworkAdaptionCalculator(new SlimeNetworkAdaptionCalculatorConfig(), true);
+            var connectedEdges = calc.RemoveDisconnectedEdges(edges);
             Assert.IsFalse(connectedEdges.Contains(disconnectedEdge));
+            Assert.IsTrue(connectedEdges.Contains(ac));
+            Assert.IsTrue(connectedEdges.Contains(bc));
+        }
+
+        [TestMethod()]
+        public void TestRemoveDisconnectedEdges_NotAllowedToDisconnect()
+        {
+            var a = new Node(1, 1, 1);
+            var b = new FoodSourceNode(2, 2, 2);
+            var c = new FoodSourceNode(3, 3, 3);
+            var foodSources = new HashSet<FoodSourceNode>() { b, c };
+            var nodes = new HashSet<Node>() { a, b, c };
+
+            var disconnectedEdge = new SlimeEdge(a, b, 0);
+            var ac = new SlimeEdge(a, c, 1);
+            var bc = new SlimeEdge(b, c, 2);
+            var edges = new HashSet<SlimeEdge>() { disconnectedEdge, ac, bc };
+
+            var calc = new SlimeNetworkAdaptionCalculator(new SlimeNetworkAdaptionCalculatorConfig(), false);
+            var connectedEdges = calc.RemoveDisconnectedEdges(edges);
+            Assert.IsTrue(connectedEdges.Contains(disconnectedEdge));
             Assert.IsTrue(connectedEdges.Contains(ac));
             Assert.IsTrue(connectedEdges.Contains(bc));
         }

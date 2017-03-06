@@ -42,13 +42,7 @@ namespace SlimeSimulation.Controller.WindowController
             Dispose();
             _simulationController.UpdateDisplay();
         }
-
-        public void Display
-            (string toString)
-        {
-            
-        }
-
+        
         public void DisplayError(string errorMessage)
         {
             _simulationController.DisplayError(errorMessage);

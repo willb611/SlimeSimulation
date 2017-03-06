@@ -22,7 +22,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
         {
             _latticeGenerationControlComponent = new LatticeGenerationControlComponent(defaultConfig.ConfigForGenerator);
             _generatorInputComboBox = new ComboBox(GraphGeneratorFactory.Descriptions);
-            if (GraphGeneratorFactory.Descriptions != null && GraphGeneratorFactory.Descriptions.Count() > 0)
+            if (GraphGeneratorFactory.Descriptions != null && GraphGeneratorFactory.Descriptions.Any())
             {
                 _generatorInputComboBox.Active = 0;
             }

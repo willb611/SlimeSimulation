@@ -29,7 +29,8 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         public AsyncSimulationUpdater(SimulationConfiguration simulationConfiguration)
         {
-            _slimeNetworkAdapterCalculator = new SlimeNetworkAdaptionCalculator(simulationConfiguration.SlimeNetworkAdaptionCalculatorConfig);
+            _slimeNetworkAdapterCalculator = new SlimeNetworkAdaptionCalculator(simulationConfiguration.SlimeNetworkAdaptionCalculatorConfig,
+                simulationConfiguration.ShouldAllowDisconnection);
             _nonAsyncSimulationUpdater = new NonAsyncSimulationUpdater(new FlowCalculator(new LupDecompositionSolver()), simulationConfiguration.FlowAmount,
                 _slimeNetworkAdapterCalculator, new SlimeNetworkExplorer());
         }

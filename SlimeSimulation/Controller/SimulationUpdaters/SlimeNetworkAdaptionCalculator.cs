@@ -13,14 +13,22 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
 
         private readonly double _feedbackParameter;
         private readonly double _timePerSimulationStep;
+        private readonly bool _shouldAllowDisconnection;
         public double FeedbackUsedWhenUpdatingNetwork => _feedbackParameter;
+        
+        private static readonly bool DefaultShouldAllowDisconnection = new SimulationConfiguration().ShouldAllowDisconnection;
 
         public SlimeNetworkAdaptionCalculator() : this(new SlimeNetworkAdaptionCalculatorConfig())
         {
         }
-        public SlimeNetworkAdaptionCalculator(SlimeNetworkAdaptionCalculatorConfig config) {
+        public SlimeNetworkAdaptionCalculator(SlimeNetworkAdaptionCalculatorConfig config)
+            : this(config, DefaultShouldAllowDisconnection)
+        {
+        }
+        public SlimeNetworkAdaptionCalculator(SlimeNetworkAdaptionCalculatorConfig config, bool shouldAllowDisconnection) {
             _feedbackParameter = config.FeedbackParam;
             _timePerSimulationStep = config.TimePerSimulationStep;
+            _shouldAllowDisconnection    = shouldAllowDisconnection;
         }
 
         internal SlimeNetwork CalculateNextStep(SlimeNetwork slimeNetwork, FlowResult flowResult)
@@ -85,23 +93,22 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
             return Math.Abs(updatedConnectivity);
         }
         
-        internal static HashSet<SlimeEdge> RemoveDisconnectedEdges(ISet<SlimeEdge> edges)
+        internal HashSet<SlimeEdge> RemoveDisconnectedEdges(ISet<SlimeEdge> edges)
         {
+            if (!_shouldAllowDisconnection)
+            {
+                return new HashSet<SlimeEdge>(edges);
+            }
             HashSet<SlimeEdge> connected = new HashSet<SlimeEdge>();
-            var minConnection = 10000.0;
             foreach (var slimeEdge in edges)
             {
-                if (slimeEdge.Connectivity < minConnection)
-                {
-                    minConnection = slimeEdge.Connectivity;
-                }
                 if (!slimeEdge.IsDisconnected())
                 {
                     connected.Add(slimeEdge);
                 }
             }
-            Logger.Debug("[RemoveDisconnectedEdges] Out of {0}, remaining: {1} ({2}%)", edges.Count, connected.Count, (connected.Count / (double)edges.Count) * 100);
-            Logger.Debug("[RemoveDisconnectedEdges] Minimum connectivity: {0}", minConnection);
+            Logger.Debug("[RemoveDisconnectedEdges] Out of {0}, remaining: {1} ({2}%)", 
+                            edges.Count, connected.Count, (connected.Count / (double)edges.Count) * 100);
             return connected;
         }
 

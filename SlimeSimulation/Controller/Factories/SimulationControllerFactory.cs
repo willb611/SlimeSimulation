@@ -51,7 +51,6 @@ namespace SlimeSimulation.Controller.Factories
         public SimulationController MakeSimulationController(
             AbstractSimulationControllerStarter simulationControllerStarter, SimulationConfiguration config)
         {
-            FlowOnEdges.ShouldAllowDisconnection = config.ShouldAllowDisconnection;
             var graphWithFoodSources = GraphGeneratorFactory.MakeGenerator(config.GenerationConfig).Generate();
             SlimeNetwork initial = new SlimeNetworkGenerator().FromSingleFoodSourceInGraph(graphWithFoodSources);
             var initialState = new SimulationState(initial, false, graphWithFoodSources);

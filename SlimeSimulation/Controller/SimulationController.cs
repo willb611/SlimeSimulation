@@ -20,7 +20,7 @@ namespace SlimeSimulation.Controller
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static bool _disposed = false;
         
-        private readonly AsyncSimulationUpdater _asyncSimulationUpdater;
+        private AsyncSimulationUpdater _asyncSimulationUpdater;
         private readonly GtkLifecycleController _gtkLifecycleController;
 
         private readonly ItemLock<SimulationState> _protectedState;
@@ -43,7 +43,14 @@ namespace SlimeSimulation.Controller
         public SimulationConfiguration Configuration
         {
             get { return _config; }
-            set { _config = value; }
+            set
+            {
+                Logger.Debug("Configuration has changed. Changing {0}", nameof(_asyncSimulationUpdater));
+                _protectedState.Lock();
+                _config = value;
+                _asyncSimulationUpdater = new AsyncSimulationUpdater(value);
+                _protectedState.ClearLock();
+            }
         }
 
         public bool ShouldFlowResultsBeDisplayed
