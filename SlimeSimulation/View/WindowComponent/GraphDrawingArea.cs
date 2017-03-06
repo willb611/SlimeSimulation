@@ -122,6 +122,7 @@ namespace SlimeSimulation.View.WindowComponent
 
         private void DrawTextNearCoord(Context graphic, String s, double x, double y)
         {
+#if DEBUG
             Logger.Trace("[DrawTextNearCoord] Drawing {0} at {1}, {2}", s, x, y);
             graphic.Save();
 
@@ -129,6 +130,7 @@ namespace SlimeSimulation.View.WindowComponent
             graphic.ShowText(s);
 
             graphic.Restore();
+#endif
         }
 
 
