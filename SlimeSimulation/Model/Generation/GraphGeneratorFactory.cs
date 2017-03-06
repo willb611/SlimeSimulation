@@ -14,7 +14,7 @@ namespace SlimeSimulation.Model.Generation
 
         public const int GridType = 1;
         public const string GridTypeDescription = "Grid";
-        public static String[] Descriptions = new string[] {DiagonalConnectedGridTypeDescription, GridTypeDescription};
+        public static String[] Descriptions = new string[] {GridTypeDescription, DiagonalConnectedGridTypeDescription};
 
         public static int GetValueForDescription(string description)
         {
