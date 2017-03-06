@@ -1,5 +1,6 @@
 using System;
 using Gtk;
+using Newtonsoft.Json;
 using NLog;
 using SlimeSimulation.Controller.Factories;
 using SlimeSimulation.Controller.WindowController.Templates;
@@ -44,6 +45,8 @@ namespace SlimeSimulation.Controller.WindowController
                     var simulationControllerFactory = new SimulationControllerFactory(GtkLifecycleController.Instance);
                     var simulationController = simulationControllerFactory.MakeSimulationController(this, simulationSave);
                     AbstractWindow.Hide();
+                    Logger.Debug("[LoadPreviousSimulationButtonClicked] Loaded. Using config: {0}",
+                        JsonConvert.SerializeObject(simulationSave.SimulationConfiguration));
                     simulationController.RunSimulation();
                 }
                 catch (Exception e)

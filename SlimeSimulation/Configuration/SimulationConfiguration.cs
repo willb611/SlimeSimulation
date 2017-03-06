@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace SlimeSimulation.Configuration
 {
     public class SimulationConfiguration
@@ -15,6 +17,7 @@ namespace SlimeSimulation.Configuration
         {
         }
 
+        [JsonConstructor]
         public SimulationConfiguration(GraphWithFoodSourceGenerationConfig generationConfig,
             double flowAmount, SlimeNetworkAdaptionCalculatorConfig slimeNetworkAdaptionCalculatorConfig, bool shouldAllowDisconnection)
         {

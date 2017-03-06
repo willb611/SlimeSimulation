@@ -7,5 +7,6 @@ namespace SlimeSimulation.Configuration
         public bool ShouldStepFromAllSourcesAtOnce = true;
         public bool ShouldSaveEveryNSteps = true;
         public int IntervalAtWhichToSaveSimulationWhileRunningSteps = 1;
+        
     }
 }
