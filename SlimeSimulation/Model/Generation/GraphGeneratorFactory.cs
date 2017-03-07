@@ -14,6 +14,10 @@ namespace SlimeSimulation.Model.Generation
 
         public const int GridType = 1;
         public const string GridTypeDescription = "Grid";
+
+        public const int GenerateFromFileType = 2;
+        public const string GenerateFromFileTypeDescription = "Read in from file description";
+
         public static String[] Descriptions = new string[] {GridTypeDescription, DiagonalConnectedGridTypeDescription};
 
         public static int GetValueForDescription(string description)
@@ -25,6 +29,8 @@ namespace SlimeSimulation.Model.Generation
                     return GridType;
                 case DiagonalConnectedGridTypeDescription:
                     return DiagonalConnectedGridType;
+                case GenerateFromFileTypeDescription:
+                    return GenerateFromFileType;
             }
         }
 
@@ -32,6 +38,8 @@ namespace SlimeSimulation.Model.Generation
         {
             switch (config.GeneratorTypeToUse)
             {
+                case GenerateFromFileType:
+                    //return new GraphWithFoodSourcesFromFileGenerator(config, filepath);
                 case GridType:
                     return new GridGraphWithFoodSourcesGenerator(config.ConfigForGenerator);
                 case DiagonalConnectedGridType:
