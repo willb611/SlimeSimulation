@@ -79,7 +79,12 @@ namespace SlimeSimulation.Model.Generation
                     }
                     previousRowNodes = rowNodes;
                 }
-                return new GraphWithFoodSources(edges, nodes, foodSources);
+                var result = new GraphWithFoodSources(edges);
+                if (result.FoodSources.Count != foodSources.Count)
+                {
+                    Logger.Warn("Some food sources not in the specified graph.");
+                }
+                return result;
             }
         }
         

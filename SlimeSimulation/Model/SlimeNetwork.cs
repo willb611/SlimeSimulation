@@ -54,18 +54,23 @@ namespace SlimeSimulation.Model
         {
             if (graphWithFoodSources == null)
             {
+                Logger.Debug("[CoversGraph] {0} is null", nameof(graphWithFoodSources));
                 return false;
             }
             if (!NodesInGraph.SetEquals(graphWithFoodSources.NodesInGraph))
             {
+                Logger.Debug("[CoversGraph] NodesInGraph doesnt equal graphWithFoodSources.NodesInGraph");
                 return false;
             }
             if (!FoodSources.SetEquals(graphWithFoodSources.FoodSources))
             {
+                Logger.Debug("[CoversGraph] FoodSources (count={0}) doesnt equal graphWithFoodSources.FoodSources (count={1})",
+                    FoodSources.Count, graphWithFoodSources.FoodSources.Count);
                 return false;
             }
             if (SlimeEdges.Count != graphWithFoodSources.EdgesInGraph.Count)
             {
+                Logger.Debug("[CoversGraph] SlimeEdges.Count doesnt equal EdgesInGraph.Count");
                 return false;
             }
             return SlimeEdges.All(slimEdge => graphWithFoodSources.EdgesInGraph.Contains(slimEdge.Edge));
