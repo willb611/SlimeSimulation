@@ -95,16 +95,16 @@ namespace SlimeSimulation.Controller.SimulationUpdaters
         
         internal HashSet<SlimeEdge> RemoveDisconnectedEdges(ISet<SlimeEdge> edges)
         {
-            if (!_shouldAllowDisconnection)
-            {
-                return new HashSet<SlimeEdge>(edges);
-            }
             HashSet<SlimeEdge> connected = new HashSet<SlimeEdge>();
             foreach (var slimeEdge in edges)
             {
                 if (!slimeEdge.IsDisconnected())
                 {
                     connected.Add(slimeEdge);
+                } else if (slimeEdge.IsDisconnected() && !_shouldAllowDisconnection)
+                {
+                    var newEdge = new SlimeEdge(slimeEdge.Edge, SlimeEdge.Tolerance);
+                    connected.Add(newEdge);
                 }
             }
             Logger.Debug("[RemoveDisconnectedEdges] Out of {0}, remaining: {1} ({2}%)", 

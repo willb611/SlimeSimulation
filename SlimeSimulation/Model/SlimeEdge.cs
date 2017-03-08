@@ -7,7 +7,7 @@ namespace SlimeSimulation.Model
     {
         public Edge Edge { get; }
         public double Connectivity { get; }
-        private const double Tolerance = 0.000001;
+        public const double Tolerance = 0.000001;
 
         [JsonConstructor]
         public SlimeEdge(Edge edge, double connectivity) : base(edge.A, edge.B)
