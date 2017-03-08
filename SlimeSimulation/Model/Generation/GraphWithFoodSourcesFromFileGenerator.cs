@@ -6,6 +6,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using NLog;
+using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.Model.Generation
 {
@@ -14,6 +15,9 @@ namespace SlimeSimulation.Model.Generation
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly string _filepath;
 
+        public GraphWithFoodSourcesFromFileGenerator(GraphWithFoodSourceGenerationConfig config) : this(config.FileToLoadFrom)
+        {
+        }
         public GraphWithFoodSourcesFromFileGenerator(string filepath)
         {
             _filepath = filepath;

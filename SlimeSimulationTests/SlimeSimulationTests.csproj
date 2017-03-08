@@ -112,6 +112,7 @@
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\FlowAmountControlComponentTests.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationCreaterComponent\LatticeGenerationControlComponentTests.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepNumberOfTimesComponentTests.cs" />
+    <Compile Include="View\WindowComponent\SimulationCreationComponent\FileToLoadFromInputComponentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SlimeSimulation\SlimeSimulation.csproj">

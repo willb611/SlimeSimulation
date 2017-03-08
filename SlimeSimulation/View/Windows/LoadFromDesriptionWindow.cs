@@ -18,7 +18,8 @@ namespace SlimeSimulation.View.Windows
         private readonly SimulationConfiguration _defaultConfig = new SimulationConfiguration();
 
         private Button _beginSimulationComponent;
-        
+        private FileToLoadFromInputComponent _fileToLoadFromInputComponent;
+
         private ErrorDisplayComponent _errorDisplayComponent;
         private SimulationUpdateParameterComponent _simulationUpdateParameterComponent;
 
@@ -40,14 +41,13 @@ namespace SlimeSimulation.View.Windows
         {
             Table container = new Table(10, 1, false);
             _simulationUpdateParameterComponent = new SimulationUpdateParameterComponent(_defaultConfig);
-            //_fileToLoadFromInputComponent = new FileToLoadFromInputComponent();
-            //_beginSimulationComponent = new NewSimulationFromDescriptionComponent(this, _windowController);
+            _fileToLoadFromInputComponent = new FileToLoadFromInputComponent();
+            _beginSimulationComponent = new NewSimulationFromDescriptionComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
 
             container.Attach(_simulationUpdateParameterComponent, 0, 1, 0, 3);
-            //container.Attach(_fileToLoadFromInputComponent, 0, 1, 3, 4);
-            //container.Attach(_beginSimulationComponent, 0, 1, 4, 5);
-            container.Attach(new Label("Test"), 0, 10, 4, 5);
+            container.Attach(_fileToLoadFromInputComponent, 0, 1, 3, 4);
+            container.Attach(_beginSimulationComponent, 0, 1, 4, 5);
             container.Attach(_errorDisplayComponent, 0, 1, 5, 6);
             return container;
         }
@@ -62,13 +62,19 @@ namespace SlimeSimulation.View.Windows
             {
                 try
                 {
-                    // Get input file ? 
-                    if (true) // if input ok?
+                    string filePath = _fileToLoadFromInputComponent.ReadInput();
+                    if (filePath != null)
                     {
                         var config = new GraphWithFoodSourceGenerationConfig(null,
-                            GraphGeneratorFactory.GenerateFromFileType);
+                            GraphGeneratorFactory.GenerateFromFileType, filePath);
                         return new SimulationConfiguration(config, flowAmount.Value,
                             slimeNetworkAdaptionConfig, shouldAllowDisconnection);
+                    }
+                    else
+                    {
+                        string fileMissingMsg = "[GetConfigFromViews] Filepath was missing";
+                        Logger.Info(fileMissingMsg);
+                        _errorDisplayComponent.AddToDisplayBuffer(fileMissingMsg);
                     }
                 }
                 catch (ArgumentException e)
@@ -91,12 +97,23 @@ namespace SlimeSimulation.View.Windows
             if (disposing)
             {
                 base.Dispose(true);
+                _simulationUpdateParameterComponent.Dispose();
+                _fileToLoadFromInputComponent.Dispose();
                 _beginSimulationComponent.Dispose();
                 _errorDisplayComponent.Dispose();
-                _simulationUpdateParameterComponent.Dispose();
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);
+        }
+
+        public string GetFilepath()
+        {
+            return _fileToLoadFromInputComponent.ReadInput();
+        }
+
+        public void DisplayError(Exception exception)
+        {
+            _errorDisplayComponent.AddToDisplayBuffer(exception.ToString());
         }
     }
 }

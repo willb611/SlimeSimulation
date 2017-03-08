@@ -139,6 +139,7 @@
     <Compile Include="View\WindowComponent\SimulationConfigurationComponent\TimePerSimulationStepControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationCreationComponent\GraphGenerationControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\TimePerSimulationStepDisplayComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationCreationComponent\FileToLoadFromInputComponent.cs" />
     <Compile Include="View\Windows\LoadFromDesriptionWindow.cs" />
     <Compile Include="View\Windows\ModifySimulationConfigurationWindow.cs" />
     <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="View\WindowComponent\SimulationControlComponent\SimulationStepUntilFullyGrownComponent.cs" />
     <Compile Include="View\WindowComponent\SlimeWindowNodeHighlightKey.cs" />
     <Compile Include="View\Windows\ApplicationStartWindow.cs" />
+    <Compile Include="View\Windows\NewSimulationFromDescriptionComponent.cs" />
     <Compile Include="View\Windows\NewSimulationStarterWindow.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\FlowAmountLabelComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationControlComponent\ShouldFlowResultsBeDisplayedControlComponent.cs" />

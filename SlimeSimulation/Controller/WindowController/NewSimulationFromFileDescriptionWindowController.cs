@@ -1,5 +1,7 @@
+using System;
 using Gtk;
 using NLog;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Controller.Factories;
 using SlimeSimulation.Controller.WindowController.Templates;
 using SlimeSimulation.View;
@@ -16,8 +18,14 @@ namespace SlimeSimulation.Controller.WindowController
         private readonly SimulationControllerFactory _controllerFactory;
 
         public NewSimulationFromFileDescriptionWindowController(ApplicationStartWindowController applicationStartWindowController)
+            : this(applicationStartWindowController, new SimulationControllerFactory())
+        {
+        }
+        public NewSimulationFromFileDescriptionWindowController(ApplicationStartWindowController applicationStartWindowController,
+            SimulationControllerFactory simulationControllerFactory)
         {
             _applicationStartWindowController = applicationStartWindowController;
+            _controllerFactory = simulationControllerFactory;
         }
 
         public override void OnClickCallback(Widget widget, ButtonPressEventArgs args)
@@ -33,20 +41,30 @@ namespace SlimeSimulation.Controller.WindowController
                 GtkLifecycleController.Instance.Display(AbstractWindow);
             }
         }
-    /*
-        internal void StartSimulation(SimulationConfiguration config)
+        
+        internal void StartSimulationWithDescriptionFromFile(SimulationConfiguration config)
         {
-            var controller = _controllerFactory.MakeSimulationController(this, config);
+            SimulationController controller;
+            try
+            {
+                controller = _controllerFactory.MakeSimulationController(this, config);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                _loadFromDescriptionWindow.DisplayError(e);
+                return;
+            }
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Application.Invoke(delegate
             {
                 Logger.Debug("[StartSimulation] Invoking from main thread ");
-                _newSimulationStarterWindow.Hide();
+                _loadFromDescriptionWindow.Hide();
                 controller.RunSimulation();
                 controller = null; // aid gc ?
             });
         }
-        */
+
         public override void OnWindowClose()
         {
             base.OnWindowClose();
