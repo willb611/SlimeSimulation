@@ -129,6 +129,7 @@
     <Compile Include="Controller\SimulationUpdaters\SlimeNetworkExplorer.cs" />
     <Compile Include="Controller\WindowController\ModifySimulationConfigurationController.cs" />
     <Compile Include="Algorithms\RouteSelection\RouteSelector.cs" />
+    <Compile Include="Controller\WindowController\NewSimulationFromFileDescriptionWindowController.cs" />
     <Compile Include="Model\Generation\GraphGeneratorFactory.cs" />
     <Compile Include="Model\Generation\GraphWithFoodSourcesFromFileGenerator.cs" />
     <Compile Include="Model\Generation\GridGraphWithFoodSourcesGenerator.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="View\WindowComponent\SimulationConfigurationComponent\TimePerSimulationStepControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationCreationComponent\GraphGenerationControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\TimePerSimulationStepDisplayComponent.cs" />
+    <Compile Include="View\Windows\LoadFromDesriptionWindow.cs" />
     <Compile Include="View\Windows\ModifySimulationConfigurationWindow.cs" />
     <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
     <Compile Include="Algorithms\Bfs\Subgraph.cs" />

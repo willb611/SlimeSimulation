@@ -70,5 +70,14 @@ namespace SlimeSimulation.Controller.WindowController
         {
             AbstractWindow.Display();
         }
+
+        public void StartNewSimulationFromFileDescriptionButtonClicked()
+        {
+            Application.Invoke(delegate
+            {
+                AbstractWindow.Hide();
+                new NewSimulationFromFileDescriptionWindowController(this).Render();
+            });
+        }
     }
 }

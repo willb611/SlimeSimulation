@@ -23,6 +23,7 @@ namespace SlimeSimulation.View.Windows
             VBox container = new VBox(true, 10);
             container.Add(StartNewSimulationComponent());
             container.Add(LoadPreviousSimulationComponent());
+            container.Add(StartNewSimulationFromFileDescriptionComponent());
             var frame = new Frame {BorderWidth = 10};
             frame.Add(container);
             window.Add(frame);
@@ -52,6 +53,16 @@ namespace SlimeSimulation.View.Windows
             startNewSimulationButton.Clicked += delegate(object sender, EventArgs args)
             {
                 _applicationStartWindowController.StartNewSimulationButtonClicked();
+            };
+            return startNewSimulationButton;
+        }
+
+        private Widget StartNewSimulationFromFileDescriptionComponent()
+        {
+            var startNewSimulationButton = new Button("Start a new simulation from a file\nwith given x,y values of food sources");
+            startNewSimulationButton.Clicked += delegate (object sender, EventArgs args)
+            {
+                _applicationStartWindowController.StartNewSimulationFromFileDescriptionButtonClicked();
             };
             return startNewSimulationButton;
         }
