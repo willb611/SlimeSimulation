@@ -5,7 +5,7 @@ using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.Model.Generation
 {
-    public class LatticeGraphWithFoodSourcesGenerator : IGraphWithFoodSourcesGenerator
+    public class LatticeGraphWithFoodSourcesGenerator : GraphWithFoodSourcesGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -40,7 +40,7 @@ namespace SlimeSimulation.Model.Generation
             _foodSources = new HashSet<FoodSourceNode>();
         }
 
-        public GraphWithFoodSources Generate()
+        public override GraphWithFoodSources Generate()
         {
             if (_used)
             {

@@ -34,7 +34,7 @@ namespace SlimeSimulation.Model.Generation
             }
         }
 
-        public static IGraphWithFoodSourcesGenerator MakeGenerator(GraphWithFoodSourceGenerationConfig config)
+        public static GraphWithFoodSourcesGenerator MakeGenerator(GraphWithFoodSourceGenerationConfig config)
         {
             switch (config.GeneratorTypeToUse)
             {

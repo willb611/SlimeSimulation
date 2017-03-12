@@ -10,7 +10,7 @@ using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.Model.Generation
 {
-    public class GraphWithFoodSourcesFromFileGenerator : IGraphWithFoodSourcesGenerator
+    public class GraphWithFoodSourcesFromFileGenerator : GraphWithFoodSourcesGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly string _filepath;
@@ -27,7 +27,7 @@ namespace SlimeSimulation.Model.Generation
             _filepath = filepath;
         }
 
-        public GraphWithFoodSources Generate()
+        public override GraphWithFoodSources Generate()
         {
             try
             {
@@ -88,11 +88,11 @@ namespace SlimeSimulation.Model.Generation
                         if (node == null) {
                             node = new Node(nextId++, colNum, rowNum);
                         }
-                        var edgesForNode = MakeEdgesForNode(colNum, node, rowNodes, previousRowNodes);
-                        edges.UnionWith(edgesForNode);
                         rowNodes.Add(node);
                         nodes.Add(node);
                     }
+                    edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
+                    edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
                     previousRowNodes = rowNodes;
                 }
                 var result = new GraphWithFoodSources(edges);
@@ -102,23 +102,6 @@ namespace SlimeSimulation.Model.Generation
                 }
                 return result;
             }
-        }
-        
-        private ISet<Edge> MakeEdgesForNode(int col, Node node, List<Node> rowNodes, List<Node> previousRowNodes)
-        {
-            Logger.Debug("[MakeEdgesForNode] col: {0}, rowNodes.Count: {1}, prevRowNodes.Count: {2}", col, rowNodes.Count, previousRowNodes.Count);
-            var edges = new HashSet<Edge>();
-            if (previousRowNodes != null && previousRowNodes.Count > col)
-            {
-                Logger.Debug("Enter previousRowNodeCheck");
-                edges.Add(new Edge(node, previousRowNodes[col]));
-            }
-            if (col >= rowNodes.Count && rowNodes.Count >= 1)
-            {
-                Logger.Debug("Enter rowNodeCheck");
-                edges.Add(new Edge(node, rowNodes[col - 1]));
-            }
-            return edges;
         }
 
         private Node GetNodeFoodSource(int x, int y, HashSet<FoodSourceNode> foodSources)
