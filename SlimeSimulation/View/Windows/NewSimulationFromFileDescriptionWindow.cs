@@ -10,7 +10,7 @@ using SlimeSimulation.View.WindowComponent.SimulationCreationComponent;
 
 namespace SlimeSimulation.View.Windows
 {
-    public class LoadFromDescriptionWindow : AbstractWindow
+    public class NewSimulationFromFileDescriptionWindow : AbstractWindow
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -23,7 +23,7 @@ namespace SlimeSimulation.View.Windows
         private ErrorDisplayComponent _errorDisplayComponent;
         private SimulationUpdateParameterComponent _simulationUpdateParameterComponent;
 
-        public LoadFromDescriptionWindow(string windowTitle, NewSimulationFromFileDescriptionWindowController windowController)
+        public NewSimulationFromFileDescriptionWindow(string windowTitle, NewSimulationFromFileDescriptionWindowController windowController)
             : base(windowTitle, windowController)
         {
             _windowController = windowController;
@@ -52,7 +52,7 @@ namespace SlimeSimulation.View.Windows
             return container;
         }
 
-        internal SimulationConfiguration GetConfigFromViews()
+        internal SimulationConfiguration GetConfigFromViewsOrDisplayErrors()
         {
             var slimeNetworkAdaptionConfig = _simulationUpdateParameterComponent.ReadSlimeNetworkAdaptionCalculatorConfiguration();
             double? flowAmount = _simulationUpdateParameterComponent.ReadFlowAmountConfiguration();
@@ -84,7 +84,7 @@ namespace SlimeSimulation.View.Windows
                     _errorDisplayComponent.AddToDisplayBuffer(errorMsg);
                 }
             }
-            _errorDisplayComponent.UpdateDisplayFromBuffer();
+            _errorDisplayComponent.DisplayErrorsFromBufferThenClearIt();
             return null;
         }
 
@@ -111,9 +111,10 @@ namespace SlimeSimulation.View.Windows
             return _fileToLoadFromInputComponent.ReadInput();
         }
 
-        public void DisplayError(Exception exception)
+        public void ShowErrorMessage(string exception)
         {
-            _errorDisplayComponent.AddToDisplayBuffer(exception.ToString());
+            _errorDisplayComponent.AddToDisplayBuffer(exception);
+            _errorDisplayComponent.DisplayErrorsFromBufferThenClearIt();
         }
     }
 }

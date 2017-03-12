@@ -18,8 +18,12 @@ namespace SlimeSimulation.Model.Generation
         public GraphWithFoodSourcesFromFileGenerator(GraphWithFoodSourceGenerationConfig config) : this(config.FileToLoadFrom)
         {
         }
-        public GraphWithFoodSourcesFromFileGenerator(string filepath)
+        private GraphWithFoodSourcesFromFileGenerator(string filepath)
         {
+            if (String.IsNullOrWhiteSpace(filepath))
+            {
+                throw new ArgumentException("Given empty or null argument " + (nameof(filepath)));
+            }
             _filepath = filepath;
         }
 
@@ -27,13 +31,25 @@ namespace SlimeSimulation.Model.Generation
         {
             try
             {
-                string fileAsText = File.ReadAllText(_filepath);
+                string fileAsText = ReadDescriptionFromFile(_filepath);
                 return CreateGraphFromDescription(fileAsText);
             }
             catch (Exception e)
             {
                 Logger.Error("Error: " + e);
-                return null;
+                throw;
+            }
+        }
+
+        private string ReadDescriptionFromFile(string filepath)
+        {
+            try
+            {
+                return File.ReadAllText(_filepath);
+            }
+            catch (Exception e)
+            {
+                throw new IOException("Unable to read from file at location: "+ filepath, e);
             }
         }
 

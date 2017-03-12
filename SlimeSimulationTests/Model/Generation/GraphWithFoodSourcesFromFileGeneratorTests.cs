@@ -3,11 +3,13 @@ using SlimeSimulation.Model.Generation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NLog;
 using NLog.Layouts;
+using SlimeSimulation.Configuration;
 using SlimeSimulation.Model.Simulation.Persistence;
 
 namespace SlimeSimulation.Model.Generation.Tests
@@ -30,14 +32,32 @@ namespace SlimeSimulation.Model.Generation.Tests
              * |   |
              * f - n
              */
-            var generator = new GraphWithFoodSourcesFromFileGenerator("");
+            var generator = FormatterServices.GetUninitializedObject(typeof(GraphWithFoodSourcesFromFileGenerator)) as GraphWithFoodSourcesFromFileGenerator;
             var result = generator.CreateGraphFromDescription(description);
             Assert.IsNotNull(result, "Should create a not null result fod valid input");
-            Logger.Info("Got result: {0}", 
+            Logger.Info("Got result: {0}",
                 JsonConvert.SerializeObject(result, SerializationSettings.JsonSerializerSettings));
             Assert.AreEqual(2, result.FoodSources.Count, "should be 2 food sources");
             Assert.AreEqual(4, result.NodesInGraph.Count, "with 2x2 grid should be 4 nodes");
             Assert.AreEqual(4, result.EdgesInGraph.Count, "with 2x2 grid should be 4 edges");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentException))]
+        public void Construct_TestBadArgument()
+        {
+            var config = new GraphWithFoodSourceGenerationConfig(new LatticeGraphWithFoodSourcesGenerationConfig(),
+                    GraphGeneratorFactory.GenerateFromFileType, null);
+            new GraphWithFoodSourcesFromFileGenerator(config);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.ArgumentException))]
+        public void Construct_TestBadArgument_EmptyFilepath()
+        {
+            var config = new GraphWithFoodSourceGenerationConfig(new LatticeGraphWithFoodSourcesGenerationConfig(),
+                    GraphGeneratorFactory.GenerateFromFileType, "");
+            new GraphWithFoodSourcesFromFileGenerator(config);
         }
     }
 }

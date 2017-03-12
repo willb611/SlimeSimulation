@@ -51,7 +51,7 @@ namespace SlimeSimulation.View.Windows
             return container;
         }
 
-        internal SimulationConfiguration GetConfigFromViews()
+        internal SimulationConfiguration GetConfigFromViewsOrDisplayErrors()
         {
             var slimeNetworkAdaptionConfig = _simulationUpdateParameterComponent.ReadSlimeNetworkAdaptionCalculatorConfiguration();
             double? flowAmount = _simulationUpdateParameterComponent.ReadFlowAmountConfiguration();
@@ -76,7 +76,7 @@ namespace SlimeSimulation.View.Windows
                     _errorDisplayComponent.AddToDisplayBuffer(errorMsg);
                 }
             }
-            _errorDisplayComponent.UpdateDisplayFromBuffer();
+            _errorDisplayComponent.DisplayErrorsFromBufferThenClearIt();
             return null;
         }
 

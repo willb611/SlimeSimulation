@@ -24,7 +24,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
         private void CreateNewSimulationComponent_Clicked(object sender, EventArgs e)
         {
             Logger.Debug("[BeginSimulationComponent_Clicked] Entered");
-            var config = _enclosingWindow.GetConfigFromViews();
+            var config = _enclosingWindow.GetConfigFromViewsOrDisplayErrors();
             if (config == null)
             {
                 Logger.Info("[BeginSimulationComponent_Clicked] Not starting simulation due to invalid parameters");

@@ -40,7 +40,7 @@ namespace SlimeSimulation.View.WindowComponent
             }
         }
 
-        internal void UpdateDisplayFromBuffer()
+        internal void DisplayErrorsFromBufferThenClearIt()
         {
             StringBuilder sb = new StringBuilder();
             foreach (string error in _errorBuffer)

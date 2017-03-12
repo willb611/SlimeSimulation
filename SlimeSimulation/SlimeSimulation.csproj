@@ -140,7 +140,7 @@
     <Compile Include="View\WindowComponent\SimulationCreationComponent\GraphGenerationControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\TimePerSimulationStepDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationCreationComponent\FileToLoadFromInputComponent.cs" />
-    <Compile Include="View\Windows\LoadFromDesriptionWindow.cs" />
+    <Compile Include="View\Windows\NewSimulationFromFileDescriptionWindow.cs" />
     <Compile Include="View\Windows\ModifySimulationConfigurationWindow.cs" />
     <Compile Include="Controller\WindowController\Templates\AbstractSimulationControllerStarter.cs" />
     <Compile Include="Algorithms\Bfs\Subgraph.cs" />

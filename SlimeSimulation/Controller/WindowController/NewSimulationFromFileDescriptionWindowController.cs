@@ -14,7 +14,7 @@ namespace SlimeSimulation.Controller.WindowController
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ApplicationStartWindowController _applicationStartWindowController;
-        private LoadFromDescriptionWindow _loadFromDescriptionWindow;
+        private NewSimulationFromFileDescriptionWindow _newSimulationFromFileDescriptionWindow;
         private readonly SimulationControllerFactory _controllerFactory;
 
         public NewSimulationFromFileDescriptionWindowController(ApplicationStartWindowController applicationStartWindowController)
@@ -35,9 +35,9 @@ namespace SlimeSimulation.Controller.WindowController
 
         public override void Render()
         {
-            using (AbstractWindow = new LoadFromDescriptionWindow("Slime simulation parameter selection", this))
+            using (AbstractWindow = new NewSimulationFromFileDescriptionWindow("Slime simulation parameter selection", this))
             {
-                _loadFromDescriptionWindow = (LoadFromDescriptionWindow)AbstractWindow;
+                _newSimulationFromFileDescriptionWindow = (NewSimulationFromFileDescriptionWindow)AbstractWindow;
                 GtkLifecycleController.Instance.Display(AbstractWindow);
             }
         }
@@ -52,14 +52,14 @@ namespace SlimeSimulation.Controller.WindowController
             catch (Exception e)
             {
                 Logger.Error(e);
-                _loadFromDescriptionWindow.DisplayError(e);
+                _newSimulationFromFileDescriptionWindow.ShowErrorMessage("Unable to find/load configuration due to an exception: " + e.Message);
                 return;
             }
             Logger.Info("[StartSimulation] Running simulation from user supplied parameters");
             Application.Invoke(delegate
             {
                 Logger.Debug("[StartSimulation] Invoking from main thread ");
-                _loadFromDescriptionWindow.Hide();
+                _newSimulationFromFileDescriptionWindow.Hide();
                 controller.RunSimulation();
                 controller = null; // aid gc ?
             });
@@ -68,7 +68,7 @@ namespace SlimeSimulation.Controller.WindowController
         public override void OnWindowClose()
         {
             base.OnWindowClose();
-            _loadFromDescriptionWindow.Dispose();
+            _newSimulationFromFileDescriptionWindow.Dispose();
             _applicationStartWindowController.Display();
         }
     }
