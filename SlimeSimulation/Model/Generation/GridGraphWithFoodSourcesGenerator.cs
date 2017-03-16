@@ -12,11 +12,11 @@ namespace SlimeSimulation.Model.Generation
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly LatticeGraphWithFoodSourcesGenerationConfig _config;
+        private readonly ConfigForGraphGenerator _config;
         private readonly Random _random = new Random();
         private int _nextId = 1;
 
-        public GridGraphWithFoodSourcesGenerator(LatticeGraphWithFoodSourcesGenerationConfig config)
+        public GridGraphWithFoodSourcesGenerator(ConfigForGraphGenerator config)
         {
             _config = config;
         }
@@ -73,6 +73,17 @@ namespace SlimeSimulation.Model.Generation
                 }
                 edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
                 edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
+                if (_config.EdgeConnectionType == EdgeConnectionTypeSquareWithDiamonds)
+                {
+                    if (row%2 == 0)
+                    {
+                        edges.UnionWith(CreateEdgesLikeSnakeFromBottomToTop(rowNodes, previousRowNodes));
+                    }
+                    else
+                    {
+                        edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));
+                    }
+                }
                 previousRowNodes = rowNodes;
             }
             Logger.Debug("Finished with edges.Count: {0}. Nodes.Count: {1}", edges.Count, nodes.Count);

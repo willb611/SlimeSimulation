@@ -14,18 +14,18 @@ namespace SlimeSimulation.Configuration
         private static readonly string DefaultFileToLoadFrom = "exampleFile.txt";
 
         public GraphWithFoodSourceGenerationConfig()
-            : this(new LatticeGraphWithFoodSourcesGenerationConfig(), DefaultGeneratorToUse)
+            : this(new ConfigForGraphGenerator(), DefaultGeneratorToUse)
         {
         }
 
-        public GraphWithFoodSourceGenerationConfig(LatticeGraphWithFoodSourcesGenerationConfig configForGenerator,
+        public GraphWithFoodSourceGenerationConfig(ConfigForGraphGenerator configForGenerator,
             int generatorTypeToUse)
             : this(configForGenerator, generatorTypeToUse, DefaultFileToLoadFrom)
         {
         }
 
         [JsonConstructor]
-        public GraphWithFoodSourceGenerationConfig(LatticeGraphWithFoodSourcesGenerationConfig configForGenerator,
+        public GraphWithFoodSourceGenerationConfig(ConfigForGraphGenerator configForGenerator,
             int generatorTypeToUse, string fileToLoadFrom)
         {
             GeneratorTypeToUse = generatorTypeToUse;
@@ -35,7 +35,7 @@ namespace SlimeSimulation.Configuration
 
 
         public int GeneratorTypeToUse { get; private set; }
-        public LatticeGraphWithFoodSourcesGenerationConfig ConfigForGenerator { get; private set; }
+        public ConfigForGraphGenerator ConfigForGenerator { get; private set; }
         public string FileToLoadFrom { get; private set; }
     }
 }

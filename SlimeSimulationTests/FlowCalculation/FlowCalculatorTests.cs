@@ -34,7 +34,7 @@ namespace SlimeSimulation.FlowCalculation.LinearEquations.Tests
         [TestMethod()]
         public void CalculateFlowTest()
         {
-            var generator = new LatticeGraphWithFoodSourcesGenerator(new LatticeGraphWithFoodSourcesGenerationConfig(7));
+            var generator = new LatticeGraphWithFoodSourcesGenerator(new ConfigForGraphGenerator(7));
             var network = generator.Generate();
             var calculator = new FlowCalculator(new LupDecompositionSolver());
 

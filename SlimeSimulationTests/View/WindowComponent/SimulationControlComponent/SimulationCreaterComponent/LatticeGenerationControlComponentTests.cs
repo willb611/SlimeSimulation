@@ -14,7 +14,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationControlComponent.Simula
             var size = 123;
             var probablyNewNodeIsFood = 0.2312;
             var minFoodSources = 15;
-            var givenConfig = new LatticeGraphWithFoodSourcesGenerationConfig(size,
+            var givenConfig = new ConfigForGraphGenerator(size,
                 probablyNewNodeIsFood, minFoodSources);
 
             var component = new LatticeGenerationControlComponent(givenConfig);

@@ -14,17 +14,28 @@ namespace SlimeSimulation.Model.Generation
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly string _filepath;
+        private ConfigForGraphGenerator _configForGraphGenerator;
 
-        public GraphWithFoodSourcesFromFileGenerator(GraphWithFoodSourceGenerationConfig config) : this(config.FileToLoadFrom)
+        private int EdgeConnectionType
         {
+            get
+            {
+                if (_configForGraphGenerator != null)
+                {
+                    return _configForGraphGenerator.EdgeConnectionType;
+                }
+                return DefaultEdgeConnectionType;
+            }
         }
-        private GraphWithFoodSourcesFromFileGenerator(string filepath)
+
+        public GraphWithFoodSourcesFromFileGenerator(ConfigForGraphGenerator config, string filepath)
         {
             if (String.IsNullOrWhiteSpace(filepath))
             {
                 throw new ArgumentException("Given empty or null argument " + (nameof(filepath)));
             }
             _filepath = filepath;
+            _configForGraphGenerator = config;
         }
 
         public override GraphWithFoodSources Generate()
@@ -93,6 +104,18 @@ namespace SlimeSimulation.Model.Generation
                     }
                     edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
                     edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
+                    Logger.Debug("[CreateGraphFromDescription] EdgeConnectionType: {0}", EdgeConnectionType);
+                    if (EdgeConnectionType == EdgeConnectionTypeSquareWithDiamonds)
+                    {
+                        if (rowNum % 2 == 0)
+                        {
+                            edges.UnionWith(CreateEdgesLikeSnakeFromBottomToTop(rowNodes, previousRowNodes));
+                        }
+                        else
+                        {
+                            edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));
+                        }
+                    }
                     previousRowNodes = rowNodes;
                 }
                 var result = new GraphWithFoodSources(edges);

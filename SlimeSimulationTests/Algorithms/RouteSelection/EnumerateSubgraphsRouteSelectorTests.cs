@@ -17,7 +17,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection.Tests
         [TestMethod()]
         public void SelectRoute_SelectsSourceDeterminstically()
         {
-            var graphWithFoodSources = new LatticeGraphWithFoodSourcesGenerator(new LatticeGraphWithFoodSourcesGenerationConfig(15, 0.1, 5)).Generate();
+            var graphWithFoodSources = new LatticeGraphWithFoodSourcesGenerator(new ConfigForGraphGenerator(15, 0.1, 5)).Generate();
             var slimeNetwork = new SlimeNetworkGenerator().FromGraphWithFoodSources(graphWithFoodSources);
             ISet<Node> foodSourcesUsed = new HashSet<Node>();
             var routeSelector = new EnumerateSubgraphsRouteSelector();
@@ -39,7 +39,7 @@ namespace SlimeSimulation.Algorithms.RouteSelection.Tests
         [TestMethod()]
         public void SelectRoute_OnlyChoosesFoodSources()
         {
-            var graphWithFoodSources = new LatticeGraphWithFoodSourcesGenerator(new LatticeGraphWithFoodSourcesGenerationConfig(15, 0.1, 5)).Generate();
+            var graphWithFoodSources = new LatticeGraphWithFoodSourcesGenerator(new ConfigForGraphGenerator(15, 0.1, 5)).Generate();
             var slimeNetwork = new SlimeNetworkGenerator().FromGraphWithFoodSources(graphWithFoodSources);
             var routeSelector = new EnumerateSubgraphsRouteSelector();
             for (int i = 0; i < graphWithFoodSources.FoodSources.Count; i++)

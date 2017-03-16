@@ -46,18 +46,14 @@ namespace SlimeSimulation.Model.Generation.Tests
         [ExpectedException(typeof(System.ArgumentException))]
         public void Construct_TestBadArgument()
         {
-            var config = new GraphWithFoodSourceGenerationConfig(new LatticeGraphWithFoodSourcesGenerationConfig(),
-                    GraphGeneratorFactory.GenerateFromFileType, null);
-            new GraphWithFoodSourcesFromFileGenerator(config);
+            new GraphWithFoodSourcesFromFileGenerator(new ConfigForGraphGenerator(), null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(System.ArgumentException))]
         public void Construct_TestBadArgument_EmptyFilepath()
         {
-            var config = new GraphWithFoodSourceGenerationConfig(new LatticeGraphWithFoodSourcesGenerationConfig(),
-                    GraphGeneratorFactory.GenerateFromFileType, "");
-            new GraphWithFoodSourcesFromFileGenerator(config);
+            new GraphWithFoodSourcesFromFileGenerator(new ConfigForGraphGenerator(), "");
         }
     }
 }

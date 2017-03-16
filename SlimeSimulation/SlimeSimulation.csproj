@@ -119,7 +119,7 @@
     <Compile Include="Algorithms\Bfs\GraphSplitIntoSubgraphs.cs" />
     <Compile Include="Algorithms\RouteSelection\EnumerateSubgraphsRouteSelector.cs" />
     <Compile Include="Configuration\GraphWithFoodSourceGenerationConfig.cs" />
-    <Compile Include="Configuration\LatticeGraphWithFoodSourcesGenerationConfig.cs" />
+    <Compile Include="Configuration\ConfigForGraphGenerator.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />
     <Compile Include="Configuration\SimulationControlInterfaceValues.cs" />
     <Compile Include="Configuration\SlimeNetworkAdaptionCalculatorConfig.cs" />

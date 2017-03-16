@@ -18,7 +18,7 @@ namespace SlimeSimulation.Model.Generation.Tests
             Node a = new Node(1, 1, 1);
             Node b = new Node(2, 2, 2);
             Node c = new Node(3, 3, 3);
-            var nodes = new List<Node>() {a,b,c};
+            var nodes = new List<Node>() { a, b, c };
 
             var abEdge = new Edge(a, b);
             var bcEdge = new Edge(b, c);
@@ -39,7 +39,7 @@ namespace SlimeSimulation.Model.Generation.Tests
 
             Node c = new Node(3, 3, 3);
             Node d = new Node(4, 4, 4);
-            var secondRow = new List<Node>() {c, d};
+            var secondRow = new List<Node>() { c, d };
 
             var ac = new Edge(a, c);
             var bd = new Edge(b, d);
@@ -49,6 +49,36 @@ namespace SlimeSimulation.Model.Generation.Tests
             Assert.IsTrue(result.Contains(ac));
             Assert.IsTrue(result.Contains(bd));
             Assert.AreEqual(2, result.Count);
+        }
+
+        [TestMethod()]
+        public void CreateEdgesLikeSnakeFromTopToBottomTest()
+        {
+            Node a = new Node(1, 1, 1);
+            Node b = new Node(2, 2, 2);
+            Node e = new Node(5, 5, 5);
+            var firstRow = new List<Node>() { a, b, e };
+
+            Node c = new Node(3, 3, 3);
+            Node d = new Node(4, 4, 4);
+            Node f = new Node(6, 6, 6);
+            var secondRow = new List<Node>() { c, d, f };
+
+            /*
+             * Should be connected like:
+             * a b  e
+             *  \  /
+             * c d f
+             */
+            var ad = new Edge(a, d);
+            var de = new Edge(d, e);
+
+            var generator = FormatterServices.GetUninitializedObject(typeof(GridGraphWithFoodSourcesGenerator)) as GridGraphWithFoodSourcesGenerator;
+            var result = generator.CreateEdgesLikeSnakeFromTopToBottom(firstRow, secondRow);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count);
+            Assert.IsTrue(result.Contains(ad));
+            Assert.IsTrue(result.Contains(de));
         }
     }
 }

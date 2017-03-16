@@ -4,22 +4,23 @@ using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.Configuration
 {
-    public class LatticeGraphWithFoodSourcesGenerationConfig
+    public class ConfigForGraphGenerator
     {
         private static readonly double DefaultProbabilityNewNodeIsFood = 0.03;
         private static readonly int DefaultMinimumFoodSources = 2;
         private static readonly int DefaultSize = 9;
+        private static readonly int DefaultEdgeConnectionType = GraphWithFoodSourcesGenerator.DefaultEdgeConnectionType;
 
-        public LatticeGraphWithFoodSourcesGenerationConfig() : this(DefaultSize)
+        public ConfigForGraphGenerator() : this(DefaultSize)
         {
         }
 
-        public LatticeGraphWithFoodSourcesGenerationConfig(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources)
+        public ConfigForGraphGenerator(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources)
         {
         }
 
         [JsonConstructor]
-        public LatticeGraphWithFoodSourcesGenerationConfig(int size, double probabilityNewNodeIsFoodSource,
+        public ConfigForGraphGenerator(int size, double probabilityNewNodeIsFoodSource,
             int minimumFoodSources)
         {
             if (size < 3)
@@ -40,11 +41,13 @@ namespace SlimeSimulation.Configuration
             Size = size;
             ProbabilityNewNodeIsFoodSource = probabilityNewNodeIsFoodSource;
             MinimumFoodSources = minimumFoodSources;
+            EdgeConnectionType = DefaultEdgeConnectionType;
         }
 
 
         public int MinimumFoodSources { get; private set; }
         public double ProbabilityNewNodeIsFoodSource { get; private set; }
         public int Size { get; private set; }
+        public int EdgeConnectionType { get; private set; }
     }
 }

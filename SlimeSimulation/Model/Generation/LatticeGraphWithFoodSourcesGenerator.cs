@@ -16,16 +16,16 @@ namespace SlimeSimulation.Model.Generation
         private HashSet<Edge> _edges = new HashSet<Edge>();
         private HashSet<FoodSourceNode> _foodSources = new HashSet<FoodSourceNode>();
         
-        private readonly LatticeGraphWithFoodSourcesGenerationConfig _config;
+        private readonly ConfigForGraphGenerator _config;
         private readonly int _rows;
         private readonly int _columns;
 
         private bool _used;
 
-        public LatticeGraphWithFoodSourcesGenerator() : this(new LatticeGraphWithFoodSourcesGenerationConfig())
+        public LatticeGraphWithFoodSourcesGenerator() : this(new ConfigForGraphGenerator())
         {
         }
-        public LatticeGraphWithFoodSourcesGenerator(LatticeGraphWithFoodSourcesGenerationConfig config)
+        public LatticeGraphWithFoodSourcesGenerator(ConfigForGraphGenerator config)
         {
             _config = config;
             _rows = config.Size;

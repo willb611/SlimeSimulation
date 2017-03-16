@@ -10,7 +10,7 @@ namespace SlimeSimulation.Configuration.Tests
         [ExpectedException(typeof(ArgumentException))]
         public void NewInstance_SizeTwo_ShouldThrowException()
         {
-            new LatticeGraphWithFoodSourcesGenerationConfig(2);
+            new ConfigForGraphGenerator(2);
         }
     }
 }

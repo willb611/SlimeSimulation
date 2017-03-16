@@ -11,7 +11,7 @@ namespace SlimeSimulation.Model.Generation.Tests
         {
             for (int i = 3; i < 9; i++)
             {
-                var generator = new LatticeGraphWithFoodSourcesGenerator(new LatticeGraphWithFoodSourcesGenerationConfig(i));
+                var generator = new LatticeGraphWithFoodSourcesGenerator(new ConfigForGraphGenerator(i));
                 var network = generator.Generate();
                 Assert.IsTrue(network.FoodSources.Count >= 2, "2 food sources should always be produced");
             }

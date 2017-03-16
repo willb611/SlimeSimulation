@@ -39,7 +39,7 @@ namespace SlimeSimulation.Model.Generation
             switch (config.GeneratorTypeToUse)
             {
                 case GenerateFromFileType:
-                    return new GraphWithFoodSourcesFromFileGenerator(config);
+                    return new GraphWithFoodSourcesFromFileGenerator(config.ConfigForGenerator, config.FileToLoadFrom);
                 case GridType:
                     return new GridGraphWithFoodSourcesGenerator(config.ConfigForGenerator);
                 case DiagonalConnectedGridType:
