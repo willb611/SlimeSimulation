@@ -2,15 +2,23 @@ using System;
 
 namespace SlimeSimulation.Model
 {
-    public class Edge
+    public class Edge : IEquatable<Edge>, IComparable<Edge>
     {
         private readonly Node _a;
         private readonly Node _b;
 
         public Edge(Node a, Node b)
         {
-            _a = a;
-            _b = b;
+            if (a.CompareTo(b) <= 0)
+            {
+                _a = a;
+                _b = b;
+            }
+            else
+            {
+                _a = b;
+                _b = a;
+            }
         }
 
         public Node A => _a;
@@ -34,6 +42,17 @@ namespace SlimeSimulation.Model
             throw new ApplicationException("Node is not contained in this edge");
         }
 
+        public int CompareTo(Edge other)
+        {
+            if (A.Equals(other.A))
+            {
+                return B.CompareTo(other.B);
+            } else
+            {
+                return A.CompareTo(other.A);
+            }
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as Edge);
@@ -55,10 +74,10 @@ namespace SlimeSimulation.Model
                 return false;
             }
 
-            return A.Equals(other.A) && B.Equals(other.B);
+            return CompareTo(other) == 0;
         }
 
-        public override int GetHashCode()
+        public override int GetHashCode() 
         {
             return A.GetHashCode() * 17 + B.GetHashCode();
         }

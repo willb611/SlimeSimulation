@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using GLib;
+using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.Model.Generation.Tests
 {
@@ -79,6 +81,45 @@ namespace SlimeSimulation.Model.Generation.Tests
             Assert.AreEqual(2, result.Count);
             Assert.IsTrue(result.Contains(ad));
             Assert.IsTrue(result.Contains(de));
+        }
+
+        [TestMethod()]
+        public void Generate_EdgesWithDiagonalsTest()
+        {
+            var a = new Node(1, 0, 0);
+            var b = new Node(2, 1, 0);
+            var c = new Node(3, 1, 1);
+            var d = new Node(4, 0, 1);
+            var dcList = new List<Node> {d, c};
+            var abList = new List<Node> {a, b};
+            List<List<Node>> nodes = new List<List<Node>>()
+            {
+                dcList, abList
+            };
+            /*Should create like:
+             * d - c
+             * | \ |
+             * a - b
+             */
+            var config = new ConfigForGraphGenerator(5, 0.3, 5, GraphWithFoodSourcesGenerator.EdgeConnectionTypeSquareWithDiamonds);
+            var generator = new GridGraphWithFoodSourcesGenerator(config);
+            var edges = generator.GenerateEdges(nodes, 2, 2, config.EdgeConnectionType);
+            Assert.IsNotNull(edges, "Should create a not null result fod valid input");
+            Assert.AreEqual(5, edges.Count, "should be 5 food edges");
+            var bottomRow = new Edge(a, b);
+            Assert.IsTrue(edges.Contains(bottomRow), "bottom row missing, expected: " + bottomRow);
+
+            var leftVertical = new Edge(a, d);
+            Assert.IsTrue(edges.Contains(leftVertical), "left vertical missing, expected: " + leftVertical);
+
+            var topRow = new Edge(d, c);
+            Assert.IsTrue(edges.Contains(topRow), "top row missing, expected: " + topRow);
+
+            var rightVertical = new Edge(c, b);
+            Assert.IsTrue(edges.Contains(rightVertical), "right vertical missing, expected: " + rightVertical);
+
+            var diagonal = new Edge(b, d);
+            Assert.IsTrue(edges.Contains(diagonal), "diagonal from top left to bottom right missing, expected: " + diagonal);
         }
     }
 }

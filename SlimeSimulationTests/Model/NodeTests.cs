@@ -1,3 +1,4 @@
+using SlimeSimulation.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,41 @@ namespace SlimeSimulation.Model.Tests
                 nodesReplacementShouldConnectTo.Remove(connected);
             }
             Assert.IsFalse(nodesReplacementShouldConnectTo.Any());
+        }
+
+        [TestMethod()]
+        public void CompareTo_ById()
+        {
+            Node a = new Node(1, 1, 1);
+            Node b = new Node(2, 1, 1);
+            Assert.IsTrue(a.CompareTo(b) < 0);
+            Assert.IsTrue(b.CompareTo(a) > 0);
+        }
+
+        [TestMethod()]
+        public void CompareTo_ByX()
+        {
+            Node a = new Node(1, 1, 1);
+            Node b = new Node(1, 2, 1);
+            Assert.IsTrue(a.CompareTo(b) < 0);
+            Assert.IsTrue(b.CompareTo(a) > 0);
+        }
+
+        [TestMethod()]
+        public void CompareTo_ByY()
+        {
+            Node a = new Node(1, 1, 1);
+            Node b = new Node(1, 1, 2);
+            Assert.IsTrue(a.CompareTo(b) < 0);
+            Assert.IsTrue(b.CompareTo(a) > 0);
+        }
+
+        [TestMethod()]
+        public void CompareTo_WhenEqual()
+        {
+            Node a = new Node(1, 1, 1);
+            Node b = new Node(1, 1, 1);
+            Assert.AreEqual(0, a.CompareTo(b));
         }
     }
 }

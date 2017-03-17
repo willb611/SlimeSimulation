@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+using Newtonsoft.Json;
 using NLog;
+using SlimeSimulation.Model.Simulation.Persistence;
 
 namespace SlimeSimulation.Model.Generation
 {
@@ -10,13 +10,15 @@ namespace SlimeSimulation.Model.Generation
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static readonly int EdgeConnectionTypeSquare = 1;
         public static readonly int EdgeConnectionTypeSquareWithDiamonds = 2;
-        public static int DefaultEdgeConnectionType => EdgeConnectionTypeSquareWithDiamonds;
+        public static readonly int EdgeConnectionTypeSquareWithCrossedDiagonals = 3;
+        public static int DefaultEdgeConnectionType => EdgeConnectionTypeSquareWithCrossedDiagonals;
 
         public abstract GraphWithFoodSources Generate();
 
         public ISet<Edge> GenerateEdges(List<List<Node>> nodesAs2DArray, int rowLimit, int colLimit, int edgeConnectionType)
         {
-            Logger.Debug("[CreateGraphFromDescription] EdgeConnectionType: {0}", edgeConnectionType);
+            Logger.Debug("[GenerateEdges] EdgeConnectionType: {0}, rowLimit: {1}, colLimit: {2}",
+                edgeConnectionType, rowLimit, colLimit);
             ISet<Edge> edges = new HashSet<Edge>();
             var previousRowNodes = new List<Node>();
             for (int row = 0; row < rowLimit; row++)
@@ -26,12 +28,13 @@ namespace SlimeSimulation.Model.Generation
                 {
                     Node node = nodesAs2DArray[row][col];
                     rowNodes.Add(node);
+                    Logger.Debug("At row {0}, col {1} got node {2}", row, col, node);
                 }
                 edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
                 edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
                 if (edgeConnectionType == EdgeConnectionTypeSquareWithDiamonds)
                 {
-                    if (row % 2 == 0)
+                    if (row % 2 == 1)
                     {
                         edges.UnionWith(CreateEdgesLikeSnakeFromBottomToTop(rowNodes, previousRowNodes));
                     }
@@ -39,52 +42,65 @@ namespace SlimeSimulation.Model.Generation
                     {
                         edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));
                     }
+                } else if (edgeConnectionType == EdgeConnectionTypeSquareWithCrossedDiagonals)
+                {
+                    edges.UnionWith(CreateEdgesLikeSnakeFromBottomToTop(rowNodes, previousRowNodes));
+                    edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));
                 }
                 previousRowNodes = rowNodes;
             }
+            Logger.Debug("[GenerateEdges] returning result size {0}", edges.Count);
+            Logger.Debug("[GenerateEdges] result: {0}", JsonConvert.SerializeObject(edges, SerializationSettings.JsonSerializerSettings));
             return edges;
         }
 
-        internal ISet<Edge> CreateEdgesLikeSnakeFromTopToBottom(List<Node> row, List<Node> otherRow)
+        internal ISet<Edge> CreateEdgesLikeSnakeFromTopToBottom(List<Node> top, List<Node> bottom)
         {
-            Logger.Debug("[CreateEdgesLikeSnakeFromTopToBottom] Entered with row.Count: {0}, otherRow.Count: {1}", 
-                row.Count, otherRow.Count);
+            Logger.Debug("[CreateEdgesLikeSnakeFromTopToBottom] Entered with top.Count: {0}, bottom.Count: {1}",
+                top.Count, bottom.Count);
             var result = new HashSet<Edge>();
-            for (int startIndex = 0; startIndex + 1 < row.Count 
-                                    && startIndex + 1 < otherRow.Count; startIndex++)
+            for (int startIndex = 0; startIndex + 1 < top.Count 
+                                    && startIndex + 1 < bottom.Count; startIndex++)
             {
-                bool shouldStartFromTop = startIndex % 2 == 0;
+                Logger.Debug("[CreateEdgesLikeSnakeFromTopToBottom] StartIndex: {0}", startIndex);
+                bool shouldStartFromTop = (startIndex % 2 == 0);
                 if (shouldStartFromTop)
                 {
-                    result.Add(new Edge(row[startIndex], otherRow[startIndex + 1]));
+                    var edge = new Edge(top[startIndex], bottom[startIndex + 1]);
+                    Logger.Debug("[CreateEdgesLikeSnakeFromTopToBottom] Starting from top created edge {0}", edge);
+                    result.Add(edge);
                 }
                 else
                 {
-                    result.Add(new Edge(otherRow[startIndex], row[startIndex + 1]));
+                    var edge = new Edge(bottom[startIndex], top[startIndex + 1]);
+                    Logger.Debug("[CreateEdgesLikeSnakeFromTopToBottom] Starting from bottom created edge {0}", edge);
+                    result.Add(edge);
                 }
             }
             Logger.Debug("[CreateEdgesLikeSnakeFromTopToBottom] Returning result size: {0}", result.Count);
             return result;
         }
 
-        internal ISet<Edge> CreateEdgesLikeSnakeFromBottomToTop(List<Node> row, List<Node> otherRow)
+        internal ISet<Edge> CreateEdgesLikeSnakeFromBottomToTop(List<Node> bottom, List<Node> top)
         {
-            return CreateEdgesLikeSnakeFromTopToBottom(otherRow, row);
+            return CreateEdgesLikeSnakeFromTopToBottom(top, bottom);
         }
 
         internal ISet<Edge> CreateEdgesBetweenNodesInOrder(List<Node> row)
         {
             if (row == null)
             {
-                Logger.Warn("[JoinCellsInRow] Given null row");
+                Logger.Warn("[CreateEdgesBetweenNodesInOrder] Given null row");
                 return new HashSet<Edge>();
             }
             var result = new HashSet<Edge>();
             for (int i = 1; i < row.Count; i++)
             {
                 Edge e = new Edge(row[i-1], row[i]);
+                Logger.Debug("[CreateEdgesBetweenNodesInOrder] At index {0} created edge {1}", i, e);
                 result.Add(e);
             }
+            Logger.Debug("[CreateEdgesBetweenNodesInOrder] Returning result size: {0}", result.Count);
             return result;
         }
 
@@ -92,15 +108,17 @@ namespace SlimeSimulation.Model.Generation
         {
             if (row == null || otherRow == null)
             {
-                Logger.Warn("[CreateEdgesConnectingRowsVertically] Given null row");
+                Logger.Warn("[CreateEdgesBetweenRowsAtSameIndex] Given null row");
                 return new HashSet<Edge>();
             }
             var result = new HashSet<Edge>();
             for (int i = 0; i < row.Count && i < otherRow.Count; i++)
             {
                 Edge e = new Edge(row[i], otherRow[i]);
+                Logger.Debug("[CreateEdgesBetweenRowsAtSameIndex] At index {1} Created edge: {0}", e, i);
                 result.Add(e);
             }
+            Logger.Debug("[CreateEdgesBetweenRowsAtSameIndex] Returning result size: {0}", result.Count);
             return result;
         }
     }

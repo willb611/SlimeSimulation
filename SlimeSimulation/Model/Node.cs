@@ -4,7 +4,7 @@ using NLog;
 
 namespace SlimeSimulation.Model
 {
-    public class Node : IEquatable<Node>
+    public class Node : IEquatable<Node>, IComparable<Node>
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -23,6 +23,24 @@ namespace SlimeSimulation.Model
         public double X => _x;
         public double Y => _y;
 
+        public int CompareTo(Node other)
+        {
+            if (Id.Equals(other.Id))
+            {
+                if (X.Equals(other.X))
+                {
+                    return Y.CompareTo(other.Y);
+                }
+                else
+                {
+                    return X.CompareTo(other.X);
+                }
+            }
+            else
+            {
+                return Id.CompareTo(other.Id);
+            }
+        }
 
         public override bool Equals(object obj)
         {
@@ -45,11 +63,7 @@ namespace SlimeSimulation.Model
                 return false;
             }
 
-            if (_id != other.Id)
-            {
-                return false;
-            }
-            return X == other.X && Y == other.Y;
+            return CompareTo(other) == 0;
         }
 
         public override int GetHashCode()
