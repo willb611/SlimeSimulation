@@ -76,54 +76,37 @@ namespace SlimeSimulation.Model.Generation
         {
             using (System.IO.StringReader reader = new System.IO.StringReader(fileAsText))
             {
-                int rows = Int32.Parse(reader.ReadLine());
-                int cols = Int32.Parse(reader.ReadLine());
+                int rowLimit = Int32.Parse(reader.ReadLine());
+                int colLimit = Int32.Parse(reader.ReadLine());
                 int numberOfFoodSources = Int32.Parse(reader.ReadLine());
                 HashSet<FoodSourceNode> foodSources = new HashSet<FoodSourceNode>();
-                HashSet<Node> nodes = new HashSet<Node>();
                 int nextId = 0;
                 for (int i = 0; i < numberOfFoodSources; i++)
                 {
                     foodSources.Add(GetFoodSourceFromLine(reader.ReadLine(), ref nextId));
                 }
-                Logger.Debug("Creating with {0} rows, {1} cols, {2} foodSources", rows, cols, numberOfFoodSources);
-                // Do some stuff
-                ISet<Edge> edges = new HashSet<Edge>();
-                var previousRowNodes = new List<Node>();
-                for (int rowNum = 0; rowNum < rows; rowNum++)
+                
+                Logger.Debug("Creating with {0} rows, {1} cols, {2} foodSources", rowLimit, colLimit, numberOfFoodSources);
+                List<List<Node>> nodesAs2DArray = new List<List<Node>>();
+                for (int row = 0; row < rowLimit; row++)
                 {
-                    var rowNodes = new List<Node>();
-                    for (int colNum = 0; colNum < cols; colNum++)
+                    nodesAs2DArray.Add(new List<Node>());
+                    for (int col = 0; col < colLimit; col++)
                     {
-                        Node node = GetOrMakeNode(ref nextId, rowNum, colNum, foodSources);
-                        rowNodes.Add(node);
-                        nodes.Add(node);
+                        Node node = GetOrMakeNode(ref nextId, row, col, foodSources);
+                        nodesAs2DArray[row].Add(node);
                     }
-                    edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
-                    edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
-                    Logger.Debug("[CreateGraphFromDescription] EdgeConnectionType: {0}", EdgeConnectionType);
-                    if (EdgeConnectionType == EdgeConnectionTypeSquareWithDiamonds)
-                    {
-                        if (rowNum % 2 == 0)
-                        {
-                            edges.UnionWith(CreateEdgesLikeSnakeFromBottomToTop(rowNodes, previousRowNodes));
-                        }
-                        else
-                        {
-                            edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));
-                        }
-                    }
-                    previousRowNodes = rowNodes;
                 }
+                ISet<Edge> edges = GenerateEdges(nodesAs2DArray, rowLimit, colLimit, EdgeConnectionType);
                 var result = new GraphWithFoodSources(edges);
                 if (result.FoodSources.Count != foodSources.Count)
                 {
-                    Logger.Warn("Some food sources not in the specified graph.");
+                    Logger.Warn("Some food sources not in the generated graph.");
                 }
                 return result;
             }
         }
-
+        
         private Node GetOrMakeNode(ref int nextId, int row, int col, HashSet<FoodSourceNode> foodSources)
         {
             Node node = GetFoodSourceAtPositionOrNull(col, row, foodSources);

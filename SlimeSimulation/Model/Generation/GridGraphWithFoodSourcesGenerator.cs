@@ -36,24 +36,31 @@ namespace SlimeSimulation.Model.Generation
 
         public GraphWithFoodSources ActuallyGenerate()
         {
-            ISet<Node> nodes = new HashSet<Node>();
-            ISet<Edge> edges = new HashSet<Edge>();
             ISet<FoodSourceNode> foodSources = new HashSet<FoodSourceNode>();
-            List<List<Node>> nodesAs2dArray = new List<List<Node>>();
-            /*Construct like:
-            * 
-            * o-o-o
-            * | | |
-            * o-o-o
-            * 
-            */
             int rowLimit = _config.Size;
             int colLimit = rowLimit;
+            var nodesAs2DArray = GenerateNodes(_config, foodSources);
+            var edges = GenerateEdges(nodesAs2DArray, rowLimit, colLimit, _config.EdgeConnectionType);
+            Logger.Debug("[ActuallyGenerate] Finished with edges.Count: {0}.", edges.Count);
+            var result = new GraphWithFoodSources(edges);
+            if (result.FoodSources.Count != foodSources.Count)
+            {
+                Logger.Warn("Some food sources not in the generated graph.");
+            }
+            return result;
+        }
+
+        private List<List<Node>> GenerateNodes(ConfigForGraphGenerator config, ISet<FoodSourceNode> foodSources)
+        {
+            List<List<Node>> nodesAs2DArray = new List<List<Node>>();
+            ISet<Node> nodes = new HashSet<Node>();
+            int rowLimit = config.Size;
+            int colLimit = rowLimit;
             int totalNodes = rowLimit * colLimit;
-            int foodSourcesLeftToMake = GetNumberOfFoodSources(_config.MinimumFoodSources, _config.ProbabilityNewNodeIsFoodSource, totalNodes);
+            int foodSourcesLeftToMake = GetNumberOfFoodSources(config.MinimumFoodSources, config.ProbabilityNewNodeIsFoodSource, totalNodes);
             for (int row = 1; row <= rowLimit; row++)
             {
-                nodesAs2dArray.Add(new List<Node>());
+                nodesAs2DArray.Add(new List<Node>());
                 for (int col = 1; col <= colLimit; col++)
                 {
                     Node node;
@@ -67,47 +74,11 @@ namespace SlimeSimulation.Model.Generation
                     {
                         node = MakeNode(ref _nextId, row, col);
                     }
-                    nodesAs2dArray[row-1].Add(node);
+                    nodesAs2DArray[row - 1].Add(node);
                     nodes.Add(node);
                 }
             }
-            var previousRowNodes = new List<Node>();
-            for (var row = 1; row <= rowLimit; row++)
-            {
-                Logger.Debug("Row: {0}", row);
-                var rowNodes = new List<Node>();
-                for (var col = 1; col <= colLimit; col++)
-                {
-                    Node node = GetNode(row-1, col-1, nodesAs2dArray);
-                    rowNodes.Add(node);
-                }
-                edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
-                edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
-                if (_config.EdgeConnectionType == EdgeConnectionTypeSquareWithDiamonds)
-                {
-                    if (row%2 == 0)
-                    {
-                        edges.UnionWith(CreateEdgesLikeSnakeFromBottomToTop(rowNodes, previousRowNodes));
-                    }
-                    else
-                    {
-                        edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));
-                    }
-                }
-                previousRowNodes = rowNodes;
-            }
-            var result = new GraphWithFoodSources(edges);
-            Logger.Debug("Finished with edges.Count: {0}. Nodes.Count: {1}", edges.Count, nodes.Count);
-            if (result.FoodSources.Count != foodSources.Count)
-            {
-                Logger.Warn("Some food sources not in the specified graph.");
-            }
-            return result;
-        }
-
-        private Node GetNode(int row, int col, List<List<Node>> nodesAs2DArray)
-        {
-            return nodesAs2DArray[row][col];
+            return nodesAs2DArray;
         }
 
         private bool IsNodeFoodSource(int nodesLeftToMake, int foodSourcesLeftToMake)

@@ -14,6 +14,37 @@ namespace SlimeSimulation.Model.Generation
 
         public abstract GraphWithFoodSources Generate();
 
+        public ISet<Edge> GenerateEdges(List<List<Node>> nodesAs2DArray, int rowLimit, int colLimit, int edgeConnectionType)
+        {
+            Logger.Debug("[CreateGraphFromDescription] EdgeConnectionType: {0}", edgeConnectionType);
+            ISet<Edge> edges = new HashSet<Edge>();
+            var previousRowNodes = new List<Node>();
+            for (int row = 0; row < rowLimit; row++)
+            {
+                var rowNodes = new List<Node>();
+                for (int col = 0; col < colLimit; col++)
+                {
+                    Node node = nodesAs2DArray[row][col];
+                    rowNodes.Add(node);
+                }
+                edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
+                edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
+                if (edgeConnectionType == EdgeConnectionTypeSquareWithDiamonds)
+                {
+                    if (row % 2 == 0)
+                    {
+                        edges.UnionWith(CreateEdgesLikeSnakeFromBottomToTop(rowNodes, previousRowNodes));
+                    }
+                    else
+                    {
+                        edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));
+                    }
+                }
+                previousRowNodes = rowNodes;
+            }
+            return edges;
+        }
+
         public ISet<Edge> CreateEdgesLikeSnakeFromTopToBottom(List<Node> row, List<Node> otherRow)
         {
             Logger.Debug("[CreateEdgesLikeSnakeFromTopToBottom] Entered with row.Count: {0}, otherRow.Count: {1}", 
