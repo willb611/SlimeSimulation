@@ -45,7 +45,7 @@ namespace SlimeSimulation.Model.Generation
             return edges;
         }
 
-        public ISet<Edge> CreateEdgesLikeSnakeFromTopToBottom(List<Node> row, List<Node> otherRow)
+        internal ISet<Edge> CreateEdgesLikeSnakeFromTopToBottom(List<Node> row, List<Node> otherRow)
         {
             Logger.Debug("[CreateEdgesLikeSnakeFromTopToBottom] Entered with row.Count: {0}, otherRow.Count: {1}", 
                 row.Count, otherRow.Count);
@@ -67,12 +67,12 @@ namespace SlimeSimulation.Model.Generation
             return result;
         }
 
-        public ISet<Edge> CreateEdgesLikeSnakeFromBottomToTop(List<Node> row, List<Node> otherRow)
+        internal ISet<Edge> CreateEdgesLikeSnakeFromBottomToTop(List<Node> row, List<Node> otherRow)
         {
             return CreateEdgesLikeSnakeFromTopToBottom(otherRow, row);
         }
 
-        public ISet<Edge> CreateEdgesBetweenNodesInOrder(List<Node> row)
+        internal ISet<Edge> CreateEdgesBetweenNodesInOrder(List<Node> row)
         {
             if (row == null)
             {
@@ -88,7 +88,7 @@ namespace SlimeSimulation.Model.Generation
             return result;
         }
 
-        public ISet<Edge> CreateEdgesBetweenRowsAtSameIndex(List<Node> row, List<Node> otherRow)
+        internal ISet<Edge> CreateEdgesBetweenRowsAtSameIndex(List<Node> row, List<Node> otherRow)
         {
             if (row == null || otherRow == null)
             {
