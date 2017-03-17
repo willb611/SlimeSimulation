@@ -95,10 +95,7 @@ namespace SlimeSimulation.Model.Generation
                     var rowNodes = new List<Node>();
                     for (int colNum = 0; colNum < cols; colNum++)
                     {
-                        Node node = GetNodeFoodSource(colNum, rowNum, foodSources);
-                        if (node == null) {
-                            node = new Node(nextId++, colNum, rowNum);
-                        }
+                        Node node = GetOrMakeNode(ref nextId, rowNum, colNum, foodSources);
                         rowNodes.Add(node);
                         nodes.Add(node);
                     }
@@ -127,7 +124,17 @@ namespace SlimeSimulation.Model.Generation
             }
         }
 
-        private Node GetNodeFoodSource(int x, int y, HashSet<FoodSourceNode> foodSources)
+        private Node GetOrMakeNode(ref int nextId, int row, int col, HashSet<FoodSourceNode> foodSources)
+        {
+            Node node = GetFoodSourceAtPositionOrNull(col, row, foodSources);
+            if (node == null)
+            {
+                node = new Node(nextId++, col, row);
+            }
+            return node;
+        }
+
+        private Node GetFoodSourceAtPositionOrNull(int x, int y, HashSet<FoodSourceNode> foodSources)
         {
             foreach (FoodSourceNode foodSource in foodSources)
             {

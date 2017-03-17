@@ -28,11 +28,12 @@ namespace SlimeSimulation.Model.Generation.Tests
                                  "0,0\n" +
                                  "0,1";
             /*Should create like:
-             * f - n
+             * f - n                      -- f is food, n is node (not food)
              * |   |
              * f - n
              */
-            var generator = FormatterServices.GetUninitializedObject(typeof(GraphWithFoodSourcesFromFileGenerator)) as GraphWithFoodSourcesFromFileGenerator;
+            var config = new ConfigForGraphGenerator(5, 0.2, 4, GraphWithFoodSourcesGenerator.EdgeConnectionTypeSquare);
+            var generator = new GraphWithFoodSourcesFromFileGenerator(config, "test.file");
             var result = generator.CreateGraphFromDescription(description);
             Assert.IsNotNull(result, "Should create a not null result fod valid input");
             Logger.Info("Got result: {0}",
@@ -40,6 +41,29 @@ namespace SlimeSimulation.Model.Generation.Tests
             Assert.AreEqual(2, result.FoodSources.Count, "should be 2 food sources");
             Assert.AreEqual(4, result.NodesInGraph.Count, "with 2x2 grid should be 4 nodes");
             Assert.AreEqual(4, result.EdgesInGraph.Count, "with 2x2 grid should be 4 edges");
+        }
+
+        [TestMethod()]
+        public void Generate_EdgesWithoutDiagonalsTest()
+        {
+            string description = "2\n" +
+                                 "2\n" +
+                                 "2\n" +
+                                 "0,0\n" +
+                                 "0,1";
+            /*Should create like:
+             * f - n                      -- f is food, n is node (not food)
+             * | \ |
+             * f - n
+             */
+            var generator = new GraphWithFoodSourcesFromFileGenerator(new ConfigForGraphGenerator(), "test.file");
+            var result = generator.CreateGraphFromDescription(description);
+            Assert.IsNotNull(result, "Should create a not null result fod valid input");
+            Logger.Info("Got result: {0}",
+                JsonConvert.SerializeObject(result, SerializationSettings.JsonSerializerSettings));
+            Assert.AreEqual(2, result.FoodSources.Count, "should be 2 food sources");
+            Assert.AreEqual(4, result.NodesInGraph.Count, "with 2x2 grid should be 4 nodes");
+            Assert.AreEqual(5, result.EdgesInGraph.Count, "with 2x2 grid should be 4 edges");
         }
 
         [TestMethod]

@@ -39,6 +39,7 @@ namespace SlimeSimulation.Model.Generation
             ISet<Node> nodes = new HashSet<Node>();
             ISet<Edge> edges = new HashSet<Edge>();
             ISet<FoodSourceNode> foodSources = new HashSet<FoodSourceNode>();
+            List<List<Node>> nodesAs2dArray = new List<List<Node>>();
             /*Construct like:
             * 
             * o-o-o
@@ -49,13 +50,11 @@ namespace SlimeSimulation.Model.Generation
             int rowLimit = _config.Size;
             int colLimit = rowLimit;
             int totalNodes = rowLimit * colLimit;
-            var previousRowNodes = new List<Node>();
             int foodSourcesLeftToMake = GetNumberOfFoodSources(_config.MinimumFoodSources, _config.ProbabilityNewNodeIsFoodSource, totalNodes);
-            for (var row = 1; row <= rowLimit; row++)
+            for (int row = 1; row <= rowLimit; row++)
             {
-                Logger.Debug("Row: {0}", row);
-                var rowNodes = new List<Node>();
-                for (var col = 1; col <= colLimit; col++)
+                nodesAs2dArray.Add(new List<Node>());
+                for (int col = 1; col <= colLimit; col++)
                 {
                     Node node;
                     if (IsNodeFoodSource(totalNodes - nodes.Count, foodSourcesLeftToMake))
@@ -68,8 +67,19 @@ namespace SlimeSimulation.Model.Generation
                     {
                         node = MakeNode(ref _nextId, row, col);
                     }
-                    rowNodes.Add(node);
+                    nodesAs2dArray[row-1].Add(node);
                     nodes.Add(node);
+                }
+            }
+            var previousRowNodes = new List<Node>();
+            for (var row = 1; row <= rowLimit; row++)
+            {
+                Logger.Debug("Row: {0}", row);
+                var rowNodes = new List<Node>();
+                for (var col = 1; col <= colLimit; col++)
+                {
+                    Node node = GetNode(row-1, col-1, nodesAs2dArray);
+                    rowNodes.Add(node);
                 }
                 edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
                 edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
@@ -86,8 +96,18 @@ namespace SlimeSimulation.Model.Generation
                 }
                 previousRowNodes = rowNodes;
             }
+            var result = new GraphWithFoodSources(edges);
             Logger.Debug("Finished with edges.Count: {0}. Nodes.Count: {1}", edges.Count, nodes.Count);
-            return new GraphWithFoodSources(edges, nodes, foodSources);
+            if (result.FoodSources.Count != foodSources.Count)
+            {
+                Logger.Warn("Some food sources not in the specified graph.");
+            }
+            return result;
+        }
+
+        private Node GetNode(int row, int col, List<List<Node>> nodesAs2DArray)
+        {
+            return nodesAs2DArray[row][col];
         }
 
         private bool IsNodeFoodSource(int nodesLeftToMake, int foodSourcesLeftToMake)

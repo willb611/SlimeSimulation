@@ -15,13 +15,18 @@ namespace SlimeSimulation.Configuration
         {
         }
 
-        public ConfigForGraphGenerator(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources)
+        public ConfigForGraphGenerator(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources, DefaultEdgeConnectionType)
+        {
+        }
+
+        public ConfigForGraphGenerator(int size, double probabilityNewNodeIsFoodSource,
+            int minimumFoodSources) : this(size, probabilityNewNodeIsFoodSource, minimumFoodSources, DefaultEdgeConnectionType)
         {
         }
 
         [JsonConstructor]
         public ConfigForGraphGenerator(int size, double probabilityNewNodeIsFoodSource,
-            int minimumFoodSources)
+            int minimumFoodSources, int edgeConnectionType)
         {
             if (size < 3)
             {
@@ -41,7 +46,7 @@ namespace SlimeSimulation.Configuration
             Size = size;
             ProbabilityNewNodeIsFoodSource = probabilityNewNodeIsFoodSource;
             MinimumFoodSources = minimumFoodSources;
-            EdgeConnectionType = DefaultEdgeConnectionType;
+            EdgeConnectionType = edgeConnectionType;
         }
 
 
