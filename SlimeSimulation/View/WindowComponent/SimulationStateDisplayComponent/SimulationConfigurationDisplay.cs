@@ -8,7 +8,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationStateDisplayComponent
 
         public SimulationConfigurationDisplay(SimulationConfiguration simulationConfiguration)
         {
-            Add(new Label("Simulation configuration parameters:"));
+            Add(new Label("Slime update control parameters:"));
             Add(InitialParameters(simulationConfiguration));
         }
 

@@ -9,8 +9,8 @@ namespace SlimeSimulation.Model.Generation
 {
     class GraphGeneratorFactory
     {
-        public const int DiagonalConnectedGridType = 0;
-        public const string DiagonalConnectedGridTypeDescription = "Grid with diagonal connects";
+        public const int LatticeType = 0;
+        public const string LatticeTypeDescription = "Lattice";
 
         public const int GridType = 1;
         public const string GridTypeDescription = "Grid";
@@ -18,7 +18,7 @@ namespace SlimeSimulation.Model.Generation
         public const int GenerateFromFileType = 2;
         public const string GenerateFromFileTypeDescription = "Read in from file description";
 
-        public static String[] Descriptions = new string[] {GridTypeDescription, DiagonalConnectedGridTypeDescription};
+        public static String[] Descriptions = new string[] {GridTypeDescription, LatticeTypeDescription};
 
         public static int GetValueForDescription(string description)
         {
@@ -27,8 +27,8 @@ namespace SlimeSimulation.Model.Generation
                 case GridTypeDescription:
                 default:
                     return GridType;
-                case DiagonalConnectedGridTypeDescription:
-                    return DiagonalConnectedGridType;
+                case LatticeTypeDescription:
+                    return LatticeType;
                 case GenerateFromFileTypeDescription:
                     return GenerateFromFileType;
             }
@@ -42,7 +42,7 @@ namespace SlimeSimulation.Model.Generation
                     return new GraphWithFoodSourcesFromFileGenerator(config.ConfigForGenerator, config.FileToLoadFrom);
                 case GridType:
                     return new GridGraphWithFoodSourcesGenerator(config.ConfigForGenerator);
-                case DiagonalConnectedGridType:
+                case LatticeType:
                 default:
                     return new LatticeGraphWithFoodSourcesGenerator(config.ConfigForGenerator);
             }
