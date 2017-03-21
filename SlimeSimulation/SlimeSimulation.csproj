@@ -137,6 +137,7 @@
     <Compile Include="StdLibHelpers\CollectionExtension.cs" />
     <Compile Include="View\WindowComponent\SimulationConfigurationComponent\SlimeNetworkAdaptionCalculatorComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationConfigurationComponent\TimePerSimulationStepControlComponent.cs" />
+    <Compile Include="View\WindowComponent\SimulationCreationComponent\GeneratorShapeInputComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationCreationComponent\GraphGenerationControlComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationStateDisplayComponent\TimePerSimulationStepDisplayComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationCreationComponent\FileToLoadFromInputComponent.cs" />

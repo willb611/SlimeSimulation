@@ -40,9 +40,9 @@ namespace SlimeSimulation.View.Windows
         {
             Table container = new Table(10, 1, false);
             _simulationUpdateParameterComponent = new SimulationUpdateParameterComponent(_defaultConfig);
+            _graphGenerationControlComponent = new GraphGenerationControlComponent(_defaultConfig.GenerationConfig);
             _beginSimulationComponent = new CreateNewSimulationComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
-            _graphGenerationControlComponent = new GraphGenerationControlComponent(_defaultConfig.GenerationConfig);
 
             container.Attach(_simulationUpdateParameterComponent, 0, 1, 0, 3);
             container.Attach(_graphGenerationControlComponent, 0, 1, 4, 7);

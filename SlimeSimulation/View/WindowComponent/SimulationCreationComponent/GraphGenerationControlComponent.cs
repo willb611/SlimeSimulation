@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Gtk;
 using NLog;
 using SlimeSimulation.Configuration;
-using SlimeSimulation.Model.Generation;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
 {
@@ -15,26 +11,22 @@ namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly LatticeGenerationControlComponent _latticeGenerationControlComponent;
-        private readonly ComboBox _generatorInputComboBox;
+        private readonly GeneratorShapeInputComponent _generatorShapeInputComponent;
         protected bool Disposed;
 
         public GraphGenerationControlComponent(GraphWithFoodSourceGenerationConfig defaultConfig) : base(4, 1, false)
         {
             _latticeGenerationControlComponent = new LatticeGenerationControlComponent(defaultConfig.ConfigForGenerator);
-            _generatorInputComboBox = new ComboBox(GraphGeneratorFactory.Descriptions);
-            if (GraphGeneratorFactory.Descriptions != null && GraphGeneratorFactory.Descriptions.Any())
-            {
-                _generatorInputComboBox.Active = 0;
-            }
+            _generatorShapeInputComponent = new GeneratorShapeInputComponent();
 
             Attach(_latticeGenerationControlComponent, 0, 1, 0, 2);
-            Attach(_generatorInputComboBox, 0, 1, 2, 3);
+            Attach(_generatorShapeInputComponent, 0, 1, 2, 3);
         }
 
         public GraphWithFoodSourceGenerationConfig ReadGenerationConfig()
         {
             var latticeGeneratorConfig = _latticeGenerationControlComponent?.ReadGenerationConfig();
-            int generatorType = GraphGeneratorFactory.GetValueForDescription(_generatorInputComboBox.ActiveText);
+            int generatorType = _generatorShapeInputComponent.GetGeneratorTypeAsInt();
             if (latticeGeneratorConfig != null)
             {
                 return new GraphWithFoodSourceGenerationConfig(latticeGeneratorConfig, generatorType);
