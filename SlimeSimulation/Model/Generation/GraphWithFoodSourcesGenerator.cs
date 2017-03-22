@@ -8,10 +8,6 @@ namespace SlimeSimulation.Model.Generation
     public abstract class GraphWithFoodSourcesGenerator
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        public static readonly int EdgeConnectionTypeSquare = 1;
-        public static readonly int EdgeConnectionTypeSquareWithDiamonds = 2;
-        public static readonly int EdgeConnectionTypeSquareWithCrossedDiagonals = 3;
-        public static int DefaultEdgeConnectionType => EdgeConnectionTypeSquareWithCrossedDiagonals;
 
         public abstract GraphWithFoodSources Generate();
 
@@ -32,7 +28,7 @@ namespace SlimeSimulation.Model.Generation
                 }
                 edges.UnionWith(CreateEdgesBetweenNodesInOrder(rowNodes));
                 edges.UnionWith(CreateEdgesBetweenRowsAtSameIndex(rowNodes, previousRowNodes));
-                if (edgeConnectionType == EdgeConnectionTypeSquareWithDiamonds)
+                if (edgeConnectionType == EdgeConnectionShape.EdgeConnectionShapeSquareWithDiamonds)
                 {
                     if (row % 2 == 1)
                     {
@@ -42,7 +38,7 @@ namespace SlimeSimulation.Model.Generation
                     {
                         edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));
                     }
-                } else if (edgeConnectionType == EdgeConnectionTypeSquareWithCrossedDiagonals)
+                } else if (edgeConnectionType == EdgeConnectionShape.EdgeConnectionShapeSquareWithCrossedDiagonals)
                 {
                     edges.UnionWith(CreateEdgesLikeSnakeFromBottomToTop(rowNodes, previousRowNodes));
                     edges.UnionWith(CreateEdgesLikeSnakeFromTopToBottom(rowNodes, previousRowNodes));

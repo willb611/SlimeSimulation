@@ -9,21 +9,19 @@ namespace SlimeSimulation.Configuration
         private static readonly double DefaultProbabilityNewNodeIsFood = 0.03;
         private static readonly int DefaultMinimumFoodSources = 2;
         private static readonly int DefaultSize = 9;
-        private static readonly int DefaultEdgeConnectionType = GraphWithFoodSourcesGenerator.DefaultEdgeConnectionType;
+        private static readonly int DefaultEdgeConnectionType = EdgeConnectionShape.DefaultEdgeConnectionType;
 
         public ConfigForGraphGenerator() : this(DefaultSize)
         {
         }
 
-        public ConfigForGraphGenerator(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources, DefaultEdgeConnectionType)
+        public ConfigForGraphGenerator(int size) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources)
         {
         }
-
         public ConfigForGraphGenerator(int size, double probabilityNewNodeIsFoodSource,
-            int minimumFoodSources) : this(size, probabilityNewNodeIsFoodSource, minimumFoodSources, DefaultEdgeConnectionType)
+            int minimumFoodSources) : this(size, DefaultProbabilityNewNodeIsFood, DefaultMinimumFoodSources, DefaultEdgeConnectionType)
         {
         }
-
         [JsonConstructor]
         public ConfigForGraphGenerator(int size, double probabilityNewNodeIsFoodSource,
             int minimumFoodSources, int edgeConnectionType)
@@ -50,9 +48,9 @@ namespace SlimeSimulation.Configuration
         }
 
 
-        public int MinimumFoodSources { get; private set; }
-        public double ProbabilityNewNodeIsFoodSource { get; private set; }
-        public int Size { get; private set; }
-        public int EdgeConnectionType { get; private set; }
+        public int MinimumFoodSources { get; internal set; }
+        public double ProbabilityNewNodeIsFoodSource { get; internal set; }
+        public int Size { get; internal set; }
+        public int EdgeConnectionType { get; internal set; }
     }
 }

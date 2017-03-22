@@ -91,6 +91,7 @@
     <Compile Include="Controller\WindowComponentController\SlimeNodeViewControllerTests.cs" />
     <Compile Include="FlowCalculation\FlowCalculatorTests.cs" />
     <Compile Include="FlowCalculation\LinearEquations\LupDecompositionSolverTests.cs" />
+    <Compile Include="Model\Generation\EdgeConnectionShapeTests.cs" />
     <Compile Include="Model\Generation\GraphWithFoodSourcesFromFileGeneratorTests.cs" />
     <Compile Include="Model\Generation\GraphWithFoodSourcesGeneratorTests.cs" />
     <Compile Include="Model\Generation\GridGraphWithFoodSourcesGeneratorTests.cs" />

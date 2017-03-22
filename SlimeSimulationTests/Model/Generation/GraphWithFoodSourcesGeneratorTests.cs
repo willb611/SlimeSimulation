@@ -101,7 +101,7 @@ namespace SlimeSimulation.Model.Generation.Tests
              * | \ |
              * a - b
              */
-            var config = new ConfigForGraphGenerator(5, 0.3, 5, GraphWithFoodSourcesGenerator.EdgeConnectionTypeSquareWithDiamonds);
+            var config = new ConfigForGraphGenerator(5, 0.3, 5, EdgeConnectionShape.EdgeConnectionShapeSquareWithDiamonds);
             var generator = new GridGraphWithFoodSourcesGenerator(config);
             var edges = generator.GenerateEdges(nodes, 2, 2, config.EdgeConnectionType);
             Assert.IsNotNull(edges, "Should create a not null result fod valid input");

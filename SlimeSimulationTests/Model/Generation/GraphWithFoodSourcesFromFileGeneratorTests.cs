@@ -32,7 +32,7 @@ namespace SlimeSimulation.Model.Generation.Tests
              * |   |
              * f - n
              */
-            var config = new ConfigForGraphGenerator(5, 0.2, 4, GraphWithFoodSourcesGenerator.EdgeConnectionTypeSquare);
+            var config = new ConfigForGraphGenerator(5, 0.2, 4, EdgeConnectionShape.EdgeConnectionShapeSquare);
             var generator = new GraphWithFoodSourcesFromFileGenerator(config, "test.file");
             var result = generator.CreateGraphFromDescription(description);
             Assert.IsNotNull(result, "Should create a not null result fod valid input");

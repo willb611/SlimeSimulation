@@ -30,7 +30,7 @@ namespace SlimeSimulation.Model.Generation
             catch (Exception e)
             {
                 Logger.Error(e, $"[Generate] Error! {e}", e);
-                throw e;
+                throw;
             }
         }
 

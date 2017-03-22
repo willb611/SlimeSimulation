@@ -15,6 +15,7 @@ namespace SlimeSimulation.Model.Generation
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly string _filepath;
         private ConfigForGraphGenerator _configForGraphGenerator;
+        private const double PointComparisonEqualityTolerance = 0.000001;
 
         private int EdgeConnectionType
         {
@@ -24,7 +25,7 @@ namespace SlimeSimulation.Model.Generation
                 {
                     return _configForGraphGenerator.EdgeConnectionType;
                 }
-                return DefaultEdgeConnectionType;
+                return EdgeConnectionShape.DefaultEdgeConnectionType;
             }
         }
 
@@ -121,7 +122,7 @@ namespace SlimeSimulation.Model.Generation
         {
             foreach (FoodSourceNode foodSource in foodSources)
             {
-                if (foodSource.X == x && foodSource.Y == y)
+                if (Math.Abs(foodSource.X - x) < PointComparisonEqualityTolerance && Math.Abs(foodSource.Y - y) < PointComparisonEqualityTolerance)
                 {
                     return foodSource;
                 }

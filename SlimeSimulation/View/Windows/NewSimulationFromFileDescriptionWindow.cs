@@ -22,6 +22,7 @@ namespace SlimeSimulation.View.Windows
 
         private ErrorDisplayComponent _errorDisplayComponent;
         private SimulationUpdateParameterComponent _simulationUpdateParameterComponent;
+        private MeshConnectionTypeComponent _meshConnectionTypeComponent;
 
         public NewSimulationFromFileDescriptionWindow(string windowTitle, NewSimulationFromFileDescriptionWindowController windowController)
             : base(windowTitle, windowController)
@@ -44,11 +45,13 @@ namespace SlimeSimulation.View.Windows
             _fileToLoadFromInputComponent = new FileToLoadFromInputComponent();
             _beginSimulationComponent = new NewSimulationFromDescriptionComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
+            _meshConnectionTypeComponent = new MeshConnectionTypeComponent();
 
             container.Attach(_simulationUpdateParameterComponent, 0, 1, 0, 3);
             container.Attach(_fileToLoadFromInputComponent, 0, 1, 3, 4);
-            container.Attach(_beginSimulationComponent, 0, 1, 4, 5);
-            container.Attach(_errorDisplayComponent, 0, 1, 5, 6);
+            container.Attach(_meshConnectionTypeComponent, 0, 1, 4, 5);
+            container.Attach(_beginSimulationComponent, 0, 1, 5, 6);
+            container.Attach(_errorDisplayComponent, 0, 1, 6, 7);
             return container;
         }
 
@@ -65,7 +68,7 @@ namespace SlimeSimulation.View.Windows
                     string filePath = _fileToLoadFromInputComponent.ReadInput();
                     if (filePath != null)
                     {
-                        var config = new GraphWithFoodSourceGenerationConfig(null,
+                        var config = new GraphWithFoodSourceGenerationConfig(new ConfigForGraphGeneratorOnlyConnectionType(_meshConnectionTypeComponent.GetEdgeConnectionTypeAsInt()), 
                             GraphGeneratorFactory.GenerateFromFileType, filePath);
                         return new SimulationConfiguration(config, flowAmount.Value,
                             slimeNetworkAdaptionConfig, shouldAllowDisconnection);
