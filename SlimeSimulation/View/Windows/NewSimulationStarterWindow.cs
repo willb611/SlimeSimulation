@@ -16,7 +16,7 @@ namespace SlimeSimulation.View.Windows
         private readonly NewSimulationStarterWindowController _windowController;
         private readonly SimulationConfiguration _defaultConfig = new SimulationConfiguration();
        
-        private Button _beginSimulationComponent;
+        private Button _beginSimulationButton;
 
         private GraphGenerationControlComponent _graphGenerationControlComponent;
         private ErrorDisplayComponent _errorDisplayComponent;
@@ -38,16 +38,16 @@ namespace SlimeSimulation.View.Windows
 
         private Container MakeContainerWithComponents()
         {
-            Table container = new Table(10, 1, false);
+            Table container = new Table(11, 1, false);
             _simulationUpdateParameterComponent = new SimulationUpdateParameterComponent(_defaultConfig);
             _graphGenerationControlComponent = new GraphGenerationControlComponent(_defaultConfig.GenerationConfig);
-            _beginSimulationComponent = new CreateNewSimulationComponent(this, _windowController);
+            _beginSimulationButton = new CreateNewSimulationComponent(this, _windowController);
             _errorDisplayComponent = new ErrorDisplayComponent();
 
             container.Attach(_simulationUpdateParameterComponent, 0, 1, 0, 3);
-            container.Attach(_graphGenerationControlComponent, 0, 1, 4, 7);
-            container.Attach(_beginSimulationComponent, 0, 1, 8, 9);
-            container.Attach(_errorDisplayComponent, 0, 1, 9, 10);
+            container.Attach(_graphGenerationControlComponent, 0, 1, 4, 8);
+            container.Attach(_beginSimulationButton, 0, 1, 9, 10);
+            container.Attach(_errorDisplayComponent, 0, 1, 10, 11);
             return container;
         }
 
@@ -89,7 +89,7 @@ namespace SlimeSimulation.View.Windows
             if (disposing)
             {
                 base.Dispose(true);
-                _beginSimulationComponent.Dispose();
+                _beginSimulationButton.Dispose();
                 _errorDisplayComponent.Dispose();
                 _graphGenerationControlComponent.Dispose();
                 _simulationUpdateParameterComponent.Dispose();

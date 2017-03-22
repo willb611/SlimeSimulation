@@ -14,13 +14,13 @@ namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
         private readonly GeneratorShapeInputComponent _generatorShapeInputComponent;
         protected bool Disposed;
 
-        public GraphGenerationControlComponent(GraphWithFoodSourceGenerationConfig defaultConfig) : base(4, 1, false)
+        public GraphGenerationControlComponent(GraphWithFoodSourceGenerationConfig defaultConfig) : base(5, 1, false)
         {
             _latticeGenerationControlComponent = new LatticeGenerationControlComponent(defaultConfig.ConfigForGenerator);
             _generatorShapeInputComponent = new GeneratorShapeInputComponent();
 
-            Attach(_latticeGenerationControlComponent, 0, 1, 0, 2);
-            Attach(_generatorShapeInputComponent, 0, 1, 2, 3);
+            Attach(_latticeGenerationControlComponent, 0, 1, 0, 3);
+            Attach(_generatorShapeInputComponent, 0, 1, 3, 4);
         }
 
         public GraphWithFoodSourceGenerationConfig ReadGenerationConfig()
