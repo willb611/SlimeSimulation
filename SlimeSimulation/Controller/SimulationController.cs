@@ -260,7 +260,9 @@ namespace SlimeSimulation.Controller
 
         public Exception SaveSimulation()
         {
-            return _simulationSavingController.SaveSimulation(new SimulationSave(GetSimulationState(), SimulationControlBoxConfig, Configuration));
+            var currentState = new SimulationSave(GetSimulationState(), SimulationControlBoxConfig, Configuration);
+            _simulationSavingController.SaveStatsAboutSimulation(currentState);
+            return _simulationSavingController.SaveSimulation(currentState);
         }
     }
 }

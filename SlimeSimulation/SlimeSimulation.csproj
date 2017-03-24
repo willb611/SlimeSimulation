@@ -131,11 +131,13 @@
     <Compile Include="Controller\WindowController\ModifySimulationConfigurationController.cs" />
     <Compile Include="Algorithms\RouteSelection\RouteSelector.cs" />
     <Compile Include="Controller\WindowController\NewSimulationFromFileDescriptionWindowController.cs" />
+    <Compile Include="Model\Analytics\SimulationStateAnalyticsGatherer.cs" />
     <Compile Include="Model\Generation\EdgeConnectionShape.cs" />
     <Compile Include="Model\Generation\GraphGeneratorFactory.cs" />
     <Compile Include="Model\Generation\GraphWithFoodSourcesFromFileGenerator.cs" />
     <Compile Include="Model\Generation\GridGraphWithFoodSourcesGenerator.cs" />
     <Compile Include="Model\Simulation\Persistence\SerializationSettings.cs" />
+    <Compile Include="Model\Analytics\SimulationStatsSaver.cs" />
     <Compile Include="StdLibHelpers\CollectionExtension.cs" />
     <Compile Include="View\WindowComponent\SimulationConfigurationComponent\SlimeNetworkAdaptionCalculatorComponent.cs" />
     <Compile Include="View\WindowComponent\SimulationConfigurationComponent\TimePerSimulationStepControlComponent.cs" />

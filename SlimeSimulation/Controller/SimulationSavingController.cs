@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SlimeSimulation.Configuration;
+using SlimeSimulation.Model.Analytics;
 using SlimeSimulation.Model.Simulation;
 using SlimeSimulation.Model.Simulation.Persistence;
 
@@ -13,13 +9,20 @@ namespace SlimeSimulation.Controller
     {
         private const string SaveLocationPrefix = "save";
         private const string SaveLocationFileExtension = ".sim";
+        private const string StatisticsSaveLocationFileExtension = "stats.csv";
         private const string CurrentDateTimeSafeForFilenameFormat = "yyyy.MM.dd-H.mm.ss";
         
         public string LastAttemptedSaveLocation { get; set; }
 
         private readonly SimulationSaver _simulationSaver = new SimulationSaver();
-        
+        private readonly SimulationStatsSaver _simulationStatsSaver = new SimulationStatsSaver();
 
+        public Exception SaveStatsAboutSimulation(SimulationSave stateToSave)
+        {
+            var saveLocation = GetSaveLocationForStatistics(stateToSave);
+            return _simulationStatsSaver.SaveStatsAboutSimulation(stateToSave, saveLocation);
+        }
+       
         public Exception SaveSimulation(SimulationSave stateToSave)
         {
             var saveLocation = GetSaveLocation(stateToSave);
@@ -27,22 +30,30 @@ namespace SlimeSimulation.Controller
             return _simulationSaver.SaveSimulation(stateToSave, saveLocation);
         }
 
-        private string GetSaveLocation(SimulationSave simulatonSave)
+        private string GetSimulationStateDescription(SimulationState simulationState)
         {
-            var state = simulatonSave.SimulationState;
-            DateTime currentDateTime = DateTime.Now;
-            var dateTimeString = currentDateTime.ToString(CurrentDateTimeSafeForFilenameFormat);
-            string simulationStateDescription = "";
-            if (state.HasFinishedExpanding)
+            if (simulationState.HasFinishedExpanding)
             {
-                simulationStateDescription = "adaptedSteps" + state.StepsTakenInAdaptingState;
+                return "adaptedSteps" + simulationState.StepsTakenInAdaptingState;
             }
             else
             {
-                simulationStateDescription = "growthSteps" + state.StepsTakenInExploringState;
+                return "growthSteps" + simulationState.StepsTakenInExploringState;
             }
+        }
+
+        private string GetSaveLocation(SimulationSave simulatonSave)
+        {
+            var dateTimeString = DateTime.Now.ToString(CurrentDateTimeSafeForFilenameFormat);
+            string simulationStateDescription = GetSimulationStateDescription(simulatonSave.SimulationState);
             var saveLocation = SaveLocationPrefix + dateTimeString + simulationStateDescription + SaveLocationFileExtension;
             return saveLocation;
+        }
+        private string GetSaveLocationForStatistics(SimulationSave stateToSave)
+        {
+            var dateTimeString = DateTime.Now.ToString(CurrentDateTimeSafeForFilenameFormat);
+            string simulationStateDescription = GetSimulationStateDescription(stateToSave.SimulationState);
+            return SaveLocationPrefix + dateTimeString + simulationStateDescription + StatisticsSaveLocationFileExtension;
         }
     }
 }

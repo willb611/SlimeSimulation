@@ -23,6 +23,5 @@ namespace SlimeSimulation.Model.Simulation.Persistence
                 return e;
             }
         }
-
     }
 }
