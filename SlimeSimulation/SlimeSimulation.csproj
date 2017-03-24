@@ -117,8 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Bfs\GraphSplitIntoSubgraphs.cs" />
-    <Compile Include="Algorithms\Bfs\Path.cs" />
-    <Compile Include="Algorithms\Bfs\PathFinder.cs" />
+    <Compile Include="Algorithms\Pathing\Path.cs" />
+    <Compile Include="Algorithms\Pathing\PathFinder.cs" />
+    <Compile Include="Algorithms\Pathing\Queue.cs" />
     <Compile Include="Algorithms\RouteSelection\EnumerateSubgraphsRouteSelector.cs" />
     <Compile Include="Configuration\ConfigForGraphGeneratorOnlyConnectionType.cs" />
     <Compile Include="Configuration\GraphWithFoodSourceGenerationConfig.cs" />

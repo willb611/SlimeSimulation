@@ -47,7 +47,12 @@ namespace SlimeSimulation.Model.Analytics
                 {
                     var a = foodSources[i];
                     var b = foodSources[j];
-                    totalSeperation += DegreeOfSeperation(slime, a, b);
+                    var degree = DegreeOfSeperation(slime, a, b);
+                    if (degree == int.MaxValue)
+                    {
+                        continue;
+                    }
+                    totalSeperation += degree;
                     uniquePaths++;
                 }
             }
@@ -57,8 +62,8 @@ namespace SlimeSimulation.Model.Analytics
 
         internal int DegreeOfSeperation(SlimeNetwork slime, Node a, Node b)
         {
-            var path = _pathFinder.FindPath(new Route(a, b));
-            return path.IntermediateNodesInPathCount();
+            var path = _pathFinder.FindPath(slime as Graph, new Route(a, b));
+            return path == null ? int.MaxValue : path.IntermediateNodesInPathCount();
         }
     }
 }
