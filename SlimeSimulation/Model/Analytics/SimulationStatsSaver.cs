@@ -16,12 +16,14 @@ namespace SlimeSimulation.Model.Analytics
             try
             {
                 var slime = stateToSave.SimulationState.SlimeNetwork;
-                using (StreamWriter writetext = new StreamWriter(saveLocation))
+                using (StreamWriter streamWriter = new StreamWriter(saveLocation))
                 {
-                    writetext.WriteLine("Total Distance, Average degree of seperation");
-                    writetext.Write(_statGatherer.TotalDistanceInSlime(slime));
-                    writetext.Write(",");
-                    writetext.Write(_statGatherer.AverageDegreeOfSeperation(slime));
+                    streamWriter.WriteLine("Total Distance, Average degree of seperation, Fault Tolerance");
+                    streamWriter.Write(_statGatherer.TotalDistanceInSlime(slime));
+                    streamWriter.Write(",");
+                    streamWriter.Write(_statGatherer.AverageDegreeOfSeperation(slime));
+                    streamWriter.Write(",");
+                    streamWriter.Write(_statGatherer.FaultTolerance(slime));
                 }
                 Logger.Info("[SaveStatsAboutSimulation] Saved stats to {0}", saveLocation);
                 return null;

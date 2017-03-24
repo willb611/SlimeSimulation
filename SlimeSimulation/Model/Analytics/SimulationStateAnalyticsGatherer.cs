@@ -13,6 +13,7 @@ namespace SlimeSimulation.Model.Analytics
         private const double Tolerance = 0.00001;
 
         private readonly PathFinder _pathFinder = new PathFinder();
+        private readonly BfsSolver _bfsSolver = new BfsSolver();
 
         public double TotalDistanceInSlime(SlimeNetwork slime)
         {
@@ -74,6 +75,35 @@ namespace SlimeSimulation.Model.Analytics
             Logger.Debug("[DegreeOfSeperation] For node {0} to {1} found {2}", a, b, path);
             return path == null ? int.MaxValue : path.IntermediateNodesInPathCount();
         }
+
+        public double FaultTolerance(SlimeNetwork slime)
+        {
+            GraphSplitIntoSubgraphs slimeSplit = _bfsSolver.SplitIntoSubgraphs(slime);
+            var subgraphCount = slimeSplit.Subgraphs.Count;
+            Logger.Debug("[FaultTolerance] Found sugraphCount as: {0}", subgraphCount);
+            int faults = 0;
+            foreach (var e in slime.SlimeEdges)
+            {
+                var edgesWithFault = new HashSet<SlimeEdge>(slime.SlimeEdges);
+                if (!edgesWithFault.Remove(e))
+                {
+                    Logger.Warn("[FaultTolerance] Failed to remove edge {0} from slime network", e);
+                }
+                // Construct passing in nodes, food sources. So if a node is disconnected on it's own, it get's included still
+                // and counts as a seperate subgraph in the slime network.
+                var faultySlime = new SlimeNetwork(slime.NodesInGraph, slime.FoodSources, edgesWithFault);
+                var faultySplit = _bfsSolver.SplitIntoSubgraphs(faultySlime);
+                int faultySubgraphCount = faultySplit.Subgraphs.Count;
+                int difference = subgraphCount - faultySubgraphCount;
+                if (Math.Abs(difference) > 0)
+                {
+                    Logger.Trace("[FaultTolerance] Found a fault at edge: {0}", e);
+                    faults++;
+                }
+            }
+            double faultTolerance = faults/(double)slime.SlimeEdges.Count;
+            Logger.Debug("[FaultTolerance] Faults: {0}, edgesCount: {1}, FT: {2}", faults, slime.SlimeEdges.Count, faultTolerance);
+            return faultTolerance;
+        }
     }
 }
-
