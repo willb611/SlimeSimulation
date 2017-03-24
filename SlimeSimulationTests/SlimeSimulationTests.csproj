@@ -81,6 +81,7 @@
     <Compile Include="Algorithms\Bfs\BfsSolverTests.cs" />
     <Compile Include="Algorithms\FlowCalculation\FlowOnEdgesTests.cs" />
     <Compile Include="Algorithms\Pathing\PathFinderTests.cs" />
+    <Compile Include="Algorithms\Pathing\QueueTests.cs" />
     <Compile Include="Algorithms\RouteSelection\EnumerateSubgraphsRouteSelectorTests.cs" />
     <Compile Include="Configuration\LatticeSlimeNetworkGenerationConfigTests.cs" />
     <Compile Include="Controller\SimulationControllerTests.cs" />

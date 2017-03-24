@@ -104,6 +104,7 @@ namespace SlimeSimulation.View.Windows
                 _fileToLoadFromInputComponent.Dispose();
                 _beginSimulationComponent.Dispose();
                 _errorDisplayComponent.Dispose();
+                _meshConnectionTypeComponent.Dispose();
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);

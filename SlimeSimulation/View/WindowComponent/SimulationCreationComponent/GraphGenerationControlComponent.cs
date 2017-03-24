@@ -6,7 +6,7 @@ using SlimeSimulation.Configuration;
 
 namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
 {
-    public class GraphGenerationControlComponent : Table
+    public class GraphGenerationControlComponent : Table, IDisposable
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -44,7 +44,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
         }
 
 
-        public void Dispose()
+        public override void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -61,6 +61,7 @@ namespace SlimeSimulation.View.WindowComponent.SimulationCreationComponent
             {
                 base.Dispose();
                 _latticeGenerationControlComponent.Dispose();
+                _generatorShapeInputComponent.Dispose();
             }
             Disposed = true;
             Logger.Debug("[Dispose : bool] finished from within " + this);

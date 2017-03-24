@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SlimeSimulation.Model;
 using SlimeSimulation.Algorithms.Bfs;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ namespace SlimeSimulation.Algorithms.Pathing
 
         public Path FindPath(Graph graph, Route route)
         {
+            CheckRoute(route);
             Subgraph connected = bfsSolver.From(route.Source, graph);
             if (!connected.ContainsNode(route.Sink))
             {
@@ -45,7 +46,6 @@ namespace SlimeSimulation.Algorithms.Pathing
 
                 foreach (var edge in graph.EdgesConnectedToNode(u))
                 {
-                    Logger.Debug("Found edge " + edge);
                     int tmp = distances[nodeIndex] + EdgeDistance(edge);
                     int v = nodes.IndexOf(edge.GetOtherNode(u));
                     if (tmp < distances[v])
@@ -55,9 +55,23 @@ namespace SlimeSimulation.Algorithms.Pathing
                     }
                 }
             }
+            if (Logger.IsTraceEnabled) {
+                for (int i = 0; i < prev.Length; i++)
+                {
+                    Logger.Trace("[FindPath] i: {0}, value: {1}", i, prev[i]);
+                }
+            }
             // Build result
             List<Node> path = buildPath(nodes, prev, route);
             return new Path(path, route);
+        }
+
+        private void CheckRoute(Route route)
+        {
+            if (route.Source.Equals(route.Sink))
+            {
+                throw new ArgumentException("Source matches sink: " + route);
+            }
         }
 
         private List<Node> buildPath(List<Node> ordering, Node[] prev, Route route)

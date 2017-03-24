@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NLog;
 using SlimeSimulation.Algorithms.Bfs;
@@ -43,7 +43,7 @@ namespace SlimeSimulation.Model.Analytics
             int uniquePaths = 0;
             for (int i = 0; i < fsCount - 1; i++)
             {
-                for (int j = i; j < fsCount; j++)
+                for (int j = i + 1; j < fsCount; j++)
                 {
                     var a = foodSources[i];
                     var b = foodSources[j];
@@ -56,13 +56,22 @@ namespace SlimeSimulation.Model.Analytics
                     uniquePaths++;
                 }
             }
-            double averageSeperation = totalSeperation / uniquePaths;
-            return averageSeperation;
+            Logger.Debug("[AverageDegreeOfSeperation] TotalSeperation: {0}, UniquePaths: {1}, foodSources: {2}",
+                totalSeperation, uniquePaths, fsCount);
+            if (uniquePaths == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return totalSeperation / uniquePaths;
+            }
         }
 
         internal int DegreeOfSeperation(SlimeNetwork slime, Node a, Node b)
         {
             var path = _pathFinder.FindPath(slime as Graph, new Route(a, b));
+            Logger.Debug("[DegreeOfSeperation] For node {0} to {1} found {2}", a, b, path);
             return path == null ? int.MaxValue : path.IntermediateNodesInPathCount();
         }
     }

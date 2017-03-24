@@ -1,4 +1,4 @@
-﻿using SlimeSimulation.Model.Analytics;
+using SlimeSimulation.Model.Analytics;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -82,9 +82,9 @@ namespace SlimeSimulation.Model.Analytics.Tests
                 new SlimeEdge(ab, 0.5),
                 new SlimeEdge(cd, 0.5)
             };
-
-            var expectedSeperation = 0;
             var slime = new SlimeNetwork(slimeEdges);
+
+            double expectedSeperation = 0.0;
             var statExtractor = new SimulationStateAnalyticsGatherer();
             Assert.AreEqual(expectedSeperation, statExtractor.AverageDegreeOfSeperation(slime));
         }
