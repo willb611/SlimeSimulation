@@ -163,7 +163,7 @@ namespace SlimeSimulation.Model.Analytics.Tests
             };
             var slime = new SlimeNetwork(slimeEdges);
 
-            var expected = 1.0;
+            var expected = 0;
             var statExtractor = new SimulationStateAnalyticsGatherer();
             Assert.AreEqual(expected, statExtractor.FaultTolerance(slime));
         }
@@ -175,9 +175,15 @@ namespace SlimeSimulation.Model.Analytics.Tests
              * A-B
              *  \| 
              *   C-D
+             *  
+             *  AB = 3
+             *  BC = 4
+             *  AC = 5
+             *  CD = 1
+             *  ft = 1 / 13 ?
              */
-            var a = new FoodSourceNode(1, 1, 0);
-            var b = new FoodSourceNode(2, 2, 0);
+            var a = new FoodSourceNode(1, 0, 4);
+            var b = new FoodSourceNode(2, 3, 4);
             var c = new FoodSourceNode(3, 3, 0);
             var d = new FoodSourceNode(4, 4, 0);
 
@@ -194,7 +200,7 @@ namespace SlimeSimulation.Model.Analytics.Tests
             };
             var slime = new SlimeNetwork(slimeEdges);
 
-            var expected = 0.25;
+            double expected = 12.0 / 13.0;
             var statExtractor = new SimulationStateAnalyticsGatherer();
             Assert.AreEqual(expected, statExtractor.FaultTolerance(slime));
         }

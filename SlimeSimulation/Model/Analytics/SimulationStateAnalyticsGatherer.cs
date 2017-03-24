@@ -20,18 +20,7 @@ namespace SlimeSimulation.Model.Analytics
             double dist = 0;
             foreach (var edge in slime.SlimeEdges)
             {
-                var a = edge.A;
-                var b = edge.B;
-                var xdelta = a.X - b.X;
-                var ydelta = a.X - b.X;
-                if (xdelta < Tolerance || ydelta < Tolerance)
-                {
-                    dist += Math.Abs(xdelta + ydelta);
-                }
-                else
-                {
-                    dist += Math.Sqrt(xdelta * xdelta + ydelta * ydelta);
-                }
+                dist += edge.Length();
             }
             return dist;
         }
@@ -78,10 +67,15 @@ namespace SlimeSimulation.Model.Analytics
 
         public double FaultTolerance(SlimeNetwork slime)
         {
+            return FaultTolerance(slime, TotalDistanceInSlime(slime));
+        }
+        // Fault tolerance = length of edges which cause fault if dc'd / Total Length
+        public double FaultTolerance(SlimeNetwork slime, double totalLength)
+        {
             GraphSplitIntoSubgraphs slimeSplit = _bfsSolver.SplitIntoSubgraphs(slime);
             var subgraphCount = slimeSplit.Subgraphs.Count;
-            Logger.Debug("[FaultTolerance] Found sugraphCount as: {0}", subgraphCount);
-            int faults = 0;
+            Logger.Info("[FaultTolerance] Found sugraphCount as: {0}", subgraphCount);
+            double nonFaultedLength = 0;
             foreach (var e in slime.SlimeEdges)
             {
                 var edgesWithFault = new HashSet<SlimeEdge>(slime.SlimeEdges);
@@ -98,11 +92,14 @@ namespace SlimeSimulation.Model.Analytics
                 if (Math.Abs(difference) > 0)
                 {
                     Logger.Trace("[FaultTolerance] Found a fault at edge: {0}", e);
-                    faults++;
+                }
+                else
+                {
+                    nonFaultedLength += e.Length();
                 }
             }
-            double faultTolerance = faults/(double)slime.SlimeEdges.Count;
-            Logger.Debug("[FaultTolerance] Faults: {0}, edgesCount: {1}, FT: {2}", faults, slime.SlimeEdges.Count, faultTolerance);
+            double faultTolerance = nonFaultedLength/totalLength;
+            Logger.Info("[FaultTolerance] Total Length: {0} FT: {1}", totalLength, faultTolerance);
             return faultTolerance;
         }
     }
