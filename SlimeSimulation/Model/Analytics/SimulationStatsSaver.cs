@@ -21,6 +21,7 @@ namespace SlimeSimulation.Model.Analytics
                     writetext.WriteLine("Total Distance, Average degree of seperation");
                     writetext.Write(_statGatherer.TotalDistanceInSlime(slime));
                     writetext.Write(",");
+                    writetext.Write(_statGatherer.AverageDegreeOfSeperation(slime));
                 }
                 Logger.Info("[SaveStatsAboutSimulation] Saved stats to {0}", saveLocation);
                 return null;
