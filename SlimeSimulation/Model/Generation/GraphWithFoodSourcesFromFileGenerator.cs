@@ -122,15 +122,15 @@ namespace SlimeSimulation.Model.Generation
             {
                 List<Node> row = new List<Node>();
                 string line = reader.ReadLine();
-                for (int y = 0; y < rowLimit; y++)
+                for (int y = rowLimit - 1; y >= 0; y--)
                 {
                     char c = line[y];
                     if (c == 'n')
                     {
-                        row.Add(new Node(id++, x, y));
+                        row.Add(new Node(id++, y, x));
                     } else if (c == 'f')
                     {
-                        row.Add(new FoodSourceNode(id++, x, y));
+                        row.Add(new FoodSourceNode(id++, y, x));
                     }
                     else
                     {
