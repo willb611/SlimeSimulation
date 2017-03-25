@@ -92,6 +92,10 @@ namespace SlimeSimulation.Model.Generation
             var result = new HashSet<Edge>();
             for (int i = 1; i < row.Count; i++)
             {
+                if (row[i] == null || row[i-1] == null)
+                {
+                    continue;
+                }
                 Edge e = new Edge(row[i-1], row[i]);
                 Logger.Debug("[CreateEdgesBetweenNodesInOrder] At index {0} created edge {1}", i, e);
                 result.Add(e);
@@ -110,6 +114,10 @@ namespace SlimeSimulation.Model.Generation
             var result = new HashSet<Edge>();
             for (int i = 0; i < row.Count && i < otherRow.Count; i++)
             {
+                if (row[i] == null || otherRow[i] == null)
+                {
+                    continue;
+                }
                 Edge e = new Edge(row[i], otherRow[i]);
                 Logger.Debug("[CreateEdgesBetweenRowsAtSameIndex] At index {1} Created edge: {0}", e, i);
                 result.Add(e);

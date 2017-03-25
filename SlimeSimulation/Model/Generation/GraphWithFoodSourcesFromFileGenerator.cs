@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using NLog;
@@ -79,7 +80,12 @@ namespace SlimeSimulation.Model.Generation
             {
                 int rowLimit = Int32.Parse(reader.ReadLine());
                 int colLimit = Int32.Parse(reader.ReadLine());
-                int numberOfFoodSources = Int32.Parse(reader.ReadLine());
+                string thirdParameter = reader.ReadLine();
+                if (thirdParameter.Equals("grid"))
+                {
+                    return ReadInGrid(rowLimit, colLimit, reader);
+                }
+                int numberOfFoodSources = Int32.Parse(thirdParameter);
                 HashSet<FoodSourceNode> foodSources = new HashSet<FoodSourceNode>();
                 int nextId = 0;
                 for (int i = 0; i < numberOfFoodSources; i++)
@@ -107,7 +113,36 @@ namespace SlimeSimulation.Model.Generation
                 return result;
             }
         }
-        
+
+        private GraphWithFoodSources ReadInGrid(int rowLimit, int colLimit, StringReader reader)
+        {
+            int id = 0;
+            List<List<Node>> grid = new List<List<Node>>();
+            for (int x = 0; x < colLimit; x++)
+            {
+                List<Node> row = new List<Node>();
+                string line = reader.ReadLine();
+                for (int y = 0; y < rowLimit; y++)
+                {
+                    char c = line[y];
+                    if (c == 'n')
+                    {
+                        row.Add(new Node(id++, x, y));
+                    } else if (c == 'f')
+                    {
+                        row.Add(new FoodSourceNode(id++, x, y));
+                    }
+                    else
+                    {
+                        row.Add(null);
+                    }
+                }
+                grid.Add(row);
+            }
+            var edges = GenerateEdges(grid, rowLimit, colLimit, EdgeConnectionType);
+            return new GraphWithFoodSources(edges);
+        }
+
         private Node GetOrMakeNode(ref int nextId, int row, int col, HashSet<FoodSourceNode> foodSources)
         {
             Node node = GetFoodSourceAtPositionOrNull(col, row, foodSources);
