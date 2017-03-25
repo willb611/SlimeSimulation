@@ -102,5 +102,10 @@ namespace SlimeSimulation.Model.Analytics
             Logger.Info("[FaultTolerance] Total Length: {0} FT: {1}", totalLength, faultTolerance);
             return faultTolerance;
         }
+
+        public double CostBenefitRatio(double faultTolerance, double totalLength)
+        {
+            return faultTolerance/totalLength;
+        }
     }
 }
