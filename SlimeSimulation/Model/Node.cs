@@ -68,7 +68,7 @@ namespace SlimeSimulation.Model
 
         public override int GetHashCode()
         {
-            return (_id.GetHashCode() * 17 + _x.GetHashCode()) * 17
+            return (_id.GetHashCode() * 17 + _x.GetHashCode()) * 19
                    + _y.GetHashCode();
         }
 
