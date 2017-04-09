@@ -13,6 +13,12 @@ namespace SlimeSimulation.Model.Analytics
 
         public Exception SaveStatsAboutSimulation(SimulationSave stateToSave, string saveLocation)
         {
+            if (!stateToSave.SimulationState.HasFinishedExpanding)
+            {
+                var e = new ApplicationException("Can't save stats about a slime where it's not fully explored");
+                Logger.Info(e);
+                return e;
+            }
             try
             {
                 var slime = stateToSave.SimulationState.SlimeNetwork;
