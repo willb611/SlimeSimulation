@@ -22,6 +22,7 @@ namespace SlimeSimulation.Model.Analytics
             {
                 dist += edge.Length();
             }
+            Logger.Info("[TotalDistanceInSlime] Found distance as {0}", dist);
             return dist;
         }
 
@@ -48,14 +49,17 @@ namespace SlimeSimulation.Model.Analytics
             }
             Logger.Debug("[AverageDegreeOfSeperation] TotalSeperation: {0}, UniquePaths: {1}, foodSources: {2}",
                 totalSeperation, uniquePaths, fsCount);
+            var result = 0.0;
             if (uniquePaths == 0)
             {
-                return 0;
+                result = 0;
             }
             else
             {
-                return totalSeperation / uniquePaths;
+                result = totalSeperation / uniquePaths;
             }
+            Logger.Info("[AverageDegreeOfSeperation] For slime found result: {0}", result);
+            return result;
         }
 
         internal int DegreeOfSeperation(SlimeNetwork slime, Node a, Node b)

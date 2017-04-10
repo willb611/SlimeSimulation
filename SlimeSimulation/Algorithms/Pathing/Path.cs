@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NLog;
 using NLog.Fluent;
@@ -16,9 +16,12 @@ namespace SlimeSimulation.Algorithms.Pathing
         {
             _nodesInPath = pathThroughNodes;
             _route = route;
-            foreach (var node in pathThroughNodes)
+            if (Logger.IsDebugEnabled)
             {
-                Logger.Info("Found node: " + node);
+                foreach (var node in pathThroughNodes)
+                {
+                    Logger.Debug("Found node: " + node);
+                }
             }
         }
 
