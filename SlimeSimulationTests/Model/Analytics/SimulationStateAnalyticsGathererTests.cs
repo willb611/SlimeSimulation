@@ -96,7 +96,7 @@ namespace SlimeSimulation.Model.Analytics.Tests
              * A-B-C
              */
             var a = new FoodSourceNode(1, 1, 0);
-            var b = new Node(2, 2, 0);
+            var b = new FoodSourceNode(2, 2, 0);
             var c = new FoodSourceNode(3, 3, 0);
 
             var ab = new Edge(a, b);
@@ -117,8 +117,8 @@ namespace SlimeSimulation.Model.Analytics.Tests
         {
             /*
              * A-B-C-D
-             * AC - seperation = 1
-             * AD - sep = 2
+             * AC - seperation = 0
+             * AD - sep = 1
              * CD - sep = 0
              */
             var a = new FoodSourceNode(1, 1, 0);
@@ -136,9 +136,57 @@ namespace SlimeSimulation.Model.Analytics.Tests
                 new SlimeEdge(cd, 0.5)
             };
 
-            var expectedSeperation = 1.0;
+            var expectedSeperation = 1 / 3.0;
             var statExtractor = new SimulationStateAnalyticsGatherer();
             Assert.AreEqual(expectedSeperation, statExtractor.AverageDegreeOfSeperation(new SlimeNetwork(slimeEdges)));
+        }
+
+        [TestMethod()]
+        public void AverageDegreeOfSeparation_SeperateByNode()
+        {
+            /*
+             * A-B-C
+             * B not food, so degree of separation ac = 0
+             */
+            var a = new FoodSourceNode(1, 1, 0);
+            var b = new Node(2, 2, 0);
+            var c = new FoodSourceNode(3, 3, 0);
+
+            var slimeEdges = new HashSet<SlimeEdge>()
+            {
+                new SlimeEdge(a, b, 0.5),
+                new SlimeEdge(b, c, 0.5)
+            };
+
+            var expectedSeperation = 0.0;
+            var statExtractor = new SimulationStateAnalyticsGatherer();
+            Assert.AreEqual(expectedSeperation, statExtractor.AverageDegreeOfSeperation(new SlimeNetwork(slimeEdges)));
+        }
+
+        [TestMethod()]
+        public void MinimumDistance()
+        {
+            /*
+             * A-B-C
+             * Ab - length = 1
+             * Ac - length = 2
+             * bc - length = 1
+             */
+            var a = new FoodSourceNode(1, 1, 0);
+            var b = new FoodSourceNode(2, 2, 0);
+            var c = new FoodSourceNode(3, 3, 0);
+
+            var ab = new Edge(a, b);
+            var bc = new Edge(b, c);
+            var slimeEdges = new HashSet<SlimeEdge>()
+            {
+                new SlimeEdge(ab, 0.5),
+                new SlimeEdge(bc, 0.5)
+            };
+
+            var expectedSeperation = 4.0 / 3.0;
+            var statExtractor = new SimulationStateAnalyticsGatherer();
+            Assert.AreEqual(expectedSeperation, statExtractor.AverageMinimumDistance(new SlimeNetwork(slimeEdges)));
         }
 
         [TestMethod()]

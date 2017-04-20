@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using NLog.Fluent;
 using SlimeSimulation.Model;
@@ -33,6 +34,26 @@ namespace SlimeSimulation.Algorithms.Pathing
         public int NodesInPathCount()
         {
             return _nodesInPath.Count;
+        }
+
+        public int IntermediateFoodSourcesInPathCount()
+        {
+            int count = 0;
+            foreach (var node in _nodesInPath)
+            {
+                var food = node as FoodSourceNode;
+                if (food != null && !food.Equals(_route.Source)
+                    && !food.Equals(_route.Sink))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        public int Distance()
+        {
+            return _nodesInPath.Count - 1;
         }
     }
 }

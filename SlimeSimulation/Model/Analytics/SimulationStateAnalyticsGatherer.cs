@@ -66,7 +66,50 @@ namespace SlimeSimulation.Model.Analytics
         {
             var path = _pathFinder.FindPath(slime as Graph, new Route(a, b));
             Logger.Debug("[DegreeOfSeperation] For node {0} to {1} found {2}", a, b, path);
-            return path == null ? int.MaxValue : path.IntermediateNodesInPathCount();
+            return path == null ? int.MaxValue : path.IntermediateFoodSourcesInPathCount();
+        }
+
+        public double AverageMinimumDistance(SlimeNetwork slimeNetwork)
+        {
+            List<FoodSourceNode> foodSources = new List<FoodSourceNode>(slimeNetwork.FoodSources);
+            int fsCount = foodSources.Count;
+            double totalMinimumDistance = 0;
+            int uniquePaths = 0;
+            for (int i = 0; i < fsCount - 1; i++)
+            {
+                for (int j = i + 1; j < fsCount; j++)
+                {
+                    var a = foodSources[i];
+                    var b = foodSources[j];
+                    var distance = MinimumDistance(slimeNetwork, a, b);
+                    if (distance == int.MaxValue)
+                    {
+                        continue;
+                    }
+                    totalMinimumDistance += distance;
+                    uniquePaths++;
+                }
+            }
+            Logger.Debug("[AverageMinimumDistance] AverageMinimumDistance: {0}, UniquePaths: {1}, foodSources: {2}",
+                totalMinimumDistance, uniquePaths, fsCount);
+            var result = 0.0;
+            if (uniquePaths == 0)
+            {
+                result = 0;
+            }
+            else
+            {
+                result = totalMinimumDistance / uniquePaths;
+            }
+            Logger.Info("[AverageMinimumDistance] For slime found result: {0}", result);
+            return result;
+        }
+
+        private int MinimumDistance(SlimeNetwork slimeNetwork, FoodSourceNode a, FoodSourceNode b)
+        {
+            var path = _pathFinder.FindPath(slimeNetwork as Graph, new Route(a, b));
+            Logger.Debug("[MinimumDistance] For node {0} to {1} found {2}", a, b, path);
+            return path == null ? int.MaxValue : path.Distance();
         }
 
         public double FaultTolerance(SlimeNetwork slime)
