@@ -10,7 +10,6 @@ namespace SlimeSimulation.Model.Analytics
     public class SimulationStateAnalyticsGatherer
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private const double Tolerance = 0.00001;
 
         private readonly PathFinder _pathFinder = new PathFinder();
         private readonly BfsSolver _bfsSolver = new BfsSolver();
@@ -28,33 +27,27 @@ namespace SlimeSimulation.Model.Analytics
 
         public double AverageDegreeOfSeperation(SlimeNetwork slime)
         {
-            List<FoodSourceNode> foodSources = new List<FoodSourceNode>(slime.FoodSources);
-            int fsCount = foodSources.Count;
+            return AverageDegreeOfSeperation(slime, new AllPaths(slime));
+        }
+        public double AverageDegreeOfSeperation(SlimeNetwork slime, AllPaths allPaths)
+        {
+            int fsCount = slime.FoodSources.Count;
             double totalSeperation = 0;
             int uniquePaths = 0;
-            for (int i = 0; i < fsCount - 1; i++)
+            foreach (var path in allPaths.AsList())
             {
-                for (int j = i + 1; j < fsCount; j++)
+                var degree = DegreeOfSeperation(path);
+                if (degree == int.MaxValue)
                 {
-                    var a = foodSources[i];
-                    var b = foodSources[j];
-                    var degree = DegreeOfSeperation(slime, a, b);
-                    if (degree == int.MaxValue)
-                    {
-                        continue;
-                    }
-                    totalSeperation += degree;
-                    uniquePaths++;
+                    continue;
                 }
+                totalSeperation += degree;
+                uniquePaths++;
             }
             Logger.Debug("[AverageDegreeOfSeperation] TotalSeperation: {0}, UniquePaths: {1}, foodSources: {2}",
                 totalSeperation, uniquePaths, fsCount);
             var result = 0.0;
-            if (uniquePaths == 0)
-            {
-                result = 0;
-            }
-            else
+            if (uniquePaths > 0)
             {
                 result = totalSeperation / uniquePaths;
             }
@@ -62,42 +55,34 @@ namespace SlimeSimulation.Model.Analytics
             return result;
         }
 
-        internal int DegreeOfSeperation(SlimeNetwork slime, Node a, Node b)
+        internal int DegreeOfSeperation(Path path)
         {
-            var path = _pathFinder.FindPath(slime as Graph, new Route(a, b));
-            Logger.Debug("[DegreeOfSeperation] For node {0} to {1} found {2}", a, b, path);
             return path == null ? int.MaxValue : path.IntermediateFoodSourcesInPathCount();
         }
 
         public double AverageMinimumDistance(SlimeNetwork slimeNetwork)
         {
-            List<FoodSourceNode> foodSources = new List<FoodSourceNode>(slimeNetwork.FoodSources);
-            int fsCount = foodSources.Count;
+            return AverageMinimumDistance(slimeNetwork, new AllPaths(slimeNetwork));
+        }
+        public double AverageMinimumDistance(SlimeNetwork slimeNetwork, AllPaths allPaths)
+        {
+            int fsCount = slimeNetwork.FoodSources.Count;
             double totalMinimumDistance = 0;
             int uniquePaths = 0;
-            for (int i = 0; i < fsCount - 1; i++)
+            foreach (var path in allPaths.AsList())
             {
-                for (int j = i + 1; j < fsCount; j++)
+                var distance = MinimumDistance(path);
+                if (distance == int.MaxValue)
                 {
-                    var a = foodSources[i];
-                    var b = foodSources[j];
-                    var distance = MinimumDistance(slimeNetwork, a, b);
-                    if (distance == int.MaxValue)
-                    {
-                        continue;
-                    }
-                    totalMinimumDistance += distance;
-                    uniquePaths++;
+                    continue;
                 }
+                totalMinimumDistance += distance;
+                uniquePaths++;
             }
             Logger.Debug("[AverageMinimumDistance] AverageMinimumDistance: {0}, UniquePaths: {1}, foodSources: {2}",
                 totalMinimumDistance, uniquePaths, fsCount);
             var result = 0.0;
-            if (uniquePaths == 0)
-            {
-                result = 0;
-            }
-            else
+            if (uniquePaths > 0)
             {
                 result = totalMinimumDistance / uniquePaths;
             }
@@ -105,10 +90,8 @@ namespace SlimeSimulation.Model.Analytics
             return result;
         }
 
-        private int MinimumDistance(SlimeNetwork slimeNetwork, FoodSourceNode a, FoodSourceNode b)
+        private int MinimumDistance(Path path)
         {
-            var path = _pathFinder.FindPath(slimeNetwork as Graph, new Route(a, b));
-            Logger.Debug("[MinimumDistance] For node {0} to {1} found {2}", a, b, path);
             return path == null ? int.MaxValue : path.Distance();
         }
 

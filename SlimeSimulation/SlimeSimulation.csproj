@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\Bfs\GraphSplitIntoSubgraphs.cs" />
+    <Compile Include="Algorithms\Pathing\AllPaths.cs" />
     <Compile Include="Algorithms\Pathing\Path.cs" />
     <Compile Include="Algorithms\Pathing\PathFinder.cs" />
     <Compile Include="Algorithms\Pathing\Queue.cs" />

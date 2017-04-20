@@ -2,7 +2,6 @@ using System;
 using SlimeSimulation.Model;
 using SlimeSimulation.Algorithms.Bfs;
 using System.Collections.Generic;
-using System.Linq;
 using NLog;
 
 namespace SlimeSimulation.Algorithms.Pathing

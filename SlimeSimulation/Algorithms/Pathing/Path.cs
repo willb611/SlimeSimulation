@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using NLog;
-using NLog.Fluent;
 using SlimeSimulation.Model;
 
 namespace SlimeSimulation.Algorithms.Pathing
@@ -54,6 +51,12 @@ namespace SlimeSimulation.Algorithms.Pathing
         public int Distance()
         {
             return _nodesInPath.Count - 1;
+        }
+
+        public bool IsPathBetween(Node a, Node b)
+        {
+            return (_route.Sink.Equals(a) && _route.Source.Equals(b))
+                   || (_route.Sink.Equals(b) && _route.Source.Equals(a));
         }
     }
 }

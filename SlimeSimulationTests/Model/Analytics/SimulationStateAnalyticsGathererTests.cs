@@ -1,6 +1,7 @@
 using SlimeSimulation.Model.Analytics;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SlimeSimulation.Algorithms.Pathing;
 
 namespace SlimeSimulation.Model.Analytics.Tests
 {
@@ -61,7 +62,8 @@ namespace SlimeSimulation.Model.Analytics.Tests
             var expectedSeperation = 0;
             var statExtractor = new SimulationStateAnalyticsGatherer();
             var slime = new SlimeNetwork(slimeEdges);
-            Assert.AreEqual(expectedSeperation, statExtractor.DegreeOfSeperation(slime, a, c));
+            var allPaths = new AllPaths(slime);
+            Assert.AreEqual(expectedSeperation, statExtractor.DegreeOfSeperation(allPaths.PathBetween(a, c)));
         }
 
         [TestMethod()]
@@ -109,8 +111,9 @@ namespace SlimeSimulation.Model.Analytics.Tests
 
             var expectedSeperation = 1;
             var slime = new SlimeNetwork(slimeEdges);
+            var allPaths = new AllPaths(slime);
             var statExtractor = new SimulationStateAnalyticsGatherer();
-            Assert.AreEqual(expectedSeperation, statExtractor.DegreeOfSeperation(slime, a, c));
+            Assert.AreEqual(expectedSeperation, statExtractor.DegreeOfSeperation(allPaths.PathBetween(a, c)));
         }
         [TestMethod()]
         public void AverageDegreeOfSeperation_TwoFoods()
